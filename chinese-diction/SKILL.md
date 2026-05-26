@@ -1,22 +1,12 @@
 ---
 name: chinese-diction
 description: >-
-  Write smooth, highly readable, professional Chinese prose at the word-choice / phrasing / register level. Use this whenever the user wants to **write a new Chinese document, polish or optimize the wording of an existing Chinese document, or translate something into Chinese**, and the goal is natural, idiomatic, tasteful Chinese rather than translationese. Trigger phrases include "写一篇中文文档 / 把这段写成中文 / 优化中文措辞 / 让中文更地道流畅 / 翻译成中文 / 这中文读起来别扭 / 去掉翻译腔 / make this read naturally in Chinese / translate to Chinese / polish the Chinese wording". Core promises — no 翻译腔, no coined words (自造词), no personification or cool-label metaphors, no slogan/hyperbole, the right register (neither colloquial nor stiff 公文腔), while keeping engineer English terms and domain identifiers verbatim. This is the **prose-quality / diction layer** — word choice, phrasing, and register — not document structure or section order. Do not use for agent-instruction files (SKILL.md, prompts, tool-routing docs).
-metadata:
-  short-description: A methodology for natural, professional Chinese diction — judge any phrasing, not match a fixed list
-argument-hint: '[optional: "create" | "optimize" | "translate", and/or the text/file]'
+  Write natural, professional Chinese at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction. Preserve meaning and keep code identifiers, acronyms, product names, field names, citations, numbers, and URLs unchanged. This is the prose-quality layer, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
 ---
 
 # Chinese Diction
 
 A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. This is the **diction / phrasing / register layer** — word choice, phrasing, and register, not document structure or section order.
-
-## When to use
-
-Three tasks, one set of principles:
-
-- **Create** a new Chinese document, **Optimize** the wording of an existing one, or **Translate** source text into Chinese.
-- Skip for agent-instruction files (`SKILL.md`, prompts, tool-routing docs) — those are written for machines, not readers.
 
 ## The core instinct
 

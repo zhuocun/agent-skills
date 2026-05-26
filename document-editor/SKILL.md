@@ -1,21 +1,11 @@
 ---
 name: document-editor
-description: Edit human-facing formal documents at the document level: design docs, RFCs, implementation plans, proposals, specs, guides, decision memos, and review docs. Use when the user wants to improve scope, structure, logical flow, reader fit, factual fidelity, concision, terminology, tables, or reviewability. Do not use for casual notes, chat replies, pure sentence-level wording polish, or agent-instruction files such as `SKILL.md`, prompts, workflows, or tool-routing docs.
-metadata:
-  short-description: Edit formal human-facing docs without changing their meaning
-argument-hint: [optional focus area, e.g. "structure", "accuracy", "concision", "natural-english", "natural-chinese", "tables", "cold-reader review"]
+description: Edit formal human-facing documents at the document level without changing their meaning. Use for design docs, RFCs, implementation plans, proposals, specs, guides, decision memos, and review docs when the user wants to improve scope, structure, logical flow, reader fit, factual fidelity, concision, terminology, tables, or reviewability. Do not use for casual notes, chat replies, pure sentence-level wording polish, or agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
 ---
 
 # Document Editor
 
 Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction.
-
-## Use This Skill
-
-Use it only for formal documents written for human readers: design docs, RFCs, implementation plans, proposals, specs, guides, decision memos, and review docs.
-Do not use it for `SKILL.md` files or other agent-instruction documents.
-Do not use it for casual chat replies, short notes, or pure wording polish; those belong to narrower writing or diction skills.
-If the content tells an agent when to trigger, how to behave, or what tools to call, this skill must not trigger.
 
 ## Core Standard
 

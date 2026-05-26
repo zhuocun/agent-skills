@@ -1,6 +1,6 @@
 ---
 name: burst
-description: Orchestrates parallel subagents as the primary performers of research, audit, implementation, and review work.
+description: Orchestrate authorized parallel subagents as the primary performers of research, audit, implementation, and review work. Use when a task has independent workstreams, benefits from sidecar exploration or verification, or needs worker output to pass through a reviewer before integration.
 ---
 
 # Burst
