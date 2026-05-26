@@ -5,7 +5,7 @@ description: Edit formal human-facing documents at the document level without ch
 
 # Document Editor
 
-Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction.
+Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction. Preserve meaning; improve how the document is scoped, ordered, explained, and worded.
 
 ## Core Standard
 
@@ -23,9 +23,9 @@ A strong document lets the reader answer:
 4. What are the constraints, tradeoffs, and implications?
 5. What should happen next?
 
-## Start With Reader Fit
+## First Pass
 
-Before editing, identify:
+Before editing, infer or identify:
 1. Document type
 2. Intended audience
 3. Primary purpose
@@ -90,7 +90,7 @@ Recommended order:
 3. Keep abstraction layers separated.
 4. Define concepts before formulas, field mappings, or rollout diffs.
 5. If the design depends on a named framework, operating model, or domain term, define that context before using it to justify the design.
-6. For architectural or product design docs, keep implementation details out of the main narrative unless the user explicitly asks to include them.
+6. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
 7. Add short bridge sentences only when they help the reader follow causality. Place a bridge at the **start** of the section it introduces — directly under the heading, before the first subsection — not as a trailing "next we will…" sentence on the previous section. Leading bridges signal what's coming and let the reader engage; trailing bridges leak structure across section boundaries. In Markdown documents, prefer rendering bridge lines as blockquotes on their own line when that fits the document's existing style.
 8. A bridge may be declarative or a concise guiding question that the following subsections answer.
 9. Use tables for repeated structures and prose for causal explanation.
@@ -185,7 +185,7 @@ Before finishing, verify:
 3. Facts, counts, names, and tables still match the source.
 4. Terms are aligned.
 5. Named frameworks, operating models, or domain terms are defined before they are used to justify the design.
-6. Architectural or product design docs do not contain implementation-only detail unless the user explicitly asks for it.
+6. Architectural or product design docs use business or system concepts instead of code-level references, file paths, and implementation labels unless the user explicitly asks for development-level detail.
 7. Final sections do not introduce new scope.
 8. Repeated points appear once in the strongest location.
 9. The document sounds native to the target language and register.
