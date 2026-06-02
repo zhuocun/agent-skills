@@ -86,14 +86,15 @@ Recommended order:
 ## Structure Rules
 
 1. The title must match the real scope.
-2. Put early what the reader needs in order to judge the rest.
-3. Keep abstraction layers separated.
-4. Define concepts before formulas, field mappings, or rollout diffs.
-5. If the design depends on a named framework, operating model, or domain term, define that context before using it to justify the design.
-6. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
-7. Add short bridge sentences only when they help the reader follow causality. Place a bridge at the **start** of the section it introduces — directly under the heading, before the first subsection — not as a trailing "next we will…" sentence on the previous section. Leading bridges signal what's coming and let the reader engage; trailing bridges leak structure across section boundaries. In Markdown documents, prefer rendering bridge lines as blockquotes on their own line when that fits the document's existing style.
-8. A bridge may be declarative or a concise guiding question that the following subsections answer.
-9. Use tables for repeated structures and prose for causal explanation.
+2. Add second-level headings where they improve structure and clarity, numbered hierarchically (a `1.` heading with `1.1` / `1.2` subheadings).
+3. Put early what the reader needs in order to judge the rest.
+4. Keep abstraction layers separated.
+5. Define concepts before formulas, field mappings, or rollout diffs.
+6. If the design depends on a named framework, operating model, or domain term, define that context before using it to justify the design.
+7. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
+8. Add short bridge sentences only when they help the reader follow causality. Place a bridge at the **start** of the section it introduces — directly under the heading, before the first subsection — not as a trailing "next we will…" sentence on the previous section. Leading bridges signal what's coming and let the reader engage; trailing bridges leak structure across section boundaries. In Markdown documents, prefer rendering bridge lines as blockquotes on their own line when that fits the document's existing style.
+9. A bridge may be declarative or a concise guiding question that the following subsections answer.
+10. Use tables for repeated structures and prose for causal explanation.
 
 Good bridge examples in the preferred blockquote form:
 
