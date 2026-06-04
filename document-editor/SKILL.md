@@ -112,7 +112,7 @@ Use for runbooks, troubleshooting guides, operating procedures, migration guides
 3. Put early what the reader needs in order to judge the rest. Preserve the reader journey over the author journey — do not order sections by how the team built the system unless that history is the reader's task.
 4. Keep abstraction layers separated. Define concepts before formulas, field mappings, or rollout diffs. If the design depends on a named framework, operating model, or domain term, define that context before using it to justify the design.
 5. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
-6. When the document claims a new solution is better, surface existing baselines or alternatives; if missing, flag the gap instead of inventing them. Do not let future plans compensate for weak present evidence.
+6. When the document claims a new solution is better, surface existing baselines or alternatives before the claim; Evidence, claims & actionability covers handling them when they are missing or one-sided. Do not let future plans compensate for weak present evidence.
 7. Separate audience paths when one document serves reviewers, adopters, operators, and implementers.
 8. Use guiding-question headings only when they match the reader's likely doubts; too many rhetorical headings make the document feel like a slide deck. When a heading does pose the reader's question, the section's first sentence should answer it, not open with unrelated setup.
 9. Keep a stable thesis phrase or named concept for navigation, but repeat it through new evidence or implications instead of copying the same sentence.
@@ -200,7 +200,7 @@ If two sections present parallel structures at different abstraction levels, use
 
 **English:** prefer concrete verbs and short, stable sentence shapes; avoid stacked abstractions and vague intensifiers.
 
-**Chinese:** avoid literal translation, stiff 翻译腔, and long chained modifiers. Use Chinese for explanation, judgment, and action when the base document is Chinese. Keep English only for fixed field terms, APIs, product names, tool names, and identifiers; clean up spacing and term consistency around mixed Chinese/English tokens. Prefer precise verbs that describe the actual operation; avoid vague verbs such as 提升、优化、赋能 unless the mechanism is clear.
+**Chinese:** avoid 翻译腔, long chained modifiers, and vague verbs like 提升 / 优化 / 赋能 unless the mechanism is clear; use Chinese for explanation, judgment, and action, keeping English only for fixed terms, APIs, product names, and identifiers. For deep Chinese word choice, phrasing, and register, the chinese-diction skill is the authority.
 
 **Both languages:** prefer precise professional wording over conversational performance; keep personification limited when precision matters; preserve established names, product terms, acronyms, and code identifiers. If the document has a clear base language, rewrite stray foreign tokens into it unless they function as a proper name, fixed term, brand, or identifier. Prefer native phrasing over token-level mixing. Avoid copying catchy motifs, slogans, or metaphors unless grounded by evidence and useful as navigation anchors.
 
