@@ -43,7 +43,7 @@ The most common failure in "clever" drafts. Several sub-forms, one principle: cu
 - **Branded label** (a plain idea dressed as a coined term) — ✗ 新基座的原语 → ✓ 新系统的基本构件
 - **Noun-as-metaphor** — ✗ 这是物理 / 物理底线 → ✓ 这是硬性约束 *(the adverb 物理上 = "physically" is literal — keep it)*
 - **Slogan / hyperbole** — ✗ 回滚到最后一毫秒 → ✓ 操作前均可回滚
-- **Business/strategy slogans** — ✗ 全面提升系统智能化水平、赋能业务高质量增长 → ✓ 提升策略配置效率、增强链路稳定性、提高问题定位可见性
+- **Business/strategy slogans** — ✗ 全面提升 AI 编码效率、赋能业务高质量增长 → ✓ 降低组件选择和场景匹配成本、提高上下文完整性、减少影响范围遗漏
 
 *Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation.
 
@@ -83,19 +83,20 @@ Identifiers, enums, field/API names, code symbols, numbers, citations, author na
 
 ## Two sentence-craft moves
 
-- **`不是 A,而是 B` → `是 B,而非 A`.** More natural — but **front clause B**, or a blind connector swap inverts the meaning. ✓ 是取代表单,而非用 AI 优化表单。
+- **`不是 A,而是 B` can be natural.** Keep it when A/B are comparable and the contrast is the point. Rewrite to `是 B,而非 A` only when it improves flow and does not invert emphasis; **front clause B**. ✓ 是取代表单,而非用 AI 优化表单。
 - **Split overloaded sentences.** One that bundles definition + justification + instruction reads as three; give each its own sentence.
 
 ## Technical prose patterns
 
 Use these when polishing Chinese technical or business-technical prose.
 
-1. **Name the bottleneck plainly.** Prefer `配置分散`、`链路协同成本高`、`问题定位依赖人工` over vague openings like `当前存在一些问题`.
-2. **Use action verbs with objects.** Prefer `识别风险类型`、`合并重复规则`、`压缩返回内容`、`校验回滚结果` over `提升能力`、`优化体验`、`赋能增长`.
-3. **Bound strong claims.** Pair confident claims with scope, condition, evidence, or limitation. Prefer `在该测试场景下可降低请求耗时` over `全面提升准确性`.
-4. **Acknowledge alternatives with source-backed precision.** If the source says another option has an advantage, keep it before stating the boundary; do not invent balance for tone.
-5. **Keep concept names stable.** Pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references. Do not rotate synonyms for literary variety.
-6. **Let memorable phrases earn their place.** A phrase like `不知道自己不知道什么` works because it names a real failure mode. If a motif is only catchy, replace it with the concrete mechanism.
+1. **Name the mechanism, not the mood.** Prefer `上下文不足`、`影响范围评估不足`、`组件信息依赖 UI 打标`、`返回内容过长` over vague phrasing like `效果不好`、`提效不明显`、`当前存在一些问题`.
+2. **Use action verbs with objects.** Prefer `识别改动类型`、`压缩返回内容`、`返回搜索任务清单`、`生成验证核查清单`、`定位受影响文件` over `提升能力`、`优化体验`、`赋能增长`.
+3. **Bridge problem to method through the mechanism.** When moving from problem to solution, use a short bridge: name the surface problem, state the underlying mechanism, then introduce the method. Example: `多模态识图在复杂 UI 中精度有限；这本质上是上下文不足。因此，工具需要先压缩并结构化 Figma 信息。`
+4. **Bound strong claims.** Pair confident claims with scope, condition, evidence, or limitation. When using numbers, include the measurement basis when it matters. Prefer `在该测试场景下可降低请求耗时`、`Code 完成度 = 正确实现数 / 功能点总数`、`准确性有限` over `全面提升准确性`、`仍有优化空间`.
+5. **Acknowledge alternatives with source-backed precision.** If the source says another option has an advantage, keep it before stating the boundary (`静态工具样式还原度高，但依赖组件打标`); do not invent balance for tone.
+6. **Keep concept names stable.** Pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references. Do not rotate synonyms for literary variety.
+7. **Let memorable phrases earn their place.** `最短交互路径` works because it names a product goal; `不知道自己不知道什么` works because it names a failure mode. If a motif is only catchy, replace it with the concrete mechanism.
 
 ## How to apply
 
@@ -111,8 +112,10 @@ Use these when polishing Chinese technical or business-technical prose.
 - [ ] Register steady — neither chatty/narrative nor bureaucratic.
 - [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute.
 - [ ] No clipped/over-shortened words — each written in its complete natural form (`硬性约束` not `硬约束`, `重复录入` not `重录`).
-- [ ] `不是A而是B` rewritten as `是B,而非A` with B fronted.
+- [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B,而非A` only with B fronted and meaning unchanged.
 - [ ] Identifiers, numbers, citations, author names, URLs byte-for-byte unchanged.
+- [ ] Technical claims name a mechanism, dependency, or scope; generic praise or business outcomes like `全面提升`、`智能化水平`、`高质量增长`、`赋能` are replaced with concrete substance, not swapped for milder slogans, unless the source truly supports them.
+- [ ] Source-backed tradeoffs and limitations are preserved; no false balance, no smoothing away tested negatives.
 - [ ] A domain-literate cold reader flows start to finish without stopping on a word.
 
 ## Maintenance
