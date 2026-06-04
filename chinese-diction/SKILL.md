@@ -64,7 +64,11 @@ Reaching for force or certainty the claim doesn't warrant reads as strident or n
 - ✗ 这一步只能依赖人工计算 → ✓ 这一步依赖人工计算
 - ✗ 一旦接近关口,就必须切换到人工 → ✓ 接近关口时,需要切换到人工
 
-*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false. The rule is don't reach for force you don't need, not "never be definite." (Fittingly, this rule is itself a default, not an absolute.)
+The opposite failure is over-hedging into mush: stacking softeners (`可能…也许…或许…`) or weakening the verb itself buries the claim. State the cause→effect flatly and quarantine the single honest qualifier into one measured quantifier.
+
+- ✗ 相关信息可能也许不太会被 AI 考虑到 → ✓ 相关信息若不在 AI 的注意力焦点内,被纳入考虑的概率显著降低
+
+*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. (Fittingly, this rule is itself a default, not an absolute.)
 
 ### 6. 过度压缩 — clipped words that should be written in full
 
@@ -81,10 +85,11 @@ Trimming a word or phrase below its natural Chinese form to save characters read
 
 Identifiers, enums, field/API names, code symbols, numbers, citations, author names, URLs are **correctness, not wording**. Copy them byte-for-byte; never translate or "tidy" them.
 
-## Two sentence-craft moves
+## Three sentence-craft moves
 
 - **`不是 A,而是 B` can be natural.** Keep it when A/B are comparable and the contrast is the point. Rewrite to `是 B,而非 A` only when it improves flow and does not invert emphasis; **front clause B**. ✓ 是取代表单,而非用 AI 优化表单。
 - **Split overloaded sentences.** One that bundles definition + justification + instruction reads as three; give each its own sentence.
+- **Weld related clauses with native paired connectives.** When two clauses are one causal or contrastive thought the reader would otherwise parse as separate facts, join them with `之所以…是因为…` / `与其…不如…` / `这本质上是…` / `换句话说，…` — the Chinese way to mark the link explicitly. This is the positive counterpart to mode 1's warning against stacked Western connectors (`由于…因此…并且`): one native connective binds, a pile-up of them is translationese. ✗ 精度有限。原因是上下文不足。 → ✓ 精度有限,这本质上是上下文不足。
 
 ## Technical prose patterns
 
@@ -110,9 +115,9 @@ Use these when polishing Chinese technical or business-technical prose.
 - [ ] No coined or hard-translated words; no needless English (default to Chinese; keep only bare acronyms / a canonical term like `agent` / code identifiers); genuine settled terms not over-translated.
 - [ ] No vividness that adds only flavor — no personification, branded labels, noun-metaphor, slogans, drama, or wrong-connotation words.
 - [ ] Register steady — neither chatty/narrative nor bureaucratic.
-- [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute.
+- [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute; and no over-hedge mush (`可能…也许…或许`) — one qualifier, placed precisely.
 - [ ] No clipped/over-shortened words — each written in its complete natural form (`硬性约束` not `硬约束`, `重复录入` not `重录`).
-- [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B,而非A` only with B fronted and meaning unchanged.
+- [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B,而非A` only with B fronted and meaning unchanged; one-thought clauses welded with a native connective (`之所以…是因为`/`这本质上是`), not left as disjointed facts.
 - [ ] Identifiers, numbers, citations, author names, URLs byte-for-byte unchanged.
 - [ ] Technical claims name a mechanism, dependency, or scope; generic praise or business outcomes like `全面提升`、`智能化水平`、`高质量增长`、`赋能` are replaced with concrete substance, not swapped for milder slogans, unless the source truly supports them.
 - [ ] Source-backed tradeoffs and limitations are preserved; no false balance, no smoothing away tested negatives.
