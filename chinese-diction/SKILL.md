@@ -12,7 +12,7 @@ A **methodology, not a lookup table.** It teaches the few principles behind good
 
 Write the way a careful, senior professional writes Chinese: **plainly and precisely, with nothing reaching to impress.** Before keeping any phrase, ask whether it is (a) English grammar in disguise, (b) an invented, hard-translated, or needlessly English word, (c) vividness the meaning doesn't need, (d) off-register — too chatty or too bureaucratic, or (e) reaching for more force than the claim warrants. If any, rewrite to the plain form.
 
-The one test that resolves most cases: **when two phrasings say the same thing, use the plainer, more measured one.** A figure of speech earns its place only by adding *precision*; an absolute word (`只能`/`必须`/`一定`) earns its place only when the claim truly is absolute. If they add mere flavor or force, cut them. Plainer means clearer, not shorter — write each word in its complete, natural form, never a clipped shorthand.
+The one test that resolves most cases: **when two phrasings say the same thing, use the plainer, more measured one.** A figure of speech earns its place only by adding *precision*; an absolute word (`只能`/`必须`/`一定`) earns its place only when the claim truly is absolute. If they add mere flavor or force, cut them. Prefer verbs with clear objects over abstract nouns: say what is being identified, compressed, merged, verified, or exposed. Plainer means clearer, not shorter — write each word in its complete, natural form, never a clipped shorthand.
 
 ## The seven failure modes
 
@@ -33,6 +33,8 @@ Reach for the word that already exists in natural Chinese. Three ways it goes wr
 - **Needless English** (the more common mistake) — default to Chinese; most "engineer English" has a settled Chinese form. ✗ hatch 出一个对象 · 非法 transition · 一个 proposed delta · post-stamp 镜像 → ✓ 生成一个对象 · 非法的状态转移 · 一处拟议变更 · 盖章后的镜像（同理 capability→能力、typed→带类型的、invariant→不变量）. Keep English only when there is *no* natural Chinese equivalent: bare acronyms (`LLM` `API` `SPA` `CFG` `FSM` `MCP`), a term genuinely canonical as English in the field (`agent`), or a literal code identifier / enum (kept verbatim under mode 7).
 - **Over-correcting** — don't strip genuine settled terms: `幂等` (idempotent), `回滚` (rollback), `死锁` (deadlock) are real, not coinages. And "looks technical" ≠ settled — a borrowed metaphor merely dressed as a term (`闸口` for a checkpoint, `接缝` for an integration boundary, `魔法整数` for "magic number") only *looks* established and still fails mode 3; use a plain word (关口 / 对接处 / 未说明的常量).
 
+*Principle:* when a Chinese technical text keeps English terms, keep them stable and purposeful. Let English carry fixed names, acronyms, APIs, product names, and identifiers; let Chinese carry explanation, judgment, and action. Clean up spacing and term consistency around mixed Chinese/English tokens.
+
 ### 3. 文采型包装 — reaching for vividness the meaning doesn't need
 
 The most common failure in "clever" drafts. Several sub-forms, one principle: cut any figure that adds only flavor.
@@ -41,6 +43,7 @@ The most common failure in "clever" drafts. Several sub-forms, one principle: cu
 - **Branded label** (a plain idea dressed as a coined term) — ✗ 新基座的原语 → ✓ 新系统的基本构件
 - **Noun-as-metaphor** — ✗ 这是物理 / 物理底线 → ✓ 这是硬性约束 *(the adverb 物理上 = "physically" is literal — keep it)*
 - **Slogan / hyperbole** — ✗ 回滚到最后一毫秒 → ✓ 操作前均可回滚
+- **Business/strategy slogans** — ✗ 全面提升系统智能化水平、赋能业务高质量增长 → ✓ 提升策略配置效率、增强链路稳定性、提高问题定位可见性
 
 *Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation.
 
@@ -82,6 +85,17 @@ Identifiers, enums, field/API names, code symbols, numbers, citations, author na
 
 - **`不是 A,而是 B` → `是 B,而非 A`.** More natural — but **front clause B**, or a blind connector swap inverts the meaning. ✓ 是取代表单,而非用 AI 优化表单。
 - **Split overloaded sentences.** One that bundles definition + justification + instruction reads as three; give each its own sentence.
+
+## Technical prose patterns
+
+Use these when polishing Chinese technical or business-technical prose.
+
+1. **Name the bottleneck plainly.** Prefer `配置分散`、`链路协同成本高`、`问题定位依赖人工` over vague openings like `当前存在一些问题`.
+2. **Use action verbs with objects.** Prefer `识别风险类型`、`合并重复规则`、`压缩返回内容`、`校验回滚结果` over `提升能力`、`优化体验`、`赋能增长`.
+3. **Bound strong claims.** Pair confident claims with scope, condition, evidence, or limitation. Prefer `在该测试场景下可降低请求耗时` over `全面提升准确性`.
+4. **Acknowledge alternatives with source-backed precision.** If the source says another option has an advantage, keep it before stating the boundary; do not invent balance for tone.
+5. **Keep concept names stable.** Pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references. Do not rotate synonyms for literary variety.
+6. **Let memorable phrases earn their place.** A phrase like `不知道自己不知道什么` works because it names a real failure mode. If a motif is only catchy, replace it with the concrete mechanism.
 
 ## How to apply
 
