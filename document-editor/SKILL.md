@@ -132,6 +132,8 @@ Use this order for runbooks, troubleshooting guides, operating procedures, migra
 12. When the document claims a new solution is better, surface existing baselines or alternatives; if they are missing, flag the gap instead of inventing them.
 13. Separate audience paths when one document serves reviewers, adopters, operators, and implementers.
 14. Do not let future plans compensate for weak present evidence.
+15. Use guiding-question headings only when they match the reader's likely doubts. Too many rhetorical headings make the document feel like a slide deck.
+16. Keep a stable thesis phrase or named concept when it helps navigation, but repeat it through new evidence or implications instead of copying the same sentence.
 
 Good bridge examples in the preferred blockquote form:
 
@@ -220,8 +222,10 @@ Prefer prose when:
 1. The content explains one idea
 2. The reader needs narrative buildup
 3. The relationship is causal rather than tabular
+4. The content explains a caveat, tradeoff, or hidden causal chain
 
 If two sections present parallel structures at different abstraction levels, use parallel table shapes.
+Use tables only when the columns are stable and comparable; forcing ambiguous reasoning into a table can hide nuance. Concision means putting detail in the right medium, not minimizing word count.
 
 ## Media, Code, and Native Blocks
 
@@ -230,6 +234,7 @@ If two sections present parallel structures at different abstraction levels, use
 3. Introduce code blocks with what they demonstrate and, when useful, summarize the design point after the block.
 4. Avoid long raw dumps unless they are necessary for reproducibility, API contracts, schema review, or implementation reference.
 5. Preserve existing callouts and use new callouts sparingly for key conclusions, warnings, assumptions, or caveats when the document format already supports them.
+6. Shorten generic motivation once the core problem is clear; spend words on hidden complexity, causal chains, tradeoffs, and concrete failure modes.
 
 ## Language Rules
 
@@ -241,6 +246,9 @@ If two sections present parallel structures at different abstraction levels, use
 6. Remove duplicated claims, repeated caveats, and low-information transitions.
 7. Avoid generic AI cadence such as mirrored sentence patterns, hedge clusters, and filler transitions.
 8. Keep headings specific and professional.
+9. Prefer action verbs with clear objects. Replace vague phrases like "improve capability" with concrete actions such as "classify requests", "merge checks", "reduce payload size", or "validate rollback".
+10. Make strong claims bounded. Pair confident wording with scope, condition, evidence, or limitation instead of broad intensifiers.
+11. When comparing alternatives, preserve source-backed strengths of each option before stating its boundary or failure mode; if strengths are not stated, flag the gap instead of inventing balance.
 
 For English:
 - Prefer concrete verbs and short, stable sentence shapes.
@@ -248,6 +256,9 @@ For English:
 
 For Chinese:
 - Avoid literal translation, stiff 翻译腔, and long chained modifiers.
+- Use Chinese for explanation, judgment, and action when the base document is Chinese.
+- Keep English only for fixed field terms, APIs, product names, tool names, and identifiers; clean up spacing and term consistency around mixed Chinese/English tokens.
+- Prefer precise verbs that describe the actual operation; avoid vague verbs such as 提升、优化、赋能 unless the mechanism is clear.
 
 For both languages:
 - Prefer precise professional wording over conversational performance.
@@ -255,6 +266,7 @@ For both languages:
 - Preserve established names, product terms, acronyms, and code identifiers.
 - If the document has a clear base language, rewrite stray foreign tokens into that language unless they function as a proper name, fixed term, brand, or identifier.
 - Prefer native phrasing over token-level mixing.
+- Avoid copying catchy motifs, slogans, or metaphors unless they are grounded by evidence and useful as navigation anchors.
 
 ## Finish Checks
 
