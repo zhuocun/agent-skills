@@ -114,7 +114,7 @@ Use for runbooks, troubleshooting guides, operating procedures, migration guides
 5. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
 6. When the document claims a new solution is better, surface existing baselines or alternatives; if missing, flag the gap instead of inventing them. Do not let future plans compensate for weak present evidence.
 7. Separate audience paths when one document serves reviewers, adopters, operators, and implementers.
-8. Use guiding-question headings only when they match the reader's likely doubts; too many rhetorical headings make the document feel like a slide deck.
+8. Use guiding-question headings only when they match the reader's likely doubts; too many rhetorical headings make the document feel like a slide deck. When a heading does pose the reader's question, the section's first sentence should answer it, not open with unrelated setup.
 9. Keep a stable thesis phrase or named concept for navigation, but repeat it through new evidence or implications instead of copying the same sentence.
 
 ### Bridges
@@ -196,7 +196,7 @@ If two sections present parallel structures at different abstraction levels, use
 4. Avoid generic AI cadence such as mirrored sentence patterns, hedge clusters, and filler transitions.
 5. Keep headings specific and professional.
 6. Prefer action verbs with clear objects. Replace vague phrases like "improve capability" with concrete actions such as "classify requests", "merge checks", "reduce payload size", or "validate rollback".
-7. Make strong claims bounded — pair confident wording with scope, condition, evidence, or limitation instead of broad intensifiers. Reserve emphasis for load-bearing words.
+7. Make strong claims bounded — pair confident wording with scope, condition, evidence, or limitation instead of broad intensifiers. Reserve emphasis for load-bearing words. Prefer binding the qualifier into the claim over deleting the strong word: write "accurate within the tested range" or "limited-but-real" so the limiter rides in the same sentence as the strong word, rather than dropping "accurate" or leaving it unbounded.
 
 **English:** prefer concrete verbs and short, stable sentence shapes; avoid stacked abstractions and vague intensifiers.
 
@@ -213,7 +213,8 @@ Final scan for high-risk slips not already obvious from the rules above (see Tru
 3. A closing or final section introduces new scope.
 4. A rule the document itself states is contradicted elsewhere in the document.
 5. A claim left without its supporting evidence or interpretation.
-6. The reader is sent to machine-local file paths or other local documents without the user asking for that form.
+6. A strong claim whose caveat or limitation sits sections away from it, instead of bound to the claim where the reader meets it (e.g., a header promising "precise" while the limitation hides in a later section).
+7. The reader is sent to machine-local file paths or other local documents without the user asking for that form.
 
 ## Communication
 
