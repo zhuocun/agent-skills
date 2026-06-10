@@ -9,6 +9,7 @@ this repo.
 ## Skills
 
 - `burst` — orchestrates parallel subagents for research, audit, implementation, and review work.
+- `proxy` — acts as a thin proxy that delegates every decision and unit of work — including decomposition and the done/not-done call — to frontier-model subagents.
 - `document-editor` — edits formal human-facing documents at the document level without changing their meaning.
 - `chinese-diction` — improves Chinese word choice, phrasing, and register for natural professional prose.
 - `cr-fe` — comprehensive frontend code review for runtime safety, error handling, hook correctness, code smell, and folder-structure layering.
