@@ -13,6 +13,8 @@ this repo.
 - `document-editor` — edits formal human-facing documents at the document level without changing their meaning.
 - `chinese-diction` — improves Chinese word choice, phrasing, and register for natural professional prose.
 - `cr-fe` — comprehensive frontend code review for runtime safety, error handling, hook correctness, code smell, and folder-structure layering.
+- `reorient` — reconstructs and verifies working context after a context compaction, then resumes the in-progress task safely.
+- `visual-ux-sweep` — reviews and fixes UI/UX regressions in a web app via headless-browser screenshots across routes, viewports, themes, and interaction states.
 
 ## Layout
 
