@@ -1,18 +1,18 @@
 ---
 name: chinese-diction
 description: >-
-  Write natural, professional Chinese at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction. Preserve meaning and keep code identifiers, acronyms, product names, field names, citations, numbers, and URLs unchanged. This is the prose-quality layer, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
+  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, marketing copy, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms, product names, field names, citations, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as prompts, workflows, or tool-routing docs.
 ---
 
 # Chinese Diction
 
-A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. This is the **diction / phrasing / register layer** — word choice, phrasing, and register, not document structure or section order.
+A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for.
 
 ## The core instinct
 
-Write the way a careful, senior professional writes Chinese: **plainly and precisely, with nothing reaching to impress.** Before keeping any phrase, ask whether it is (a) English grammar in disguise, (b) an invented, hard-translated, or needlessly English word, (c) vividness the meaning doesn't need, (d) off-register — too chatty or too bureaucratic, or (e) reaching for more force than the claim warrants. If any, rewrite to the plain form.
+First settle the target register from the medium, the audience, and the user's ask — professional for business and technical prose unless signalled otherwise; casual and creative are equally valid targets. Then write the way a careful native writer writes in that register: **plainly and precisely, with nothing reaching to impress** — where plain means measured exposition in professional prose, conversational ease in casual prose, controlled imagery in creative prose. Before keeping any phrase, ask whether it is (a) English grammar in disguise, (b) an invented, hard-translated, or needlessly English word, (c) vividness the text's purpose doesn't need, (d) off-register — drifting from the target in either direction, or (e) reaching for more force than the claim warrants. If any, rewrite to the form the register calls for.
 
-The one test that resolves most cases: **when two phrasings say the same thing, use the plainer, more measured one.** A figure of speech earns its place only by adding *precision*; an absolute word (`只能`/`必须`/`一定`) earns its place only when the claim truly is absolute. If they add mere flavor or force, cut them. Prefer verbs with clear objects over abstract nouns: say what is being identified, compressed, merged, verified, or exposed. Plainer means clearer, not shorter — write each word in its complete, natural form, never a clipped shorthand.
+The one test that resolves most cases: **when two phrasings say the same thing, use the plainer, more measured one.** A figure of speech earns its place by adding *precision* — or, in creative prose, an effect the piece genuinely needs; an absolute word (`只能`/`必须`/`一定`) earns its place only when the claim truly is absolute. If they add mere flavor or force, cut them. Prefer verbs with clear objects over abstract nouns: say what is being identified, compressed, merged, verified, or exposed. Plainer means clearer, not shorter — write each word in its complete, natural form, never a clipped shorthand.
 
 ## The seven failure modes
 
@@ -45,17 +45,17 @@ The most common failure in "clever" drafts. Several sub-forms, one principle: cu
 - **Slogan / hyperbole** — ✗ 回滚到最后一毫秒 → ✓ 操作前均可回滚
 - **Business/strategy slogans** — ✗ 全面提升 AI 编码效率、赋能业务高质量增长 → ✓ 降低组件选择和场景匹配成本、提高上下文完整性、减少影响范围遗漏
 
-*Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation.
+*Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation. In creative registers the bar moves, not the principle: imagery that produces the intended effect is earned; the empty or reflexive figure — and the wrong-connotation word — fails in every register.
 
-### 4. 语域失稳 — drifting off the professional register
+### 4. 语域失稳 — drifting off the target register
 
-There are **two opposite failures**, and over-correcting one produces the other. Aim for the steady middle.
+Judge drift against the target register settled up front. There are **two opposite failures**, and over-correcting one produces the other; for a professional target, aim for the steady middle:
 
 - ✗ too casual / narrative: 新来的销售只说一句话:…… ｜ 他得先弄清 ｜ 全靠人工算
 - ✗ too stiff / 八股: 销售人员仅须以一语陈明其诉求 ｜ 悉数依赖人工核算
 - ✓ right: 销售只需用一句话说明诉求 ｜ 需先确定 ｜ 依赖人工计算
 
-*Principle:* cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing (a vivid "一分钟看懂" beats a flat "高效"), and never reach for bookish filler (`悉数`/`须臾`/`业已`). De-colloquial is not the same as formal.
+*Principle:* for a professional target, cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing (a vivid "一分钟看懂" beats a flat "高效"), and never reach for bookish filler (`悉数`/`须臾`/`业已`). De-colloquial is not the same as formal. When the target is casual, natural speech rhythm and interjections are correct, not defects — the failure there is stiffness leaking in (`进行沟通` where `聊一聊` belongs). When the target is creative, hold the piece's own voice steady. Whatever the target, mixing registers within one text is the failure.
 
 ### 5. 绝对化措辞 — categorical words that over-claim
 
@@ -68,7 +68,7 @@ The opposite failure is over-hedging into mush: stacking softeners (`可能…�
 
 - ✗ 相关信息可能也许不太会被 AI 考虑到 → ✓ 相关信息若不在 AI 的注意力焦点内,被纳入考虑的概率显著降低
 
-*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. (Fittingly, this rule is itself a default, not an absolute.)
+*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. In casual or creative prose an intensifier is often voice rather than a claim — judge it only where it asserts something. (Fittingly, this rule is itself a default, not an absolute.)
 
 ### 6. 过度压缩 — clipped words that should be written in full
 
@@ -106,15 +106,15 @@ Use these when polishing Chinese technical or business-technical prose.
 ## How to apply
 
 - **Create** — write to these principles from the first draft; far cheaper than retrofitting.
-- **Optimize** — read the whole text once; scan by failure mode (1–6); for a recurring load-bearing term, pick *one* replacement and apply it everywhere, including cross-references and any heading that names it; preserve fidelity (mode 7); resist over-correction (mode 4); then re-read cold.
+- **Optimize** — read the whole text once and settle the target register; scan by failure mode (1–6); for a recurring load-bearing term, pick *one* replacement and apply it everywhere, including cross-references and any heading that names it; preserve fidelity (mode 7); resist over-correction (mode 4); then re-read cold.
 - **Translate** — read for *meaning*, then write that meaning as Chinese; never go clause-by-clause. Translation is where 翻译腔 creeps in most.
 
 ## Self-check
 
 - [ ] Chinese sentence structure throughout — no stacked modifiers, no `被…所…`, no connector pile-ups, no subject drift.
 - [ ] No coined or hard-translated words; no needless English (default to Chinese; keep only bare acronyms / a canonical term like `agent` / code identifiers); genuine settled terms not over-translated.
-- [ ] No vividness that adds only flavor — no personification, branded labels, noun-metaphor, slogans, drama, or wrong-connotation words.
-- [ ] Register steady — neither chatty/narrative nor bureaucratic.
+- [ ] No vividness the text's purpose doesn't need — no personification, branded labels, noun-metaphor, slogans, drama, or wrong-connotation words; in creative prose, each figure earns its effect.
+- [ ] Register matches the target — professional, casual, or creative — and holds steady, never mixing within the text.
 - [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute; and no over-hedge mush (`可能…也许…或许`) — one qualifier, placed precisely.
 - [ ] No clipped/over-shortened words — each written in its complete natural form (`硬性约束` not `硬约束`, `重复录入` not `重录`).
 - [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B,而非A` only with B fronted and meaning unchanged; one-thought clauses welded with a native connective (`之所以…是因为`/`这本质上是`), not left as disjointed facts.
