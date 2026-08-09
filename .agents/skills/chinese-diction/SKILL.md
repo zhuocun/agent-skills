@@ -103,10 +103,26 @@ Use these when polishing Chinese technical or business-technical prose.
 6. **Keep concept names stable.** Pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references. Do not rotate synonyms for literary variety.
 7. **Let memorable phrases earn their place.** `最短交互路径` works because it names a product goal; `不知道自己不知道什么` works because it names a failure mode. If a motif is only catchy, replace it with the concrete mechanism.
 
+## Vocabulary best practices
+
+Use abstraction only when it names a stable, reusable concept. A useful term points to one thing, keeps the same meaning throughout the text, and reduces repetition after being defined. Prefer established domain or technical terms; define any nonstandard term at first use in plain language, then reuse its exact name and meaning.
+
+Reject shorthand that merely hides necessary information. If a phrase leaves the reader to infer the subject, condition, action, or result, expand it. Name the actual object (`table`, `field`, `API`, `rule`) and the actual action (`read`, `compare`, `store`, `reject`) instead of using a vague label. Do not ban abstract words mechanically; keep them when their reference is already clear and stable.
+
+Apply three tests:
+
+- **Reference:** Can the target reader identify exactly what the term denotes?
+- **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`) — it binds the name to a mutable tally that silently breaks when items are added or merged; refer to members by name instead. Never let one name denote two different concepts, and never rotate names for one concept (this generalizes pattern 6 above).
+- **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition — ✗ 该字段落入失败面 → ✓ 该字段落入失败处理范围; ✗ 命中回落态 → ✓ 命中旧值回落分支.
+
+If any test fails, rewrite the claim with a concrete subject, condition, action, and result.
+
+**Terms may compress what has already been defined; they must never hide what has not been stated.**
+
 ## How to apply
 
 - **Create** — write to these principles from the first draft; far cheaper than retrofitting.
-- **Optimize** — read the whole text once and settle the target register; scan by failure mode (1–6); for a recurring load-bearing term, pick *one* replacement and apply it everywhere, including cross-references and any heading that names it; preserve fidelity (mode 7); resist over-correction (mode 4); then re-read cold.
+- **Optimize** — read the whole text once and settle the target register; scan by failure mode (1–6); run the three vocabulary tests (reference, stability, compression) on every nonstandard term; for a recurring load-bearing term, pick *one* replacement and apply it everywhere, including cross-references and any heading that names it; preserve fidelity (mode 7); resist over-correction (mode 4); then re-read cold.
 - **Translate** — read for *meaning*, then write that meaning as Chinese; never go clause-by-clause. Translation is where 翻译腔 creeps in most.
 
 ## Self-check
@@ -121,6 +137,7 @@ Use these when polishing Chinese technical or business-technical prose.
 - [ ] Identifiers, numbers, citations, author names, URLs byte-for-byte unchanged.
 - [ ] Technical claims name a mechanism, dependency, or scope; generic praise or business outcomes like `全面提升`、`智能化水平`、`高质量增长`、`赋能` are replaced with concrete substance, not swapped for milder slogans, unless the source truly supports them.
 - [ ] Source-backed tradeoffs and limitations are preserved; no false balance, no smoothing away tested negatives.
+- [ ] Every nonstandard term passes the three vocabulary tests — defined at first use, one meaning everywhere (no count-bound shorthand, no one-name-two-concepts), and compressing defined repetition rather than hiding an unstated subject, condition, action, or result.
 - [ ] A domain-literate cold reader flows start to finish without stopping on a word.
 
 ## Maintenance
