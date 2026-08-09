@@ -1,252 +1,192 @@
 ---
 name: document-editor
-description: Edit formal human-facing documents at the document level without changing their meaning. Use for design docs, RFCs, implementation plans, proposals, specs, guides, decision memos, and review docs when the user wants to improve scope, structure, logical flow, reader fit, factual fidelity, concision, terminology, tables, or reviewability. Do not use for casual notes, chat replies, pure sentence-level wording polish, or agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
+description: >-
+  Edit and review formal human-facing documents at the document level without
+  silently changing their meaning. Use for design docs, RFCs, implementation
+  plans, proposals, specs, research reports, guides, decision memos, and review
+  docs when the work concerns scope, reader path, structure, abstraction,
+  factual grounding, evidence, tradeoffs, registries, structured assets,
+  document governance, concision, or reviewability. Do not use for casual notes,
+  chat replies, pure sentence-level wording or translation polish, or
+  agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing
+  docs.
 ---
 
 # Document Editor
 
-Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction. Preserve meaning; improve how the document is scoped, ordered, explained, and worded.
+Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction. Preserve meaning while improving scope, order, explanation, and presentation.
 
-## What good looks like
+Apply this priority order: **truth and authority → reader contract and scope → decisions and evidence → abstraction and structure → completeness and actionability → concision and presentation**. Apply only the controls relevant to the document type and its owner-defined governance.
 
-A strong document has these properties (each answers a question the reader is asking):
+## Frame the edit
 
-1. **Logically smooth** — section order follows the reader's decision path and the argument moves forward without jumps. *(What is this about? Why does it matter?)*
-2. **Accurate** — preserves the source meaning, facts, scope, and decisions unless the user explicitly asks for substantive changes. *(What is being proposed, defined, or decided?)*
-3. **Concise** — each section earns its place; repeated points appear once, in the clearest location.
-4. **Natural** — reads like a careful professional wrote it in the target language, not machine-translated or LLM-shaped.
-5. **Self-contained** — the reader needs no machine-local paths or off-page local references to grasp the main point, unless the user explicitly asks for them.
-6. **Decision-oriented** — helps the reader decide, act, or verify, with source-backed support and executable next steps. *(What are the constraints, tradeoffs, and implications? What support, risk, or action path matters for my decision? What should happen next?)*
+1. Read the full document once without editing. Record the current section order as a compact outline.
+2. Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support.
+3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
+4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
+5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described in **Preserve structured assets**. If the owner requires a pre-edit approval gate, present that mapping before editing.
+7. Fix issues in this order: authority and scope → reader contract → bottleneck framing → section order → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation.
+8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
-## First pass
+## Preserve truth and authority
 
-Before editing, infer or identify — then keep the document aligned to these:
+### Source grounding and current state
 
-1. Document type
-2. Intended audience
-3. Primary purpose
-4. Intended abstraction level
-5. The reader contract: the decision or action the document promises to help the reader take
-6. The concrete bottleneck, failure mode, or uncertainty the document exists to resolve
-7. What the reader already knows, and what context they need before they can judge the rest
+1. Preserve the source meaning, facts, scope, and decisions unless the user explicitly requests a substantive change.
+2. Do not silently change numbers, dates, owners, names, identifiers, field or API contracts, formulas, requirements, conditional direction, or decisions.
+3. Determine authority per claim type. Use implementation or observed behavior for current state, approved requirements or decisions for intended state, and direct observations or primary studies for measured outcomes. Do not apply one global source hierarchy across claim types.
+4. When sources disagree, inspect the conflict, use the best-supported claim, and record any difference that affects scope, accuracy, or a decision. Do not choose a source merely because it appears in a preferred category.
+5. Before describing a change, distinguish the observed current state, the approved or proposed target state, assumptions, and the gap between them. Do not design against an invented current state.
+6. Explain any departure from an established decision and preserve its authorization boundary. Editing authority alone does not authorize a new decision.
+7. Flag ambiguity, inconsistency, or missing evidence. Tighten wording noise, not substantive meaning.
 
-## Truth preservation (hard constraint)
+### Unknowns, branches, and decisions
 
-1. Preserve the source meaning unless the user asks for substantive changes.
-2. Do not silently change numbers, dates, owners, field names, API names, formulas, requirements, or decisions.
-3. If the source is ambiguous, inconsistent, or incomplete, flag it instead of inventing a cleaner version.
-4. When tightening prose, remove wording noise, not business meaning.
+1. For a blocking unknown with no established default, record the question, why it is unresolved, the authority or resolver needed, known candidate space, affected decisions or passages, timing or trigger when relevant, and the consequence of remaining unresolved. State a fallback only when a source establishes one.
+2. For a branch with an established default, state the default, alternatives, and the criterion that selects among them. Mark confirmation as open without presenting the default as newly invented.
+3. Keep each open question independently answerable. When choices must be decided together, present a mutually exclusive and collectively complete decision package; include an explicit unknown or escalation branch when the candidate space is not closed.
+4. Never turn an unanswered question into a design conclusion. If the missing answer prevents accurate prose, leave a governed placeholder or registry entry and identify what it blocks.
 
-## Fix in this order
+### Definitions, references, and revision history
 
-1. Read the full document once without editing. Write the current section order, one line each.
-2. When the edit touches claims, scope, structure, evidence, or accuracy, inspect available or referenced source material first; otherwise keep source checks lightweight.
-3. Fix issues in this sequence: scope and audience fit → reader contract → bottleneck framing → section order → evidence chain → abstraction layering → logical chain → action path → accuracy → duplication → terminology → wording.
-4. Tighten bridges and headings; convert repeated structures into tables, checklists, workflows, or decision aids; separate definitions from implementation.
-5. Run the finish checks.
+1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, summarize it and point directly to the semantic heading or link; do not maintain competing full copies.
+2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
+3. Avoid machine-local paths and refactor-sensitive file, line, class, or method references in the main reading path. Include repository-relative locations or symbols only when implementation review or reproducibility requires them. Preserve stable contract identifiers exactly when they are part of the subject.
+4. Integrate corrections into the passage that owns the content. Do not leave editor-facing correction notes, omission notices, or revision-status labels in the domain narrative. Use addenda, errata, or change-history labels only when the document's governance model requires them.
 
-## Section-order patterns
+## Choose the reader path
 
-Choose the pattern that best matches the document type.
+### Common reader paths
 
-### High-Level Design / Review Doc
-1. Problem / goals
-2. Context / domain framing / key definitions
-3. Constraints / design principles
-4. Proposed solution
-5. Success criteria / evaluation model
-6. External contracts / interfaces
-7. Data model / persistence model
-8. Impacted systems / adaptation scope
-9. Rollout / implementation adjustments
-10. Validation: how the design answers the original goals
+Choose and adapt the path that matches the reader's task:
 
-Use when the design depends on domain framing or named concepts that must be defined first, or when success criteria depend on understanding the proposed design first.
+| Document need | Typical reader path |
+| --- | --- |
+| High-level design or review | Problem and goals → context and definitions → constraints → proposed design → success criteria → contracts and data semantics → affected systems → rollout strategy → risks and validation |
+| Implementation design or runbook | Scope and prerequisites → current and target behavior → detailed changes → data flow and edge cases → migration and operations → testing, observability, rollout, and rollback → risks and open questions |
+| Decision memo, ADR, or RFC | Context → decision → options → evaluation and tradeoffs → decision or recommendation → consequences and re-evaluation triggers |
+| Research report | Question and scope → sources and method → findings and provenance → analysis and limitations → conclusions or recommendations → unresolved questions |
+| Technical solution or adoption guide | Audience and bottleneck → current limits → proposed capability → proof → usage path → alternatives → internals → failure modes and mitigations → next steps |
+| Workflow or guidance | Applicability → classification or diagnosis → source-grounding steps → operating workflow → verification → escalation and limitations |
 
-### Implementation Design Doc
-1. Scope
-2. Assumptions / prerequisites
-3. Current state
-4. Target behavior
-5. Detailed changes
-6. Data flow / edge cases / migration rules
-7. Testing / rollout / rollback
-8. Risks / open questions
+Move definitions before evaluation when readers need the concepts to judge the design. Move proof and the usage path before internals when adoption is the primary task.
 
-### Decision Memo / ADR / RFC
-1. Context
-2. Decision to be made
-3. Options
-4. Evaluation / tradeoffs
-5. Recommendation / final decision
-6. Consequences
+### Headings, navigation, and transitions
 
-### Technical Solution / Tool / Adoption Doc
-1. Positioning summary: what this is, who it is for, the value it promises
-2. Problem / why now / concrete bottleneck
-3. Existing approach limits or failure modes
-4. Proposed capability / design principle
-5. Proof: demo, realistic example, measured result, or comparison
-6. Quick start / usage path when adoption matters
-7. Alternatives / comparison / tradeoffs
-8. Technical implementation / architecture / workflow
-9. Limitations / known failure modes / mitigations
-10. Roadmap / Q&A / next steps
+1. Match the title and opening scope to the document's real coverage.
+2. Use a consistent semantic heading hierarchy. Add numeric heading labels only when the destination convention or navigation need calls for them.
+3. Do not invent parallel module, decision, validation, option, or step ID systems for editorial organization. Use ordered steps when order is operationally meaningful, not as a substitute for semantic names.
+4. Refer directly to a semantic heading or link. Avoid numeric-only, context-dependent, or chained references that make readers hunt through intermediate locations.
+5. Give each section one clear purpose or reader question and keep neighboring sections non-overlapping.
+6. Order sections by the reader's decision path, not by the history of how the team built or discussed the work. Separate audience paths when reviewers, adopters, operators, and implementers need different depth.
+7. Use a short bridge only when it clarifies causality. Put it at the start of the section it introduces, and remove trailing meta-narration about what the document will explain next.
+8. Use question headings only for genuine reader questions and answer them immediately. Prefer declarative headings in settled decision narratives; do not use staged questions to recreate deliberation.
+9. Keep a stable thesis phrase or named concept for navigation, but repeat it through new evidence or implications rather than copying the same claim.
 
-Use for technical sharing, launch, adoption, onboarding, or proposal docs that must help readers understand, try, trust, and maintain a solution. Keep proof and adoption above internals. Move the quick start earlier when the primary reader needs to try the tool before reviewing proof or internals.
+### Definition vs implementation
 
-### Workflow / Guidance Doc
-1. When to use it
-2. Trigger conditions / classification rules
-3. Inspect / source-grounding steps
-4. Guidance, decision table, or operating workflow
-5. Verification checklist
-6. Escalation / fallback / limitations
+Keep these layers distinct. Move definitions earlier and implementation later unless the document is explicitly implementation-focused.
 
-Use for runbooks, troubleshooting guides, operating procedures, migration guides, or recurring implementation workflows where the reader must execute a safe sequence.
+- **Definition layer:** goals, domain semantics, responsibility boundaries, conceptual models, invariants, and decision criteria.
+- **Implementation layer:** exact contracts, validation and error behavior, persistence and migration rules, algorithms, operational procedures, observability, permissions, and rollout changes.
 
-## Structure rules
+Keep high-level design focused on decisions, boundaries, semantics, tradeoffs, compatibility, consistency, rollout strategy, and risk. Retain implementation detail only when it helps the intended reader judge feasibility, constraints, reliability, or tradeoffs.
 
-1. The title must match the real scope.
-2. Add second-level headings where they improve clarity, numbered hierarchically (a `1.` heading with `1.1` / `1.2` subheadings).
-3. Put early what the reader needs in order to judge the rest. Preserve the reader journey over the author journey — do not order sections by how the team built the system unless that history is the reader's task.
-4. Keep abstraction layers separated. Define concepts before formulas, field mappings, or rollout diffs. If the design depends on a named framework, operating model, or domain term, define that context before using it to justify the design.
-5. For architectural or product design docs, replace code-level references, file paths, and implementation labels with business or system concepts unless the user explicitly asks for development-level detail.
-6. When the document claims a new solution is better, surface existing baselines or alternatives before the claim; Evidence, claims & actionability covers handling them when they are missing or one-sided. Do not let future plans compensate for weak present evidence.
-7. Separate audience paths when one document serves reviewers, adopters, operators, and implementers.
-8. Use guiding-question headings only when they match the reader's likely doubts; too many rhetorical headings make the document feel like a slide deck. When a heading does pose the reader's question, the section's first sentence should answer it, not open with unrelated setup.
-9. Keep a stable thesis phrase or named concept for navigation, but repeat it through new evidence or implications instead of copying the same sentence.
+### Multi-document sets
 
-### Bridges
+When a document set separates a design document from an implementation document, apply the layer boundaries in **Definition vs implementation**: keep gating blockers in the design document, and place implementation-layer material in the implementation document or runbook, as applicable.
 
-Add short bridge sentences only when they help the reader follow causality. Place a bridge at the **start** of the section it introduces — directly under the heading, before the first subsection — not as a trailing "next we will…" sentence on the previous section. Leading bridges signal what's coming and let the reader engage; trailing bridges leak structure across section boundaries. A bridge may be declarative or a concise guiding question that the following subsections answer. In Markdown, prefer rendering bridge lines as blockquotes on their own line when that fits the document's existing style.
+Keep each document coherent for its own audience. Apply the content-accounting rules in **Preserve structured assets** whenever material moves between documents.
 
-Good bridges (preferred blockquote form):
+## Build decisions, evidence, and actionability
 
-> These metrics require three categories of source data.
->
-> Once the persistence model is fixed, the remaining change surface is which existing systems must carry the tracking fields.
->
-> 双 ID 在主链路上如何生成与传递？
-
-Bad bridges (trailing meta-narration; same patterns in both languages):
-- "This section will now explain..."
-- "The following section is about..."
-- "This document is written in this order because..."
-- "下面说明…"、"接下来介绍…"、"本节将…"、"至此 X 完成，下面 Y…"
-
-## Definition vs implementation
-
-Keep these layers distinct. If a document mixes them, move the definition earlier and the implementation later unless the document is explicitly implementation-focused.
-
-- **Definition layer:** goals; metric meaning; business semantics; responsibility boundaries; conceptual models.
-- **Implementation layer:** formulas; aggregation rules; field mappings; API payload details; SQL / pipeline / algorithm specifics; rollout diffs.
+1. Start from the bottleneck, not the feature. State the constraint or failure mode the document resolves.
+2. In decision-heavy sections, place the decision before its support and keep the minimum sufficient reasoning for a reviewer to verify that it holds under the stated constraints. Remove process narration only when the mechanism, evidence, tradeoffs, limitations, and risks remain reviewable.
+3. For important claims, preserve the available chain: claim → mechanism → evidence → limitation. Flag a missing link instead of smoothing over it.
+4. For improvement claims, identify the named baseline, test condition, evaluation criteria, observed result, and caveat. Keep evidence near the claim, distinguish observation from interpretation, and ensure claimed quantities match the underlying material.
+5. Treat realistic examples as evidence: give enough context, preconditions, behavior, outcome, and interpretation for the reader to understand what the example proves and what it does not.
+6. Compare alternatives on stable criteria such as correctness, reliability, cost, latency, complexity, maintainability, rollout risk, and reversibility. Preserve each option's sourced strengths before its limits; do not invent balance that the sources do not support.
+7. Put assumptions, dependencies, known failure modes, incomplete coverage, mitigations, and bounded caveats close to the solution or claim they qualify. Do not use future plans to compensate for weak present evidence.
+8. Tie deferred work to a current gap. For a deliberate extension point or non-goal, state the reserved shape, the trigger for revisiting it, and why reserving it now matters; distinguish committed work, exploration, and open questions.
+9. When work varies by type or risk, use an inspect → classify → guide → verify flow. Keep diagnosis separate from recovery validation, and apply the decision-package rules in **Unknowns, branches, and decisions**.
+10. Convert tacit judgment into executable checklists, decision tables, workflows, risk categories, failure modes, and validation criteria. When readers must act, include the necessary owner, prerequisites, inputs, outputs, and success criteria.
+11. For adoption or onboarding, provide a complete path through prerequisites, setup, invocation, success verification, troubleshooting, and an ownership or feedback route when one exists.
 
 ## Registries vs decision narrative
 
 Decision documents that evolve under audit pressure accumulate registries — open-issue ledgers, blocker tables, verification lists, counts, provenance history. Completeness rules keep this information from being lost, but nothing keeps it out of the reader's path; unchecked, the registry layer overgrows the decision layer and the document becomes a decision doc, issue tracker, and delivery plan bound into one. Keep three layers apart and place content by the reader who needs it:
 
-1. **Decision narrative** (main reading path): what is being built, each decision with its preconditions, main cost, re-evaluation triggers, and one-line rejected alternatives.
+1. **Decision narrative** (main reading path): what is being built, each decision with its preconditions, main cost, re-evaluation triggers, one-line rejected alternatives, and the minimum evidence needed to review it.
 2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. Inline in the narrative only the few entries that gate the architecture or the release; point to the appendix for the rest.
 3. **Operational detail** (implementation doc or runbook): stepwise procedures, flag semantics, cleanup algorithms, collection conditions.
 
 Rules:
 
-1. Relocation is not deletion — a moved entry keeps every field; after restructuring, verify the ledger is still complete.
-2. Settled items return to the owning decision section; recount history ("N items became M") belongs in review records, not in live registries.
-3. Domain identifier semantics — uniqueness, immutability, recycling, regeneration on copy — belong in the domain model even while an aspect is still open: state the default and point at the open item, instead of burying the identifier in an issue ledger.
-4. A design doc carries non-functional targets (expected volume, query scale, QPS, latency, capacity ceilings) or names each unknown together with the decision threshold it unblocks; a named unknown with a threshold beats both an invented number and a silent gap.
+1. Relocation is not deletion — a moved entry keeps every field, conditional direction, and decision-bearing relationship; after restructuring, verify the ledger remains complete entry by entry and field by field.
+2. Settled items return to the owning decision section; historical recounts of registry size belong in review records, not in live registries.
+3. Domain identifier semantics — uniqueness, immutability, recycling, regeneration on copy — belong in the domain model even while an aspect is still open. State the established default and point at the open item; if no default exists, say so and identify the blocked decision instead of inventing one.
+4. A design doc carries non-functional targets such as expected volume, query scale, throughput, latency, and capacity ceilings, or names each unknown together with the decision threshold it unblocks. A named unknown with a threshold beats both an invented number and a silent gap.
 5. With several external dependencies, include one unified failure-strategy table — dependency unavailable → affected operations → block or degrade → caching allowance — rather than scattering the rules across chapters.
 6. When a per-decision comparison matrix outgrows its narrative, move the matrix to the appendix and keep the decision, its preconditions, and its reversal triggers inline.
+7. Treat scanability as a placement goal, not a prose quota. Retain causal explanation that changes how reviewers judge assumptions, tradeoffs, or failure modes; apply the medium-selection rules in **Use tables, diagrams, media, and code deliberately**.
 
-## Evidence, claims & actionability
+## Preserve structured assets
 
-Apply when the document makes important claims, recommends or compares solutions, asks readers to trust an outcome, or describes work the reader must execute.
+Apply these rules to loss-sensitive restructures and to content the user, template, or governance process marks as protected.
 
-1. Start from the bottleneck, not the feature. State the constraint or failure mode the document resolves.
-2. For important claims, preserve the source-backed chain where available: claim → mechanism → evidence → limitation. If a link is missing, flag it.
-3. For improvement claims, identify the baseline, test condition, evaluation criteria, result, and caveat. Quantify against a named baseline, or qualify the narrow test instead of turning it into a universal claim.
-4. Keep evidence near the claim it supports, and separate observed result from interpretation. Do not leave metrics, screenshots, or examples disconnected from their interpretation.
-5. Treat examples as evidence. A strong example includes input or context, environment or precondition, output or behavior, result quality, and the conclusion the reader should draw.
-6. Compare alternatives by criteria such as correctness, reliability, cost, latency, complexity, maintainability, rollout risk, and reversibility. Preserve each option's source-backed strength before stating its boundary; if strengths are not stated, flag the gap instead of inventing balance.
-7. Keep implementation detail only when it helps the reader judge feasibility, constraints, reliability, or tradeoffs.
-8. Put known failure modes, dependency assumptions, incomplete coverage, and mitigations close enough to the solution that reviewers can judge risk.
-9. Tie future plans to current gaps. Distinguish committed work, exploratory direction, and open questions.
-10. Use an inspect → classify → guide → verify pattern when work changes by type or risk: ground the classification in source evidence, then tailor guidance, then verify completeness. Separate exploration, decision, execution, and verification when they need different information or checks. For runbooks, separate diagnosis from recovery validation; for postmortems, turn the incident into an updated impact model or checklist without hiding remaining unknowns.
-11. Convert tacit expert judgment into reusable, executable forms: checklists, decision tables, phased workflows, risk categories, failure-mode lists, validation criteria — with explicit next steps, owners, prerequisites, inputs, outputs, commands, schemas, or success criteria when the reader must act. Keep checklist items specific enough to execute; avoid vague items like "consider quality" or "handle edge cases" unless expanded into concrete checks.
-12. For adoption or onboarding sections, provide a complete path: prerequisites, installation or configuration, invocation, success verification, troubleshooting, and owner or feedback channel when available.
+1. Before editing, inventory the load-bearing assets: decisions, open questions and blockers, conditional branch tables, tradeoff matrices, invariants, non-goals, risks, rollout batches, diagrams, exact contracts, error catalogs, and critical checklists, as applicable.
+2. Give every inventoried passage or asset a disposition: preserved in place, moved to a named destination, merged into a named authoritative item, or intentionally removed with a reason and the required authorization. Do not use compression as an unreported deletion path.
+3. Extend the relocation discipline in **Registries vs decision narrative** to every inventoried asset, not only registry entries. Treat conversion to a table or movement to an appendix as relocation under that discipline.
+4. Treat exact schemas, interface signatures, identifiers, error definitions, and other contract artifacts as deliverables in their own right. Preserve their completeness and exactness even when surrounding explanation is condensed.
+5. Treat an asset's item count or byte identity as a protected baseline only when the owner or delivery format defines it. For a controlled baseline change, record the before and after values and obtain any required authorization; never change it silently.
+6. When byte-for-byte identity is required, use the configured checksum or comparison method. Do not modify a protected diagram or native asset without authorization; after an authorized change, record its reason and basis and apply the rendering or behavior checks in **Use tables, diagrams, media, and code deliberately**.
+7. Do not delete protected content or break required document syntax to satisfy a competing constraint. Escalate the conflict through the applicable governed-document controls.
 
-## Tables vs prose
+## Use tables, diagrams, media, and code deliberately
 
-Use tables for repeated columns of meaning, such as:
-1. Goal → data need → current gap
-2. Metric → definition → granularity → required data
-3. Metric → calculation rule → formula
-4. Field name → type → required → meaning
-5. Source field → storage field
-6. Tool / system → change scope
-7. Option → tradeoff comparison
-8. Scenario → input → output → verification
-9. Risk → cause → impact → mitigation
-10. Phase → action → owner → success criteria
-11. Baseline → proposed approach → metric → result → caveat
-12. Audience → concern → section or action path
+1. Use tables for stable repeated columns such as options and tradeoffs, risks and mitigations, contracts and meanings, scenarios and verification, or phases and success criteria. Use prose for causality, ambiguity, hidden assumptions, and nuanced caveats.
+2. Use parallel table shapes for parallel structures, and do not force uncertain reasoning into apparently precise cells. Tables improve placement; they do not replace the decision narrative.
+3. Preserve existing diagrams, images, videos, code blocks, callouts, citations, and other native blocks unless the user requests a change or a source-backed edit requires one. Give every retained or added block an editorial job: evidence, instruction, architecture, workflow, or reference.
+4. Use a diagram only when it explains a spatial, temporal, boundary, state, or relationship model more clearly than prose. Use a format supported by the destination and its maintainers; do not impose one tool or syntax on every document.
+5. Keep legend, line, arrow, and edge semantics consistent and define them once. Update the shared legend before introducing a new visual meaning. Check decision-tree branches against the completeness rules in **Unknowns, branches, and decisions**.
+6. Place an overview diagram after the framing needed to interpret it and before the details it organizes. Validate an editable diagram with its actual renderer after changes; if rendering cannot be checked, report that limitation.
+7. Introduce code blocks with what they demonstrate and summarize the design implication when it is not obvious. Avoid raw dumps unless required for reproducibility, contract review, or implementation reference.
 
-Prefer prose when: the content explains one idea; the reader needs narrative buildup; the relationship is causal rather than tabular; or the content explains a caveat, tradeoff, or hidden causal chain.
+## Apply governed-document controls when applicable
 
-If two sections present parallel structures at different abstraction levels, use parallel table shapes. Use tables only when the columns are stable and comparable; forcing ambiguous reasoning into a table can hide nuance. Concision means putting detail in the right medium, not minimizing word count.
+1. For governed or long-lived documents, provide the applicable metadata: status, accountable author or owner, reviewer or approver when the lifecycle has one, creation and revision dates, last source or implementation alignment date, and re-review triggers.
+2. For proposals and decisions, use a compact opening summary that states the proposal, benefit, cost, and main uncertainty. State goals and non-goals, including exclusions readers could reasonably assume were in scope.
+3. Use the open-question form in **Unknowns, branches, and decisions**. Store complete review history, consequential dissent, source conflicts, and lifecycle evidence in the registry or audit layer rather than the decision narrative.
+4. For research documents, use citations or an owner-compatible provenance scheme to distinguish established consensus, primary evidence, secondary reporting, and analysis or inference. Define any status labels once; do not invent decorative tag taxonomies.
+5. Follow the document's lifecycle rather than inventing one. Attribute approval when approval exists; return materially changed approved content to the appropriate review state, record the true reason for re-review, and never claim a trigger that did not occur.
+6. Treat an owner-defined length or structural budget as a governed constraint. If it must change, expose the content-level cause, follow the owner's approval process, and resolve any asset or format conflict under **Preserve structured assets**.
 
-## Media, code & native blocks
+## Review and verify
 
-1. Preserve screenshots, videos, diagrams, whiteboards, callouts, chat cards, citations, and other native document blocks unless the user asks to remove or convert them.
-2. Every image, video, diagram, table, or code block should have an editorial job: proof, instruction, architecture explanation, workflow explanation, or reference.
-3. Introduce code blocks with what they demonstrate and, when useful, summarize the design point after the block.
-4. Avoid long raw dumps unless necessary for reproducibility, API contracts, schema review, or implementation reference.
-5. Preserve existing callouts; use new callouts sparingly for key conclusions, warnings, assumptions, or caveats when the format supports them.
-6. Shorten generic motivation once the core problem is clear; spend words on hidden complexity, causal chains, tradeoffs, and concrete failure modes.
+1. For high-risk edits, separate editing from independent verification when available. Use a capability tier and reasoning depth sufficient for the document's domain and risk; do not bind the skill to a vendor, model name, or fixed role topology.
+2. When author-reviewer separation is required, keep the independent review read-only and return requested changes to the editor. Let the accountable owner or a designated adjudicator who did not perform the edit resolve disagreements independently; an author's self-report is not verification.
+3. Programmatically check every applicable deterministic constraint: declared lengths or counts, protected-asset inventory and byte identity, diagram rendering, target-format validity, prohibited patterns, terminology cleanup, identifier and reference existence, and diff hygiene.
+4. Use semantic review for truth, authority, decision quality, evidence, and reader fit. Deterministic checks cannot establish those qualities, and semantic confidence cannot replace a failing hard check.
+5. Verify that every internal title, link, figure, table, attachment, citation, and self-reported quantity resolves to real content. Report checks that could not run.
 
-## Language & voice
+## Language and terminology boundary
 
-1. Prefer direct, declarative prose. Replace rhetorical questions and slogan-like phrasing with literal statements; remove author-facing meta-writing.
-2. Break overloaded sentences that mix definition, justification, and prescription.
-3. Define domain terms once and reuse them consistently. Remove duplicated claims, repeated caveats, and low-information transitions.
-4. Avoid generic AI cadence such as mirrored sentence patterns, hedge clusters, and filler transitions.
-5. Keep headings specific and professional.
-6. Prefer action verbs with clear objects. Replace vague phrases like "improve capability" with concrete actions such as "classify requests", "merge checks", "reduce payload size", or "validate rollback".
-7. Make strong claims bounded — pair confident wording with scope, condition, evidence, or limitation instead of broad intensifiers. Reserve emphasis for load-bearing words. Prefer binding the qualifier into the claim over deleting the strong word: write "accurate within the tested range" or "limited-but-real" so the limiter rides in the same sentence as the strong word, rather than dropping "accurate" or leaving it unbounded.
-
-**English:** prefer concrete verbs and short, stable sentence shapes; avoid stacked abstractions and vague intensifiers.
-
-**Chinese:** avoid 翻译腔, long chained modifiers, and vague verbs like 提升 / 优化 / 赋能 unless the mechanism is clear; use Chinese for explanation, judgment, and action, keeping English only for fixed terms, APIs, product names, and identifiers. For deep Chinese word choice, phrasing, and register, the chinese-diction skill is the authority.
-
-**Both languages:** prefer precise professional wording over conversational performance; keep personification limited when precision matters; preserve established names, product terms, acronyms, and code identifiers. If the document has a clear base language, rewrite stray foreign tokens into it unless they function as a proper name, fixed term, brand, or identifier. Prefer native phrasing over token-level mixing. Avoid copying catchy motifs, slogans, or metaphors unless grounded by evidence and useful as navigation anchors.
-
-## Finish checks
-
-Final scan for high-risk slips not already obvious from the rules above (see Truth preservation, Structure rules, Evidence/claims/actionability):
-
-1. Numbers, names, dates, or table values silently changed against the source.
-2. Title drifts from the body's actual scope, or the opening scope and the closing validation no longer match.
-3. A closing or final section introduces new scope.
-4. A rule the document itself states is contradicted elsewhere in the document.
-5. A claim left without its supporting evidence or interpretation.
-6. A strong claim whose caveat or limitation sits sections away from it, instead of bound to the claim where the reader meets it (e.g., a header promising "precise" while the limitation hides in a later section).
-7. The reader is sent to machine-local file paths or other local documents without the user asking for that form.
+Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules in **Preserve truth and authority**. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope — treat them as separate wording work. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and cross-references, and byte-exact identifiers, numbers, and quoted contracts.
 
 ## Communication
 
-**Review mode** — if the user asks for a review, report findings first, grouped:
-1. Structural issues
-2. Accuracy or scope-preservation issues
-3. Logical-chain issues
-4. Abstraction issues
-5. Evidence, limitation, or tradeoff issues
-6. Actionability or verification issues
-7. Wording or naturalness issues
+**Review mode** — report findings first, grouped by truth and authority, scope and reader path, abstraction and registry placement, decisions and evidence, actionability and governance, then presentation.
 
-**Optimize mode** — if the user asks to optimize, edit directly, then summarize:
-1. What was reorganized
-2. What was clarified or left unchanged to preserve accuracy
-3. What was removed or deduplicated
-4. What evidence, limitation, or actionability gaps were improved
-5. Any remaining ambiguities or open choices
+**Optimize mode** — edit directly, then summarize what was reorganized, what remained unchanged to preserve truth, what was removed or deduplicated, how protected content was accounted for, which evidence or actionability gaps improved, which checks ran, and what ambiguity remains.
+
+## Self-check
+
+- Did the edit follow the priority order and apply every owner-required or high-risk control, with explicit reasons for important exclusions?
+- Are current state, intended state, assumptions, unknowns, and source conflicts distinguishable, with no silent change to meaning or exact contracts?
+- Does the title, section order, abstraction boundary, and audience path support the reader contract?
+- Does each definition and decision have one authoritative location, and are decision narrative, registries, and operational detail still separated?
+- Does each important claim retain its mechanism, evidence, limitation, relevant alternatives, risk, and actionable consequence?
+- Does every moved or protected asset have a verified disposition with its fields, conditions, and required measurements intact?
+- Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
+- Is the document free of internal contradictions, duplicate rules, fragile navigation, editor-process residue, and project- or task-specific assumptions that the owner did not request?
