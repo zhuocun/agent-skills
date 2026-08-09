@@ -142,6 +142,23 @@ Keep these layers distinct. If a document mixes them, move the definition earlie
 - **Definition layer:** goals; metric meaning; business semantics; responsibility boundaries; conceptual models.
 - **Implementation layer:** formulas; aggregation rules; field mappings; API payload details; SQL / pipeline / algorithm specifics; rollout diffs.
 
+## Registries vs decision narrative
+
+Decision documents that evolve under audit pressure accumulate registries — open-issue ledgers, blocker tables, verification lists, counts, provenance history. Completeness rules keep this information from being lost, but nothing keeps it out of the reader's path; unchecked, the registry layer overgrows the decision layer and the document becomes a decision doc, issue tracker, and delivery plan bound into one. Keep three layers apart and place content by the reader who needs it:
+
+1. **Decision narrative** (main reading path): what is being built, each decision with its preconditions, main cost, re-evaluation triggers, and one-line rejected alternatives.
+2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. Inline in the narrative only the few entries that gate the architecture or the release; point to the appendix for the rest.
+3. **Operational detail** (implementation doc or runbook): stepwise procedures, flag semantics, cleanup algorithms, collection conditions.
+
+Rules:
+
+1. Relocation is not deletion — a moved entry keeps every field; after restructuring, verify the ledger is still complete.
+2. Settled items return to the owning decision section; recount history ("N items became M") belongs in review records, not in live registries.
+3. Domain identifier semantics — uniqueness, immutability, recycling, regeneration on copy — belong in the domain model even while an aspect is still open: state the default and point at the open item, instead of burying the identifier in an issue ledger.
+4. A design doc carries non-functional targets (expected volume, query scale, QPS, latency, capacity ceilings) or names each unknown together with the decision threshold it unblocks; a named unknown with a threshold beats both an invented number and a silent gap.
+5. With several external dependencies, include one unified failure-strategy table — dependency unavailable → affected operations → block or degrade → caching allowance — rather than scattering the rules across chapters.
+6. When a per-decision comparison matrix outgrows its narrative, move the matrix to the appendix and keep the decision, its preconditions, and its reversal triggers inline.
+
 ## Evidence, claims & actionability
 
 Apply when the document makes important claims, recommends or compares solutions, asks readers to trust an outcome, or describes work the reader must execute.
