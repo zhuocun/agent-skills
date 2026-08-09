@@ -14,6 +14,22 @@ First settle the target register from the medium, the audience, and the user's a
 
 The one test that resolves most cases: **when two phrasings say the same thing, use the plainer, more measured one.** A figure of speech earns its place by adding *precision* — or, in creative prose, an effect the piece genuinely needs; an absolute word (`只能`/`必须`/`一定`) earns its place only when the claim truly is absolute. If they add mere flavor or force, cut them. Prefer verbs with clear objects over abstract nouns: say what is being identified, compressed, merged, verified, or exposed. Plainer means clearer, not shorter — write each word in its complete, natural form, never a clipped shorthand.
 
+## Vocabulary best practices
+
+Use abstraction only when it names a stable, reusable concept. A useful term points to one thing, keeps the same meaning throughout the text, and reduces repetition after being defined. Prefer established domain or technical terms; define any nonstandard term at first use in plain language, then reuse its exact name and meaning.
+
+Reject shorthand that merely hides necessary information. If a phrase leaves the reader to infer the subject, condition, action, or result, expand it. Name the actual object (`table`, `field`, `API`, `rule`) and the actual action (`read`, `compare`, `store`, `reject`) instead of using a vague label. Do not ban abstract words mechanically; keep them when their reference is already clear and stable.
+
+Apply three tests:
+
+- **Reference:** Can the target reader identify exactly what the term denotes?
+- **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`) — it binds the name to a mutable tally that silently breaks when items are added or merged; refer to members by name instead. Never let one name denote two different concepts, and never rotate names for one concept (this generalizes pattern 6 below).
+- **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition — ✗ 该字段落入失败面 → ✓ 该字段落入失败处理范围; ✗ 命中回落态 → ✓ 命中旧值回落分支.
+
+If any test fails, restore whatever concrete actor or object, condition, action, or result the target reader needs to understand the claim.
+
+**Terms may compress what has already been defined; they must never hide what has not been stated.**
+
 ## The seven failure modes
 
 ### 1. 翻译腔 — English mechanics wearing Chinese words
@@ -102,22 +118,6 @@ Use these when polishing Chinese technical or business-technical prose.
 5. **Acknowledge alternatives with source-backed precision.** If the source says another option has an advantage, keep it before stating the boundary (`静态工具样式还原度高，但依赖组件打标`); do not invent balance for tone.
 6. **Keep concept names stable.** Pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references. Do not rotate synonyms for literary variety.
 7. **Let memorable phrases earn their place.** `最短交互路径` works because it names a product goal; `不知道自己不知道什么` works because it names a failure mode. If a motif is only catchy, replace it with the concrete mechanism.
-
-## Vocabulary best practices
-
-Use abstraction only when it names a stable, reusable concept. A useful term points to one thing, keeps the same meaning throughout the text, and reduces repetition after being defined. Prefer established domain or technical terms; define any nonstandard term at first use in plain language, then reuse its exact name and meaning.
-
-Reject shorthand that merely hides necessary information. If a phrase leaves the reader to infer the subject, condition, action, or result, expand it. Name the actual object (`table`, `field`, `API`, `rule`) and the actual action (`read`, `compare`, `store`, `reject`) instead of using a vague label. Do not ban abstract words mechanically; keep them when their reference is already clear and stable.
-
-Apply three tests:
-
-- **Reference:** Can the target reader identify exactly what the term denotes?
-- **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`) — it binds the name to a mutable tally that silently breaks when items are added or merged; refer to members by name instead. Never let one name denote two different concepts, and never rotate names for one concept (this generalizes pattern 6 above).
-- **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition — ✗ 该字段落入失败面 → ✓ 该字段落入失败处理范围; ✗ 命中回落态 → ✓ 命中旧值回落分支.
-
-If any test fails, rewrite the claim with a concrete subject, condition, action, and result.
-
-**Terms may compress what has already been defined; they must never hide what has not been stated.**
 
 ## How to apply
 
