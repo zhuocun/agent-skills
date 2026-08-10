@@ -18,6 +18,17 @@ Edit formal human-facing documents so readers can understand them quickly, revie
 
 Apply this priority order: **truth and authority → reader contract and scope → decisions and evidence → abstraction and structure → completeness and actionability → concision and presentation**. Apply only the controls relevant to the document type and its owner-defined governance.
 
+## Hard prohibitions (owner-mandated)
+
+These six rules are absolute for every document this skill touches. They override any conflicting guidance elsewhere in this skill.
+
+1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, correction notes, "as of"/"updated" markers, or before-vs-after narration. Fold every change into the owning passage so the document always reads as if written correct the first time.
+2. **No mention of other documents.** A document never names, links to, or defers to another document ("see the implementation doc", document maps, companion-volume pointers). It carries what its reader needs and omits the rest.
+3. **No cross-references between sections.** No "see chapter 6", "as described above/below", or forward/backward pointers. Order sections so each is understandable where it stands; when another section's fact is needed, restate the minimum inline without naming the section.
+4. **Prefer titled bullets over paragraphs.** When 1–5 points suffice, present them as bullet points, each opening with a clear and precise title, rather than paragraph prose.
+5. **No unnecessary table columns.** Every column must carry decision-relevant information that varies across rows; drop or merge any column that repeats another, restates the row label, or exists only for symmetry.
+6. **No coined vocabulary or jargon.** Use plain words and terms established in the field or in the source material; never invent labels, metaphors, or shorthand names for the document's own concepts.
+
 ## Frame the edit
 
 1. Read the full document once without editing. Record the current section order as a compact outline.
@@ -50,10 +61,10 @@ Apply this priority order: **truth and authority → reader contract and scope �
 
 ### Definitions, references, and revision history
 
-1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, summarize it and point directly to the semantic heading or link; do not maintain competing full copies.
+1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, restate only the minimum a reader needs in place; do not maintain competing full copies.
 2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
 3. Avoid machine-local paths and refactor-sensitive file, line, class, or method references in the main reading path. Include repository-relative locations or symbols only when implementation review or reproducibility requires them. Preserve stable contract identifiers exactly when they are part of the subject.
-4. Integrate corrections into the passage that owns the content. Do not leave editor-facing correction notes, omission notices, or revision-status labels in the domain narrative. Use addenda, errata, or change-history labels only when the document's governance model requires them.
+4. Integrate corrections into the passage that owns the content. Do not leave editor-facing correction notes, omission notices, or revision-status labels in the domain narrative. Addenda, errata, and change-history labels are prohibited outright (hard prohibition 1).
 
 ## Choose the reader path
 
@@ -77,7 +88,7 @@ Move definitions before evaluation when readers need the concepts to judge the d
 1. Match the title and opening scope to the document's real coverage.
 2. Use a consistent semantic heading hierarchy. Add numeric heading labels only when the destination convention or navigation need calls for them.
 3. Do not invent parallel module, decision, validation, option, or step ID systems for editorial organization. Use ordered steps when order is operationally meaningful, not as a substitute for semantic names.
-4. Refer directly to a semantic heading or link. Avoid numeric-only, context-dependent, or chained references that make readers hunt through intermediate locations.
+4. Do not send readers elsewhere: no section cross-references or chained lookups. Each section carries what its reader needs at that point.
 5. Give each section one clear purpose or reader question and keep neighboring sections non-overlapping.
 6. Order sections by the reader's decision path, not by the history of how the team built or discussed the work. Separate audience paths when reviewers, adopters, operators, and implementers need different depth.
 7. Use a short bridge only when it clarifies causality. Put it at the start of the section it introduces, and remove trailing meta-narration about what the document will explain next.
@@ -97,7 +108,7 @@ Keep high-level design focused on decisions, boundaries, semantics, tradeoffs, c
 
 When a document set separates a design document from an implementation document, apply the layer boundaries in **Definition vs implementation**: keep gating blockers in the design document, and place implementation-layer material in the implementation document or runbook, as applicable.
 
-Keep each document coherent for its own audience. Apply the content-accounting rules in **Preserve structured assets** whenever material moves between documents.
+Each document must stand alone for its own audience: never reference the other documents by name — a reader of one volume gets everything that volume promises without opening another. Apply the content-accounting rules in **Preserve structured assets** whenever material moves between documents.
 
 ## Build decisions, evidence, and actionability
 
@@ -118,14 +129,14 @@ Keep each document coherent for its own audience. Apply the content-accounting r
 Decision documents that evolve under audit pressure accumulate registries — open-issue ledgers, blocker tables, verification lists, counts, provenance history. Completeness rules keep this information from being lost, but nothing keeps it out of the reader's path; unchecked, the registry layer overgrows the decision layer and the document becomes a decision doc, issue tracker, and delivery plan bound into one. Keep three layers apart and place content by the reader who needs it:
 
 1. **Decision narrative** (main reading path): what is being built, each decision with its preconditions, main cost, re-evaluation triggers, one-line rejected alternatives, and the minimum evidence needed to review it.
-2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. Inline in the narrative only the few entries that gate the architecture or the release; point to the appendix for the rest.
+2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. Inline in the narrative only the few entries that gate the architecture or the release; the full ledger lives in the appendix.
 3. **Operational detail** (implementation doc or runbook): stepwise procedures, flag semantics, cleanup algorithms, collection conditions.
 
 Rules:
 
 1. Relocation is not deletion — a moved entry keeps every field, conditional direction, and decision-bearing relationship; after restructuring, verify the ledger remains complete entry by entry and field by field.
 2. Settled items return to the owning decision section; historical recounts of registry size belong in review records, not in live registries.
-3. Domain identifier semantics — uniqueness, immutability, recycling, regeneration on copy — belong in the domain model even while an aspect is still open. State the established default and point at the open item; if no default exists, say so and identify the blocked decision instead of inventing one.
+3. Domain identifier semantics — uniqueness, immutability, recycling, regeneration on copy — belong in the domain model even while an aspect is still open. State the established default and name the open question inline; if no default exists, say so and identify the blocked decision instead of inventing one.
 4. A design doc carries non-functional targets such as expected volume, query scale, throughput, latency, and capacity ceilings, or names each unknown together with the decision threshold it unblocks. A named unknown with a threshold beats both an invented number and a silent gap.
 5. With several external dependencies, include one unified failure-strategy table — dependency unavailable → affected operations → block or degrade → caching allowance — rather than scattering the rules across chapters.
 6. When a per-decision comparison matrix outgrows its narrative, move the matrix to the appendix and keep the decision, its preconditions, and its reversal triggers inline.
@@ -157,7 +168,7 @@ Apply these rules to loss-sensitive restructures and to content the user, templa
 
 1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document (a `.md` living in a code repo, read only by collaborators in the repo) carries NONE of it: no author/approver/signature lines, no status or lifecycle labels, no creation/revision dates, no re-review triggers, no revision history or baseline-evolution sections, no patch/change-record narrative, and no pointers to approval records. The opening of such a document holds only what a reader needs to use the content. When editing, delete this apparatus on sight rather than preserving it as protected content.
 2. For documents with a genuine external lifecycle (published, formally approved, or owner-mandated governance), provide the applicable metadata: status, accountable author or owner, reviewer or approver when the lifecycle has one, creation and revision dates, last source or implementation alignment date, and re-review triggers.
-3. Do not front-load lookup blocks. A glossary, error-code table, or legend quick-reference at the head of a document is a misplaced fix for unreadable body text: the correct fix is to make each opaque term readable at its first occurrence in place — plain wording with the exact code in parentheses, e.g. "rejected: the record is still referenced (error 1042)" instead of a bare "rejected: error 1042" — plus a pointer to the one authoritative definition elsewhere. This applies only to identifiers whose name carries no meaning (numeric codes, abbreviations); an identifier that already reads plainly, like ERR_TEMPLATE_IN_USE, needs no added gloss. Add a front-of-document reference table only when the owner explicitly asks for one.
+3. Do not front-load lookup blocks. A glossary, error-code table, or legend quick-reference at the head of a document is a misplaced fix for unreadable body text: the correct fix is to make each opaque term readable at its first occurrence in place — plain wording with the exact code in parentheses, e.g. "rejected: the record is still referenced (error 1042)" instead of a bare "rejected: error 1042". This applies only to identifiers whose name carries no meaning (numeric codes, abbreviations); an identifier that already reads plainly, like ERR_TEMPLATE_IN_USE, needs no added gloss. Add a front-of-document reference table only when the owner explicitly asks for one.
 4. For proposals and decisions, use a compact opening summary that states the proposal, benefit, cost, and main uncertainty. State goals and non-goals, including exclusions readers could reasonably assume were in scope.
 5. Use the open-question form in **Unknowns, branches, and decisions**. Store complete review history, consequential dissent, source conflicts, and lifecycle evidence in the registry or audit layer rather than the decision narrative.
 6. For research documents, use citations or an owner-compatible provenance scheme to distinguish established consensus, primary evidence, secondary reporting, and analysis or inference. Define any status labels once; do not invent decorative tag taxonomies.
