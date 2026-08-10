@@ -20,7 +20,7 @@ Apply this priority order: **truth and authority → reader contract and scope �
 
 ## Hard prohibitions (owner-mandated)
 
-These six rules are absolute for every document this skill touches. They override any conflicting guidance elsewhere in this skill.
+These six rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them.
 
 1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, correction notes, "as of"/"updated" markers, or before-vs-after narration. Fold every change into the owning passage so the document always reads as if written correct the first time.
 2. **No mention of other documents.** A document never names, links to, or defers to another document ("see the implementation doc", document maps, companion-volume pointers). It carries what its reader needs and omits the rest.
@@ -129,7 +129,7 @@ Each document must stand alone for its own audience: never reference the other d
 Decision documents that evolve under audit pressure accumulate registries — open-issue ledgers, blocker tables, verification lists, counts, provenance history. Completeness rules keep this information from being lost, but nothing keeps it out of the reader's path; unchecked, the registry layer overgrows the decision layer and the document becomes a decision doc, issue tracker, and delivery plan bound into one. Keep three layers apart and place content by the reader who needs it:
 
 1. **Decision narrative** (main reading path): what is being built, each decision with its preconditions, main cost, re-evaluation triggers, one-line rejected alternatives, and the minimum evidence needed to review it.
-2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. Inline in the narrative only the few entries that gate the architecture or the release; the full ledger lives in the appendix.
+2. **Registries and audit ledgers** (appendix of the same document): the full open-issue, blocker, and verification ledgers plus review history. The narrative restates in full the few entries that gate the architecture or the release; the appendix holds the complete ledger as a self-contained section.
 3. **Operational detail** (implementation doc or runbook): stepwise procedures, flag semantics, cleanup algorithms, collection conditions.
 
 Rules:
@@ -167,7 +167,7 @@ Apply these rules to loss-sensitive restructures and to content the user, templa
 ## Apply governed-document controls when applicable
 
 1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document (a `.md` living in a code repo, read only by collaborators in the repo) carries NONE of it: no author/approver/signature lines, no status or lifecycle labels, no creation/revision dates, no re-review triggers, no revision history or baseline-evolution sections, no patch/change-record narrative, and no pointers to approval records. The opening of such a document holds only what a reader needs to use the content. When editing, delete this apparatus on sight rather than preserving it as protected content.
-2. For documents with a genuine external lifecycle (published, formally approved, or owner-mandated governance), provide the applicable metadata: status, accountable author or owner, reviewer or approver when the lifecycle has one, creation and revision dates, last source or implementation alignment date, and re-review triggers.
+2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle (published or formally approved), provide the metadata the owner requires — status, accountable author or owner, reviewer or approver, dates, re-review triggers. Absent that explicit mandate, hard prohibition 1 applies unconditionally.
 3. Do not front-load lookup blocks. A glossary, error-code table, or legend quick-reference at the head of a document is a misplaced fix for unreadable body text: the correct fix is to make each opaque term readable at its first occurrence in place — plain wording with the exact code in parentheses, e.g. "rejected: the record is still referenced (error 1042)" instead of a bare "rejected: error 1042". This applies only to identifiers whose name carries no meaning (numeric codes, abbreviations); an identifier that already reads plainly, like ERR_TEMPLATE_IN_USE, needs no added gloss. Add a front-of-document reference table only when the owner explicitly asks for one.
 4. For proposals and decisions, use a compact opening summary that states the proposal, benefit, cost, and main uncertainty. State goals and non-goals, including exclusions readers could reasonably assume were in scope.
 5. Use the open-question form in **Unknowns, branches, and decisions**. Store complete review history, consequential dissent, source conflicts, and lifecycle evidence in the registry or audit layer rather than the decision narrative.
@@ -185,7 +185,7 @@ Apply these rules to loss-sensitive restructures and to content the user, templa
 
 ## Language and terminology boundary
 
-Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules in **Preserve truth and authority**. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope — treat them as separate wording work. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and cross-references, and byte-exact identifiers, numbers, and quoted contracts.
+Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules in **Preserve truth and authority**. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope — treat them as separate wording work. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and every repeated mention, and byte-exact identifiers, numbers, and quoted contracts.
 
 ## Communication
 
@@ -202,4 +202,5 @@ Keep the owner-specified target language, register, and terminology scheme consi
 - Does each important claim retain its mechanism, evidence, limitation, relevant alternatives, risk, and actionable consequence?
 - Does every moved or protected asset have a verified disposition with its fields, conditions, and required measurements intact?
 - Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
-- Is the document free of internal contradictions, duplicate rules, fragile navigation, editor-process residue, and project- or task-specific assumptions that the owner did not request?
+- Is the document free of internal contradictions, duplicate rules, editor-process residue, and project- or task-specific assumptions that the owner did not request?
+- Do all six hard prohibitions hold: no update residue, no mention of other documents, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, no coined vocabulary?
