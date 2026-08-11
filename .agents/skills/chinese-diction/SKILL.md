@@ -6,7 +6,7 @@ description: >-
 
 # Chinese Diction
 
-A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for.
+A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for. Once active it persists across later tasks and sessions until the user explicitly turns it off; it never decides whether to write Chinese, only how, so it governs any Chinese prose you go on to write, translate, or polish for a human reader, and still never applies to agent-instruction files.
 
 ## The core instinct
 
