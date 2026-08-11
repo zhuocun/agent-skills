@@ -1,7 +1,7 @@
 ---
 name: chinese-diction
 description: >-
-  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, marketing copy, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms, product names, field names, citations, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as prompts, workflows, or tool-routing docs.
+  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, marketing copy, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms, product names, field names, citations, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
 ---
 
 # Chinese Diction
