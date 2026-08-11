@@ -37,7 +37,7 @@ These six rules are absolute for every document this skill touches; the rest of 
 4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
 5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
 6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described in **Inventory and preserve structured assets**. Keep the mapping only in the editing-session record or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
-7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
+7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
 8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
 ## Determine governance applicability
@@ -88,6 +88,10 @@ This section governs only lossless accounting when content moves; abstraction le
 4. Apply hard prohibition 1; integrate corrections into the owning passage.
 
 ## Choose the reader path
+
+### Forward reading order
+
+Order content for a single top-down read: the reader's mental model must build strictly forward, each section relying only on concepts and facts already established by earlier sections. Reverse-order dependency — an earlier passage that cannot be understood without material that appears later — is a structural defect whether or not an explicit reference marks it; the silent kind, where an undefined concept is simply used, is the more damaging because the reader stalls without knowing where relief is. To enforce this, read the document top to bottom once as a first-time reader after restructuring: at every point where understanding stalls, either move the defining material ahead of its first use, or restate the minimum context in place. Do not relieve a stall with a forward pointer; that converts the defect into a prohibited cross-reference instead of fixing it.
 
 ### Common reader paths
 
@@ -206,4 +210,5 @@ Keep the owner-specified target language, register, and terminology scheme consi
 - Does every moved or protected asset have a verified disposition with its fields, conditions, and required measurements intact?
 - Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
 - Is the document free of internal contradictions, duplicate rules, editor-process residue, and project- or task-specific assumptions that the owner did not request?
+- Does the document read clean top to bottom — no passage that requires later material to understand, with definitions preceding first use?
 - Do all six hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, and no coined vocabulary?
