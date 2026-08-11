@@ -20,7 +20,7 @@ Apply this priority order: **truth and authority → reader contract and scope �
 
 ## Hard prohibitions (owner-mandated)
 
-These six rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them.
+These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them.
 
 1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, correction notes, "as of"/"updated" markers, or before-vs-after narration. Fold every change into the owning passage so the document always reads as if written correct the first time.
 2. **No deferral to other documents.** Never offload content readers need to another document in the same working set through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
@@ -28,6 +28,8 @@ These six rules are absolute for every document this skill touches; the rest of 
 4. **Prefer titled bullets over paragraphs.** When 1–5 points suffice, present them as bullet points, each opening with a clear and precise title, rather than paragraph prose.
 5. **No unnecessary table columns.** Every column must carry decision-relevant information that varies across rows; drop or merge any column that repeats another, restates the row label, or exists only for symmetry.
 6. **No coined vocabulary or jargon.** Use plain words and terms established in the field or in the source material; never invent labels, metaphors, or shorthand names for the document's own concepts.
+7. **No direct code references.** Never cite class, method, function, or variable names, file paths, or line numbers in the document. Describe the behavior in business or domain terms instead. Identifiers that are part of the subject's own contract — table and field names, status enums, API fields — stay byte-exact.
+8. **No context-bound terms from other sections or documents.** Never use a term, code, or label whose meaning is established only in another section or another document — a bare error code, an internal task name, an abbreviation defined elsewhere. State the fact in plain wording in place; keep such a code only where the document itself establishes what it means.
 
 ## Modes
 
@@ -105,7 +107,7 @@ When a document set splits material across volumes, apply the same layer boundar
 
 1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, restate only the minimum a reader needs in place; do not maintain competing full copies.
 2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
-3. Avoid machine-local paths and refactor-sensitive file, line, class, or method references in the main reading path. Include repository-relative locations or symbols only when implementation review or reproducibility requires them. Preserve stable contract identifiers exactly when they are part of the subject.
+3. Apply hard prohibitions 7 and 8: describe code behavior in business or domain terms, keep every term readable where it stands, and preserve stable contract identifiers exactly when they are part of the subject.
 4. Apply hard prohibition 1; integrate corrections into the owning passage.
 
 ### Decisions, evidence, and actionability
@@ -156,7 +158,7 @@ Rules:
 
 ### Governance applicability
 
-This section only supplements the governance fields allowed when the owner explicitly requires them; it creates no exception to the six hard prohibitions.
+This section only supplements the governance fields allowed when the owner explicitly requires them; it creates no exception to the eight hard prohibitions.
 
 1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document read only by repository collaborators carries no signature fields or lifecycle labels; its opening holds only what a reader needs to use the content.
 2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle, provide the requested non-revision metadata: status, accountable owner, approver, and approval date. Governance authorization does not waive any hard prohibition. Revision dates, change histories, and re-review narratives remain excluded; process traces belong in an external governance system.
@@ -170,7 +172,7 @@ Author a new document from authoritative sources; nothing pre-exists to preserve
 1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, and any owner or format constraints.
 2. **Gather authorities before writing.** Collect the sources each claim type needs per **Claim-type authority**. Do not write a claim no source supports; record each genuine gap in the open-question form instead of inventing an answer or a current state.
 3. **Outline by reader path.** Draft the section order from the matching reader path, then walk the outline once for forward reading order: every concept a section uses must be established by an earlier section or defined in place.
-4. **Draft to the standard.** Apply every applicable Document standard rule and all six hard prohibitions from the first draft — placement, evidence chains, registries, media discipline, and governance applicability included.
+4. **Draft to the standard.** Apply every applicable Document standard rule and all eight hard prohibitions from the first draft — placement, evidence chains, registries, media discipline, and governance applicability included.
 5. **Verify before delivery.** Run **Review and verify** on the draft as if reviewing someone else's document.
 
 ## Optimize mode
@@ -202,7 +204,7 @@ Edit an existing document without changing its meaning. The source document's co
 5. Treat exact schemas, interface signatures, identifiers, error definitions, and other contract artifacts as deliverables in their own right. Preserve their completeness and exactness even when surrounding explanation is condensed.
 6. Treat an asset's item count or byte identity as a protected baseline only when the owner or delivery format defines it. For a controlled baseline change, keep the pre-change and post-change values and any required authorization only in the editing-session record or external approval record; never place them in the edited document or change the baseline silently.
 7. When byte-for-byte identity is required, use the configured checksum or comparison method. Do not modify a protected diagram or native asset without authorization; after an authorized change, keep its reason and basis only in the editing-session record or external approval record, and apply the required rendering or behavior checks.
-8. Classify protected-content conflicts by priority. Delete residue that the six hard prohibitions clearly forbid. Retain owner-required governance fields only within the allowed scope of governance applicability. If a template protection marker directly conflicts with a hard prohibition, escalate to the owner; do not treat the marker as either permission to retain the content or an instruction to delete it automatically. Do not break required document syntax.
+8. Classify protected-content conflicts by priority. Delete residue that the eight hard prohibitions clearly forbid. Retain owner-required governance fields only within the allowed scope of governance applicability. If a template protection marker directly conflicts with a hard prohibition, escalate to the owner; do not treat the marker as either permission to retain the content or an instruction to delete it automatically. Do not break required document syntax.
 
 ## Review and verify
 
@@ -238,7 +240,7 @@ Shared:
 - Does each important claim retain its mechanism, evidence, limitation, relevant alternatives, risk, and actionable consequence?
 - Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
 - Is the document free of internal contradictions, duplicate rules, editor-process residue, and project- or task-specific assumptions that the owner did not request?
-- Do all six hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, and no coined vocabulary?
+- Do all eight hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, no coined vocabulary, no direct code references, and no terms that depend on context established in another section or document?
 
 Create only:
 
