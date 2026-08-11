@@ -1,20 +1,20 @@
 ---
 name: document-editor
 description: >-
-  Edit and review formal human-facing documents at the document level without
-  silently changing their meaning. Use for design docs, RFCs, implementation
-  plans, proposals, specs, research reports, guides, decision memos, and review
-  docs when the work concerns scope, reader path, structure, abstraction,
-  factual grounding, evidence, tradeoffs, registries, structured assets,
-  document governance, concision, or reviewability. Do not use for casual notes,
-  chat replies, pure sentence-level wording or translation polish, or
-  agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing
-  docs.
+  Author, edit, and review formal human-facing documents at the document level
+  without silently changing their meaning. Use for design docs, RFCs,
+  implementation plans, proposals, specs, research reports, guides, decision
+  memos, and review docs when the work concerns authoring from sources, scope,
+  reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
+  registries, structured assets, document governance, concision, or
+  reviewability. Do not use for casual notes, chat replies, pure sentence-level
+  wording or translation polish, or agent-instruction files such as SKILL.md,
+  prompts, workflows, or tool-routing docs.
 ---
 
 # Document Editor
 
-Edit formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction. Preserve meaning while improving scope, order, explanation, and presentation.
+Produce and maintain formal human-facing documents so readers can understand them quickly, review them accurately, and act with less friction. When editing, preserve meaning while improving scope, order, explanation, and presentation; when authoring, write to the same standard from the first draft.
 
 Apply this priority order: **truth and authority → reader contract and scope → decisions and evidence → abstraction and structure → completeness and actionability → concision and presentation**. Apply only the controls relevant to the document type and its owner-defined governance.
 
@@ -29,69 +29,21 @@ These six rules are absolute for every document this skill touches; the rest of 
 5. **No unnecessary table columns.** Every column must carry decision-relevant information that varies across rows; drop or merge any column that repeats another, restates the row label, or exists only for symmetry.
 6. **No coined vocabulary or jargon.** Use plain words and terms established in the field or in the source material; never invent labels, metaphors, or shorthand names for the document's own concepts.
 
-## Frame the edit
+## Modes
 
-1. Read the full document once without editing. Record the current section order as a compact outline.
-2. Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support.
-3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
-4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
-5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
-6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described in **Inventory and preserve structured assets**. Keep the mapping only in the editing-session record or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
-7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
-8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
+Pick the mode first; all three share the same **Document standard** below and differ only in workflow.
 
-## Determine governance applicability
+- **Create** — author a new document from authoritative sources. Follow **Create mode**.
+- **Optimize** — edit an existing document without changing its meaning. Follow **Optimize mode**.
+- **Review** — judge a document without editing it. Run **Review and verify** alone and report findings.
 
-This section only supplements the governance fields allowed when the owner explicitly requires them; it creates no exception to the six hard prohibitions.
+## Document standard
 
-1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document read only by repository collaborators carries no signature fields or lifecycle labels; its opening holds only what a reader needs to use the content.
-2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle, provide the requested non-revision metadata: status, accountable owner, approver, and approval date. Governance authorization does not waive any hard prohibition. Revision dates, change histories, and re-review narratives remain excluded; process traces belong in an external governance system.
-3. Follow the document's real lifecycle rather than inventing one. Attribute approval only when it exists, return materially changed approved content to the appropriate review state, and record the true reason for re-review in the external lifecycle system.
-4. Review history, consequential dissent, and lifecycle evidence belong in an external governance system; the edited document never carries them.
-
-## Inventory and preserve structured assets
-
-This section governs only lossless accounting when content moves; abstraction level belongs to **Definition vs implementation**, while main-text versus appendix placement belongs to **Registries vs decision narrative**.
-
-1. Before editing, inventory the load-bearing assets: decisions, open questions and blockers, conditional branch tables, tradeoff matrices, invariants, non-goals, risks, rollout batches, diagrams, exact contracts, error catalogs, and critical checklists, as applicable.
-2. Give every inventoried passage or asset a disposition: preserved in place, moved to a named destination, merged into a named authoritative item, or intentionally removed with a reason and the required authorization. Keep this mapping only in the editing-session record or an external approval record, never in the edited document. Do not use compression as an unreported deletion path.
-3. Extend the relocation discipline for registries to every inventoried asset, not only registry entries. Treat conversion to a table or movement to an appendix as relocation under that discipline.
-4. Treat exact schemas, interface signatures, identifiers, error definitions, and other contract artifacts as deliverables in their own right. Preserve their completeness and exactness even when surrounding explanation is condensed.
-5. Treat an asset's item count or byte identity as a protected baseline only when the owner or delivery format defines it. For a controlled baseline change, keep the pre-change and post-change values and any required authorization only in the editing-session record or external approval record; never place them in the edited document or change the baseline silently.
-6. When byte-for-byte identity is required, use the configured checksum or comparison method. Do not modify a protected diagram or native asset without authorization; after an authorized change, keep its reason and basis only in the editing-session record or external approval record, and apply the required rendering or behavior checks.
-7. Classify protected-content conflicts by priority. Delete residue that the six hard prohibitions clearly forbid. Retain owner-required governance fields only within the allowed scope above. If a template protection marker directly conflicts with a hard prohibition, escalate to the owner; do not treat the marker as either permission to retain the content or an instruction to delete it automatically. Do not break required document syntax.
-
-## Preserve truth and authority
-
-### Source grounding and current state
-
-1. Preserve the source meaning, facts, scope, and decisions unless the user explicitly requests a substantive change.
-2. Do not silently change numbers, dates, owners, names, identifiers, field or API contracts, formulas, requirements, conditional direction, or decisions.
-3. Determine authority per claim type. Use implementation or observed behavior for current state, approved requirements or decisions for intended state, and direct observations or primary studies for measured outcomes. Do not apply one global source hierarchy across claim types.
-4. When sources disagree, inspect the conflict, use the best-supported claim, and record any difference that affects scope, accuracy, or a decision. Do not choose a source merely because it appears in a preferred category.
-5. Before describing a change, distinguish the observed current state, the approved or proposed target state, assumptions, and the gap between them. Do not design against an invented current state.
-6. Explain any departure from an established decision and preserve its authorization boundary. Editing authority alone does not authorize a new decision.
-7. Flag ambiguity, inconsistency, or missing evidence. Tighten wording noise, not substantive meaning.
-
-### Unknowns, branches, and decisions
-
-1. For a blocking unknown with no established default, record the question, why it is unresolved, the authority or resolver needed, known candidate space, affected decisions or passages, timing or trigger when relevant, and the consequence of remaining unresolved. State a fallback only when a source establishes one.
-2. For a branch with an established default, state the default, alternatives, and the criterion that selects among them. Mark confirmation as open without presenting the default as newly invented.
-3. Keep each open question independently answerable. When choices must be decided together, present a mutually exclusive and collectively complete decision package; include an explicit unknown or escalation branch when the candidate space is not closed.
-4. Never turn an unanswered question into a design conclusion. If the missing answer prevents accurate prose, leave a governed placeholder or registry entry and identify what it blocks.
-
-### Definitions and references
-
-1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, restate only the minimum a reader needs in place; do not maintain competing full copies.
-2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
-3. Avoid machine-local paths and refactor-sensitive file, line, class, or method references in the main reading path. Include repository-relative locations or symbols only when implementation review or reproducibility requires them. Preserve stable contract identifiers exactly when they are part of the subject.
-4. Apply hard prohibition 1; integrate corrections into the owning passage.
-
-## Choose the reader path
+What every finished document must satisfy, regardless of how it was produced.
 
 ### Forward reading order
 
-Order content for a single top-down read: the reader's mental model must build strictly forward, each section relying only on concepts and facts already established by earlier sections. Reverse-order dependency — an earlier passage that cannot be understood without material that appears later — is a structural defect whether or not an explicit reference marks it; the silent kind, where an undefined concept is simply used, is the more damaging because the reader stalls without knowing where relief is. To enforce this, read the document top to bottom once as a first-time reader after restructuring: at every point where understanding stalls, either move the defining material ahead of its first use, or restate the minimum context in place. Do not relieve a stall with a forward pointer; that converts the defect into a prohibited cross-reference instead of fixing it.
+Order content for a single top-down read: the reader's mental model must build strictly forward, each section relying only on concepts and facts already established by earlier sections. Reverse-order dependency — an earlier passage that cannot be understood without material that appears later — is a structural defect whether or not an explicit reference marks it; the silent kind, where an undefined concept is simply used, is the more damaging because the reader stalls without knowing where relief is. To enforce this, read the document top to bottom once as a first-time reader after drafting or restructuring: at every point where understanding stalls, either move the defining material ahead of its first use, or restate the minimum context in place. Do not relieve a stall with a forward pointer; that converts the defect into a prohibited cross-reference instead of fixing it.
 
 ### Common reader paths
 
@@ -132,11 +84,31 @@ Keep these layers distinct. Move definitions earlier and implementation later un
 
 Keep high-level design focused on decisions, boundaries, semantics, tradeoffs, compatibility, consistency, rollout strategy, and risk. Retain implementation detail only when it helps the intended reader judge feasibility, constraints, reliability, or tradeoffs.
 
-### Multi-document sets
+When a document set splits material across volumes, apply the same layer boundaries and let each document independently fulfill its reader contract.
 
-Apply the definition and implementation boundaries when material is split across a set. Each document independently fulfills its reader contract.
+### Claim-type authority
 
-## Build decisions, evidence, and actionability
+1. Determine authority per claim type. Use implementation or observed behavior for current state, approved requirements or decisions for intended state, and direct observations or primary studies for measured outcomes. Do not apply one global source hierarchy across claim types.
+2. When sources disagree, inspect the conflict, use the best-supported claim, and record any difference that affects scope, accuracy, or a decision. Do not choose a source merely because it appears in a preferred category.
+3. Distinguish the observed current state, the approved or proposed target state, assumptions, and the gap between them. Do not describe or design against an invented current state.
+4. Explain any departure from an established decision and preserve its authorization boundary. Writing or editing authority alone does not authorize a new decision.
+5. Flag ambiguity, inconsistency, or missing evidence. Tighten wording noise, not substantive meaning.
+
+### Unknowns, branches, and decisions
+
+1. For a blocking unknown with no established default, record the question, why it is unresolved, the authority or resolver needed, known candidate space, affected decisions or passages, timing or trigger when relevant, and the consequence of remaining unresolved. State a fallback only when a source establishes one.
+2. For a branch with an established default, state the default, alternatives, and the criterion that selects among them. Mark confirmation as open without presenting the default as newly invented.
+3. Keep each open question independently answerable. When choices must be decided together, present a mutually exclusive and collectively complete decision package; include an explicit unknown or escalation branch when the candidate space is not closed.
+4. Never turn an unanswered question into a design conclusion. If the missing answer prevents accurate prose, leave a governed placeholder or registry entry and identify what it blocks.
+
+### Definitions and references
+
+1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, restate only the minimum a reader needs in place; do not maintain competing full copies.
+2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
+3. Avoid machine-local paths and refactor-sensitive file, line, class, or method references in the main reading path. Include repository-relative locations or symbols only when implementation review or reproducibility requires them. Preserve stable contract identifiers exactly when they are part of the subject.
+4. Apply hard prohibition 1; integrate corrections into the owning passage.
+
+### Decisions, evidence, and actionability
 
 1. Start from the bottleneck, not the feature. State the constraint or failure mode the document resolves.
 2. For proposals and decisions, use a compact opening summary that states the proposal, benefit, cost, and main uncertainty. State goals and non-goals, including exclusions readers could reasonably assume were in scope.
@@ -152,9 +124,9 @@ Apply the definition and implementation boundaries when material is split across
 12. Convert tacit judgment into executable checklists, decision tables, workflows, risk categories, failure modes, and validation criteria. When readers must act, include the necessary owner, prerequisites, inputs, outputs, and success criteria.
 13. For adoption or onboarding, provide a complete path through prerequisites, setup, invocation, success verification, troubleshooting, and an ownership or feedback route when one exists.
 
-## Registries vs decision narrative
+### Registries vs decision narrative
 
-This section governs where content appears in the main text or appendix; abstraction level belongs to **Definition vs implementation**, while lossless verification during moves belongs to **Inventory and preserve structured assets**.
+This section governs where content appears in the main text or appendix; abstraction level belongs to the definition-vs-implementation boundary, while lossless verification during moves belongs to asset preservation in Optimize mode.
 
 Keep three layers distinct:
 
@@ -172,20 +144,72 @@ Rules:
 6. When a per-decision comparison matrix outgrows its narrative, move the matrix to the appendix and keep the decision, its preconditions, and its reversal triggers inline.
 7. Treat scanability as a placement goal, not a prose quota. Retain causal explanation that changes how reviewers judge assumptions, tradeoffs, or failure modes.
 
-## Use tables, diagrams, media, and code deliberately
+### Tables, diagrams, media, and code
 
 1. Use tables for stable repeated columns such as options and tradeoffs, risks and mitigations, contracts and meanings, scenarios and verification, or phases and success criteria. Use prose for causality, ambiguity, hidden assumptions, and nuanced caveats.
 2. Use parallel table shapes for parallel structures, and do not force uncertain reasoning into apparently precise cells. Tables improve placement; they do not replace the decision narrative.
-3. Preserve existing diagrams, images, videos, code blocks, callouts, evidence citations, and other native blocks unless the user requests a change or a source-backed edit requires one. Give every retained or added block an editorial job: evidence, instruction, architecture, workflow, or reference.
+3. Give every retained or added diagram, image, video, code block, callout, evidence citation, or other native block an editorial job: evidence, instruction, architecture, workflow, or reference.
 4. Use a diagram only when it explains a spatial, temporal, boundary, state, or relationship model more clearly than prose. Use a format supported by the destination and its maintainers; do not impose one tool or syntax on every document.
 5. Give every figure that must be understood independently the minimum in-place legend needed to read it. Keep semantics consistent by using the same wording in each figure's legend; do not create a shared legend center. Check decision-tree branches for mutually exclusive and collectively complete coverage.
 6. Place an overview diagram after the framing needed to interpret it and before the details it organizes. Validate an editable diagram with its actual renderer after changes; if rendering cannot be checked, report that limitation.
 7. Introduce code blocks with what they demonstrate and summarize the design implication when it is not obvious. Avoid raw dumps unless required for reproducibility, contract review, or implementation reference.
 
+### Governance applicability
+
+This section only supplements the governance fields allowed when the owner explicitly requires them; it creates no exception to the six hard prohibitions.
+
+1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document read only by repository collaborators carries no signature fields or lifecycle labels; its opening holds only what a reader needs to use the content.
+2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle, provide the requested non-revision metadata: status, accountable owner, approver, and approval date. Governance authorization does not waive any hard prohibition. Revision dates, change histories, and re-review narratives remain excluded; process traces belong in an external governance system.
+3. Follow the document's real lifecycle rather than inventing one. Attribute approval only when it exists, return materially changed approved content to the appropriate review state, and record the true reason for re-review in the external lifecycle system.
+4. Review history, consequential dissent, and lifecycle evidence belong in an external governance system; the edited document never carries them.
+
+## Create mode
+
+Author a new document from authoritative sources; nothing pre-exists to preserve, so there is no inventory or lossless-accounting pass. Writing to the standard from the first line is far cheaper than retrofitting.
+
+1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, and any owner or format constraints.
+2. **Gather authorities before writing.** Collect the sources each claim type needs per **Claim-type authority**. Do not write a claim no source supports; record each genuine gap in the open-question form instead of inventing an answer or a current state.
+3. **Outline by reader path.** Draft the section order from the matching reader path, then walk the outline once for forward reading order: every concept a section uses must be established by an earlier section or defined in place.
+4. **Draft to the standard.** Apply every applicable Document standard rule and all six hard prohibitions from the first draft — placement, evidence chains, registries, media discipline, and governance applicability included.
+5. **Verify before delivery.** Run **Review and verify** on the draft as if reviewing someone else's document.
+
+## Optimize mode
+
+Edit an existing document without changing its meaning. The source document's content is the baseline; every change must be traceable to a quality rule or an explicit user request.
+
+### Frame the edit
+
+1. Read the full document once without editing. Record the current section order as a compact outline.
+2. Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support.
+3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
+4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
+5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
+7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
+8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
+
+### Preserve source meaning
+
+1. Preserve the source meaning, facts, scope, and decisions unless the user explicitly requests a substantive change.
+2. Do not silently change numbers, dates, owners, names, identifiers, field or API contracts, formulas, requirements, conditional direction, or decisions.
+
+### Preserve structured assets
+
+1. Before editing, inventory the load-bearing assets: decisions, open questions and blockers, conditional branch tables, tradeoff matrices, invariants, non-goals, risks, rollout batches, diagrams, exact contracts, error catalogs, and critical checklists, as applicable.
+2. Preserve existing diagrams, images, videos, code blocks, callouts, evidence citations, and other native blocks unless the user requests a change or a source-backed edit requires one.
+3. Give every inventoried passage or asset a disposition: preserved in place, moved to a named destination, merged into a named authoritative item, or intentionally removed with a reason and the required authorization. Keep this mapping only in the editing-session record or an external approval record, never in the edited document. Do not use compression as an unreported deletion path.
+4. Extend the relocation discipline for registries to every inventoried asset, not only registry entries. Treat conversion to a table or movement to an appendix as relocation under that discipline.
+5. Treat exact schemas, interface signatures, identifiers, error definitions, and other contract artifacts as deliverables in their own right. Preserve their completeness and exactness even when surrounding explanation is condensed.
+6. Treat an asset's item count or byte identity as a protected baseline only when the owner or delivery format defines it. For a controlled baseline change, keep the pre-change and post-change values and any required authorization only in the editing-session record or external approval record; never place them in the edited document or change the baseline silently.
+7. When byte-for-byte identity is required, use the configured checksum or comparison method. Do not modify a protected diagram or native asset without authorization; after an authorized change, keep its reason and basis only in the editing-session record or external approval record, and apply the required rendering or behavior checks.
+8. Classify protected-content conflicts by priority. Delete residue that the six hard prohibitions clearly forbid. Retain owner-required governance fields only within the allowed scope of governance applicability. If a template protection marker directly conflicts with a hard prohibition, escalate to the owner; do not treat the marker as either permission to retain the content or an instruction to delete it automatically. Do not break required document syntax.
+
 ## Review and verify
 
-1. For high-risk edits, separate editing from independent verification when available. Use a capability tier and reasoning depth sufficient for the document's domain and risk; do not bind the skill to a vendor, model name, or fixed role topology.
-2. When author-reviewer separation is required, keep the independent review read-only and return requested changes to the editor. Let the accountable owner or a designated adjudicator who did not perform the edit resolve disagreements independently; an author's self-report is not verification.
+The exit gate for both Create and Optimize output; Review mode runs this section alone.
+
+1. For high-risk work, separate producing from independent verification when available. Use a capability tier and reasoning depth sufficient for the document's domain and risk; do not bind the skill to a vendor, model name, or fixed role topology.
+2. When author-reviewer separation is required, keep the independent review read-only and return requested changes to the author or editor. Let the accountable owner or a designated adjudicator who did not produce the work resolve disagreements independently; a producer's self-report is not verification.
 3. Programmatically check every applicable deterministic constraint: declared lengths or counts, protected-asset inventory and byte identity, diagram rendering, target-format validity, prohibited patterns, terminology cleanup, identifier and evidence-citation existence, and diff hygiene.
 4. Use semantic review for truth, authority, decision quality, evidence, and reader fit. Deterministic checks cannot establish those qualities, and semantic confidence cannot replace a failing hard check.
 5. Confirm that the document has no section-jump internal links. Verify that every figure, table, attachment, evidence citation to an externally published source, and self-reported quantity resolves to real content. Report checks that could not run.
@@ -196,19 +220,31 @@ Keep the owner-specified target language, register, and terminology scheme consi
 
 ## Communication
 
-**Review mode** — report findings first, grouped by truth and authority, scope and reader path, abstraction and registry placement, decisions and evidence, actionability and governance, then presentation.
+**Create mode** — deliver the document, then summarize: the reader contract and path chosen, the authorities each major claim rests on, open questions registered instead of answered, which checks ran, and what remains uncertain.
 
 **Optimize mode** — edit directly, then summarize what was reorganized, what remained unchanged to preserve truth, what was removed or deduplicated, how protected content was accounted for, which evidence or actionability gaps improved, which checks ran, and what ambiguity remains.
 
+**Review mode** — report findings first, grouped by truth and authority, scope and reader path, abstraction and registry placement, decisions and evidence, actionability and governance, then presentation.
+
 ## Self-check
 
-- Did the edit follow the priority order and apply every owner-required or high-risk control, with explicit reasons for important exclusions?
-- Are current state, intended state, assumptions, unknowns, and source conflicts distinguishable, with no silent change to meaning or exact contracts?
+Shared:
+
+- Did the work follow the priority order and apply every owner-required or high-risk control, with explicit reasons for important exclusions?
+- Are current state, intended state, assumptions, unknowns, and source conflicts distinguishable?
 - Does the title, section order, abstraction boundary, and audience path support the reader contract?
+- Does the document read clean top to bottom — no passage that requires later material to understand, with definitions preceding first use?
 - Does each definition and decision have one authoritative location, and are decision narrative, registries, and operational detail still separated?
 - Does each important claim retain its mechanism, evidence, limitation, relevant alternatives, risk, and actionable consequence?
-- Does every moved or protected asset have a verified disposition with its fields, conditions, and required measurements intact?
 - Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
 - Is the document free of internal contradictions, duplicate rules, editor-process residue, and project- or task-specific assumptions that the owner did not request?
-- Does the document read clean top to bottom — no passage that requires later material to understand, with definitions preceding first use?
 - Do all six hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, and no coined vocabulary?
+
+Create only:
+
+- Does every claim rest on an authority appropriate to its claim type, with genuine gaps registered as open questions rather than answered by invention?
+
+Optimize only:
+
+- Is the meaning of the source preserved, with no silent change to numbers, contracts, conditional direction, or decisions?
+- Does every moved or protected asset have a verified disposition with its fields, conditions, and required measurements intact?
