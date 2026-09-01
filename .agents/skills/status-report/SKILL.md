@@ -45,14 +45,15 @@ Columns are exactly `Workstream | Status | Progress | Waiting on | Evidence`. Re
 - **Order deterministically**, so two people sort the same data identically: blocked rows first; then by attention order `Blocked, In review, In progress, Not started, Merged, Shipped, Dropped`; alphabetical on workstream name to break ties.
 - **Cap at 10 rows.** A row may cover a group: its Status is the least advanced among its sub-items (`Blocked` if any is blocked) and its Progress counts sub-items at each status, e.g. `1 blocked · 3 merged · 2 not started`. Fold sub-items into the count; never drop a workstream to fit. A group row's Evidence points at where the group's sub-items are enumerated, not at a subset of them.
 
-The shape, in four rows — a blocked row waiting on another row, a group row rolled up, a two-axis count carrying a delta, and an unverified cell:
+The shape, in five rows — a blocked row waiting on another row, an exact-denominator bar, a two-axis count carrying a delta, a group row rolled up, and a row with no denominator and therefore no bar:
 
 | Workstream | Status | Progress | Waiting on | Evidence |
 | --- | --- | --- | --- | --- |
-| Payout rails | Blocked | 2/7 rails reconciled | Currency service | CR-118 |
-| Fraud rules | In review | 3/3 rule sets authored | review on CR-127 | unverified — see Not verified |
-| Currency service | In progress | 8/9 handlers implemented; 5/9 exposed (+2) | in hand | commit 4ab7de1 |
-| Locale bundles | In progress | 3 in progress · 3 shipped | in hand | doc: locales.md#bundle-list |
+| Payout rails | Blocked | `██▓▓▓▓▓` 2/7 rails reconciled | Currency service | CR-118 |
+| Fraud rules | In review | `███` 3/3 rule sets authored | review on CR-127 | unverified — see Not verified |
+| Currency service | In progress | `████████▓` 8/9 handlers implemented · `█████▓▓▓▓` 5/9 exposed (+2) | in hand | commit 4ab7de1 |
+| Locale bundles | In progress | 3 in progress · 3 shipped, of 6 | in hand | doc: locales.md#bundle-list |
+| Merchant onboarding | In progress | 9 partners integrated, total set not fixed | in hand | doc: partners.md#status |
 
 ### 3. Count progress — the denominator rule
 
@@ -64,6 +65,7 @@ This is the rule the format lives or dies on. Progress is a count of real units,
 - A `Not started` row writes an em dash in Progress; there are no units yet to count.
 - Mark movement in the cell: `(unchanged)` only where the row's status moved but its count did not, `(new)` for a row absent then, `(+n)` for a changed count, `(was <status>)` for a changed status. Mark only rows that changed; a delta on every row is noise. On a first report no row carries `(unchanged)`. A group row marks movement on Status only; its roll-up counts carry no delta.
 - If the unit or denominator changed, write `(rebaselined from <old count>)` and make the rebaseline a `Moved since` bullet.
+- A bar may accompany a count under the exact-denominator rule in pass 9. The count is the claim and the bar is an aid: if anything has to go, the bar goes first.
 
 ### 4. Write `Moved since <prior anchor>`
 
@@ -99,8 +101,11 @@ An illustration is mandatory only if all three hold: constant cost (at most one 
 - **Conditional, at 8 or more rows:** `<N> workstreams: <counts in the attention order>`. Below 8 it is a defect — a status tally is by definition the result of scanning one column, and at four rows the line is longer than the column it summarizes. 8 is a chosen round number, not a derived one.
 - **Conditional, dependency graph:** include if and only if some row is blocked by a row that is itself blocked by a row — two edges, three rows. One blocking edge is not a chain: it is already carried by the blocked row's `Waiting on` cell and the blocked-by line, and a graph that redraws it is a defect. Transitive gating is non-local, so no per-row note reveals it. Fan-in and fan-out at any count are local and belong on the blocked-by line, which may name the relation inline — `Blocked by: Auth -> Billing, Search.` Do not justify a graph with "three rows read In progress while none can finish" — those are three rows carrying the wrong Status, and the vocabulary already has `Blocked`. Degrade in three rungs, each leaving the blocked-by sentence standing: **G1** ASCII-only art in a fenced block, legible with the fence delimiters visible as literal backtick lines, no character above U+007F; **G2** one source per line, dependents comma-separated, no fence; **G3, the floor** the mandatory blocked-by line in that same inline relation form. The floor is always present, so the ladder costs nothing.
 - **Conditional, delta markers:** only when a prior report exists, only on changed rows, folded into existing cells.
-- **Rejected outright:** progress bars in every variant, including pure-ASCII `[####--]`; sparklines; burn or trend indicators; a milestone track unless named milestones already exist outside the report; a grouped Ledger as default — accept only above ~12 rows, and then group by blocking versus non-blocking, never by status, which restates the Status column.
-- **Never store a rendering of a value beside the value.** Proportional rendering misaligns any multi-glyph bar, and a bar beside its count is a second representation of one fact that drifts out of sync; in a report whose whole claim is "these are real units", a drifted bar is a silent lie. Progress holds `4/6` and nothing else.
+- **Rejected outright:** fixed-width progress bars of any kind; sparklines; burn or trend indicators; a milestone track unless named milestones already exist outside the report; a grouped Ledger as default — accept only above ~12 rows, and then group by blocking versus non-blocking, never by status, which restates the Status column.
+- **Conditional, the progress bar — exact-denominator only.** A bar carries exactly as many cells as the denominator and exactly as many filled cells as the numerator: `3/5` is `███▓▓`. Never a fixed-width track, which rounds `4/6` to seven cells of ten and so reads 70% for 66.7%; never a scale shared across rows, which flattens a four-unit job and a twelve-unit job to the same length. Written this way the track length *is* the denominator, so two rows stay as incomparable as their numbers already are. Use `█` filled and `▓` empty: they share a character-width class, so a bar's width does not change with its value. Do not use `░`, which sits in a different class and makes a fuller bar physically wider. Omit the bar where no enumerable denominator exists and where the denominator exceeds 12 — the number then stands alone, and a row that cannot be measured says so in words.
+- **A row with a build axis and an exposure axis carries one bar per axis** against the same denominator. A full bar above an empty one is a workstream that is finished and that nobody can see, which is the state a single number always hides.
+- **No other rendering may sit beside the value it renders.** A bar in a hand-edited document is a second representation of one fact, and the only reason this one is permitted is that cells-equal-denominator makes a drifted bar mechanically checkable rather than silently wrong. Nothing that fails that test — no sparkline, no trend glyph, no percentage — earns the same licence.
+- **Where a view renders colour** rather than plain text, lifecycle takes one sequential hue running light to dark, because lifecycle is ordered; `Blocked` takes a reserved status colour and a row-edge stripe, because it is a condition that can hold at any lifecycle position. Never give `Blocked` a step on the lifecycle ramp.
 - **No illustration may be the sole carrier of the answer to "what is blocked and by what."** Topology beyond that answer — chain order, indirect dependents — may live only in the graph. Deleting every illustration must still leave the reader knowing what is blocked and by what, never how deep the chain runs.
 
 ## Failure modes
@@ -123,7 +128,8 @@ An illustration is mandatory only if all three hold: constant cost (at most one 
 
 - [ ] All seven slots present in fixed order; all five `##` headings printed, empty ones reading `None.` and unexamined ones `Not checked.`
 - [ ] Header carries the revision the Ledger was read at (one per surface if several) and the date at the right granularity.
-- [ ] Every Progress cell counts real units against an enumerable set, or a numerator and unit alone; no `0/1`, no bare percentage, no rendering stored beside a value.
+- [ ] Every Progress cell counts real units against an enumerable set, or a numerator and unit alone; no `0/1`, no bare percentage.
+- [ ] Every bar has cells equal to its denominator and filled cells equal to its numerator, uses `█` and `▓`, and is absent wherever there is no denominator or the denominator exceeds 12; no other rendering sits beside a value.
 - [ ] Every Status is one of the seven; every `Merged` row is still present because users do not have it yet; terminal rows appear exactly once before leaving.
 - [ ] Every `Waiting on` names one nameable thing, `in hand`, or `—`; no verb phrase, sequence, or date; every stalled row has an ask.
 - [ ] Every Evidence cell is filled with an openable reference or the literal `unverified — see Not verified`, except a `Not started` row, which may write an em dash; every such marker has a matching section entry naming what would confirm it.
