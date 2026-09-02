@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Ingest Status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Literata:wght@400;500;600&family=Sometype+Mono:wght@400;500&display=swap">
+
+<style>
+  /* ---------------------------------------------------------------
+     Tokens. Every colour is defined here, on bare :root, so the
+     un-stamped (system-preference) state always resolves. The two
+     blocks that follow re-step the same names; they add no new ones.
+     --------------------------------------------------------------- */
+  :root {
+    /* Ground and ruling — stone, warm but nearly achromatic */
+    --paper:        #EBEAE3;
+    --rule-hair:    #D3D2C9;
+    --rule-firm:    #ADABA2;
+
+    /* Ink */
+    --ink:       #2F2E29;
+    --ink-soft:  #605F56;
+    --ink-faint: #686761;
+
+    /* Lifecycle ramp: one sage hue, one step per stage.
+       Deepening tone = further along, on this pale ground. */
+    --stage-not-started: #7E8776;
+    --stage-in-progress: #697361;
+    --stage-in-review:   #555F4D;
+    --stage-merged:      #424C3A;
+    --stage-shipped:     #333C2C;
+
+    /* Off-ramp conditions. Clay is the page's only alarm colour: it is
+       spent on hairlines, small marks and single words, never on a field.
+       Dropped is a plain muted stone with no chroma to spend. */
+    --clay-ink:  #865846;
+    --clay-mark: #996552;
+    --dropped:   #7D7C75;
+
+    /* Meter cells */
+    --cell-line:   #86857D;
+    --cell-empty:  #E0DED7;
+    --cell-size:    9px;
+    --cell-gap:     3px;
+    --track-label:  4.75rem;
+    --track-gap:    0.6rem;
+    --swatch-size: 0.65rem;
+    /* Where a 45-degree line crosses the centre of the swatch box. */
+    --swatch-mid:  calc(var(--swatch-size) * 0.707);
+
+    /* Type roles */
+    --face-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --face-prose:   "Literata", Georgia, "Times New Roman", serif;
+    --face-data:    "Sometype Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+    /* Vertical rhythm */
+    --band-space: 3rem;
+    --margin-col: 9rem;
+    --gutter:     2.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #1E1E1A;
+      --rule-hair:    #3A3933;
+      --rule-firm:    #5B5A52;
+
+      --ink:       #E4E3D9;
+      --ink-soft:  #ADABA1;
+      --ink-faint: #95938B;
+
+      /* Re-stepped, not inverted: on a dark ground the ramp gains
+         light as it advances, so "further along" still reads as more. */
+      --stage-not-started: #656D5F;
+      --stage-in-progress: #7B8474;
+      --stage-in-review:   #929B8B;
+      --stage-merged:      #ABB3A4;
+      --stage-shipped:     #C4CCBE;
+
+      --clay-ink:  #D19983;
+      --clay-mark: #C38871;
+      --dropped:   #7D7C75;
+
+      --cell-line:   #73726A;
+      --cell-empty:  #2C2B26;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #1E1E1A;
+    --rule-hair:    #3A3933;
+    --rule-firm:    #5B5A52;
+
+    --ink:       #E4E3D9;
+    --ink-soft:  #ADABA1;
+    --ink-faint: #95938B;
+
+    --stage-not-started: #656D5F;
+    --stage-in-progress: #7B8474;
+    --stage-in-review:   #929B8B;
+    --stage-merged:      #ABB3A4;
+    --stage-shipped:     #C4CCBE;
+
+    --clay-ink:  #D19983;
+    --clay-mark: #C38871;
+    --dropped:   #7D7C75;
+
+    --cell-line:   #73726A;
+    --cell-empty:  #2C2B26;
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Base                                                             */
+  /* --------------------------------------------------------------- */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--face-prose);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-text-size-adjust: none;
+  }
+
+  p { margin: 0; }
+  ol, ul { margin: 0; padding: 0; list-style: none; }
+
+  /* --------------------------------------------------------------- */
+  /* Page frame — a ruled margin column with section labels in it     */
+  /* --------------------------------------------------------------- */
+  .page {
+    max-inline-size: 70rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    padding-block: 2.5rem 5rem;
+  }
+
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: var(--band-space);
+    border-top: 1px solid var(--rule-hair);
+  }
+
+  .band__label {
+    margin: 0;
+    font-family: var(--face-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .band__label .label-note {
+    display: block;
+    font-family: var(--face-data);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+
+  .band__body {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+
+  .prose { max-inline-size: 36rem; }
+
+  @media (min-width: 56rem) {
+    .page {
+      /* The continuous margin rule: one hairline down the whole page,
+         sitting in the gutter between label column and body. */
+      background-image: linear-gradient(
+        to right,
+        transparent calc(1.5rem + var(--margin-col) + 1.25rem),
+        var(--rule-hair) calc(1.5rem + var(--margin-col) + 1.25rem),
+        var(--rule-hair) calc(1.5rem + var(--margin-col) + 1.25rem + 1px),
+        transparent calc(1.5rem + var(--margin-col) + 1.25rem + 1px));
+    }
+
+    .band {
+      grid-template-columns: var(--margin-col) minmax(0, 1fr);
+      column-gap: var(--gutter);
+    }
+
+    .band__label { padding-block-start: 0.35rem; }
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Masthead — the same two columns as every band, so the page has    */
+  /* one left edge and the margin rule never crosses the title.        */
+  /* --------------------------------------------------------------- */
+  .masthead {
+    border-top: 0;
+    padding-block-start: 0;
+  }
+
+  .masthead .band__body { gap: 0.6rem; }
+
+  h1 {
+    margin: 0;
+    font-family: var(--face-display);
+    font-size: clamp(2.5rem, 7vw, 3.75rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .masthead__stamp {
+    font-family: var(--face-data);
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Verdict and the one blocked-by line                              */
+  /* --------------------------------------------------------------- */
+  .verdict {
+    max-inline-size: 36rem;
+    font-size: 1.1875rem;
+    line-height: 1.7;
+  }
+
+  .blocked-by {
+    display: grid;
+    gap: 0.4rem;
+    max-inline-size: 36rem;
+    padding-block-start: 0.9rem;
+  }
+
+  .blocked-by::before {
+    content: "";
+    inline-size: 2.5rem;
+    block-size: 2px;
+    background: var(--clay-mark);
+  }
+
+  .blocked-by__label {
+    font-family: var(--face-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .blocked-by__names {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: var(--clay-ink);
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Ledger                                                           */
+  /* --------------------------------------------------------------- */
+  .ledger-scroll {
+    display: grid;
+    grid-template-columns: minmax(54.5rem, 1fr);
+    overflow-x: auto;
+    padding-block-end: 0.25rem;
+  }
+
+  table {
+    border-collapse: collapse;
+    /* Fixed layout so the declared column widths are the real ones and
+       the table's total stays inside the 54.5rem the scroller reserves. */
+    table-layout: fixed;
+  }
+
+  th { text-align: start; }
+
+  caption {
+    text-align: start;
+    max-inline-size: 36rem;
+    margin-block-end: 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  thead th {
+    padding: 0.55rem 1rem 0.55rem 0;
+    border-block-end: 1px solid var(--rule-firm);
+    font-family: var(--face-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    vertical-align: bottom;
+  }
+
+  tbody th,
+  tbody td {
+    padding: 1.15rem 1rem 1.15rem 0;
+    border-block-end: 1px solid var(--rule-hair);
+    vertical-align: top;
+  }
+
+  tbody th {
+    padding-inline-start: 0.75rem;
+    font-family: var(--face-prose);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  thead th:first-child { padding-inline-start: 0.75rem; }
+
+  .col-workstream { inline-size: 10rem; }
+  .col-status     { inline-size: 8rem; }
+  .col-progress   { inline-size: 15.5rem; }
+  .col-waiting    { inline-size: 9rem; }
+  .col-evidence   { inline-size: 12rem; }
+
+  /* Blockage is carried by a clay edge and the status word — never by
+     the row's filled cells, which still count completed work. */
+  tbody tr.is-blocked th {
+    box-shadow: inset 2px 0 0 var(--clay-mark);
+  }
+
+  .status {
+    display: grid;
+    gap: 0.3rem;
+    font-family: var(--face-display);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+
+  .status__now {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+
+  .status__was,
+  .waiting,
+  .evidence {
+    font-family: var(--face-data);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--ink-faint);
+    /* Reference strings are long single tokens; let them break rather
+       than push the column out. */
+    overflow-wrap: break-word;
+  }
+
+  .waiting { color: var(--ink-soft); }
+
+  .is-blocked .status__now { color: var(--clay-ink); }
+
+  /* --------------------------------------------------------------- */
+  /* Status marks — swatches beside words, and meter cells             */
+  /* Both shapes share one set of status modifiers, so a status can    */
+  /* never be painted one way in the key and another in the table.     */
+  /* --------------------------------------------------------------- */
+  .swatch {
+    flex: none;
+    inline-size: var(--swatch-size);
+    block-size: var(--swatch-size);
+    translate: 0 -0.05rem;
+    border: 1px solid var(--cell-line);
+    background: var(--cell-empty);
+  }
+
+  .cell {
+    inline-size: var(--cell-size);
+    block-size: 1rem;
+    border: 1px solid var(--cell-line);
+    background: var(--cell-empty);
+  }
+
+  .swatch--not-started, .cell--not-started { background: var(--stage-not-started); }
+  .swatch--in-progress, .cell--in-progress { background: var(--stage-in-progress); }
+  .swatch--in-review,   .cell--in-review   { background: var(--stage-in-review); }
+  .swatch--merged,      .cell--merged      { background: var(--stage-merged); }
+  .swatch--shipped,     .cell--shipped     { background: var(--stage-shipped); }
+
+  /* Off-ramp conditions get a second channel besides hue: Blocked is an
+     open ring, Dropped is struck through. Neither is a solid stage fill. */
+  .swatch--blocked, .cell--blocked {
+    border: 2px solid var(--clay-mark);
+  }
+
+  .swatch--dropped {
+    background:
+      linear-gradient(-45deg,
+        transparent calc(var(--swatch-mid) - 1px),
+        var(--ink)  calc(var(--swatch-mid) - 1px) calc(var(--swatch-mid) + 1px),
+        transparent calc(var(--swatch-mid) + 1px)),
+      var(--dropped);
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Meters — discrete cells, one per unit of the denominator          */
+  /* --------------------------------------------------------------- */
+  .meter { display: grid; gap: 0.5rem; }
+
+  .track {
+    display: flex;
+    align-items: center;
+    gap: var(--track-gap);
+  }
+
+  .track__label {
+    flex: none;
+    inline-size: var(--track-label);
+    font-family: var(--face-data);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    text-align: end;
+    color: var(--ink-faint);
+  }
+
+  .track__cells {
+    display: flex;
+    gap: var(--cell-gap);
+  }
+
+  .meter__caption {
+    font-family: var(--face-data);
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* No denominator to count against: say so where the track would be. */
+  .no-meter__rule {
+    display: block;
+    inline-size: 8.75rem;
+    margin-inline-start: calc(var(--track-label) + var(--track-gap));
+    border-block-start: 1px dashed var(--cell-line);
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Encoding key                                                     */
+  /* --------------------------------------------------------------- */
+  .key-block { display: grid; gap: 0.75rem; }
+
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    max-inline-size: 44rem;
+  }
+
+  .key__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-family: var(--face-display);
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+  }
+
+  .key__note {
+    max-inline-size: 36rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--ink-faint);
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Entry lists — moved, asks, health, not verified                  */
+  /* --------------------------------------------------------------- */
+  .entries {
+    display: grid;
+    gap: 1.75rem;
+    max-inline-size: 38rem;
+  }
+
+  .entry { display: grid; gap: 0.45rem; }
+
+  .entry__kicker {
+    font-family: var(--face-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .entry__kicker--blocked { color: var(--clay-ink); }
+
+  .entry__head {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .entry__note {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* A two-column field list: term in the data face, value in prose. */
+  .fields {
+    display: grid;
+    max-inline-size: 38rem;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.3rem 1rem;
+    margin: 0;
+    padding-block-start: 0.15rem;
+  }
+
+  .fields dt {
+    font-family: var(--face-data);
+    font-size: 0.6875rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .fields dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .fields dd strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .ref {
+    font-family: var(--face-data);
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+  }
+
+  /* Unverified: a dotted underline is the second channel; the word
+     "unverified" always sits beside it. */
+  .unverified {
+    text-decoration: underline dotted var(--ink-faint);
+    text-underline-offset: 0.22em;
+  }
+
+  /* --------------------------------------------------------------- */
+  /* Focus and motion                                                 */
+  /* --------------------------------------------------------------- */
+  :focus-visible {
+    outline: 2px solid var(--stage-in-review);
+    outline-offset: 3px;
+  }
+
+  .ledger-scroll:focus-visible {
+    outline-offset: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <header class="band masthead">
+    <p class="band__label">Project status</p>
+    <div class="band__body">
+      <h1>Atlas Ingest</h1>
+      <p class="masthead__stamp">2026-08-28 &middot; revision 9f31c04</p>
+    </div>
+  </header>
+
+  <section class="band" aria-labelledby="lbl-verdict">
+    <h2 class="band__label" id="lbl-verdict">Verdict</h2>
+    <div class="band__body">
+      <p class="verdict">
+        Atlas Ingest is mid-build: eight workstreams, one shipped, one merged and held
+        for release train R14, and two blocked on the same missing schema work.
+        Direction since 5f0a2b1 is forward on delivery &mdash; the dead-letter queue
+        reached all four regions and two more ingest endpoints were exposed &mdash; but
+        connector work went backwards, from In progress to Blocked. The two remaining
+        entity-type registrations owned by Priya Raman are the item whose resolution
+        most changes the picture: they clear both blocked rows and the R14 connector
+        scope.
+      </p>
+      <p class="blocked-by">
+        <span class="blocked-by__label">Blocked by</span>
+        <span class="blocked-by__names">Region connectors, Schema registry</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lbl-ledger">
+    <h2 class="band__label" id="lbl-ledger">Ledger</h2>
+    <div class="band__body">
+
+      <div class="ledger-scroll" tabindex="0" role="region" aria-label="Ledger table, scrollable">
+        <table>
+          <caption>
+            Eight workstreams: where each stands, how far it has got, what it waits on,
+            and the evidence behind the claim.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-workstream">Workstream</th>
+              <th scope="col" class="col-status">Status</th>
+              <th scope="col" class="col-progress">Progress</th>
+              <th scope="col" class="col-waiting">Waiting on</th>
+              <th scope="col" class="col-evidence">Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="is-blocked">
+              <th scope="row">Region connectors</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--blocked" aria-hidden="true"></span>Blocked</span>
+                  <span class="status__was">was In progress</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">connectors</span>
+                    <span class="track__cells">
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--blocked"></span>
+                      <span class="cell cell--not-started"></span>
+                      <span class="cell cell--not-started"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">1 blocked, 3 merged, 2 not started, of 6</p>
+                </div>
+              </td>
+              <td class="waiting">Schema registry</td>
+              <td class="evidence">doc: connectors.md#regions</td>
+            </tr>
+
+            <tr class="is-blocked">
+              <th scope="row">Schema registry</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--blocked" aria-hidden="true"></span>Blocked</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">registered</span>
+                    <span class="track__cells">
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">3/5 entity types registered</p>
+                </div>
+              </td>
+              <td class="waiting">Priya Raman, platform</td>
+              <td class="evidence">doc: data-contracts.md#entity-types</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Backfill runner</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--in-review" aria-hidden="true"></span>In review</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">implemented</span>
+                    <span class="track__cells">
+                      <span class="cell cell--in-review"></span>
+                      <span class="cell cell--in-review"></span>
+                      <span class="cell cell--in-review"></span>
+                      <span class="cell cell--in-review"></span>
+                      <span class="cell cell--in-review"></span>
+                      <span class="cell cell--in-review"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">6/6 stages implemented</p>
+                </div>
+              </td>
+              <td class="waiting">review on CR-482</td>
+              <td class="evidence">CR-482</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Ingest API</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--in-progress" aria-hidden="true"></span>In progress</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">implemented</span>
+                    <span class="track__cells">
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                    </span>
+                  </div>
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">exposed</span>
+                    <span class="track__cells">
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell cell--in-progress"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">9/11 endpoints implemented; 7/11 exposed (+2)</p>
+                </div>
+              </td>
+              <td class="waiting">in hand</td>
+              <td class="evidence">commit 9f31c04</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Operator console</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--in-progress" aria-hidden="true"></span>In progress</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <span class="no-meter__rule" aria-hidden="true"></span>
+                  <p class="meter__caption">
+                    4 screens built. No meter: the total set is not fixed, so there is
+                    no denominator to count against.
+                  </p>
+                </div>
+              </td>
+              <td class="waiting">in hand</td>
+              <td class="evidence"><span class="unverified">unverified</span> &mdash; see Not verified</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Retention policy</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--not-started" aria-hidden="true"></span>Not started</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <span class="no-meter__rule" aria-hidden="true"></span>
+                  <p class="meter__caption">
+                    No units yet. No meter: nothing is enumerable until the retention
+                    window is decided.
+                  </p>
+                </div>
+              </td>
+              <td class="waiting">Decision: retention window</td>
+              <td class="evidence">spec: ingest-spec.md#retention</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Metrics pipeline</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--merged" aria-hidden="true"></span>Merged</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">migrated</span>
+                    <span class="track__cells">
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                      <span class="cell cell--merged"></span>
+                    </span>
+                  </div>
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">exposed</span>
+                    <span class="track__cells">
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                      <span class="cell"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">
+                    12/12 dashboards migrated (rebaselined from 3/3 suites);
+                    0/12 exposed to users
+                  </p>
+                </div>
+              </td>
+              <td class="waiting">release train R14</td>
+              <td class="evidence">CR-468</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Dead-letter queue</th>
+              <td>
+                <span class="status">
+                  <span class="status__now"><span class="swatch swatch--shipped" aria-hidden="true"></span>Shipped</span>
+                  <span class="status__was">was Merged</span>
+                </span>
+              </td>
+              <td>
+                <div class="meter">
+                  <div class="track" aria-hidden="true">
+                    <span class="track__label">receiving</span>
+                    <span class="track__cells">
+                      <span class="cell cell--shipped"></span>
+                      <span class="cell cell--shipped"></span>
+                      <span class="cell cell--shipped"></span>
+                      <span class="cell cell--shipped"></span>
+                    </span>
+                  </div>
+                  <p class="meter__caption">4/4 regions receiving (+4)</p>
+                </div>
+              </td>
+              <td class="waiting">nothing</td>
+              <td class="evidence">release run 3311</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="key-block">
+        <div class="key">
+          <span class="key__item"><span class="swatch swatch--not-started" aria-hidden="true"></span>Not started</span>
+          <span class="key__item"><span class="swatch swatch--in-progress" aria-hidden="true"></span>In progress</span>
+          <span class="key__item"><span class="swatch swatch--in-review" aria-hidden="true"></span>In review</span>
+          <span class="key__item"><span class="swatch swatch--merged" aria-hidden="true"></span>Merged</span>
+          <span class="key__item"><span class="swatch swatch--shipped" aria-hidden="true"></span>Shipped</span>
+          <span class="key__item"><span class="swatch swatch--blocked" aria-hidden="true"></span>Blocked</span>
+          <span class="key__item"><span class="swatch swatch--dropped" aria-hidden="true"></span>Dropped</span>
+        </div>
+        <p class="key__note">
+          One hue, one step per lifecycle stage, so the five stages read in order.
+          Blocked and Dropped are conditions rather than positions, so both sit off
+          the ramp: Blocked is drawn as an open ring, Dropped as a struck square. A
+          filled cell always counts completed work, so it keeps its stage tone even
+          on a blocked row.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lbl-moved">
+    <h2 class="band__label" id="lbl-moved">Moved since <span class="label-note">5f0a2b1</span></h2>
+    <div class="band__body">
+      <ul class="entries">
+
+        <li class="entry">
+          <p class="entry__kicker">Forward</p>
+          <p class="entry__head">
+            Dead-letter queue went Merged to Shipped across all four regions
+          </p>
+          <p class="entry__note">
+            The last pre-launch data-loss path is closed.
+            <span class="ref">Reference: release run 3311.</span>
+          </p>
+        </li>
+
+        <li class="entry">
+          <p class="entry__kicker">Forward</p>
+          <p class="entry__head">
+            Ingest API exposure went 5/11 to 7/11
+          </p>
+          <p class="entry__note">
+            The batch endpoints were switched on for all tenants.
+            <span class="ref">Reference: commit 9f31c04.</span>
+          </p>
+        </li>
+
+        <li class="entry">
+          <p class="entry__kicker">Back</p>
+          <p class="entry__head">
+            Region connectors went In progress to Blocked
+          </p>
+          <p class="entry__note">
+            The last two connectors cannot register their entity types until the
+            schema registry lands, which opened the first ask below.
+            <span class="ref">Reference: CR-471.</span>
+          </p>
+        </li>
+
+        <li class="entry">
+          <p class="entry__kicker">Rebaselined</p>
+          <p class="entry__head">
+            Metrics pipeline was rebaselined from 3/3 suites to 12/12 dashboards
+          </p>
+          <p class="entry__note">
+            The count now matches what R14 actually exposes.
+            <span class="ref">Reference: CR-468.</span>
+          </p>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lbl-asks">
+    <h2 class="band__label" id="lbl-asks">Needs a person</h2>
+    <div class="band__body">
+      <p class="prose entry__note">Ordered by cost of inaction.</p>
+      <ol class="entries">
+
+        <li class="entry">
+          <p class="entry__kicker entry__kicker--blocked">Blocked</p>
+          <p class="entry__head">
+            Register the two remaining entity types in the schema registry.
+          </p>
+          <dl class="fields">
+            <dt>Unblocks</dt>
+            <dd>When their definitions are merged.</dd>
+            <dt>Owner</dt>
+            <dd><strong>Priya Raman</strong>, platform.</dd>
+            <dt>Cost</dt>
+            <dd>
+              Holds both Schema registry and Region connectors; if it lands after the
+              R14 train closes on 2026-09-04, connector scope slips a full cycle.
+            </dd>
+            <dt>References</dt>
+            <dd class="ref">doc: data-contracts.md#entity-types, CR-471</dd>
+          </dl>
+        </li>
+
+        <li class="entry">
+          <p class="entry__kicker entry__kicker--blocked">Blocked</p>
+          <p class="entry__head">
+            Approve CR-482, the backfill runner.
+          </p>
+          <dl class="fields">
+            <dt>Unblocks</dt>
+            <dd>When a platform reviewer approves.</dd>
+            <dt>Owner</dt>
+            <dd><strong>Platform review rota</strong>.</dd>
+            <dt>Cost</dt>
+            <dd>A complete runner sits unmerged and misses R14.</dd>
+            <dt>Reference</dt>
+            <dd class="ref">CR-482</dd>
+          </dl>
+        </li>
+
+        <li class="entry">
+          <p class="entry__kicker">Decision</p>
+          <p class="entry__head">
+            Choose the retention window for raw ingest records &mdash; 30, 90, or 365 days.
+          </p>
+          <dl class="fields">
+            <dt>Unblocks</dt>
+            <dd>When the data governance group decides.</dd>
+            <dt>Owner</dt>
+            <dd><strong>Marcus Bell</strong>.</dd>
+            <dt>Cost</dt>
+            <dd>
+              Retention policy cannot start and Q4 storage forecasting stays unbounded.
+            </dd>
+            <dt>Reference</dt>
+            <dd class="ref">spec: ingest-spec.md#retention</dd>
+          </dl>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lbl-health">
+    <h2 class="band__label" id="lbl-health">Health</h2>
+    <div class="band__body">
+      <dl class="fields">
+        <dt>Product</dt>
+        <dd>
+          <strong class="unverified">Degraded</strong>, and that label is itself
+          unverified. Records failing schema validation are held rather than rejected,
+          so four tenants see delayed rows. Reads serve normally in all four regions.
+        </dd>
+        <dt>Checks</dt>
+        <dd><strong>Green</strong>, as of 2026-08-28 at revision 9f31c04.</dd>
+        <dt>Tests</dt>
+        <dd><strong>1,842/1,842</strong> &mdash; full suite on the current revision, 2026-08-28.</dd>
+        <dt>Coverage</dt>
+        <dd><strong>86%</strong>, gate 85% &mdash; as of 2026-08-28.</dd>
+        <dt>Released</dt>
+        <dd><strong>2026-08-26</strong> to all four regions, release run 3311.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lbl-unverified">
+    <h2 class="band__label" id="lbl-unverified">Not verified</h2>
+    <div class="band__body">
+      <ol class="entries">
+
+        <li class="entry">
+          <p class="entry__head">
+            <span class="unverified">Operator console screen count</span>
+          </p>
+          <p class="entry__note">
+            Not confirmed for this report because the console's own tracking board
+            could not be reached. Confirmed by that board's screen list, or by the
+            built navigation itself.
+          </p>
+        </li>
+
+        <li class="entry">
+          <p class="entry__head">
+            <span class="unverified">The &ldquo;degraded&rdquo; product label</span>
+          </p>
+          <p class="entry__note">
+            Not confirmed for this report because the held-record count was not
+            obtained; the label rests on an operator note dated 2026-08-27. Confirmed
+            by the current held-record count from the ingest queue.
+          </p>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
