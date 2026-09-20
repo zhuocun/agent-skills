@@ -74,10 +74,11 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 - **Watch CI, then merge on green.** After opening a PR, watch its checks (subscribe to PR activity, or poll the check runs). Once all required checks pass, squash-merge. If CI goes red, push a fix rather than leaving it stranded. A PR-activity subscription only wakes on *failures* and review comments — a green pass emits no event, so confirm success by polling the checks, not by waiting to be notified. Merging `main` triggers the production deploy, so green CI is the merge gate.
 - **Never bypass hooks.** Don't use `--no-verify` / `--no-gpg-sign`, especially on workflow-file changes. If a commit-msg or pre-commit hook fails, fix the cause and make a new commit — don't amend past it.
 
-> CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`), which runs
-> `python3 scripts/validate_skills.py` on every push and pull request. It enforces the
+> CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`),
+> which runs `python3 scripts/validate_skills.py` on every pull request and on every push to
+> `main`. A push to a branch with no pull request open is not validated. It enforces the
 > authoring conventions above mechanically: every skill directory has a `SKILL.md`, the
 > frontmatter parses as a YAML mapping, `name` and `description` are present and non-empty,
-> `name` equals the directory name, the body opens
-> with an `# ` H1, and `.claude/skills` still resolves to `.agents/skills`. Run the same
-> command locally before pushing.
+> `name` equals the directory name, the body opens with an `# ` H1, and `.claude/skills`
+> still resolves to `.agents/skills`. Frontmatter keys beyond those two are allowed. Run the
+> same command locally before pushing.
