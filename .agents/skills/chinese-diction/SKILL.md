@@ -44,13 +44,12 @@ If any test fails, restore whatever concrete actor or object, condition, action,
 
 ### 1. 翻译腔 — English mechanics wearing Chinese words
 
-Chinese must carry Chinese sentence structure, not transliterated English structure. Tells: long modifier chains stacked before a noun, `被…所…`, connector pile-ups (`由于…因此…并且`), nominalized verbs (`进行…的处理`), parallelism forced for symmetry, subject drift mid-sentence.
+Chinese must carry Chinese sentence structure, not transliterated English structure. Tells: coordinate pre-modifiers run together without `、`, a pre-modifier stacking three or more of actor, place, time and manner around its verb, `被…所…`, connector pile-ups (`由于…因此…并且`), nominalized verbs (`进行…的处理`), parallelism forced for symmetry, subject drift mid-sentence.
 
-- ✗ 一个无法产出非法类型结果的、受约束的接口
-- ✓ 该接口受到约束，无法产出非法类型结果
+- ✗ 一个在类型层无法产出非法结果的受约束的接口 → ✓ 一个无法产出非法类型结果的、受约束的接口
 - ✗ 由甲方在本协议签署之日起三十日内以书面形式提出的解除通知 → ✓ 该解除通知由甲方在本协议签署之日起三十日内以书面形式提出
 
-*Principle:* when modifiers pile up before the noun — more than one `的`-marked pre-modifier on one head noun, or a single pre-modifier that packs an actor, a deadline and a manner around an action before the `的` (由甲方…三十日内…以书面形式提出的), is the countable tell — move them into a main clause or a trailing explanation. Except where the genre needs the noun phrase to carry its own scope, as a contract does (✓ 本协议项下由甲方提供的、经乙方书面确认的技术资料); there the chain is the defining device, not translationese. The chain stays where the noun phrase must delimit a thing the document refers to elsewhere; where it instead states who must do what by when, unstack it into a clause, as the line above does.
+*Principle:* the tell is not how many pre-modifiers a noun carries — a chain of compact coordinate modifiers is native Chinese. Two things are: coordinate pre-modifiers run together with no `、` between them, and a single pre-modifier that stacks three or more of actor, place, time and manner around its verb (`由甲方…三十日内…以书面形式提出的`). The two examples above show one fix each — separate the coordinates with `、` and tighten each to a bare predicate, as the 接口 line does; or unstack the packed modifier into a main clause, as the 解除通知 line does. One adjunct inside a modifier is fine, which is why a scope-bearing contract phrase stays attached (✓ 本协议项下由甲方提供的、经乙方书面确认的技术资料).
 
 ### 2. 用词不当 — coined, hard-translated, or needlessly English
 
@@ -145,7 +144,7 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 
 ## Self-check
 
-- [ ] Chinese sentence structure throughout — no head noun carrying more than one `的`-marked pre-modifier, and none whose single pre-modifier packs an actor, a deadline and a manner around an action before the `的` (unless the genre needs the noun phrase to delimit a thing the document names elsewhere), no `被…所…`, no connector pile-ups (`由于…因此…并且`), no nominalized `进行…的处理`, no subject drift.
+- [ ] Chinese sentence structure throughout — coordinate pre-modifiers are separated by `、`, and no single pre-modifier stacks three or more of actor, place, time and manner around its verb, no `被…所…`, no connector pile-ups (`由于…因此…并且`), no nominalized `进行…的处理`, no subject drift.
 - [ ] No needless English — every English token left in the text is a bare acronym that this domain's own Chinese writing leaves in English (mode 2: software `LLM` `API` `SPA` `CFG` `FSM` `MCP`; medicine `CT` `MRI` `PCR`; finance `IPO` `ETF` `ROE`; for any other field, read the inventory off the settled domain), a term canonical as English in that field (`agent`), or a code identifier; genuine settled terms (`幂等`/`回滚`/`死锁`) are not over-translated into Chinese.
 - [ ] No coinage — every nonstandard term, and every `面`/`态`/`位`/`键` suffix form, passes the substitution test: replaced by a plain description of what it denotes, the text loses no information. A term settled for this audience stays; one settled only inside a narrower field is expanded.
 - [ ] No vividness the text's purpose doesn't need — no personification, branded labels, noun-metaphor, slogans, drama, or wrong-connotation words; in creative and persuasive prose, each figure earns its effect and still names something checkable.
