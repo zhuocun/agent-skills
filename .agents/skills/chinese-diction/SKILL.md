@@ -69,10 +69,10 @@ The most common failure in "clever" drafts. Several sub-forms, one principle: cu
 
 - **Personification** — ✗ 会自证、会模拟的活对象 → ✓ 能自我校验和模拟的实体
 - **Branded label** (a plain idea dressed as a coined term) — ✗ 新基座的原语 → ✓ 新系统的基本构件
-- **Noun-as-metaphor** — ✗ 这轮降息是市场的强心针 → ✓ 这轮降息短期内提振了市场信心 *(a metaphor borrowed from another field names nothing; state the mechanism and its bound. A literal adverb is not a metaphor: 物理上 = "physically" is literal — keep it.)*
+- **Noun-as-metaphor** — ✗ 这轮降息是市场的强心针 → ✓ 这轮降息在短期内提振了市场信心 *(a metaphor borrowed from another field names nothing; state the mechanism and its bound. A literal adverb is not a metaphor: 物理上 = "physically" is literal — keep it.)*
 - **Slogan / hyperbole** — ✗ 回滚到最后一毫秒 → ✓ 操作前均可回滚
 - **Business/strategy slogans** — ✗ 全面提升 AI 编码效率、赋能业务高质量增长 → ✓ 降低组件选择和场景匹配成本、提高上下文完整性、减少影响范围遗漏
-- **Creative target** (the bar moves, the principle does not) — ✗ 夜色如同一位沉默的巨人，笼罩着整座城市 → ✓ 夜色漫过屋脊，一点点罩住整座城市 *(the simile decorates; 漫过 carries the direction and pace, so it earns its place)*
+- **Creative target** (the bar moves, the principle does not) — ✗ 夜色如同一位沉默的巨人，笼罩着整座城市 → ✓ 夜色漫过屋脊，一点点笼罩住整座城市 *(the simile decorates; 漫过 carries the direction and pace, so it earns its place)*
 
 *Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation. In creative registers the bar moves, not the principle: imagery that produces the intended effect is earned; the empty or reflexive figure — and the wrong-connotation word — fails in every register. Persuasive genres get the same carve-out under the same bound: marketing copy and a pitch may reach for a figure, but it must still name something the reader can check — ✓ 十分钟上手，不用读文档 over ✗ 开启高效协作新体验
 
@@ -83,9 +83,9 @@ Judge drift against the register, medium and relationship settled up front. 「�
 - ✗ too casual / narrative: 新来的销售只说一句话：…… ｜ 他得先弄清 ｜ 全靠人工算
 - ✗ too stiff / 八股：销售人员仅须以一语陈明其诉求 ｜ 其须先行明确 ｜ 悉数依赖人工核算
 - ✓ right: 销售只需用一句话说明诉求 ｜ 需先确定 ｜ 依赖人工计算
-- **casual target:** ✗ 关于周末聚餐一事，请各位于明日前予以回复 → ✓ 周末聚餐，大家明天之前回一下哈 *(under a casual target 回一下 is the natural form, not mode 6 clipping — mode 6 measures against the target register, not against the most formal one)*
+- **casual target:** ✗ 关于周末聚餐一事，请各位于明日前予以回复 → ✓ 咱们周末聚餐，大家明天之前回复一下哈 *(the casual target licenses 咱们, the loose clause order and the final 哈 — it does not license a clipped word: 回复 stays whole. Mode 6 measures against the target register, never against a shorter one.)*
 
-*Principle:* for a professional target, cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing (a vivid "一分钟看懂" beats a flat "高效"), and never reach for bookish filler (`悉数`/`须臾`/`业已`). De-colloquial is not the same as formal. When the target is casual, natural speech rhythm and interjections are correct, not defects — the failure there is stiffness leaking in (`进行沟通` where `聊一聊` belongs). When the target is creative, hold the piece's own voice steady. Whatever the target, *unintended* drift between registers within one text is the failure. Quoted speech, a marked aside, and a deliberate collision in creative prose each hold a register of their own on purpose — set them off as quotation or aside, and keep the surrounding text steady — ✓ 他把报告推回来，说“这个数我不认”，之后我们重做了口径
+*Principle:* for a professional target, cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing (a vivid "一分钟看懂" beats a flat "高效"), and never reach for bookish filler (`悉数`/`须臾`/`业已`). De-colloquial is not the same as formal. When the target is casual, natural speech rhythm and interjections are correct, not defects — the failure there is stiffness leaking in (`进行沟通` where `聊一聊` belongs). When the target is creative, hold the piece's own voice steady. Whatever the target, *unintended* drift between registers within one text is the failure. Quoted speech, a marked aside, and a deliberate collision in creative prose each hold a register of their own on purpose — set them off as quotation or aside, and keep the surrounding text steady — ✓ 他把报告推了回来，说：“这些数据我不认可。”之后我们重做了口径
 
 ### 5. 绝对化措辞 — categorical words that over-claim
 
