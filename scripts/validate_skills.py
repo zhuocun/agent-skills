@@ -40,6 +40,7 @@ CHECKS = (
     ("required-keys", "frontmatter has non-empty `name` and `description`"),
     ("name-matches-directory", "frontmatter `name` equals the skill's directory name"),
     ("h1-title", "the body opens with an `# ` H1 title"),
+    ("self-check-section", "the body has a `## Self-check` section"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
 )
 
@@ -159,6 +160,9 @@ def check_skill(directory: Path, root: Path) -> Result:
         failures.append(Failure("h1-title", str(rel), "file has no body after the frontmatter; expected an `# ` H1 title"))
     elif not first.startswith("# "):
         failures.append(Failure("h1-title", str(rel), f"body must open with an `# ` H1 title, but the first line is `{first.strip()[:60]}`"))
+
+    if not any(line.strip() == "## Self-check" for line in body):
+        failures.append(Failure("self-check-section", str(rel), "body has no `## Self-check` section; every skill carries one the agent runs before declaring done"))
 
     return failures, skipped
 
