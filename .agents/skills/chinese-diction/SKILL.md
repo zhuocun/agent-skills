@@ -34,7 +34,7 @@ Apply three tests:
 
 - **Reference:** Can the target reader identify exactly what the term denotes? Name the mechanism, not the mood — `上下文不足`、`影响范围评估不足`、`组件信息依赖 UI 打标`、`返回内容过长` over vague phrasing like `效果不好`、`提效不明显`、`当前存在一些问题`. ✗ 该员工需在试用期内达成既定目标 → ✓ 该员工需在试用期内完成客户回访、提交月度报表并参加入职培训
 - **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`) — it binds the name to a mutable tally that silently breaks when items are added or merged; refer to members by name instead. ✗ 本学期重点考核前两个维度 → ✓ 本学期重点考核课堂参与和作业完成情况. Never let one name denote two different concepts, and never rotate names for one concept: pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references, never swapping synonyms for literary variety.
-- **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition — ✗ 该字段落入失败面 → ✓ 该字段落入失败处理范围
+- **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition — ✗ 该字段落入失败面 → ✓ 此字段属于失败场景的处理范围
 
 If any test fails, restore whatever concrete actor or object, condition, action, or result the target reader needs to understand the claim.
 
@@ -46,8 +46,8 @@ If any test fails, restore whatever concrete actor or object, condition, action,
 
 Chinese must carry Chinese sentence structure, not transliterated English structure. Tells: long modifier chains stacked before a noun, `被…所…`, connector pile-ups (`由于…因此…并且`), nominalized verbs (`进行…的处理`), parallelism forced for symmetry, subject drift mid-sentence.
 
-- ✗ 一个在类型层无法产出非法结果的受约束的接口
-- ✓ 该接口受到约束，在类型层就无法产出非法结果
+- ✗ 一个无法产出非法类型结果的、受约束的接口
+- ✓ 该接口受到约束，无法产出非法类型结果
 - ✗ 由甲方在本协议签署之日起三十日内以书面形式提出的解除通知 → ✓ 该解除通知由甲方在本协议签署之日起三十日内以书面形式提出
 
 *Principle:* when modifiers pile up before the noun — more than one `的`-marked pre-modifier on one head noun, or a single pre-modifier that packs an actor, a deadline and a manner around an action before the `的` (由甲方…三十日内…以书面形式提出的), is the countable tell — move them into a main clause or a trailing explanation. Except where the genre needs the noun phrase to carry its own scope, as a contract does (✓ 本协议项下由甲方提供的、经乙方书面确认的技术资料); there the chain is the defining device, not translationese. The chain stays where the noun phrase must delimit a thing the document refers to elsewhere; where it instead states who must do what by when, unstack it into a clause, as the line above does.
@@ -74,7 +74,7 @@ The most common failure in "clever" drafts. Several sub-forms, one principle: cu
 - **Business/strategy slogans** — ✗ 全面提升 AI 编码效率、赋能业务高质量增长 → ✓ 降低组件选择和场景匹配成本、提高上下文完整性、减少影响范围遗漏
 - **Creative target** (the bar moves, the principle does not) — ✗ 夜色如同一位沉默的巨人，笼罩着整座城市 → ✓ 夜色漫过屋脊，一点点笼罩住整座城市 *(the simile decorates; 漫过 carries the direction and pace, so it earns its place)*
 
-*Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation. In creative registers the bar moves, not the principle: imagery that produces the intended effect is earned; the empty or reflexive figure — and the wrong-connotation word — fails in every register. Persuasive genres get the same carve-out under the same bound: marketing copy and a pitch may reach for a figure, but it must still name something the reader can check — ✓ 十分钟上手，不用读文档 over ✗ 开启高效协作新体验
+*Principle, generalized:* the same instinct disposes of drama (`重生`→`重写后`), violent verbs (`砸`/`杀死`/`焊死`→`投入`/`消除`/`锁定`), and wrong-connotation words — `廉价`→`低成本` (cheap carries "shoddy"), `投机性`→`没把握` (投机 means opportunism, not *speculative*), `一刀切`→`彻底分开` (一刀切 is pejorative) when you mean a clean separation. In creative registers the bar moves, not the principle: imagery that produces the intended effect is earned; the empty or reflexive figure — and the wrong-connotation word — fails in every register. Persuasive genres get the same carve-out under the same bound: marketing copy and a pitch may reach for a figure, but it must still name something the reader can check — ✓ 十分钟就能上手，无需通读文档 over ✗ 开启高效协作新体验
 
 ### 4. 语域失稳 — drifting off the target register
 
@@ -115,7 +115,7 @@ Trimming a word or phrase below its natural Chinese form to save characters read
 
 *Principle:* prefer the complete, natural form (`硬性约束` / `重复录入` / `手动维护`) over the clipped one (`硬约束` / `重录` / `手维护`). Read it aloud — if it sounds like a telegram or a variable name, expand it.
 
-*Bound by medium.* A display slot has its own complete form: a button, menu item, table header, form label or empty state is correctly short, and expanding it is the error — a button reads ✓ 另存为, not ✗ 另存为其他文件; an empty state reads ✓ 暂无数据, while the same idea in an email is ✓ 目前还没有相关数据. Casual chat likewise has its own full forms (✓ 收到 · ✓ 在忙，晚点回). Run this mode over running prose in the settled medium; the read-aloud test judges a sentence, not a label.
+*Bound by medium.* A display slot has its own complete form: a button, menu item, table header, form label or empty state is correctly short, and expanding it is the error — a button reads ✓ 另存为, not ✗ 另存为其他文件; an empty state reads ✓ 暂无数据, while the same idea in an email is ✓ 目前还没有相关数据. Casual chat likewise has its own full forms (✓ 收到 · ✓ 在忙，晚点回复). Run this mode over running prose in the settled medium; the read-aloud test judges a sentence, not a label.
 
 ### 7. 破坏保真 — touching what isn't style
 
@@ -131,7 +131,7 @@ Copy them byte-for-byte; never translate, "tidy", **or** convert them between si
 
 ## Technical prose patterns
 
-Use these wherever the prose makes claims a reader will act on — technical, business, policy, medical, financial, academic. The examples below are software; the patterns are not. They do not govern casual chat, taglines, or creative prose, where bounding a claim is not the job — a tagline is correctly ✓ 十分钟上手，不用读文档 with no scope clause attached, and a chat reply is correctly ✓ 这个方案我觉得能成
+Use these wherever the prose makes claims a reader will act on — technical, business, policy, medical, financial, academic. The examples below are software; the patterns are not. They do not govern casual chat, taglines, or creative prose, where bounding a claim is not the job — a tagline is correctly ✓ 十分钟就能上手，无需通读文档 with no scope clause attached, and a chat reply is correctly ✓ 这个方案我觉得没问题
 
 1. **Bridge problem to method through the mechanism.** When moving from problem to solution, use a short bridge: name the surface problem, state the underlying mechanism, then introduce the method. Example: `多模态识图在复杂 UI 中精度有限；这本质上是上下文不足。因此，工具需要先压缩并结构化 Figma 信息。`
 2. **Acknowledge alternatives with source-backed precision.** If the source says another option has an advantage, keep it before stating the boundary (`静态工具样式还原度高，但依赖组件打标`); do not invent balance for tone.
