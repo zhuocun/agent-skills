@@ -51,7 +51,7 @@ The shape, in five rows — a blocked row waiting on another row, an exact-denom
 | --- | --- | --- | --- | --- |
 | Payout rails | Blocked | `██▓▓▓▓▓` 2/7 rails reconciled | Currency service | CR-118 |
 | Fraud rules | In review | `███` 3/3 rule sets authored | review on CR-127 | unverified — see Not verified |
-| Currency service | In progress | `████████▓` 8/9 handlers implemented · `█████▓▓▓▓` 5/9 exposed (+2) | in hand | commit 4ab7de1 |
+| Currency service | In progress | `████████▓` 8/9 handlers implemented; `█████▓▓▓▓` 5/9 exposed (+2) | in hand | commit 4ab7de1 |
 | Locale bundles | In progress | 3 in progress · 3 shipped, of 6 | in hand | doc: locales.md#bundle-list |
 | Merchant onboarding | In progress | 9 partners integrated, total set not fixed | in hand | doc: partners.md#status |
 

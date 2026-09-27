@@ -1,8 +1,9 @@
 # Playwright capture harness
 
 A reusable, framework-agnostic capture script. Copy it, then change only
-the four clearly-marked repo-specific blocks: **API base**, **mock
-fixtures + routing**, **auth seed**, and the **capture matrix**.
+the four clearly-marked repo-specific blocks: the **preview port**, the
+**API base + mock fixtures and routing**, the **capture matrix**, and the
+**auth seed**.
 
 ## Why it is shaped this way
 
@@ -43,9 +44,11 @@ import fs from "node:fs";
 
 const SHOTS_DIR = "/tmp/uxsweep/shots";
 fs.mkdirSync(SHOTS_DIR, { recursive: true });
+// ── REPO-SPECIFIC 1/4: preview port ──────────────────────────────────
 const BASE_URL = "http://localhost:4173"; // the PREVIEW server, not dev
+// ─────────────────────────────────────────────────────────────────────
 
-// ── REPO-SPECIFIC 1/4: API base + mock fixtures ──────────────────────
+// ── REPO-SPECIFIC 2/4: API base + mock fixtures ──────────────────────
 const API_GLOB = "**/api/v1/**";        // match your app's client base
 const API_PREFIX = /^\/api\/v1\//;
 const USER = { _id: "u-1", username: "Avery Chen", email: "a@x.dev" };
@@ -83,7 +86,7 @@ const installMocks = async (context, { authed = true } = {}) => {
 const VIEWPORTS = { iphone13: { width: 390, height: 844 }, desktop: { width: 1280, height: 800 } };
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// ── REPO-SPECIFIC 2/4: capture matrix ────────────────────────────────
+// ── REPO-SPECIFIC 3/4: capture matrix ────────────────────────────────
 // [slug, urlPath, viewport, scheme, contrast, waitText, authed]
 const captures = [
     ["login", "/login", "desktop", "light", "no-preference", "Log in", false],
@@ -102,7 +105,7 @@ const run = async () => {
             viewport: vp, colorScheme: scheme, deviceScaleFactor: 2,
             hasTouch: isPhone, isMobile: isPhone
         });
-        // ── REPO-SPECIFIC 3/4: auth seed (token/session the app checks) ──
+        // ── REPO-SPECIFIC 4/4: auth seed (token/session the app checks) ──
         if (authed) await context.addInitScript(() => {
             try { window.sessionStorage.setItem("ai_jwt", "fake.jwt.token"); } catch (e) {}
         });
