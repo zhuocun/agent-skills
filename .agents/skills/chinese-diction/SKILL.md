@@ -141,7 +141,7 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 ## How to apply
 
 - **Create** — write to these principles from the first draft; far cheaper than retrofitting.
-- **Optimize** — read the whole text once and settle the five variables; scan by failure mode (1–6); run the three vocabulary tests (reference, stability, compression) on every nonstandard term; for a recurring load-bearing term, pick *one* replacement and apply it everywhere, including cross-references and any heading that names it; preserve fidelity (mode 7); resist over-correction (mode 4); then re-read cold.
+- **Optimize** — read the whole text before changing a word, so the five variables are settled from all of it rather than from the first paragraph; then revise against the failure modes and the vocabulary tests without over-correcting (mode 4), and check the result with the self-check.
 - **Translate** — read for *meaning*, then write that meaning as Chinese; never go clause-by-clause. Translation is where 翻译腔 creeps in most.
 
 ## Self-check
