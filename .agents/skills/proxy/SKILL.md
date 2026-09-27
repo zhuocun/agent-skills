@@ -183,11 +183,11 @@ reasoning budget it allows, and note the exception.
   than commentary of your own. Between dispatches and tool calls, write to the
   user when something they would want to know has changed: key progress or a
   milestone, an important finding from the subagents, a failure or stall, or a
-  decision point. Report a dispatched worker when it completes or fails; keep
+  decision point. Report a dispatched worker when it completes or fails. Keep
   the spine of the work legible. When a wait has a knowable end — a test suite,
   a CI pipeline, a dispatched worker — check once at that end rather than
-  polling at intervals, and if the state is unchanged, arm the next check; a
-  wait that outruns the end you expected is itself worth a line.
+  polling at intervals. If the state is unchanged, arm the next check. A wait
+  that outruns the end you expected is itself worth a line.
 - On completion (final-gate `done`), before reporting, housekeep: update the
   docs, records, and to-dos the work touched — dispatch a worker for any that
   need real work.

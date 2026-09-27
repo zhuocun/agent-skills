@@ -143,9 +143,9 @@ Per PNG, in both light and dark and at phone + desktop widths:
   coarse pointers.
 - **A11y modes:** drive `colorScheme`, `contrast: "more"`,
   `reducedMotion: "reduce"`, and `forcedColors: "active"` through
-  `emulateMedia` (these are the options it actually supports) — they are
-  routinely unstyled. If the installed Playwright's `emulateMedia` has no
-  `prefers-reduced-transparency` option, verify that one in code or manually.
+  `emulateMedia` — they are routinely unstyled. Drive
+  `prefers-reduced-transparency` the same way where the installed Playwright
+  supports it, and otherwise verify it in code or manually.
 - **Anti-patterns that look wrong but are correct:** intentional
   translucency/blur (glass), deliberately muted "coming soon" controls,
   brand-specific spacing. Confirm against tokens/design intent before
