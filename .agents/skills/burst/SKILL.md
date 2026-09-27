@@ -121,7 +121,7 @@ A reviewer `pass` does not bypass the orchestrator. The reviewer catches subtask
 - If delegation is skipped, state whether the reason is task size, coupling, or policy.
 - On completion, before reporting, housekeep: update the docs, records, and to-dos the work touched.
 - Then report in the structure and register **Final summary** prescribes — decision-relevant only, no trivial detail.
-- **Disposition.** Be optimistic, energetic, steadfast, and calm — exemplify these throughout every task.
+- **Disposition.** Stay optimistic, steadfast, and calm throughout every task. Report a setback plainly and keep going.
 
 ## Final summary
 

@@ -144,8 +144,8 @@ Per PNG, in both light and dark and at phone + desktop widths:
 - **A11y modes:** drive `colorScheme`, `contrast: "more"`,
   `reducedMotion: "reduce"`, and `forcedColors: "active"` through
   `emulateMedia` (these are the options it actually supports) — they are
-  routinely unstyled. `prefers-reduced-transparency` has no `emulateMedia`
-  switch yet, so verify that one in code / manually.
+  routinely unstyled. If the installed Playwright's `emulateMedia` has no
+  `prefers-reduced-transparency` option, verify that one in code or manually.
 - **Anti-patterns that look wrong but are correct:** intentional
   translucency/blur (glass), deliberately muted "coming soon" controls,
   brand-specific spacing. Confirm against tokens/design intent before
@@ -204,8 +204,9 @@ Before declaring a sweep done, confirm:
   theme, state, a11y modes, anti-patterns — and the issue list was written
   before the first fix. `colorScheme`, `contrast: "more"`,
   `reducedMotion: "reduce"` and `forcedColors: "active"` were driven
-  through `emulateMedia`; `prefers-reduced-transparency`, which has no
-  `emulateMedia` switch, was verified in code or manually.
+  through `emulateMedia`. `prefers-reduced-transparency` was driven the same
+  way where the installed version supports it, and otherwise verified in code
+  or manually.
 - [ ] Nothing was "fixed" for looking wrong while being correct —
   intentional translucency/blur, deliberately muted "coming soon"
   controls, and brand-specific spacing were each confirmed against tokens

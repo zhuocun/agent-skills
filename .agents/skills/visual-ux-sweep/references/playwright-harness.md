@@ -48,9 +48,10 @@ fs.mkdirSync(SHOTS_DIR, { recursive: true });
 const BASE_URL = "http://localhost:4173"; // the PREVIEW server, not dev
 // ─────────────────────────────────────────────────────────────────────
 
-// ── REPO-SPECIFIC 2/4: API base + mock fixtures ──────────────────────
+// ── REPO-SPECIFIC 2/4: API base + mock fixtures and routing ──────────
 const API_GLOB = "**/api/v1/**";        // match your app's client base
 const API_PREFIX = /^\/api\/v1\//;
+const IDENTITY_PATHS = ["users", "auth/me"]; // 401 when unauthed
 const USER = { _id: "u-1", username: "Avery Chen", email: "a@x.dev" };
 const fixtures = {
     // Return ARRAYS where the app maps over a collection (a scalar throws
@@ -60,7 +61,7 @@ const fixtures = {
 };
 const route = (pathname, method) => {
     const p = pathname.replace(API_PREFIX, "");
-    if (p === "users" || p === "auth/me") return USER; // identity → authed
+    if (IDENTITY_PATHS.includes(p)) return USER;       // identity → authed
     if (p in fixtures) return fixtures[p];
     return method === "GET" ? [] : { ok: true };       // safe defaults
 };
@@ -69,7 +70,7 @@ const route = (pathname, method) => {
 const installMocks = async (context, { authed = true } = {}) => {
     await context.route(API_GLOB, async (r, req) => {
         const p = new URL(req.url()).pathname.replace(API_PREFIX, "");
-        if (!authed && (p === "users" || p === "auth/me")) {
+        if (!authed && IDENTITY_PATHS.includes(p)) {
             return r.fulfill({ status: 401, contentType: "application/json", body: "{}" });
         }
         await r.fulfill({
