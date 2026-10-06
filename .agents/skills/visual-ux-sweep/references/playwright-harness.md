@@ -4,7 +4,9 @@ A reusable, framework-agnostic capture script. Copy it and keep its
 structure (mocks, content wait, error capture, verification) unchanged.
 Change only the four clearly-marked repo-specific blocks: the **preview
 port**, the **API base + mock fixtures and routing**, the **capture matrix
-(media + steps per entry)**, and the **auth + theme seed**.
+(media + steps per entry)**, and the **auth + theme seed**. The one edit
+outside them is the font-abort route in `installMocks`: delete it when the
+font host is reachable.
 
 ## Why it is shaped this way
 

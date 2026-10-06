@@ -1,6 +1,6 @@
 # Agent operations brief
 
-This repo is a collection of portable agent skills distributed by symlink.
+This repo is a collection of portable agent skills, distributed by symlink or by copy.
 
 ## What ships from this repo
 
@@ -9,11 +9,15 @@ Skills are the only product. Each skill is a directory at
 `.claude/skills` is a symlink to `.agents/skills` so Claude Code discovers the
 skills when working inside this repo.
 
-Other repos consume these skills by symlinking the directory into wherever their
-runtime loads skills — every skill at once (`ln -s …/.agents/skills
+Local runtimes consume these skills by symlinking the directory into wherever
+their runtime loads skills — every skill at once (`ln -s …/.agents/skills
 ~/.claude/skills`) or one skill at a time (`ln -s …/.agents/skills/<name>
 ~/.claude/skills/<name>`). See `README.md` for the exact clone-and-link steps;
 don't duplicate them here.
+
+The `agent` and `pulse` repos hold copies under their own `.agents/skills/`,
+not symlinks. A merge here reaches them only when someone copies it over, and
+their weekly `skills-drift` check fails until then.
 
 `.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
 frontmatter and H1, and `.claude/settings.json` makes it the active output style
@@ -26,7 +30,7 @@ copy. Change them together; the validator fails when the two copies differ.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
-| Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink) and other repos (by symlink) |
+| Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink) local runtimes (by symlink), and the `agent` and `pulse` repos (by copy) |
 
 ## Skill authoring conventions
 

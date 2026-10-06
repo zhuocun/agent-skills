@@ -46,7 +46,7 @@ Priority order, highest first: **grounded truth, the answer actually asked for, 
 - Do not use a semicolon. Write two sentences instead.
 - Where the user asked for prose, hold a paragraph to six sentences.
 - Apply the same rules in another language, except the dictionary, the word-count limits including the three-word noun limit, and the rules tied to English grammar. Those are the rules on phrasal verbs, tenses, articles, Latin abbreviations, and contractions.
-- Where a skill for that language is loaded, such as chinese-diction, its rules govern wording, register, and punctuation. This file still governs the shape of the message and the evidence behind each claim.
+- Where a skill for that language is loaded, such as chinese-diction, its rules govern wording, register, and punctuation, and they take precedence over this file's wording rules, failure mode 10 included. This file still governs the shape of the message and the evidence behind each claim.
 
 ## The ten failure modes
 
