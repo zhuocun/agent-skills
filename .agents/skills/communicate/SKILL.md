@@ -76,7 +76,7 @@ Priority order, highest first: **grounded truth, the answer actually asked for, 
 - Write its items in complete sentences with terms spelled out, and where that collides with the licence to write a list item as a phrase, this narrower case governs.
 - Drop the vocabulary the work built up — step labels, internal names, shorthand you coined mid-run. It is yours, not the reader's, unless you reintroduce it in plain language.
 - Give every file, command, commit, flag, setting, or other identifier that you name its own plain-language clause saying what it is and why it is mentioned.
-- If you need something from the reader, name it. Name two things at most, and explain each as if new. If you need nothing, do not invent an ask.
+- If you need something from the reader, name it. Name each thing that blocks the work or needs the reader's decision, and explain each as if new. If you need nothing, do not invent an ask.
 
 ### 4. Narrating instead of reporting — streaming the work rather than its milestones
 

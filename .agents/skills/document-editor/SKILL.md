@@ -247,7 +247,7 @@ Keep the owner-specified target language, register, and terminology scheme consi
 
 **Optimize mode** — edit directly, then summarize what was reorganized, what remained unchanged to preserve truth, what was removed or deduplicated, how protected content was accounted for, which evidence or actionability gaps improved, which checks ran, and what ambiguity remains.
 
-**Review mode** — report findings first, grouped by truth and authority, scope and reader path, abstraction and registry placement, decisions and evidence, actionability and governance, then presentation.
+**Review mode** — report findings first, grouped by truth and authority, scope and reader path, decisions and evidence, abstraction and registry placement, actionability and governance, then presentation.
 
 ## Self-check
 

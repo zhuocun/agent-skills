@@ -231,9 +231,9 @@ run().catch((e) => { console.error("fatal", e); process.exit(1); });
 ## Deep / nested / guarded routes
 
 A direct `goto` works for top-level routes. For a nested/guarded route,
-`goto` the parent and click in from the entry's `steps` — verified far more
-reliable than a deep-link `goto`, which can leave the child stuck in
-Suspense with only the app-shell queries fired:
+`goto` the parent and click in from the entry's `steps` — a deep-link
+`goto` can leave the child stuck in Suspense with only the app-shell
+queries fired:
 
 ```js
 const boardEntry = {
