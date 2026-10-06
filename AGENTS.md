@@ -16,8 +16,8 @@ their runtime loads skills — every skill at once (`ln -s …/.agents/skills
 don't duplicate them here.
 
 The `agent` and `pulse` repos hold copies under their own `.agents/skills/`,
-not symlinks. A merge here reaches them only when someone copies it over, and
-their weekly `skills-drift` check fails until then.
+not symlinks. A merge here reaches them only when someone copies it over. Until then, their
+weekly `skills-drift` check fails for each skill they hold that the merge changed.
 
 `.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
 frontmatter and H1, and `.claude/settings.json` makes it the active output style
@@ -30,7 +30,7 @@ copy. Change them together; the validator fails when the two copies differ.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
-| Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink) local runtimes (by symlink), and the `agent` and `pulse` repos (by copy) |
+| Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink), local runtimes (by symlink), and the `agent` and `pulse` repos (by copy) |
 
 ## Skill authoring conventions
 
@@ -85,7 +85,7 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 
 - **One concern per PR.** Keep PRs small and single-purpose, and squash-merge to keep `main` history clean. A larger change ships as a single PR only when its commits share one integration story — one logical commit per concern.
 - **Open a PR before wrapping up.** A task isn't finished until its changes are up for review; don't leave finished work stranded on a pushed branch with no PR. Check for an existing PR on the branch first. If that branch's earlier PR has already merged, branch off fresh `main` and open a new PR rather than pushing onto the dead branch.
-- **Watch CI, then merge on green.** After opening a PR, watch its checks (subscribe to PR activity, or poll the check runs). Once all required checks pass, squash-merge. If CI goes red, push a fix rather than leaving it stranded. A PR-activity subscription only wakes on *failures* and review comments — a green pass emits no event, so confirm success by polling the checks, not by waiting to be notified. Here, merging `main` publishes the canonical skills: symlinked consumers pick them up on their next pull, and the skills-drift checks in agent and pulse compare against `main`. Green CI is the merge gate.
+- **Watch CI, then merge on green.** After opening a PR, watch its checks (subscribe to PR activity, or poll the check runs). Once all required checks pass, squash-merge. If CI goes red, push a fix rather than leaving it stranded. A PR-activity subscription only wakes on *failures* and review comments — a green pass emits no event, so confirm success by polling the checks, not by waiting to be notified. Here, merging `main` publishes the canonical skills: symlinked consumers pick them up on their next pull, copied consumers (agent, pulse) only after a manual copy, and the skills-drift checks in agent and pulse compare against `main`. Green CI is the merge gate.
 - **Never bypass hooks.** Don't use `--no-verify` / `--no-gpg-sign`, especially on workflow-file changes. If a commit-msg or pre-commit hook fails, fix the cause and make a new commit — don't amend past it.
 
 > CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`),
