@@ -7,7 +7,8 @@ description: >-
   memos, and review docs when the work concerns authoring from sources, scope,
   reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
   registries, structured assets, document governance, concision, or
-  reviewability. Do not use for casual notes, chat replies, pure sentence-level
+  reviewability. Do not use for casual notes, chat replies, project status
+  reports in the status-report form (use status-report), pure sentence-level
   wording or translation polish, or agent-instruction files such as SKILL.md,
   prompts, workflows, or tool-routing docs.
 ---
@@ -20,15 +21,15 @@ Apply this priority order: **truth and authority → reader contract and scope �
 
 ## Hard prohibitions (owner-mandated)
 
-These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them.
+These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them. If the user explicitly asks for content a prohibition forbids, name the conflict and ask before including it, as with a template protection marker that conflicts with a prohibition. The skill's owner set these rules; everywhere else in this skill, "owner" means the document's owner.
 
-1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, correction notes, "as of"/"updated" markers, or before-vs-after narration. Fold every change into the owning passage so the document always reads as if written correct the first time.
-2. **No deferral to other documents.** Never offload content readers need to another document in the same working set through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
+1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, or correction notes, and no "updated" markers, "as of" notes, or before-vs-after narration that describe a change to the document. Fold every change into the owning passage so the document always reads as if written correct the first time. A date that bounds when a claim holds — a measurement date, data snapshot, or the evaluated version — is evidence and stays next to the claim.
+2. **No deferral to other documents.** Never offload content readers need to another document in the same working set — the documents being authored or edited together in this task — through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Naming an approved source as the authority for a claim is not deferral when the document also states the content the reader needs. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
 3. **No cross-references between sections.** No "see chapter 6", "as described above/below", or forward/backward pointers. Order sections so each is understandable where it stands; when another section's fact is needed, restate the minimum inline without naming the section.
-4. **Prefer titled bullets over paragraphs.** When 1–5 points suffice, present them as bullet points, each opening with a clear and precise title, rather than paragraph prose.
+4. **Prefer titled bullets over paragraphs.** When one to five parallel, independent points suffice, present them as bullet points, each opening with a clear and precise title, rather than paragraph prose. A causal chain or reasoning in which each sentence depends on the one before stays prose.
 5. **No unnecessary table columns.** Every column must carry decision-relevant information that varies across rows; drop or merge any column that repeats another, restates the row label, or exists only for symmetry.
 6. **No coined vocabulary or jargon.** Use plain words and terms established in the field or in the source material; never invent labels, metaphors, or shorthand names for the document's own concepts.
-7. **No direct code references.** Never cite class, method, function, or variable names, file paths, or line numbers in the document. Describe the behavior in business or domain terms instead. Identifiers that are part of the subject's own contract — table and field names, status enums, API fields — stay byte-exact.
+7. **No direct code references.** Never cite class, method, function, or variable names, file paths, or line numbers in the document. Describe the behavior in business or domain terms instead. Identifiers that are part of the subject's own contract, or that the reader must type or locate to act, stay byte-exact. These include table and field names, status enums, API fields, and, in a runbook or setup path, commands, configuration keys, and file paths.
 8. **No context-bound terms from other sections or documents.** Never use a term, code, or label whose meaning is established only in another section or another document — a bare error code, an internal task name, an abbreviation defined elsewhere. State the fact in plain wording in place; keep such a code only where the document itself establishes what it means.
 
 ## Modes
@@ -55,7 +56,7 @@ Choose and adapt the path that matches the reader's task:
 | --- | --- |
 | High-level design or review | Problem and goals → context and definitions → constraints → proposed design → success criteria → contracts and data semantics → affected systems → rollout strategy → risks and validation |
 | Implementation design or runbook | Scope and prerequisites → current and target behavior → detailed changes → data flow and edge cases → migration and operations → testing, observability, rollout, and rollback → risks and open questions |
-| Decision memo, ADR, or RFC | Context → decision → options → evaluation and tradeoffs → decision or recommendation → consequences and re-evaluation triggers |
+| Decision memo, ADR, or RFC | Context → decision or recommendation → options → evaluation and tradeoffs → consequences and re-evaluation triggers |
 | Research report | Question and scope → sources and method → findings and provenance → analysis and limitations → conclusions or recommendations → unresolved questions |
 | Technical solution or adoption guide | Audience and bottleneck → current limits → proposed capability → proof → usage path → alternatives → internals → failure modes and mitigations → next steps |
 | Workflow or guidance | Applicability → classification or diagnosis → source-grounding steps → operating workflow → verification → escalation and limitations |
@@ -107,7 +108,7 @@ When a document set splits material across volumes, apply the same layer boundar
 
 1. Give each definition, decision, invariant, complete comparison, and document-level disclaimer one authoritative location. Elsewhere, restate only the minimum a reader needs in place; do not maintain competing full copies.
 2. Keep classification and evaluation axes orthogonal. Do not mix or substitute criteria that answer different questions.
-3. Apply hard prohibitions 7 and 8: describe code behavior in business or domain terms, keep every term readable where it stands, and preserve stable contract identifiers exactly when they are part of the subject.
+3. Apply hard prohibitions 7 and 8: describe code behavior in business or domain terms, keep every term readable where it stands, and preserve stable contract identifiers and the operator-facing identifiers a reader must type or locate exactly.
 4. Apply hard prohibition 1; integrate corrections into the owning passage.
 
 ### Decisions, evidence, and actionability
@@ -134,7 +135,7 @@ Keep three layers distinct:
 
 1. **Decision narrative** (main reading path): only the minimum facts, conditions, conclusions, costs, and re-evaluation triggers needed for the current review. Do not reproduce full ledger entries or point readers to the appendix.
 2. **Registries and audit ledgers** (appendix of the same document): the unique, complete open-issue, blocker, and verification ledgers.
-3. **Operational detail:** operational details do not enter the decision narrative.
+3. **Operational detail** (procedures, runbook steps, configuration): kept out of the decision narrative. Place it with the implementation layer later in the same document, or omit it when the reader contract does not need it.
 
 Rules:
 
@@ -206,7 +207,7 @@ Edit an existing document without changing its meaning. The source document's co
 3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
 4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
 5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
-6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record — your working notes and your summary to the user, not a file in the document's repository unless the owner names one — or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
 7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
 8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
@@ -260,7 +261,7 @@ Shared:
 - Does each important claim retain its mechanism, evidence, limitation, relevant alternatives, risk, and actionable consequence?
 - Did all applicable deterministic checks and renderers pass, or are skipped checks and their consequences reported?
 - Is the document free of internal contradictions, duplicate rules, editor-process residue, and project- or task-specific assumptions that the owner did not request?
-- Do all eight hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where 1–5 points suffice, no unnecessary table columns, no coined vocabulary, no direct code references, and no terms that depend on context established in another section or document?
+- Do all eight hard prohibitions hold: no update residue, no deferral to other documents in the same working set, no cross-references between sections, titled bullets where one to five parallel points suffice, no unnecessary table columns, no coined vocabulary, no direct code references beyond contract and operator-facing identifiers, and no terms that depend on context established in another section or document?
 
 Create only:
 
