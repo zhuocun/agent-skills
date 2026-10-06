@@ -170,7 +170,7 @@ Lead with Blockers and Majors. Do not drown a real crash under nits.
 
 - One finding per issue, led by its severity: **`[Severity] file:line`**, then what throws or fails and the input or render that triggers it, each as a full sentence, then the fix.
 - Show the fix as a minimal diff or exact replacement, not a paraphrase.
-- Separate "will throw" from "could throw" from "smell" — calibrated severity is what makes the review trustworthy. Invent no issues; if unsure a path is reachable, say so and mark confidence.
+- Separate "will throw" from "could throw" from "smell" — calibrated severity is what makes the review trustworthy. If unsure a path is reachable, say so and mark confidence.
 - If the diff is clean on an axis, say so in a line rather than padding.
 
 ## Self-check
