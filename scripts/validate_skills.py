@@ -2,8 +2,9 @@
 """Validate the skill files this repository ships.
 
 Every rule enforced here is stated in AGENTS.md ("Skill authoring conventions"
-and "What ships from this repo"). Rules that AGENTS.md only describes loosely
-are deliberately not enforced; see the module docstring of each check.
+and "What ships from this repo"). Rules that AGENTS.md describes only loosely
+(a dense description, a one-paragraph role statement, a priority order,
+numbered passes) are deliberately not enforced.
 
 Usage:
     python3 scripts/validate_skills.py [--root PATH]
@@ -31,6 +32,12 @@ except ModuleNotFoundError:  # pragma: no cover - environment problem, not a rep
 
 SKILLS_DIR = Path(".agents/skills")
 SYMLINK = Path(".claude/skills")
+OUTPUT_STYLE_MIRRORS = (
+    (Path(".claude/output-styles/baseline.md"), Path(".agents/skills/communicate/SKILL.md")),
+)
+SHARED_REFERENCES = (
+    (Path(".agents/skills/burst/references/cli-dispatch.md"), Path(".agents/skills/proxy/references/cli-dispatch.md")),
+)
 REQUIRED_KEYS = ("name", "description")
 FENCE = "---"
 
@@ -42,7 +49,10 @@ CHECKS = (
     ("h1-title", "the body opens with an `# ` H1 title"),
     ("self-check-section", "the body has a `## Self-check` section"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
+    ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
+    ("shared-reference-identical", "each reference file two skills share is byte-identical in both"),
 )
+REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror", "shared-reference-identical"}
 
 
 @dataclass(frozen=True)
@@ -64,7 +74,7 @@ Result = tuple[list[Failure], list[Skipped]]
 
 def skip_rest(after: str, where: str, reason: str) -> list[Skipped]:
     """Checks that cannot be evaluated once an earlier check failed for this file."""
-    names = [name for name, _ in CHECKS if name not in {"claude-skills-symlink"}]
+    names = [name for name, _ in CHECKS if name not in REPO_CHECKS]
     return [Skipped(name, where, reason) for name in names[names.index(after) + 1 :]]
 
 
@@ -98,6 +108,62 @@ def check_symlink(root: Path) -> list[Failure]:
     if not resolved.is_dir():
         return [Failure("claude-skills-symlink", where, f"resolves to `{resolved}`, which is not a directory")]
     return []
+
+
+def mirrored_body(path: Path) -> str:
+    """Return the text below the frontmatter and the opening H1, minus the one blank line after the H1.
+
+    Everything else, trailing blank lines included, is compared exactly. Raises ValueError if the
+    frontmatter or the H1 is absent.
+    """
+    _, body = split_frontmatter(path.read_text(encoding="utf-8"))
+    index = next((i for i, line in enumerate(body) if line.strip()), None)
+    if index is None or not body[index].startswith("# "):
+        raise ValueError("body does not open with an `# ` H1 title")
+    rest = body[index + 1 :]
+    if rest and not rest[0].strip():
+        rest = rest[1:]
+    return "\n".join(rest)
+
+
+def check_output_style_mirrors(root: Path) -> list[Failure]:
+    failures: list[Failure] = []
+    for style, skill in OUTPUT_STYLE_MIRRORS:
+        where = str(style)
+        bodies: list[str] = []
+        for path in (style, skill):
+            if not (root / path).is_file():
+                failures.append(Failure("output-style-mirror", str(path), "does not exist; the output style and its skill ship as a mirrored pair"))
+                continue
+            try:
+                bodies.append(mirrored_body(root / path))
+            except ValueError as exc:
+                failures.append(Failure("output-style-mirror", str(path), str(exc)))
+        if len(bodies) == 2 and bodies[0] != bodies[1]:
+            style_lines, skill_lines = bodies[0].split("\n"), bodies[1].split("\n")
+            index = next(
+                (i for i, (a, b) in enumerate(zip(style_lines, skill_lines)) if a != b),
+                min(len(style_lines), len(skill_lines)),
+            )
+            line = (style_lines + ["<end of file>"])[index].strip()[:60]
+            first = f"`{line}`" if line else "a blank line"
+            failures.append(Failure("output-style-mirror", where, f"body differs from `{skill}`, first at body line {index + 1} ({first}); edit both files together"))
+    return failures
+
+
+
+def check_shared_references(root: Path) -> list[Failure]:
+    failures: list[Failure] = []
+    for copies in SHARED_REFERENCES:
+        missing = [str(path) for path in copies if not (root / path).is_file()]
+        if missing:
+            failures.extend(Failure("shared-reference-identical", where, "does not exist; the skills that share it each ship a copy") for where in missing)
+            continue
+        first = (root / copies[0]).read_bytes()
+        for path in copies[1:]:
+            if (root / path).read_bytes() != first:
+                failures.append(Failure("shared-reference-identical", str(path), f"differs from `{copies[0]}`; edit every copy together"))
+    return failures
 
 
 def check_skill(directory: Path, root: Path) -> Result:
@@ -183,7 +249,7 @@ def main() -> int:
         sys.stderr.write(f"validate_skills: {skills_root} contains no skill directories\n")
         return 2
 
-    failures: list[Failure] = check_symlink(root)
+    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root) + check_shared_references(root)
     skips: list[Skipped] = []
     for directory in directories:
         directory_failures, directory_skips = check_skill(directory, root)

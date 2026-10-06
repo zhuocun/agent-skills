@@ -1,11 +1,11 @@
 ---
 name: cr-fe
-description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Not for backend services, infrastructure, or non-UI logic.
+description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings. Not for checking how the running app renders, such as layout, theme, or visual regressions seen in screenshots (use visual-ux-sweep), and not for backend services, infrastructure, or non-UI logic.
 ---
 
 # Frontend Code Review
 
-Review frontend code so it cannot throw at runtime, recovers when something does, and stays legible as it grows. This extends a general comprehensive review with the failure modes specific to the browser: untyped data crossing boundaries, a render loop you do not control, and structure that hides both.
+Review frontend code so it cannot throw at runtime, recovers when something does, and stays legible as it grows. Report general logic bugs you find as well; the passes below add the failure modes specific to the browser: untyped data crossing boundaries, a render loop you do not control, and structure that hides both.
 
 Priority order, highest first: **runtime safety → error handling → hook/effect correctness → type honesty → code smell → layering.** A crash outranks a smell; fix correctness before structure.
 
@@ -51,7 +51,7 @@ Rule: `?.` + `??` at the boundary is good; deep `?.` in business logic is usuall
 Where "looks fine, throws later" lives:
 
 - `||` for defaults eats valid `0`, `""`, `false` → use `??` when those are valid values.
-- `Number(x)` and `parseInt(x)` both yield `NaN`, which poisons math and comparisons, but differ: `Number(x)` is strict (`'12px'` → `NaN`), while `parseInt(x[, radix])` is lenient (`'12px'` → `12`) and needs an explicit radix → pick deliberately, then validate with `Number.isFinite`. `NaN === NaN` is `false`, so test with `Number.isNaN`, never `=== NaN`.
+- `Number(x)` and `parseInt(x)` both yield `NaN`, which poisons math and comparisons, but differ: `Number(x)` is strict (`'12px'` → `NaN`), while `parseInt(x[, radix])` is lenient (`'12px'` → `12`) and needs an explicit radix → pick deliberately, then validate with `Number.isFinite`. `NaN === NaN` is `false`, so test with `Number.isNaN`, never `=== NaN`. `Number('')`, `Number('  ')` and `Number(null)` are `0`, not `NaN`, so a cleared field passes `Number.isFinite` as `0` → reject null and blank input explicitly (`s == null || s.trim() === ''`) before converting.
 - `JSON.parse` throws on bad input → wrap it with a typed fallback (see Error handling).
 - Template literals and `String()` turn `null` / `undefined` into the literal strings `"null"` / `"undefined"` shown to users → guard first.
 - `new Date(x)` can be `Invalid Date` → check before formatting.
@@ -60,7 +60,7 @@ Where "looks fine, throws later" lives:
 
 ### Common throw sites
 
-Array methods on possibly-non-arrays; destructuring `undefined` (`const { a } = obj` → default `= {}`); index access assumed present; storage reads (`JSON.parse(localStorage.getItem(...))` — both the read and the parse can fail); `e.target` shape assumptions; index-as-`key` in lists that reorder, insert, or delete (not append-only) → React reuses the wrong instance: stale input values, wrong state, not necessarily a crash. A controlled `value={x}` where `x` may be `undefined`/`null` flips the input uncontrolled→controlled (React warns; cursor/state can reset) → default `value={x ?? ''}`.
+Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const { a } = obj` → `const { a } = obj ?? {}`; a parameter default `= {}` covers only `undefined`, not the `null` JSON returns); index access assumed present; storage reads (`JSON.parse(localStorage.getItem(...))` — both the read and the parse can fail); `e.target` shape assumptions; index-as-`key` in lists that reorder, insert, or delete (not append-only) → React reuses the wrong instance: stale input values, wrong state, not necessarily a crash. A controlled `value={x}` where `x` may be `undefined`/`null` flips the input uncontrolled→controlled (React warns; cursor/state can reset) → default `value={x ?? ''}`.
 
 ### Injection & data integrity
 
@@ -76,12 +76,12 @@ These are Blockers:
 
 - **Wrap what throws**: `JSON.parse`, network and `await fetch`, storage (can throw on quota or in private mode), dynamic `import()`, third-party SDK calls, any parse of untrusted input.
 - **Never swallow.** An empty `catch {}` turns a crash into silent wrong behavior, which is worse. Every catch must do one thing: recover with a real fallback, surface to the user (error state or toast), or rethrow / log *with context*.
-- **Async correctness.** A missing `await` means try-catch catches nothing — `try { doAsync() }` without `await` is a no-op guard. Promise chains need `.catch`. `Promise.all` rejects on the first failure (the sibling promises still run; `Promise.all` doesn't cancel them, so their later rejections can surface); use `allSettled` when partial success is acceptable.
-- **Limits of catching.** Error Boundaries catch render and lifecycle throws but **not** event handlers, async code, or the legacy synchronous `renderToString` — those need their own handling; streaming SSR (`renderToPipeableStream`) *does* invoke boundaries for throws inside a `<Suspense>` and fires `onError`. A try-catch in render only catches synchronous render throws.
+- **Async correctness.** A missing `await` means try-catch catches nothing — `try { doAsync() }` without `await` is a no-op guard. Promise chains need `.catch`. `Promise.all` rejects on the first failure (the sibling promises still run, since `Promise.all` doesn't cancel them, so their side effects still happen; their later rejections are absorbed silently); use `allSettled` when partial success is acceptable.
+- **Limits of catching.** Error Boundaries catch render and lifecycle throws but **not** event handlers, async code, or the legacy synchronous `renderToString` — those need their own handling. With streaming SSR (`renderToPipeableStream`), a server throw inside `<Suspense>` emits that boundary's fallback, fires `onError`, and retries on the client; an error boundary catches it only if the client render also throws. A try-catch in a component catches only that component's own synchronous code, never its children's render.
 
 ## Hooks & effects
 
-React-first; the principles map to Vue `watch` / `computed`, Svelte runes / `$:`, and Solid `createEffect`. One caveat: the missing-dependency / stale-closure failure mode is React-specific, because Vue, Svelte, and Solid all auto-track reactive dependencies — manual dependency arrays don't transfer. What does transfer is cleanup discipline and "derive, don't effect."
+React-first; the principles map to Vue `watch` / `computed`, Svelte runes / `$:`, and Solid `createEffect`. Manual dependency arrays are React-specific, but missed dependencies are not: Vue `watch` tracks only its declared source, never reads inside the callback; `watchEffect`, Svelte `$effect`, and Solid `createEffect` track only synchronous reads, so anything read after an `await` or inside a timer is untracked; Svelte's legacy `$:` statements track only variables referenced directly in the statement. What transfers unchanged is cleanup discipline and "derive, don't effect."
 
 ### Dependency arrays
 
@@ -98,7 +98,7 @@ The array says "re-run when these change," so it must list every reactive value 
 - **You might not need the effect.** Syncing state from props, transforming data for render, or reacting to a user event are not effects — compute during render (or `useMemo`), or do the work in the handler. An effect whose only job is `setState` from other state is almost always wrong: an extra render plus loop risk. For the genuine "reset state when a prop changes" case, prefer a `key` to remount or the previous-prop-compare set-during-render pattern, not an effect.
 - **`ref.current` during render** — don't read it to compute JSX or write it during render; refs are escape-hatch mutable values for effects and handlers, and mutating during render breaks purity and concurrent features.
 - **React 18 / 19**: `use(promise)` or a thrown promise needs an enclosing `<Suspense>` plus an error boundary for the reject path; Server Components can't call hooks or hold state.
-- **Rules of hooks**: top level only, same order every render, no hooks after a conditional or early return; custom hooks start with `use`.
+- **Rules of hooks**: call hooks at the top level, never inside conditions, loops, or nested functions, and never after a conditional early return; custom hooks start with `use`. `use(promise | context)` is not a hook and may be called conditionally.
 - **`useMemo` / `useCallback`** earn their place only when the computation is genuinely expensive, or the identity is itself a dependency of another hook or a memoized child. Memoizing everything is a smell, and wrong deps make it silently stale.
 
 ## Type honesty
@@ -127,6 +127,8 @@ Highest-signal, frontend-specific:
 
 ## Folder structure & layering
 
+Judge layering against the repo's existing or documented convention first; use the template below only when there is none or the user asks about structure. On a diff review, flag only structure the diff introduces or worsens.
+
 Organize so code is findable by feature and by role, and so dependencies flow one direction. Avoid the flat `components/` holding 80 unrelated files — and avoid the opposite, a folder per file.
 
 Feature-first layout:
@@ -150,7 +152,7 @@ Rules:
 - **Co-locate by feature**; promote to `shared` only when two or more features use it.
 - **One-way dependencies**: `app → features → shared`. Features import one another only through the public `index.ts`, never internals; `shared` never imports a feature.
 - **Separate presentational from container/logic.** This is the layering that keeps the runtime-safety review tractable — boundaries land in `api` and `hooks`, not buried in JSX.
-- **One responsibility per file**; a file past ~200–300 lines, or exporting many unrelated things, wants splitting.
+- **One responsibility per file**; a file past ~200–300 lines (or the repo's own threshold), or exporting many unrelated things, wants splitting.
 - **Add a layer only when it groups roughly three or more related files or separates a real concern** — over-nesting costs as much as flattening.
 
 ## Severity & triage
@@ -175,11 +177,12 @@ Lead with Blockers and Majors. Do not drown a real crash under nits.
 
 - [ ] Every boundary value (network, input, params, storage, browser, SDK, untrusted prop) is guarded, defaulted, or validated before access, transform, or render.
 - [ ] `?.` is paired with a real fallback at boundaries, not deferring a crash or masking an invariant; no decorative deep chains.
-- [ ] Coercion is safe: `??` not `||` where `0` / `""` / `false` are valid; `NaN` and `Invalid Date` checked; `parseInt` has a radix; `JSON.parse` is wrapped.
+- [ ] Coercion is safe: `??` not `||` where `0` / `""` / `false` are valid; `NaN` and `Invalid Date` checked; blank string → `0` handled before `Number`; `parseInt` has a radix; `JSON.parse` is wrapped.
+- [ ] List keys are stable ids, not indexes, where items reorder, insert, or delete.
 - [ ] No injection: `dangerouslySetInnerHTML` / `innerHTML` is sanitized, `href` / `src` / `window.location` schemes are validated; and no path silently loses user input (uncontrolled→controlled reset, direct mutation, unsaved-state navigation).
 - [ ] No `any` / `as` / `!` standing in for real validation at a boundary.
 - [ ] try-catch covers what throws and no catch is swallowed; `await` is present where rejections must be caught; `all` vs `allSettled` is correct.
-- [ ] Hook deps are exhaustive and stable; effects clean up; fetch effects handle races; no effect that should be a handler or a render-time computation.
+- [ ] Hook deps are exhaustive and stable; effects clean up; fetch effects handle races; no effect that should be a handler or a render-time computation; rules of hooks hold; no `async` effect callback; no `ref.current` read or write during render; `use`/suspending code has `<Suspense>` plus an error boundary.
 - [ ] No god components, duplication, prop drilling, flag soup, magic values, or direct mutation.
-- [ ] Structure is feature-layered with one-way deps and a presentational/logic split — neither flattened nor over-nested.
+- [ ] Structure the diff touches follows the repo's layering convention (or the template if none), with one-way deps and a presentational/logic split — neither flattened nor over-nested.
 - [ ] Findings cite `file:line` with a concrete failure path, calibrated severity, and a precise fix.
