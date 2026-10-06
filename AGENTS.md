@@ -15,6 +15,11 @@ runtime loads skills — every skill at once (`ln -s …/.agents/skills
 ~/.claude/skills/<name>`). See `README.md` for the exact clone-and-link steps;
 don't duplicate them here.
 
+`.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
+frontmatter and H1, and `.claude/settings.json` makes it the active output style
+(`Baseline`). Edit both files together; the validator fails when the bodies
+differ.
+
 | Surface | Source | Consumed by |
 | --- | --- | --- |
 | Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink) and other repos (by symlink) |
@@ -22,12 +27,13 @@ don't duplicate them here.
 ## Skill authoring conventions
 
 Derived from the skills already in this repo (`burst`, `chinese-diction`,
-`cr-fe`, `document-editor`):
+`cr-fe`, `document-editor`, `status-report`):
 
 - **One directory per skill**, and the directory name must equal the skill's
   `name` frontmatter field. The directory holds a `SKILL.md`, plus optional
   `references/` and `agents/` subdirectories when a skill needs them.
-- **YAML frontmatter** with two keys: `name`, and a dense `description`. The
+- **YAML frontmatter** with two required keys, `name` and a dense
+  `description`; other keys are allowed. The
   description carries the routing triggers inline — a "Use when…" clause and,
   where the skill is easily over-applied, a "Do not use for…" clause (see
   `cr-fe`, `document-editor`, `chinese-diction`).
@@ -37,8 +43,8 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
   Maintenance section.
 - **Body pattern:** an `# H1` title, a one-paragraph statement of the skill's
   role, an explicit priority order where the work is ranked (e.g. `cr-fe`'s
-  "runtime safety → … → layering", `burst`'s orchestrator → worker → reviewer →
-  orchestrator chain), the substance as numbered passes or failure modes
+  "runtime safety → … → layering", `status-report`'s "grounded evidence → … →
+  fixed form"), the substance as numbered passes or failure modes
   (`cr-fe`'s review passes, `chinese-diction`'s seven failure modes), and a
   terminal `## Self-check` the agent runs before declaring done.
 - **Write for an agent, not a human reader.** Skills are instructions a model
@@ -71,7 +77,7 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 
 - **One concern per PR.** Keep PRs small and single-purpose, and squash-merge to keep `main` history clean. A larger change ships as a single PR only when its commits share one integration story — one logical commit per concern.
 - **Open a PR before wrapping up.** A task isn't finished until its changes are up for review; don't leave finished work stranded on a pushed branch with no PR. Check for an existing PR on the branch first. If that branch's earlier PR has already merged, branch off fresh `main` and open a new PR rather than pushing onto the dead branch.
-- **Watch CI, then merge on green.** After opening a PR, watch its checks (subscribe to PR activity, or poll the check runs). Once all required checks pass, squash-merge. If CI goes red, push a fix rather than leaving it stranded. A PR-activity subscription only wakes on *failures* and review comments — a green pass emits no event, so confirm success by polling the checks, not by waiting to be notified. Merging `main` triggers the production deploy, so green CI is the merge gate.
+- **Watch CI, then merge on green.** After opening a PR, watch its checks (subscribe to PR activity, or poll the check runs). Once all required checks pass, squash-merge. If CI goes red, push a fix rather than leaving it stranded. A PR-activity subscription only wakes on *failures* and review comments — a green pass emits no event, so confirm success by polling the checks, not by waiting to be notified. Here, merging `main` publishes the canonical skills: symlinked consumers pick them up on their next pull, and the skills-drift checks in agent and pulse compare against `main`. Green CI is the merge gate.
 - **Never bypass hooks.** Don't use `--no-verify` / `--no-gpg-sign`, especially on workflow-file changes. If a commit-msg or pre-commit hook fails, fix the cause and make a new commit — don't amend past it.
 
 > CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`),
@@ -81,4 +87,7 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > frontmatter parses as a YAML mapping, `name` and `description` are present and non-empty,
 > `name` equals the directory name, the body opens with an `# ` H1, the body carries a
 > `## Self-check` section, and `.claude/skills` still resolves to `.agents/skills`.
-> Frontmatter keys beyond those two are allowed. Run the same command locally before pushing.
+> Frontmatter keys beyond those two are allowed. It also runs `output-style-mirror`: below
+> the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
+> must equal `communicate/SKILL.md` line for line, trailing blank lines included. Run the same
+> command locally before pushing.
