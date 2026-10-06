@@ -1,7 +1,7 @@
 ---
 name: status-report
 description: >-
-  Produce a one-page project status report with fixed slots — Ledger, Moved since, Needs a person, Health, Not verified — for a capable peer who was not watching the work. Use when asked for a project-level status report or update — where a project or its workstreams stand, a weekly or milestone report, a state-of-play summary, or a hand-off snapshot of a project. Also use when editing or reviewing an existing status report; keep this form. Do not use for changelogs, release notes, retrospectives, plans, roadmaps, metrics dashboards, or an activity log of what was worked on — this is a state document, so forward per-item actions and effort narratives belong elsewhere. Do not use for a quick progress note on the task in hand, which is an ordinary reply, or for recovering context after a compaction (use reorient).
+  Produce a one-page project status report with fixed slots — Ledger, Moved since, Needs a person, Health, Not verified — for a capable peer who was not watching the work. Use when asked for a project-level status report or update — where a project or its workstreams stand, a weekly or milestone report, a state-of-play summary, or a hand-off snapshot of a project. Also use when editing or reviewing an existing report in this form; keep the form. Do not use for changelogs, release notes, retrospectives, plans, roadmaps, metrics dashboards, or an activity log of what was worked on — this is a state document, so forward per-item actions and effort narratives belong elsewhere. Do not use for a quick progress note on the task in hand, which is an ordinary reply, or for recovering context after a compaction (use reorient).
 ---
 
 # Project Status Report

@@ -20,6 +20,10 @@ frontmatter and H1, and `.claude/settings.json` makes it the active output style
 (`Baseline`). Edit both files together; the validator fails when the bodies
 differ.
 
+`burst` and `proxy` share the Model selection table, the tier list, the source
+order, and `references/cli-dispatch.md`, which each skill ships as an identical
+copy. Change them together; the validator fails when the two copies differ.
+
 | Surface | Source | Consumed by |
 | --- | --- | --- |
 | Skills | `.agents/skills/<name>/SKILL.md` | Claude Code (in-repo via the `.claude/skills` symlink) and other repos (by symlink) |
@@ -89,5 +93,6 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > `## Self-check` section, and `.claude/skills` still resolves to `.agents/skills`.
 > Frontmatter keys beyond those two are allowed. It also runs `output-style-mirror`: below
 > the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
-> must equal `communicate/SKILL.md` line for line, trailing blank lines included. Run the same
-> command locally before pushing.
+> must equal `communicate/SKILL.md` line for line, trailing blank lines included. And it runs
+> `shared-reference-identical`: the `burst` and `proxy` copies of `references/cli-dispatch.md`
+> must be byte-identical. Run the same command locally before pushing.

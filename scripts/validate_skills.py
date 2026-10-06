@@ -35,6 +35,9 @@ SYMLINK = Path(".claude/skills")
 OUTPUT_STYLE_MIRRORS = (
     (Path(".claude/output-styles/baseline.md"), Path(".agents/skills/communicate/SKILL.md")),
 )
+SHARED_REFERENCES = (
+    (Path(".agents/skills/burst/references/cli-dispatch.md"), Path(".agents/skills/proxy/references/cli-dispatch.md")),
+)
 REQUIRED_KEYS = ("name", "description")
 FENCE = "---"
 
@@ -47,8 +50,9 @@ CHECKS = (
     ("self-check-section", "the body has a `## Self-check` section"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
     ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
+    ("shared-reference-identical", "each reference file two skills share is byte-identical in both"),
 )
-REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror"}
+REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror", "shared-reference-identical"}
 
 
 @dataclass(frozen=True)
@@ -147,6 +151,21 @@ def check_output_style_mirrors(root: Path) -> list[Failure]:
     return failures
 
 
+
+def check_shared_references(root: Path) -> list[Failure]:
+    failures: list[Failure] = []
+    for copies in SHARED_REFERENCES:
+        missing = [str(path) for path in copies if not (root / path).is_file()]
+        if missing:
+            failures.extend(Failure("shared-reference-identical", where, "does not exist; the skills that share it each ship a copy") for where in missing)
+            continue
+        first = (root / copies[0]).read_bytes()
+        for path in copies[1:]:
+            if (root / path).read_bytes() != first:
+                failures.append(Failure("shared-reference-identical", str(path), f"differs from `{copies[0]}`; edit every copy together"))
+    return failures
+
+
 def check_skill(directory: Path, root: Path) -> Result:
     failures: list[Failure] = []
     skill_md = directory / "SKILL.md"
@@ -230,7 +249,7 @@ def main() -> int:
         sys.stderr.write(f"validate_skills: {skills_root} contains no skill directories\n")
         return 2
 
-    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root)
+    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root) + check_shared_references(root)
     skips: list[Skipped] = []
     for directory in directories:
         directory_failures, directory_skips = check_skill(directory, root)

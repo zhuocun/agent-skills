@@ -50,7 +50,7 @@ Give a concise recap:
 2. **What is finished** — each item backed by a verifiable anchor (commit sha, PR number, merged/CI state, file, or wherever a non-git output lives), so the user can check it. List unverified items apart, marked unverified.
 3. **The to-dos** — the ordered remaining work from Pass 3.
 
-Item 1 is the recap's answer, so open with it even where a style rule says to lead with the answer.
+Item 1 is the recap's answer line, so leading with it satisfies an answer-first rule.
 
 End by resuming the top to-do or asking which to take, per what the user signalled. When a burst or proxy run is driving to a definition of done, resume the top to-do without waiting for confirmation.
 

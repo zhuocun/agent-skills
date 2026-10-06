@@ -228,10 +228,11 @@ carry it: the `Workflow` tool (`agent(prompt, {model, effort})`), and a custom
 subagent whose frontmatter sets `model` and `effort`, dispatched through the
 `Agent` tool's `subagent_type`. **The `Workflow` tool needs the user's explicit
 opt-in. It holds when the user invoked or named this skill (for example
-`/proxy`) or asked for subagents or a workflow in the current task. It does not
-hold when you loaded the skill yourself or the skill carries over from an
-earlier task; then dispatch through a custom subagent, or through `claude -p`
-when that route is unavailable, and tell the user which route ran.** Write each
+`/proxy`) or asked for subagents or a workflow in the current task, or when
+ultracode is on for the session. It does not hold when you loaded the skill
+yourself or the skill carries over from an earlier task; then dispatch through a
+custom subagent, or through `claude -p` when that route is unavailable, and tell
+the user which route ran.** Write each
 custom subagent as `~/.claude/agents/<name>.md`, one file per model and effort
 pair, so no file lands in the user's repository; set `disallowedTools: Agent,
 Workflow` in its frontmatter so it stays a leaf, and pass the brief as the
@@ -312,6 +313,8 @@ nothing.
 Before declaring the task done, confirm:
 
 - [ ] The decomposition came from an orchestrator-consultant, not from you.
+- [ ] Every brief, including each worker brief the orchestrator-consultant
+  drafted, told the delegate it is a leaf.
 - [ ] Independent workers were dispatched concurrently, not needlessly
   serialized.
 - [ ] Every worker artifact passed an independent reviewer with a grounded
