@@ -5,28 +5,52 @@ the source, model family, effort and Fast scope; this file carries that
 assignment into the invocation and checks the result. Apply the common guards
 and the selected source's guidance on every dispatch.
 
-Re-check installed help and fresh account catalogs before dispatch. The
-mechanisms below were checked on 2026-10-07 against Claude Code 2.1.284, Codex
-CLI 0.160.0, Cursor 2026.09.26-dd393fe and Devin 3000.11.3. A catalog or
-configuration records availability or selection; it does not prove which
-model or serving tier handled a turn.
+Discover capabilities in the dispatch environment before using the source
+guidance below. Confirm the installed product, its supported platform and
+provider, current help/configuration schema, and a fresh applicable model
+catalog. Use a flag, setting, output field or sandbox mechanism only when that
+build and host support it. These are dispatch mechanisms, not requirements to
+install a CLI or change persistent configuration. A catalog or configuration
+records availability or selection; it does not prove which model or serving
+tier handled a turn.
+
+Shell commands below are **POSIX illustrations**, not universal command lines.
+Replace placeholders and quote literal prompts, paths and JSON/TOML values for
+the actual shell. Prefer an argument-vector process API when available. In
+other shells or launchers, use their executable lookup, child environment and
+stdin-close/null-input equivalents. Do not paste POSIX redirection or variable
+assignment into a different shell unchanged.
 
 ## Rules for every CLI
 
-- **Availability**: resolve the binary with `command -v` and check a supported
-  credential route for the planned invocation, using its actual environment,
-  provider and settings. Saved-login status alone does not validate or rule out
-  per-run credentials. Diagnose credential and transport failures separately.
+- **Availability**: resolve and identify the executable in the child's runtime
+  (`command -v` in a POSIX shell), then check platform support and a supported
+  credential route using that invocation's environment, provider and settings.
+  A binary on the parent machine does not establish access in a remote host,
+  container or other runtime. Saved-login status alone does not validate or rule
+  out per-run credentials. Diagnose credential and transport failures separately.
   Retry a failed catalog request through an already authorized network or proxy
   route where available, and disclose unresolved availability before falling
   back. Treat a family as absent only when a successfully retrieved applicable
   catalog contains no required top-tier model. Skip unavailable sources in the
   family's order; never substitute a forbidden tier.
-- **Prompt and EOF**: pass the prompt as an argument and close stdin with
-  `< /dev/null`. An open pipe can leave the child waiting for EOF. For a long
-  brief, use the source's file route below. Put the prompt directly after the
+- **Prompt and EOF**: pass literal prompt text as one argument and close unused
+  stdin with the launcher's supported mechanism (`< /dev/null` in POSIX).
+  Do not interpolate a brief as shell code. An open pipe can leave the child
+  waiting for EOF. For a long brief, use the source's supported file/stdin route
+  below and close that stream after the input. Put the prompt directly after the
   print flag, after `--`, or before any multi-value flag; Claude's
   `--allowedTools` and `--disallowedTools` can swallow a following prompt.
+- **Configuration and environment**: discover the effective configuration roots,
+  profiles, project settings, managed restrictions and precedence from supported
+  flags, environment variables and documentation. A default home path is an
+  example, not the active path on every machine. Prefer supported invocation-scoped
+  overrides for the assignment. Preserve the already authorized credential,
+  provider and network/proxy route needed by the child without exposing secrets.
+  Check what a launcher actually forwards; do not assume parent environment or
+  host settings reach a remote child. Reuse existing or already-authorized setup.
+  Examples do not imply authorization for new login, proxy or persistent settings
+  setup, and do not require such changes.
 - **Model and effort**: pass them on every dispatch, using the newest required
   family in the source's current model list. Never rely on defaults or a router
   such as Cursor Auto or Devin `adaptive`/`fusion`. Use an alias only when its
@@ -48,30 +72,36 @@ model or serving tier handled a turn.
   Allow multi-minute execution with a generous timeout or background execution
   and completion notification. A partial stream or truncated answer is not a
   completed deliverable.
-- **Permissions**: configure permission, trust and sandbox settings explicitly
-  for the tools the task needs. Unattended approval can deny, fail or wait,
-  depending on the host. Grant only authorized access; use a bypass mode only
-  in an isolated runner.
+- **Permissions**: select supported permission, trust and sandbox settings for
+  the task and check the host's enforcement prerequisites. A named mode does not
+  establish an operational sandbox on every OS, container or remote runtime.
+  Unattended approval can deny, fail or wait, depending on the host. Grant only
+  authorized access; use a bypass mode only in an isolated runner. If required
+  isolation or tools are unavailable, disclose the limitation and use another
+  authorized source or runtime rather than silently removing protection.
 - **Reviewers running code**: give a reviewer or verifier its own disposable
   `git worktree` or artifact copy and the access needed for tests, builds or
-  reproductions. Use Codex `--sandbox workspace-write` with network where
-  required, Cursor allow rules or `--force`, or Claude `acceptEdits` plus shell
-  allow rules. The brief prohibits editing the deliverable; never grant write
-  access to the shared tree. If it cannot execute, its verdict is low confidence.
+  reproductions. Where supported and authorized, use Codex workspace-write with
+  required network access, Cursor allow rules or force, or Claude acceptEdits
+  plus shell allow rules. Verify the host's effective enforcement. The brief
+  prohibits editing the deliverable; never grant write access to the shared tree.
+  If it cannot execute, its verdict is low confidence.
 - **Leaf delegates**: a non-bare child can load home and project instructions,
   skills and subagents, including burst/proxy. Every brief prohibits further
   delegation unless expressly permitted. Removing Claude's native `Agent` and
   `Workflow` tools does not prevent Bash/CLI delegation; the brief must cover
   every route.
-- **Rework**: resume the worker's own session with the reviewer's issues verbatim
-  and repeat the same model, effort, tier, permissions and output settings.
+- **Rework**: check the installed resume interface, then resume the worker's own
+  session with the reviewer's issues verbatim and repeat the same model, effort,
+  tier, permissions and output settings.
   Claude uses `--resume <session_id>` from JSON `.session_id`; Codex uses
   `codex exec [exec-level options] resume <SESSION_ID> "<issues>"`, with the ID
   from `thread.started.thread_id` (capture `--json` when rework is possible).
   Put exec-level options such as `--sandbox` before `resume` when its subcommand
-  lacks them. Cursor `--resume <chatId>` uses output `session_id`; Devin uses
-  `-r <SESSION_ID>`. Their print-mode resume behavior is not established: try
-  once, then dispatch fresh if it errors or ignores print mode. If any resume
+  lacks them. Cursor's supported `--resume <chatId>` uses output `session_id`;
+  Devin's supported resume form is `-r <SESSION_ID>`. Check print-mode resume
+  support on the installed build: try once, then dispatch fresh if it errors or
+  ignores print mode. If any resume
   fails or no ID was captured, provide the original brief, current artifact and
   issues to a fresh worker; never send the issues alone.
 
@@ -81,9 +111,12 @@ Read the [headless](https://code.claude.com/docs/en/headless),
 [model](https://code.claude.com/docs/en/model-config),
 [effort](https://code.claude.com/docs/en/effort) and
 [subagent](https://code.claude.com/docs/en/sub-agents) references when checking
-a new build or provider.
+a new build or provider. Discover settings through the
+[settings reference](https://code.claude.com/docs/en/settings), including a
+supported `CLAUDE_CONFIG_DIR` override rather than assuming a home location.
 
-- **Invocation**: `claude -p "<prompt>" --model <model-id> --effort <level>
+- **Invocation**: where those options are supported, use
+  `claude -p "<prompt>" --model <model-id> --effort <level>
   --output-format json < /dev/null`. For a long brief, use
   `claude -p "<instruction>" < brief.md`; piped stdin adds input beside the
   argument. Keep the prompt before multi-value tool flags.
@@ -93,10 +126,11 @@ a new build or provider.
   configuration reference. `ANTHROPIC_DEFAULT_OPUS_MODEL` repoints the alias;
   cloud providers can map it differently, so pin their full Opus ID. Do not use
   `best`, `default`, `opusplan`, `sonnet`, `haiku` or `fable` for delegated roles.
-- **Effort**: pass `--effort <level>` and unset `CLAUDE_CODE_EFFORT_LEVEL` for the
-  child or set it to the same level, because it overrides the flag. An unknown
-  flag value emits `Unknown --effort value` on stderr, is ignored, and leaves
-  environment/settings/default effort in effect; the run can still exit 0.
+- **Effort**: where exposed, pass `--effort <level>` and unset
+  `CLAUDE_CODE_EFFORT_LEVEL` for the child or set it to the same level, because
+  it overrides the flag. Check stderr and effective settings: builds can ignore
+  an unknown flag value, emit `Unknown --effort value`, and still exit 0 while
+  environment/settings/default effort remains in effect.
   Unsupported levels use the highest supported at or below the request.
   Inspect the effective cap: settings and organization limits take the lowest
   applicable cap across scopes, with `modelSettings.<model>.maxEffortLevel`
@@ -120,8 +154,9 @@ a new build or provider.
   as `--allowedTools "Bash(git *)"`. Use `dontAsk` plus allow rules to deny calls
   that would need approval while allowing actions requiring none. Without a
   permission host, unresolved `-p` prompts are denied; an Agent SDK host or
-  `--permission-prompt-tool` can instead wait. Pass `--permission-prompts none`
-  for unattended runs; it also removes person-dependent tools such as
+  `--permission-prompt-tool` can instead wait. Where available, pass
+  `--permission-prompts none` for unattended runs; it also removes
+  person-dependent tools such as
   `AskUserQuestion`, and denied tools can still prevent completion. Reserve
   `--dangerously-skip-permissions`/`bypassPermissions` for an isolated container
   or VM as a non-root user. A leaf also needs `--disallowedTools Agent Workflow`
@@ -165,10 +200,14 @@ a new build or provider.
 
 Use the [configuration](https://learn.chatgpt.com/docs/config-file/config-reference),
 [precedence](https://learn.chatgpt.com/docs/config-file/config-basic),
+[environment](https://learn.chatgpt.com/docs/config-file/environment-variables),
 [non-interactive](https://learn.chatgpt.com/docs/non-interactive-mode),
 [subagent](https://learn.chatgpt.com/docs/agent-configuration/subagents) and
 [API Fast](https://developers.openai.com/api/docs/guides/fast-mode) references
-alongside the installed CLI's help.
+alongside the installed CLI's help. Resolve the active state/configuration root,
+including a supported `CODEX_HOME` override. Check
+[platform sandbox prerequisites](https://learn.chatgpt.com/docs/agent-approvals-security)
+before relying on a sandbox mode.
 
 - **Invocation**: `codex exec -m <model-id>
   -c model_reasoning_effort=<level> -o <file> "<prompt>" < /dev/null`. A prompt
@@ -188,9 +227,9 @@ alongside the installed CLI's help.
   effort flag. Check the model's advertised levels in `/model` or the catalog.
   Supported models/clients can offer `ultra`, including proactive delegation
   in applicable interfaces; retain the table's assigned `max` when it asks for
-  `max`. CLI 0.160.0 accepts nonempty effort strings at the configuration layer;
-  this does not prove backend acceptance or clamping. Do not invent a level or
-  assume unsupported-level behavior. Omission can select an effort as low as
+  `max`. Configuration-layer acceptance of an effort string does not prove
+  backend acceptance or clamping. Do not invent a level or assume
+  unsupported-level behavior. Omission can select an effort as low as
   `low`; explicitly set the assigned supported level.
 - **Auth**: `codex login status` returns 0 when saved credentials are present.
   Exec reuses them; `CODEX_API_KEY=<key> codex exec ...` supplies an API key for
@@ -198,19 +237,22 @@ alongside the installed CLI's help.
 - **Permissions**: pass `--sandbox read-only` for research that must not write
   or `--sandbox workspace-write` for authorized edits and disposable test runs.
   The documented built-in exec default is read-only, but configuration can
-  override it. CLI 0.160.0's `--approve-for-me` uses automatic approval review
-  with workspace-write; do not combine it with a read-only option expecting
+  override it. Where `--approve-for-me` is exposed with automatic approval review
+  and workspace-write, do not combine it with a read-only option expecting
   read-only precedence. When human approval cannot be surfaced, an action can
   fail. Network depends on effective configuration and managed policy;
   `-c sandbox_workspace_write.network_access=true` requests outbound command
   access where allowed. Reserve `danger-full-access` and
   `--dangerously-bypass-approvals-and-sandbox`/`--yolo` for isolated runners.
-  In CLI 0.160.0, `-a`/`--ask-for-approval` must precede `exec`, and exec-level
-  `--sandbox` must precede `resume`. That build rejects `--full-auto` despite
-  documentation describing a deprecated compatibility flag; use accepted flags.
-- **Fast selection**: keep the same model ID. Request Fast per run with
+  Follow installed help for flag placement: where approval is a global option,
+  put `-a`/`--ask-for-approval` before `exec`; where sandbox is exec-level only,
+  put `--sandbox` before `resume`. Do not require the retired `--full-auto`
+  compatibility flag or assume another build accepts it.
+- **Fast selection**: keep the same model ID. Where the installed schema and
+  selected provider support these keys, request Fast per run with
   `-c service_tier=fast -c features.fast_mode=true`; request standard with
-  `-c service_tier=default`. Never use `ultrafast` or `flex` under this policy.
+  `-c service_tier=default`. If the supported interface differs, use its verified
+  equivalent or report the gap. Never use `ultrafast` or `flex` under this policy.
   Check effective settings, profiles, feature gates, managed restrictions and
   the model's advertised tiers; explicitly select the required tier on new and
   resumed runs. Do not rely on interactive `/fast` storage or TUI defaults to
@@ -227,9 +269,9 @@ alongside the installed CLI's help.
 - **Output and verification**: progress goes to stderr; stdout and
   `-o`/`--output-last-message` contain the final message. `--json` emits JSONL;
   `--output-schema <file>` requests a final answer matching a JSON Schema.
-  Treat nonzero exit or a failed terminal JSONL outcome as failure; parsing can
-  exit 2 on CLI 0.160.0. The exec header and usage events do not positively
-  confirm the serving tier. Without an authoritative serving receipt, report
+  Treat nonzero exit or a failed terminal JSONL outcome as failure. Do not depend
+  on one build's exact exit-code number. The exec header and usage events do not
+  positively confirm the serving tier. Without an authoritative serving receipt, report
   the established requested tier and actual serving as unconfirmed, for both
   Fast and standard assignments. Do not promise an unsupported-tier warning
   or fallback without build-specific evidence. API Fast accepts `fast` and
@@ -242,27 +284,31 @@ Check the [permissions](https://cursor.com/docs/cli/reference/permissions) and
 [headless](https://cursor.com/docs/cli/headless) references against the installed
 build. Their current descriptions conflict about behavior without `--force`;
 omission is not a read-only guarantee.
+Use the [configuration reference](https://cursor.com/docs/cli/reference/configuration)
+to discover active global and project settings, including supported
+`CURSOR_CONFIG_DIR` or platform-specific `XDG_CONFIG_HOME` overrides.
 
 - **Invocation**: `agent -p "<prompt>" --model <model-id>
   --output-format stream-json --trust < /dev/null`. Probe `agent` and its legacy
-  name `cursor-agent`; confirm a generic `agent` binary is Cursor's with
-  `agent status`. Prompt stdin is undocumented, so use an argument and close
-  stdin.
+  name `cursor-agent`; identify a generic `agent` binary from its product help
+  or version output before using Cursor commands. Prompt stdin is undocumented,
+  so use an argument and close stdin.
 - **Model**: copy the newest required variant from `agent models` or
   `agent --list-models` and pass `--model` every time; fresh installs default to
-  Auto. Current headless selection rejects unmatched IDs with exit 1 and
-  `Cannot use this model`; it rejects admin-blocked models rather than using
+  Auto. Builds that match exact catalog variants reject unmatched IDs with
+  `Cannot use this model` and reject admin-blocked models rather than using
   the native subagent documentation's fallback behavior. A saved config model
   can be replaced by an allowed model, so explicit selection matters. Check
   the init event's display name against the requested family/version, then
   check serving evidence as described below.
-- **Effort**: there is no effort flag. Select an exact listed effort variant;
-  its ID carries effort and Max Mode. Current help documents a quoted model
-  form such as `'<model-id>[context=1m,effort=high,fast=false]'`, but the CLI
-  matches the whole string to catalog variants rather than parsing arbitrary
-  brackets. Do not compose an assumed variant: catalog strings are not all
-  printed by `agent models`, so treat a bracket form as unconfirmed until
-  accepted. A mismatch fails with `Cannot use this model`. In native subagent
+- **Effort**: select an exact listed effort variant when the CLI exposes no
+  separate effort flag; its ID carries effort and Max Mode. Some help versions
+  advertise bracket parameters for context, effort and Fast. In builds that
+  match the whole string to catalog variants, help syntax does not establish
+  arbitrary bracket parsing. Do not compose an assumed variant: catalog strings
+  need not all appear in the printed model list, so treat an unlisted bracket
+  form as unconfirmed until validated by the supported interface. A mismatch
+  can fail with `Cannot use this model`. In supported native subagent
   frontmatter, effort is a bracket parameter: `<model-id>[effort=high]`.
 - **Auth**: `agent status --format json` (`whoami`) reports login. Scripts can
   use `CURSOR_API_KEY` or `--api-key`; otherwise saved `agent login` credentials
@@ -271,10 +317,13 @@ omission is not a read-only guarantee.
   Print mode has write and shell tools. Grant required operations through allow
   rules or `-f`/`--force` (`--yolo`) as appropriate; omission of force does not
   prevent writes. Force automatically allows commands unless denied and
-  approves trust and MCP prompts. Narrow rules live in project `.cursor/cli.json`
-  or home `.cursor/cli-config.json`; deny wins. Web fetch needs a domain grant
+  approves trust and MCP prompts. Narrow rules use the active project or global
+  configuration; `.cursor/cli.json` and `~/.cursor/cli-config.json` are documented
+  default examples, subject to platform and root overrides. Deny wins. Web fetch
+  needs a domain grant
   such as `WebFetch(<domain>)` or force. `--approve-mcps` approves MCP servers;
-  `--sandbox enabled|disabled` selects sandboxing. The permissions page permits
+  where supported, `--sandbox enabled|disabled` selects sandboxing. Check its
+  platform prerequisites and effective enforcement. The permissions page permits
   narrower grants while the headless page describes proposal-only behavior
   without force. Check the actual build and use an OS sandbox when writes must
   be prevented.
@@ -282,7 +331,9 @@ omission is not a read-only guarantee.
   no dedicated CLI flag, environment variable or direct user config key. Copy
   an exact catalog Fast variant for in-scope runs and an exact standard variant
   outside scope. A listed `-fast` ID or accepted bracket variant can carry Fast;
-  `fast=false` must also match a catalog variant in the CLI. Do not strip a
+  In builds that match whole strings to catalog variants, `fast=false` must also
+  match one; otherwise use the installed interface's verified Fast-off form.
+  Do not strip a
   suffix to derive standard unless that exact ID is listed as standard. Bare
   parameterized IDs can reuse saved per-model choices or server defaults,
   including Fast. Headless model selection can also update CLI configuration.
@@ -330,9 +381,9 @@ a new account or build.
   family-preference reuse. `/fast` switches to a fast Cognition model instead
   of selecting the current assigned model's Fast variant. `-c` is `--continue`,
   not a Codex-style configuration override.
-- **Auth**: check `devin auth status`; `devin auth login` stores a token that
-  does not expire by default. Use `--force-manual-token-flow` on a remote host
-  when needed. No API-key environment route is documented for `-p`;
+- **Auth**: check the supported `devin auth status` with the child's effective
+  configuration and existing credentials. No API-key environment route is
+  documented for `-p`;
   `WINDSURF_API_KEY` is documented for ACP. Successful login can coexist with
   `CLI access is disabled for this user`; treat that invocation as unavailable.
 - **Permissions**: print mode cannot show a workspace-trust prompt, so pass
@@ -345,9 +396,9 @@ a new account or build.
 - **Fast selection**: choose the exact catalog variant labelled Fast for the
   assigned model and effort, and its exact standard counterpart outside scope.
   There is no dedicated Fast flag/environment/config key. Suffixes are not the
-  contract: the 2026-10-07 catalog labels Anthropic `-fast` and GPT `-priority`
-  variants Fast, including `gpt-6-1-sol-max-priority`. These are examples; fetch
-  the current catalog before selecting. An unlabelled speed variant, including
+  contract: a catalog can label either a `-fast` or `-priority` variant Fast.
+  Copy the current catalog's exact UID and label instead of deriving or rejecting
+  a UID from its suffix. An unlabelled speed variant, including
   an unverified `-ultrafast` UID, is unconfirmed. If no Fast counterpart exists,
   use standard and disclose. Treat rejection or fallback from the requested
   Fast UID as failure to carry that assignment, rather than assuming its tier.
@@ -362,8 +413,9 @@ a new account or build.
   turn; whether it establishes served-model identity remains unconfirmed.
   Treat an output-limit warning or truncated response as incomplete and check
   exit status; no full exit-code contract is documented. Catalog UID/label
-  establishes the offered variant, not actual serving; the inspected JSON has
-  no Fast boolean. Print output has no documented serving receipt.
+  establishes the offered variant, not actual serving; do not require a Fast
+  boolean when the catalog identifies Fast through its label. Print output has
+  no documented serving receipt.
   `/session-stats` reports billed-turn models in interactive/ACP hosts, not a
   documented print-mode receipt. Until authoritative run evidence exists,
   report model effort and tier as requested rather than confirmed.

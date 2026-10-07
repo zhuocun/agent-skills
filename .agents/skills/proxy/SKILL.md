@@ -215,22 +215,36 @@ subtask. If it assigned none, re-consult rather than choose.
 family: Claude Code, then Cursor, then Devin; GPT family: Codex, then Devin,
 then Cursor.
 
-For the source you are running in, prefer its in-product mechanism. Use that
-source's CLI only when the native route is unavailable or cannot carry the
-assigned model, effort and fast-mode setting, and disclose the route. Reach
-other sources through their CLIs. Check the binary and a supported credential
-route for the planned invocation, with its actual environment, provider and
-settings. Saved-login status alone does not establish availability. Diagnose
-credential and transport failures separately; retry a failed catalog request
-through an already authorized network or proxy route where available. Disclose
-unresolved availability before choosing a fallback. Treat a family as absent
-only when a successfully retrieved applicable catalog contains no required
-top-tier model (Opus for Claude, Sol for GPT). Skip an unavailable source in the
-family's order; never substitute a forbidden tier.
+Resolve routes from the current host's exposed tools, permissions and installed
+CLI help. Tool names, arguments and commands in this skill describe supported routes,
+not capabilities every host provides. Honor concurrency and fork limits. A
+host without shell execution cannot use a CLI route; one without writable
+configuration cannot create file-based custom definitions. Carry the brief and required files
+through the chosen route, and verify the child can access them rather than
+assuming a shared filesystem or inherited tools, credentials and network.
 
-On Claude Code, a bare `Agent` call sets model but has no effort parameter.
-Use the `Workflow` tool (`agent(prompt, {model, effort})`) or an effort-setting
-custom subagent dispatched through `Agent`'s `subagent_type`.
+For the source you are running in, prefer its available in-product mechanism.
+Use that source's CLI only when the native route is unavailable or cannot carry
+the assigned model, effort and fast-mode setting, and disclose the route. Reach
+other sources through available CLIs. Resolve the executable in the invocation's
+actual environment, including any configured wrapper, and verify its supported
+syntax. Check a supported credential route with that invocation's provider,
+configuration and transport. Saved-login status alone does not establish
+availability. Do not assume installed CLIs, credentials, internet access or a
+proxy from another machine. Use only already authorized setup and network
+routes; availability checks do not authorize installation, login or changes to
+provider, permission or proxy configuration. Diagnose credential and transport
+failures separately; retry a failed catalog request through an already
+authorized network or proxy route where available. Disclose unresolved
+availability before choosing a fallback. Treat a family as absent only when a
+successfully retrieved applicable catalog contains no required top-tier model
+(Opus for Claude, Sol for GPT). Skip an unavailable source in the family's
+order; never substitute a forbidden tier.
+
+On Claude Code, when a bare `Agent` call exposes model but no effort parameter,
+use an available `Workflow` tool (`agent(prompt, {model, effort})`) or an
+effort-setting custom subagent dispatched through `Agent`'s `subagent_type`.
+Check that the host exposes the selected tool and fields before using them.
 
 **This skill requires explicit opt-in for `Workflow`, separately from the
 host's availability and permission checks. Opt-in starts when the user invokes
@@ -241,22 +255,43 @@ or named it. In that case, use a custom subagent, or `claude -p` when that route
 is unavailable or cannot carry the assignment, and disclose the route.** A
 single-agent workflow is a valid dispatch under this opt-in.
 
-Write each custom definition to `~/.claude/agents/<name>.md`, one file per model
-and effort pair, with required `name` and `description` plus `model` and
-`effort` in its frontmatter. Pass the brief as the `Agent` prompt. For a leaf,
-set `disallowedTools: Agent, Workflow` to remove those native launch tools;
-also prohibit delegation through CLIs and other routes in the brief.
+Write each generated Claude custom definition under the active user
+configuration directory's `agents/<name>.md`, one file per model and effort
+pair. `CLAUDE_CONFIG_DIR` can relocate that directory;
+`~/.claude/agents/<name>.md` is the conventional default, not a fixed
+destination. Verify that the directory is writable and loaded by the session.
+Existing project `.claude/agents/` definitions may be selected, but write a
+project definition only when that repository change is already authorized.
+Otherwise use another available route. Verify scope and name precedence so
+the intended definition wins. Include required `name` and `description`
+plus `model` and `effort` in the frontmatter. Pass the brief as the `Agent`
+prompt. For a leaf, deny the available native delegation tools through the
+supported tool restrictions (`disallowedTools: Agent, Workflow` on hosts with
+those tools); also prohibit delegation through CLIs and other routes in the
+brief.
 
 Check that the updated definition is discoverable before dispatch. Claude Code
-watches existing home and project `.claude/agents` directories and uses edits
-on the next delegation. Restart when the directory did not exist at session
+watches existing user-scope and project agent directories and uses edits on
+the next delegation. Restart when the directory did not exist at session
 start. Directories introduced by `--add-dir` or `/add-dir` are not watched, and
-`--disable-slash-commands` disables these watchers.
+`--disable-slash-commands` disables these watchers. Verify reload support for
+the running version; if a restart is unavailable, use another available route.
 
-On Codex, inspect the launcher schema. Use exposed `model` and
-`reasoning_effort` parameters, or TOML custom agents with `model` and
-`model_reasoning_effort`. Where the launcher requires it, use `fork_turns: "none"` or a positive history count for overrides; full-history forks inherit
-parent settings and reject overrides.
+On Codex, inspect the current host's launcher schema and configuration format.
+Use exposed model and effort parameters (for example `model` and
+`reasoning_effort`), or supported TOML custom agents with `model` and
+`model_reasoning_effort`. Resolve custom-agent discovery against the active user
+configuration root and project scope, and include that version's required
+fields. Keep generated definitions in a writable, loaded user scope; create
+or alter project definitions only when that repository change is already
+authorized. Otherwise use another available route. Hosts supporting the current standalone custom-agent discovery format
+require `name`, `description` and `developer_instructions` in each file; do
+not impose that manifest on a host using a different TOML role-config format.
+Fork controls vary by host: use
+`fork_turns: "none"` or a positive history count only when the schema exposes those forms
+and requires them for overrides. The full-history restriction applies only
+where the host specifies that such forks inherit parent settings and reject
+overrides. Do not translate it into an unsupported argument on another host.
 
 Before the first CLI spawn in a session, read `references/cli-dispatch.md` in
 this skill's directory and apply its guards.
