@@ -92,7 +92,8 @@ brief:
   integrated work must clear, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are
   parallel vs. sequential; the task type of each subtask, named as exactly one
-  row of the **Model selection** table; the brief for each worker, each stating
+  row of the **Model selection** table, plus the GPT level rule 7 gives a
+  Brainstorming and discussion subtask; the brief for each worker, each stating
   that the worker is a leaf; the success criteria per subtask; and what the
   final-gate reviewer should check;
 - that table, its column legend and its numbered rules, verbatim, to classify
@@ -220,8 +221,9 @@ Opus and "GPT" means Sol.
 | Review | GPT `max` | Claude `high` | reviewers, verifiers, and reviews or audits of existing work, security review included (rules 3–4) |
 | Backend architecture design | Claude `high` and GPT `max`, both run (rule 6) | whichever one is available, alone; tell the user | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices |
 | Frontend UI design | Claude `high` | GPT `max` | visual and interaction design, design prototypes made to explore or present a design (not to ship), and the review, verification or audit of that work (rule 4) |
-| Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), translation including UI strings, Chinese writing |
+| Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), UI strings, written or translated, other translation, Chinese writing |
 | Research | GPT `max` | Claude `high` | exploration, data analysis, debugging or root-causing that reports a cause, reproducing a user-reported problem before any work exists |
+| Brainstorming and discussion | Claude `high` and GPT `xhigh` or `max`, both run (rule 7) | whichever one is available, alone; tell the user | brainstorming (generating ideas, options, names, hypotheses, test-case ideas) and multi-agent discussion, where agents read and respond to each other (debate, critique panel, deliberation) |
 | Other simple work | GPT `high` | Claude `medium` | a single-step fact lookup, or any other task that is single-step, mechanical and verifiable in seconds (rule 2) |
 | Other complex work | GPT `xhigh` | Claude `high` | the orchestrator-consultant, client-only architecture (frontend state, data fetching, a CLI's module structure), a small task that turns on judgment, anything else no named row covers (rule 2) |
 
@@ -249,6 +251,18 @@ Opus and "GPT" means Sol.
 6. "Both run" means two workers dispatched concurrently with the same brief,
    one per family; each design passes its own reviewer; then the
    orchestrator-consultant compares and synthesizes them.
+7. For Brainstorming and discussion, "both run" means at least one agent per
+   family on the same brief, then the orchestrator-consultant synthesizes the
+   result; it applies even when the request names a single agent, since
+   brainstorming always needs both families. Claude runs `high`; GPT runs `max`
+   when the discussion's subject would route to a row whose GPT effort is `max`
+   (Review, Research, Backend architecture design, Frontend UI design), and
+   `xhigh` otherwise (for example Coding, Documentation, or either Other row).
+   The row applies only when the deliverable is ideas, options, hypotheses or a
+   recommendation from discussion: a backend or full-stack design stays Backend
+   architecture design, reviewers who each review without seeing the others are
+   Review, and the work that follows a brainstorm (writing the tests, the doc,
+   the code) routes by its own deliverable.
 
 **Source.** Take the first available source in the family's order — Claude
 family: Claude Code, then Cursor, then Devin; GPT family: Codex, then Devin,
@@ -339,11 +353,13 @@ this skill's directory and apply its guards.
 A family with no available source passes to the row's Fallback family at its
 Fallback effort, and you tell the user. When neither family is available, run
 the platform's best subagent model inside the tier edges at the row's First
-choice effort, and tell the user. If the platform forbids concurrent agents on
-the identical model and effort level, keep the model; the first agent keeps the
-assigned level, and each later concurrent agent takes the highest level the
-platform still allows below it; note the exception. An explicit user
-instruction overrides all of the above.
+choice effort — one agent at the higher level for a row whose First choice
+holds two levels (Backend architecture design: `max`; Brainstorming and
+discussion: the GPT level rule 7 gives) — and tell the user. If the platform forbids concurrent agents on the identical
+model and effort level, keep the model; the first agent keeps the assigned
+level (as defined in the parameter-gap rule), and each later concurrent agent
+takes the highest level the platform still allows below it; note the
+exception. An explicit user instruction overrides all of the above.
 
 **Fast mode.** Fast mode is the faster, pricier serving tier or speed setting
 of the same model — a fast variant ID, a service tier or a settings switch,
