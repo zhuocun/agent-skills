@@ -25,8 +25,9 @@ frontmatter and H1, and `.claude/settings.json` makes it the active output style
 differ.
 
 `burst` and `proxy` share the Model selection table, the tier list, the source
-order, and `references/cli-dispatch.md`, which each skill ships as an identical
-copy. Change them together; the validator fails when the two copies differ.
+order, and `references/cli-dispatch.md`. Change them together. The validator
+checks only `references/cli-dispatch.md`, which each skill ships as an identical
+copy; keep the table's First choice and Fallback columns identical by hand.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
