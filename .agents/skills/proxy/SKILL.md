@@ -296,9 +296,9 @@ instruction turns it on.
   Devin's `subagent_general`), which runs the parent's model and can carry its
   fast variant. On Devin the `model` frontmatter takes the same values as
   `--model`, so the fast or standard UID goes there (a fast UID there is
-  untested); on Cursor the parent can name the fast variant ID at launch,
-  `<model-id>[fast=false]` selects the standard variant, and the fast form in a
-  subagent file is unconfirmed (`references/cli-dispatch.md`).
+  untested); on Cursor the parent can name the fast variant ID at launch; in a
+  subagent file `<model-id>[fast=false]` selects the standard variant, while the
+  fast form there is unconfirmed (`references/cli-dispatch.md`).
   `references/cli-dispatch.md` gives each source's on and off settings, its
   saved-setting traps, and how it confirms what ran.
 - **Disclosure.** When you announce or report each role's model, effort and
