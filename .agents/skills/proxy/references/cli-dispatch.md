@@ -56,7 +56,7 @@ assignment into a different shell unchanged.
   verified mapping selects the required version and tier; a bare family or
   partial name such as `gpt` does not guarantee tier, effort or speed. Spell
   effort exactly and check the selected model's support. When the assigned
-  level is missing, use the highest supported level at or below it, as
+  level is missing, use the highest supported level below it, as
   **Effort limits** in `SKILL.md` requires. If an ID is rejected, select the
   next-newest listed ID of the same family; never let the CLI choose its
   default.
@@ -67,7 +67,7 @@ assignment into a different shell unchanged.
 - **Reporting**: report each run in the one-line form of **Reporting** in
   `SKILL.md`, from what the invocation carried. Run records and catalog labels
   below help confirm that the run used the intended model, effort and request;
-  the report never claims a serving tier.
+  the report never claims a serving tier from a label.
 - **Output and completion**: capture the final answer and check the exit status,
   stderr and terminal outcome; ordinary-looking text can describe a failed run.
   Allow multi-minute execution with a generous timeout or background execution

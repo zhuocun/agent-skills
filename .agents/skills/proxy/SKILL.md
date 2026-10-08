@@ -169,6 +169,14 @@ work "obviously" looks complete.
 
 ## Model selection
 
+Map these terms to whatever the platform exposes: `model`, `subagent_type`,
+`effort`, `reasoning_effort`, or an effort level encoded in the model ID. On
+every subagent call, set every parameter the dispatch tool exposes, checking its
+schema rather than assuming. Never accept the platform default: it can route to
+a forbidden tier, silently downgrade reasoning, or mirror your own config. An
+explicit instruction from the user or from a higher-priority source overrides
+any rule in this section, **Source** included.
+
 **Source.** Take the first available source in the family's order: for the
 Claude family, Claude Code, then Cursor, then Devin; for the GPT family, Codex,
 then Devin, then Cursor.
@@ -254,22 +262,14 @@ another host.
 Before the first CLI spawn in a session, read `references/cli-dispatch.md` in
 this skill's directory and apply its guards.
 
-Map these terms to whatever the platform exposes: `model`, `subagent_type`,
-`effort`, `reasoning_effort`, or an effort level encoded in the model ID. On
-every subagent call, set every parameter the dispatch tool exposes, checking its
-schema rather than assuming. Never accept the platform default: it can route to
-a forbidden tier, silently downgrade reasoning, or mirror your own config. An
-explicit instruction from the user or from a higher-priority source overrides
-any rule in this section.
-
 **Tiers.** Every subagent role runs on the top tier: the strongest model between
 two forbidden edges, which is Opus on Anthropic and Sol on OpenAI. The too-cheap
 edge is the smallest or distilled variants: `*-mini`, `*-haiku`-class, GPT Luna.
 The too-expensive edge is the oversized tiers whose cost outruns their marginal
-value for delegated work: Fable and Mythos on Anthropic, Astra on OpenAI. Choose
-neither edge without an explicit instruction. A role may be as strong as you,
-capped at the top tier, so the too-expensive edge is forbidden even when you run
-on it. **Fallbacks** covers a platform that offers neither Opus nor Sol.
+value for delegated work: Fable and Mythos on Anthropic, Astra on OpenAI. A role
+may be as strong as you, capped at the top tier, so the too-expensive edge is
+forbidden even when you run on it. **Fallbacks** covers the case where no source
+offers a model of either family.
 
 **Model ID.** Use the newest version of the family that the source offers, read
 from that source's own model list, never an ID remembered from earlier work or
@@ -294,11 +294,11 @@ means Sol.
 |---|---|---|---|
 | Coding | Claude `medium` | GPT `xhigh` | any code deliverable, however small: writing or fixing code, tests, CI, infrastructure and other repository config, frontend implementation code with its styling, comments and docstrings in source, a script delivered to the repo |
 | Review | GPT `max` | Claude `high` | reviewers, verifiers, and reviews or audits of existing work, security review included (rules 3–4) |
-| Backend architecture design | Claude `high` and GPT `max`, both run (rule 6) | whichever one is available, alone; tell the user | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices |
+| Backend architecture design | Claude `high` and GPT `max`, both run (rule 6) | whichever one is available, alone | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices |
 | Frontend UI design | Claude `high` | GPT `max` | visual and interaction design, design prototypes made to explore or present a design (not to ship), and the review, verification or audit of that work (rule 4) |
 | Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), UI strings, written or translated, other translation, Chinese writing |
 | Research | GPT `max` | Claude `high` | exploration, data analysis, debugging or root-causing that reports a cause, reproducing a user-reported problem before any work exists |
-| Brainstorming and discussion | Claude `high` and GPT `xhigh` or `max`, both run (rule 7) | whichever one is available, alone; tell the user | brainstorming (generating ideas, options, names, hypotheses, test-case ideas) and multi-agent discussion, where agents read and respond to each other (debate, critique panel, deliberation) |
+| Brainstorming and discussion | Claude `high` and GPT `xhigh` or `max`, both run (rule 7) | whichever one is available, alone | brainstorming (generating ideas, options, names, hypotheses, test-case ideas) and multi-agent discussion, where agents read and respond to each other (debate, critique panel, deliberation) |
 | Other simple work | GPT `high` | Claude `medium` | a single-step fact lookup, or any other task that is single-step, mechanical and verifiable in seconds (rule 2) |
 | Other complex work | GPT `xhigh` | Claude `high` | the orchestrator-consultant, client-only architecture (frontend state, data fetching, a CLI's module structure), a small task that turns on judgment, anything else no named row covers (rule 2) |
 
@@ -367,11 +367,11 @@ takes the highest level the platform allows below it.
 
 **Fast mode.** Fast mode is the faster, pricier serving tier or speed setting of
 the same model: a fast variant ID, a service tier or a settings switch,
-depending on the source. It is off for every model unless the user's own
-instruction turns it on.
+depending on the source.
 
-- **Off by default.** Never enable it on your own initiative, for a subagent or
-  for yourself, and never infer it from urgency ("this is urgent", "be quick").
+- **Off by default.** Only the user's own instruction turns it on. Never enable
+  it on your own initiative, for a subagent or for yourself, and never infer it
+  from urgency ("this is urgent", "be quick").
 - **Scope.** An enabling instruction names a scope: one model ("use the fast
   variant of <model> for this task"), a set of models ("use fast mode for all
   GPT models", or for one family or provider), or every model where a source
@@ -418,9 +418,9 @@ instruction turns it on.
 ```
 
 - **Role**: a short label for what the agent does.
-- **Model**: the model's full name as the source's own model list shows it.
+- **Model**: the model's name with its version, not its ID or an alias.
 - **Effort**: the level the dispatch carried, written Low, Medium, High, xHigh
-  or Max; left out for a model with no effort setting.
+  or Max; left out when the dispatch carried none.
 - **Fast**: present only when fast mode was requested for that agent.
 - **Route**: left out when the host's own in-product subagent mechanism launched
   the agent, whatever the host calls it; otherwise "<source> CLI" for a headless
@@ -429,17 +429,18 @@ instruction turns it on.
 - **Tags**: comma-separated, two in all. "fallback model": the row's Fallback
   family ran because a source for the first-choice family was present but could
   not run that family's required model; with no source for that family at all,
-  the Fallback family is the normal route and takes no tag. "Fast unavailable":
+  the Fallback family is the normal case and takes no tag. "Fast unavailable":
   the agent's model is inside a fast-mode scope the user enabled but has no fast
   option on the source carrying it.
-- **Both-run rows**: one line per agent, or the agents' lines joined with " + ".
+- **Both-run rows**: one line per agent that ran, or the lines joined with
+  " + ".
 
 For example: "Reviewer: <model> Max via <source> CLI", "Reviewer: <model> High
 (fallback model)", "Designer: <model> High", "Architect: <model> High +
 Architect: <model> Max via <source> CLI".
 
-The line is the whole report for a dispatch. Write an effort or Fast only when
-the dispatch carried it, and never claim a serving tier from a label.
+The line is the whole report for a dispatch, and never claims a serving tier
+from a label.
 
 ## Communication
 
@@ -516,7 +517,7 @@ Before declaring the task done, confirm:
   from your own assessment.
 - [ ] Every subagent ran the family and effort level **Model selection** assigns
   its role, or what those rules put in its place — a fallback, an effort-limit
-  level or inherited default, the choice for a platform with neither family, or
+  level or inherited default, the choice when no source offers either family, or
   an explicit instruction — on the newest version in the source's own model
   list, through the highest-priority available source for that family: the
   host's in-product mechanism for its own source, its own CLI when that
