@@ -399,11 +399,9 @@ instruction turns it on.
   On Codex, use native dispatch only when an explicit request setting, the host
   request contract or verified inheritance establishes the role's requested
   tier, and set the exposed model and effort parameters. Advertised tier
-  capability alone does not establish a request; a missing per-agent selector
-  does not preclude native dispatch when verified inheritance matches the
-  assignment. Otherwise use `codex exec` with the tier set explicitly. An
-  out-of-scope role needs its own standard request when native dispatch would
-  select Fast.
+  capability alone does not establish a request. Otherwise use `codex exec` with
+  the tier set explicitly. An out-of-scope role needs its own standard request
+  when native dispatch would select Fast.
 
   On Cursor and Devin, explicitly select each role's fast or standard model
   variant, never Cursor's `inherit` or Devin's `subagent_general`. Cursor
@@ -425,22 +423,20 @@ instruction turns it on.
   or Max; left out for a model with no effort setting.
 - **Fast**: present only when fast mode was requested for that agent.
 - **Route**: left out when the host's own in-product subagent mechanism launched
-  the agent, whatever the host calls it. A headless command line is written
-  "<source> CLI", and any other interface as its product name plus the kind of
-  interface. A route is never a command, flag or internal tool identifier.
-- **Tags**: comma-separated, and only two exist. "fallback model" marks an agent
-  of the row's Fallback family that ran because a source for the first-choice
-  family was present but could not run that family's required model; when the
-  environment has no source for the first-choice family at all, the Fallback
-  family is the normal route and takes no tag. "Fast unavailable" marks an agent
-  whose model is inside a fast-mode scope the user enabled but has no fast
+  the agent, whatever the host calls it; otherwise "<source> CLI" for a headless
+  command line, or the product name plus the kind of interface for any other
+  interface, never a command, flag or internal tool identifier.
+- **Tags**: comma-separated, two in all. "fallback model": the row's Fallback
+  family ran because a source for the first-choice family was present but could
+  not run that family's required model; with no source for that family at all,
+  the Fallback family is the normal route and takes no tag. "Fast unavailable":
+  the agent's model is inside a fast-mode scope the user enabled but has no fast
   option on the source carrying it.
 - **Both-run rows**: one line per agent, or the agents' lines joined with " + ".
 
 For example: "Reviewer: <model> Max via <source> CLI", "Reviewer: <model> High
-via <source> CLI (fallback model)", "Designer: <model> High", "Worker: <model>
-Medium (Fast unavailable)", "Architect: <model> High + Architect: <model> Max
-via <source> CLI".
+(fallback model)", "Designer: <model> High", "Architect: <model> High +
+Architect: <model> Max via <source> CLI".
 
 The line is the whole report for a dispatch. Write an effort or Fast only when
 the dispatch carried it, and never claim a serving tier from a label.

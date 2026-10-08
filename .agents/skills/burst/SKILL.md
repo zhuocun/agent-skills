@@ -172,7 +172,7 @@ A **verifier** is the same gate in narrower form: a subagent dispatched to confi
 
 Map these terms to whatever the platform exposes: `model`, `subagent_type`, `effort`, `reasoning_effort`, or an effort level encoded in the model ID. On every subagent call, set every parameter the dispatch tool exposes, checking its schema rather than assuming. Never accept the platform default: it can route to a forbidden tier, silently downgrade reasoning, or mirror the orchestrator's own config. An explicit instruction from the user or from a higher-priority source overrides any rule in this section.
 
-**Tiers.** Every delegated role runs on the top tier: the strongest model between two forbidden edges, which is Opus on Anthropic and Sol on OpenAI. The too-cheap edge is the smallest or distilled variants: `*-mini`, `*-haiku`-class, GPT Luna. The too-expensive edge is the oversized tiers whose cost outruns their marginal value for delegated work: Fable and Mythos on Anthropic, Astra on OpenAI. Choose neither edge without an explicit instruction. The top tier binds workers, reviewers, verifiers, sidecar explorers (read-only scouts probing in parallel, off the integration path) and any specialized role spawned for the task. A role may be as strong as the orchestrator, capped at the top tier, so the too-expensive edge is forbidden even when the orchestrator runs on it. **Fallbacks** covers a platform that offers neither Opus nor Sol.
+**Tiers.** Every delegated role, sidecar explorers (read-only scouts probing in parallel, off the integration path) included, runs on the top tier: the strongest model between two forbidden edges, which is Opus on Anthropic and Sol on OpenAI. The too-cheap edge is the smallest or distilled variants: `*-mini`, `*-haiku`-class, GPT Luna. The too-expensive edge is the oversized tiers whose cost outruns their marginal value for delegated work: Fable and Mythos on Anthropic, Astra on OpenAI. Choose neither edge without an explicit instruction. A role may be as strong as the orchestrator, capped at the top tier, so the too-expensive edge is forbidden even when the orchestrator runs on it. **Fallbacks** covers a platform that offers neither Opus nor Sol.
 
 **Model ID.** Use the newest version of the family that the source offers, read from that source's own model list, never an ID remembered from earlier work or training. Use an alias that resolves to the latest version only when it cannot land on a forbidden tier; otherwise pin the full ID from the list. Never use a bare family alias such as `gpt`: it does not guarantee the required tier, effort or speed.
 
@@ -221,11 +221,9 @@ First choice is the family and effort to dispatch, Fallback the family and effor
   On Codex, use native dispatch only when an explicit request setting, the
   host request contract or verified inheritance establishes the role's
   requested tier, and set the exposed model and effort parameters. Advertised
-  tier capability alone does not establish a request; a missing per-agent
-  selector does not preclude native dispatch when verified inheritance matches
-  the assignment. Otherwise use `codex exec` with the tier set explicitly. An
-  out-of-scope role needs its own standard request when native dispatch would
-  select Fast.
+  tier capability alone does not establish a request. Otherwise use
+  `codex exec` with the tier set explicitly. An out-of-scope role needs its
+  own standard request when native dispatch would select Fast.
 
   On Cursor and Devin, explicitly select each role's fast or standard model
   variant, never Cursor's `inherit` or Devin's `subagent_general`. Cursor
@@ -245,11 +243,11 @@ First choice is the family and effort to dispatch, Fallback the family and effor
 - **Model**: the model's full name as the source's own model list shows it.
 - **Effort**: the level the dispatch carried, written Low, Medium, High, xHigh or Max; left out for a model with no effort setting.
 - **Fast**: present only when fast mode was requested for that agent.
-- **Route**: left out when the host's own in-product subagent mechanism launched the agent, whatever the host calls it. A headless command line is written "<source> CLI", and any other interface as its product name plus the kind of interface. A route is never a command, flag or internal tool identifier.
-- **Tags**: comma-separated, and only two exist. "fallback model" marks an agent of the row's Fallback family that ran because a source for the first-choice family was present but could not run that family's required model; when the environment has no source for the first-choice family at all, the Fallback family is the normal route and takes no tag. "Fast unavailable" marks an agent whose model is inside a fast-mode scope the user enabled but has no fast option on the source carrying it.
+- **Route**: left out when the host's own in-product subagent mechanism launched the agent, whatever the host calls it; otherwise "<source> CLI" for a headless command line, or the product name plus the kind of interface for any other interface, never a command, flag or internal tool identifier.
+- **Tags**: comma-separated, two in all. "fallback model": the row's Fallback family ran because a source for the first-choice family was present but could not run that family's required model; with no source for that family at all, the Fallback family is the normal route and takes no tag. "Fast unavailable": the agent's model is inside a fast-mode scope the user enabled but has no fast option on the source carrying it.
 - **Both-run rows**: one line per agent, or the agents' lines joined with " + ".
 
-For example: "Reviewer: <model> Max via <source> CLI", "Reviewer: <model> High via <source> CLI (fallback model)", "Designer: <model> High", "Worker: <model> Medium (Fast unavailable)", "Architect: <model> High + Architect: <model> Max via <source> CLI".
+For example: "Reviewer: <model> Max via <source> CLI", "Reviewer: <model> High (fallback model)", "Designer: <model> High", "Architect: <model> High + Architect: <model> Max via <source> CLI".
 
 The line is the whole report for a dispatch. Write an effort or Fast only when the dispatch carried it, and never claim a serving tier from a label.
 
