@@ -320,8 +320,8 @@ means Sol.
    reviewer asserted, such as running a suite or re-checking a cited source.
 4. A reviewer, verifier, review or audit of work on a design row goes to that
    row: Frontend UI design work to Frontend UI design, and Backend architecture
-   design work to Backend architecture design, which runs both families (rule
-   6). Key it on the row the reviewed work was routed to, or, for an audit of
+   design work to Backend architecture design, which runs both families
+   (rule 6). Key it on the row the reviewed work was routed to, or, for an audit of
    existing work, on the row the audited work itself would route to.
    Implementation code, frontend styling included, is Coding, and its review is
    Review; client-only architecture is Other complex work, and its review is
