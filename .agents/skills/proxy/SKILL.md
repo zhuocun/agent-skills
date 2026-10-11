@@ -298,7 +298,7 @@ means Sol.
 | Coding | Claude `medium` | GPT `xhigh` | any code deliverable, however small: writing or fixing code, tests, CI, infrastructure and other repository config, frontend implementation code with its styling, comments and docstrings in source, a script delivered to the repo |
 | Review | GPT `max` | Claude `high` | reviewers, verifiers, and reviews or audits of existing work, security review included (rules 3–4) |
 | Backend architecture design | Claude `high` and GPT `max`, both run (rule 6) | whichever one is available, alone | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices, and the review, verification or audit of that work (rules 4 and 6) |
-| Visual design | Claude `high` | GPT `max` | visual and interaction design of a product UI; visualizations that present information, such as diagrams, charts, and HTML pages or slides, with the markup that draws them, wherever they appear, inside a document included; design prototypes made to explore or present a design (not to ship); and the review, verification or audit of that work (rule 4) |
+| Visual design | Claude `high` | GPT `max` | visual and interaction design of a product UI; visualizations that present information, such as diagrams, charts, and HTML pages or slides, with the markup that draws them, standalone or inside a document (shipped product code is Coding, rule 1); design prototypes made to explore or present a design (not to ship); and the review, verification or audit of that work (rule 4) |
 | Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), UI strings, written or translated, other translation, Chinese writing |
 | Research | GPT `max` | Claude `high` | exploration, data analysis, debugging or root-causing that reports a cause, reproducing a user-reported problem before any work exists |
 | Brainstorming and discussion | Claude `high` and GPT `xhigh` or `max`, both run (rule 7) | whichever one is available, alone | brainstorming (generating ideas, options, names, hypotheses, test-case ideas) and multi-agent discussion, where agents read and respond to each other (debate, critique panel, deliberation) |
@@ -308,10 +308,11 @@ means Sol.
 1. Classify each subtask by its deliverable, not by the tools or steps along the
    way. A fix that follows the worker's own investigation is Coding, and so is
    debugging that ships a fix; a throwaway script written only to get findings
-   stays Research; a design doc goes to its design row. A visualization's
-   markup, such as diagram source, SVG, chart code or a presentation page's
-   HTML, is Visual design; code that ships in a product, such as an app's UI or
-   a chart component in the codebase, is Coding.
+   stays Research; a design doc goes to its design row. A visualization
+   delivered to present information, with its markup such as diagram source,
+   SVG, chart code or a presentation page's HTML, is Visual design; a chart
+   plotted only to get findings stays Research; code that ships in a product,
+   such as an app's UI or a chart component in the codebase, is Coding.
 2. Named rows win: Other simple work and Other complex work apply only when no
    named row matches. Other simple work needs all three of single-step,
    mechanical and verifiable in seconds; a single-step fact lookup is Other
@@ -331,7 +332,10 @@ means Sol.
 5. A subtask that both designs and implements is split: the design runs on its
    design row, then the implementation runs as Coding against the accepted
    design. A document that contains visualizations is split the same way: the
-   prose runs as Documentation and each visualization as Visual design.
+   prose runs on the row the document would take without them, Documentation or
+   a design doc's design row, and each visualization runs as Visual design,
+   drawing what that row decided. A slide deck is one visualization, its text
+   included.
 6. Backend architecture design runs both families, Claude `high` and GPT `max`,
    for design and review alike. A design is two workers, one per family,
    dispatched concurrently with the same brief; a review, verification or audit
