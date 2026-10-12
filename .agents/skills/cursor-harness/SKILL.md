@@ -49,8 +49,17 @@ Anything longer than a few minutes or independent of your next step runs off you
 - While jobs run, do other independent ledger work. Background jobs and background subagents report on their own.
 - Poll only when your next step is blocked on that specific job, or the job needs close monitoring (deployments, long test runs, migrations). Then keep polling until it ends, stalls, or is clearly hung.
 - Before a long blocking wait on a Cloud Agent, check the follow-up queue. Handle the user first.
-- A new user message releases your blocking wait early. After you answer, re-arm the wait (`AwaitShell` with the waiter's `pattern`) if runs are still going and you have no other work, so you react as soon as they end rather than at the next timer.
-- With two or more runs going, never block on one run's waiter: start an **any-end waiter** that exits when the first end marker appears, and block on that ([references/background-work.md](references/background-work.md)).
+
+**Always pair the two wait mechanisms** (verified 2026-10-12). Neither is enough alone:
+
+| Mechanism | Strength | Gap |
+| --- | --- | --- |
+| Blocking wait: `AwaitShell` on a waiter (an **any-end waiter** when two or more runs are going) | reacts within seconds of a run ending | a user message releases it early; it does nothing once your turn ends |
+| Safety timer: `subscribe_timer`, recurring, with a prompt that says "run the inventory from the ledger" | wakes you even after your turn ends | reacts only at the next fire, so it can be late by up to one interval |
+
+- While any run is going, keep a safety timer subscribed. Replace it when its prompt goes stale, and remove it when no run is left.
+- When you have no other work, block on the any-end waiter ([references/background-work.md](references/background-work.md)). Never block on one run's waiter while another is going.
+- **After every interruption, re-arm.** When a user message releases the wait, answer it, run the inventory, start a fresh any-end waiter over the runs still going, and block again in the same turn. Do not end the turn and leave only the timer, unless the user asked you to stop or the runs will take much longer than the timer interval.
 
 ### 6. Turn end: leave nothing unwatched
 
