@@ -1,37 +1,39 @@
 # Platform tools
 
-Cursor-specific tools and rules that matter for long, concurrent work. Tool availability varies by surface (IDE, Cloud Agent, self-hosted worker) and changes over time. Check what is present before relying on it.
+Use this reference for Cursor tools and platform rules during long, concurrent work. Availability varies across IDE, Cloud Agent, and self-hosted workers, and changes over time. Check what is present before relying on it.
 
 ## Dynamic tools (documented)
 
-- Tools in dynamic namespaces (MCP servers, the `cursor` namespace, Cloud Agent diagnostics) must be discovered with `GetDynamicTools` before you call them with `CallDynamicTool`. Aim for one discovery call followed by one invocation.
-- Look up a single tool by namespace and name when you know it. That returns its full description, which often contains usage rules (for example, "do not poll subagents").
-- A namespace in `needsAuth` or `error` state is unusable until fixed. Authenticate through its `mcp_auth` tool only when you actually need it.
+- Discover dynamic tools with `GetDynamicTools` before calling them with `CallDynamicTool`. This applies to MCP servers, the `cursor` namespace, and Cloud Agent diagnostics. Aim for one discovery call followed by one invocation.
+- When you know the namespace and tool name, discover that single tool. Read its full description and usage rules.
+- A namespace in `needsAuth` or `error` state is unusable until fixed. Authenticate through its `mcp_auth` tool only when needed.
 
 ## Built-in `cursor` namespace (documented)
 
-- `AwaitShell`: poll or sleep. See [background-work.md](background-work.md).
-- `Task`: subagents. See [delegation.md](delegation.md).
-- `TodoWrite`: the in-session todo list. Useful as a view; not a durable ledger.
-- Others (`WebFetch`, `WebSearch`, `CreateGoal`/`UpdateGoal`, `GenerateImage`) are available on demand. Read the schema first.
+- `AwaitShell`: shell waiting and sleep; see [background-work.md](background-work.md#shell-job-mechanics-documented).
+- `Task`: subagents; see [delegation.md](delegation.md).
+- `TodoWrite`: the in-session view; see [task-ledger.md](task-ledger.md#where-to-keep-it).
+- `WebFetch`, `WebSearch`, `CreateGoal`/`UpdateGoal`, and `GenerateImage`: available on demand. Read the schema first.
 
 ## Cloud Agent diagnostics (`cursor-cloud`, documented)
 
-- `get-message-queue`: the user's pending follow-up messages. Check it before a long blocking wait, and defer slow verification while messages are queued.
-- `run-info`: run identity, branch, model, and the run URL.
-- `get-events`: run lifecycle events, including MCP authentication failures that otherwise fail silently.
+- `get-message-queue`: pending user follow-ups; see the [wait routine](background-work.md#wait-routine).
+- `run-info`: run identity, branch, model, and run URL.
+- `get-events`: run lifecycle events, including otherwise silent MCP authentication failures.
 - `list-cloud-agents` and `batch-fetch-details`: other runs and their transcripts. Read large transcripts through a subagent, never directly.
 
 ## Subscriptions (`cursor-subscriptions`, documented)
 
-- `subscribe_timer`: one-shot (`once: true` plus `delaySeconds`) or recurring (`cron` or `delaySeconds`) follow-up prompts. After subscribing, say what you are waiting for and end the turn.
-- `subscribe_slack_thread`, `subscribe_slack_channel`, `subscribe_linear_issue`, `subscribe_linear_comment`: event-driven wake-ups.
-- `list_subscriptions` and `unsubscribe`: include them in turn-start inventory, and remove subscriptions once their ledger entry closes.
+- `subscribe_timer`: one-shot or recurring safety timers; see [background-work.md](background-work.md#safety-timers).
+- `subscribe_slack_thread`, `subscribe_slack_channel`, `subscribe_linear_issue`, and `subscribe_linear_comment`: event-driven wake-ups.
+- `list_subscriptions` and `unsubscribe`: check subscriptions during turn-start inventory. Remove each subscription when its ledger entry closes. Safety-timer inventory and cleanup are also **verified 2026-10-12**.
+
+For GitHub, Slack, Linear, or CI events, use the `subscribe` skill rather than a safety timer.
 
 ## Cloud Agent and self-hosted rules that affect bookkeeping
 
-- Git identity on a self-hosted machine comes from the machine's config. Check `user.name` and `user.email` before the first commit, and set them per-repository only if unset.
-- Pull requests go through the PR management tool, not forge CLIs. If it refuses (for example, the forge host is not configured), the refusal is final for the run. Record it in the ledger and tell the user.
-- Shell state (working directory, environment variables) persists between shell calls in one session. tmux sessions start from the tmux server's global environment instead.
-- The terminals folder holds one file per shell session with a metadata header. Read the first lines to check what is running before starting a duplicate.
-- After a context compaction, the conversation is a summary. Run the `reorient` skill, then the ledger inventory, before any irreversible step.
+- Before the first commit on a self-hosted machine, check `user.name` and `user.email`. Git identity comes from the machine's configuration. Set identity per repository only if unset.
+- Use the PR management tool for pull requests. Do not use forge CLIs. If the tool refuses, for example because the forge host is unconfigured, treat the refusal as final for the run. Record it in the ledger and tell the user.
+- Shell working directory and environment variables persist between calls in one session. For tmux environment rules, see the [launcher](background-work.md#tmux-run-plus-waiter-verified-2026-10-12).
+- The terminals folder contains one file per shell session with a metadata header. Read the first lines before starting a duplicate process.
+- After compaction, follow the [turn-start inventory](../SKILL.md#2-turn-start-inventory-before-anything-new) before an irreversible step.
