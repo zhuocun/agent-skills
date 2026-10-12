@@ -96,6 +96,7 @@ done
 - `subscribe_timer` with `once: true` and `delaySeconds` enqueues a prompt that runs when you are otherwise free. Name it after the ledger entry; names deduplicate.
 - Before ending a turn with any run still going, set a timer: a one-shot timer at the expected end plus a margin, or a recurring one (for example every 20 minutes) when the end is uncertain. Write the prompt so it stands alone, for example "Inventory ledger entry R7: check its end marker and process the result."
 - Remove timers with `unsubscribe` once the entry closes. Check `list_subscriptions` during inventory.
+- A timer's prompt is frozen when you create it. When the ledger moves on (a run ends, the next step starts new runs), replace the timer: `unsubscribe`, then subscribe a new one whose prompt names the current end markers and next actions. Better still, write the prompt as "run the inventory from the ledger" so the ledger, not the prompt, carries the state.
 - For GitHub, Slack, Linear, or CI events, use the `subscribe` skill rather than timers.
 
 ## Hangs
