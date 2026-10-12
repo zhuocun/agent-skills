@@ -49,6 +49,7 @@ Anything longer than a few minutes or independent of your next step runs off you
 - While jobs run, do other independent ledger work. Background jobs and background subagents report on their own.
 - Poll only when your next step is blocked on that specific job, or the job needs close monitoring (deployments, long test runs, migrations). Then keep polling until it ends, stalls, or is clearly hung.
 - Before a long blocking wait on a Cloud Agent, check the follow-up queue. Handle the user first.
+- A new user message releases your blocking wait early. After you answer, re-arm the wait (`AwaitShell` with the waiter's `pattern`) if runs are still going and you have no other work, so you react as soon as they end rather than at the next timer.
 
 ### 6. Turn end: leave nothing unwatched
 
