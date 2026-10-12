@@ -26,6 +26,11 @@ Entry format:
 - **Fact:** A recurring `subscribe_timer` with `delaySeconds: 1200` first fired after about 400 seconds, right after a separate one-shot timer had fired and the agent went idle. The cause is unknown; it could be phase alignment or the scheduler delivering when the agent is free.
 - **Do:** Treat a timer as "wakes me no later than roughly the interval", not as an exact schedule. Each fire should run a full inventory that tolerates an early wake. Use a one-shot timer when the timing matters.
 
+### Expect stale timer prompts after a long turn
+- **Status:** verified 2026-10-12
+- **Fact:** A recurring timer fired at 21:40 while the agent was blocked in a long turn. The prompt was queued and delivered only at 23:13, after the turn ended. By then the timer had been unsubscribed and every action in its prompt was already done.
+- **Do:** Treat each timer prompt as "run the inventory now", not as a fresh instruction. Check the ledger and the end markers first, and skip actions that are already done. Note the `firedAt` time against the ledger timestamps.
+
 ### Smoke-check every leg of a multi-process launcher
 - **Status:** verified 2026-10-12
 - **Fact:** A launcher that runs two agents as `( ... ) &` subshells under `set -u` lost one leg silently: an environment line copied from another script referenced a variable defined elsewhere in that script, so the subshell died with `unbound variable` before creating its log. The other leg kept running, and the combined end marker would still have been written.
