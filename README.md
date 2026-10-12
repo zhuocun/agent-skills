@@ -16,6 +16,7 @@ this repo.
 - `reorient` — reconstructs and verifies working context after a context compaction, then resumes the in-progress task safely.
 - `communicate` — governs how the agent writes to the user: message shape, register, and the evidence behind claims. Its body is mirrored as the `Baseline` output style in `.claude/output-styles/baseline.md`.
 - `status-report` — produces a one-page project status report with fixed slots for a reader who was not watching the work.
+- `cursor-harness` — operating manual for agents running inside Cursor: a durable task ledger, turn-start and turn-end routines, background-job waiting (including detached tmux runs), subagent delegation, and Cursor tool quirks, with topic references that grow over time.
 - `visual-ux-sweep` — reviews UI and UX regressions, and fixes them when asked, from headless-browser screenshots across routes, viewports, themes, and interaction states.
 
 ## Layout
