@@ -71,6 +71,24 @@ echo "WAITER-DONE $(cat "$END")"
 
 If the waiter itself dies (session reclaimed, turn stopped), the tmux run continues. The turn-start inventory catches it via the end marker.
 
+## Waiting on several runs at once: the any-end waiter
+
+`AwaitShell` watches one job per call, so blocking on one waiter while another run finishes first makes you react late. When two or more runs are going and you want to block, start one extra background job that exits as soon as **any** end marker appears, and block on that job:
+
+```sh
+while :; do
+  for f in runs/t3-worker-1/run.end runs/r7-regress/run.end; do
+    [ -s "$f" ] && { echo "ANY-END $f $(cat "$f")"; exit 0; }
+  done
+  sleep 20
+done
+```
+
+- Block with `AwaitShell` on it, using `pattern: ANY-END`. When it fires, process that run, then start a fresh any-end waiter over the runs still going and block again.
+- It is in addition to each run's own waiter, not a replacement. The per-run waiters still catch `SESSION-GONE-NO-END`, so add `tmux has-session` checks if this waiter is the only one.
+- Like any background job, it does not wake you after your turn ends; keep the timer.
+- Status: the marker-loop mechanics are verified 2026-10-12; first use of the any-end form was on the same date.
+
 **Stopping a run on purpose** (verified 2026-10-12): after `tmux kill-session`, the waiter prints `SESSION-GONE-NO-END` and exits 3 on its next check, so the stop arrives as a normal job completion. Rename the run's artifacts (for example `<run>-attempt1.*`) before relaunching under the same name, and record the cancellation and its reason in the ledger.
 
 ## Timers: the only self-wake (Cloud Agent, verified 2026-10-12)
