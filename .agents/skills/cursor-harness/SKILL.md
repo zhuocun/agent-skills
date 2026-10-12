@@ -50,6 +50,7 @@ Anything longer than a few minutes or independent of your next step runs off you
 - Poll only when your next step is blocked on that specific job, or the job needs close monitoring (deployments, long test runs, migrations). Then keep polling until it ends, stalls, or is clearly hung.
 - Before a long blocking wait on a Cloud Agent, check the follow-up queue. Handle the user first.
 - A new user message releases your blocking wait early. After you answer, re-arm the wait (`AwaitShell` with the waiter's `pattern`) if runs are still going and you have no other work, so you react as soon as they end rather than at the next timer.
+- With two or more runs going, never block on one run's waiter: start an **any-end waiter** that exits when the first end marker appears, and block on that ([references/background-work.md](references/background-work.md)).
 
 ### 6. Turn end: leave nothing unwatched
 
