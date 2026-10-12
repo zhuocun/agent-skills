@@ -55,7 +55,7 @@ Anything longer than a few minutes or independent of your next step runs off you
 Before your final message:
 
 1. Update the ledger.
-2. For every entry still running, confirm it has a live completion signal. If a run is expected to outlast the turn by more than about 20 minutes and nothing will wake you, set a one-shot timer where available.
+2. For every entry still running, confirm it has a live completion signal. A background shell job or waiter that finishes after your turn ends does not wake you; only a timer, a background Task subagent, or a user message does. So when a run will outlast the turn, set a timer where available (one-shot at the expected end, or recurring when the end is uncertain).
 3. Tell the user which items are still running, where to look, and what happens when they finish.
 
 ## References

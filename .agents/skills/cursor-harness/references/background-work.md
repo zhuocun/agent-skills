@@ -7,12 +7,14 @@ How to run long work without blocking, and how to make sure its end reaches you.
 | Launch | Tracked by Cursor? | Completion reaches you via | Status |
 | --- | --- | --- | --- |
 | Shell call that finishes within `block_until_ms` | yes | the call result | documented |
-| Shell call with `block_until_ms: 0`, or one that outlives `block_until_ms` | yes, as a background job | end-of-turn notification for unawaited finished jobs; `AwaitShell` | documented |
+| Shell call with `block_until_ms: 0`, or one that outlives `block_until_ms` | yes, as a background job | end-of-turn notification for jobs that finished **during** a turn; `AwaitShell`. A job that finishes after your turn has ended does **not** wake you | documented; no-wake verified 2026-10-12 |
 | `tmux new-session -d`, `nohup`, `setsid`, `cmd &` | **no**: the launch command returns at once | nothing, unless you add a waiter | verified 2026-10-12 |
 | Task subagent with `run_in_background: true` | yes | automatic result delivery after your turn ends | documented |
-| `subscribe_timer` (Cloud Agent) | yes | a follow-up prompt when you are free | documented |
+| `subscribe_timer` (Cloud Agent) | yes | a follow-up prompt that starts a new turn, even after your turn has ended | verified 2026-10-12 |
 
-Unverified as of 2026-10-12: whether a background shell job that finishes after your turn has ended wakes you right away, and whether background shell jobs survive when the session is reclaimed. Until verified, treat a tmux run plus end marker as the source of truth and use a timer as a safety net for long runs.
+**Waking up after your turn ends** (verified 2026-10-12): with the turn ended and nothing awaited, a background `sleep 60` shell job finished and started no turn; a one-shot 120-second `subscribe_timer` fired on time and started a new turn. So background shell jobs and waiters are signals you collect, not alarms. If nothing else will wake you (no user message, no background Task subagent), a running entry that outlasts the turn needs a timer.
+
+Still unverified: whether background shell jobs survive when the session is reclaimed. Treat a tmux run plus end marker as the source of truth.
 
 ## Choosing the vehicle
 
@@ -71,10 +73,10 @@ If the waiter itself dies (session reclaimed, turn stopped), the tmux run contin
 
 **Stopping a run on purpose** (verified 2026-10-12): after `tmux kill-session`, the waiter prints `SESSION-GONE-NO-END` and exits 3 on its next check, so the stop arrives as a normal job completion. Rename the run's artifacts (for example `<run>-attempt1.*`) before relaunching under the same name, and record the cancellation and its reason in the ledger.
 
-## Timers as a safety net (Cloud Agent, documented)
+## Timers: the only self-wake (Cloud Agent, verified 2026-10-12)
 
 - `subscribe_timer` with `once: true` and `delaySeconds` enqueues a prompt that runs when you are otherwise free. Name it after the ledger entry; names deduplicate.
-- Set one for any run expected to outlast your turn by more than about 20 minutes. Use the expected end plus a margin, and a prompt such as "Inventory ledger entry R7: check its end marker and process the result."
+- Before ending a turn with any run still going, set a timer: a one-shot timer at the expected end plus a margin, or a recurring one (for example every 20 minutes) when the end is uncertain. Write the prompt so it stands alone, for example "Inventory ledger entry R7: check its end marker and process the result."
 - Remove timers with `unsubscribe` once the entry closes. Check `list_subscriptions` during inventory.
 - For GitHub, Slack, Linear, or CI events, use the `subscribe` skill rather than timers.
 
