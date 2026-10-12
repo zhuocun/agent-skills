@@ -21,6 +21,11 @@ Entry format:
 - **Fact:** zsh does not word-split unquoted `$VAR`, so `CMD="tool --flag"; $CMD` runs a program literally named `tool --flag`.
 - **Do:** Use an array (`CMD=(tool --flag); "${CMD[@]}"`) or call the tool directly.
 
+### Do not rely on a recurring timer's first fire time
+- **Status:** unverified (one observation, 2026-10-12)
+- **Fact:** A recurring `subscribe_timer` with `delaySeconds: 1200` first fired after about 400 seconds, right after a separate one-shot timer had fired and the agent went idle. The cause is unknown; it could be phase alignment or the scheduler delivering when the agent is free.
+- **Do:** Treat a timer as "wakes me no later than roughly the interval", not as an exact schedule. Each fire should run a full inventory that tolerates an early wake. Use a one-shot timer when the timing matters.
+
 ### Quote heredoc delimiters when the body has backticks or `$`
 - **Status:** verified (before 2026-10-12)
 - **Fact:** With an unquoted delimiter (`<<EOF`), backticks and `$()` in the body run as commands. One such heredoc accidentally started an agent CLI.
