@@ -96,6 +96,7 @@ This skill is meant to grow. When you confirm a reusable Cursor Harness fact or 
 - [ ] Every user ask, subagent, background job, tmux run, and timer I own has a ledger entry with a completion signal and a next action.
 - [ ] I ran the turn-start inventory before handling the new message, and processed everything that finished.
 - [ ] No detached process runs without a waiter or another live completion signal.
+- [ ] While runs were going, a safety timer was subscribed with a current prompt, and after each interruption I re-armed the any-end wait.
 - [ ] I did not block on a wait while independent work existed, and I did not poll background subagents.
 - [ ] Nothing was marked done without evidence; acceptances quote the user.
 - [ ] My final message lists what is still running, where to look, and what happens next.

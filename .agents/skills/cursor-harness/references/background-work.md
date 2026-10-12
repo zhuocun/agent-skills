@@ -87,7 +87,7 @@ done
 - Block with `AwaitShell` on it, using `pattern: ANY-END`. When it fires, process that run, then start a fresh any-end waiter over the runs still going and block again.
 - It is in addition to each run's own waiter, not a replacement. The per-run waiters still catch `SESSION-GONE-NO-END`, so add `tmux has-session` checks if this waiter is the only one.
 - Like any background job, it does not wake you after your turn ends; keep the timer.
-- Status: the marker-loop mechanics are verified 2026-10-12; first use of the any-end form was on the same date.
+- Status: verified 2026-10-12. Used for five consecutive hand-offs (worker, two review rounds, a regression run, a render capture), each processed within seconds of its end marker.
 
 **Stopping a run on purpose** (verified 2026-10-12): after `tmux kill-session`, the waiter prints `SESSION-GONE-NO-END` and exits 3 on its next check, so the stop arrives as a normal job completion. Rename the run's artifacts (for example `<run>-attempt1.*`) before relaunching under the same name, and record the cancellation and its reason in the ledger.
 
