@@ -25,7 +25,15 @@ One line or short block per entry. Keep it greppable.
 | W1 | timer | wake-up for R7 | `subscribe_timer` "r7-check" | armed | timer prompt | inventory R7; unsubscribe if done | — |
 ```
 
-Kinds: `task` (a user ask), `run` (shell job or tmux run), `subagent`, `timer`, `wait-user` (blocked on a user decision, credential, or acceptance).
+Kinds: `task` (a user ask), `run` (shell job or tmux run), `subagent`, `timer`, `wait-user` (blocked on a user decision, credential, or acceptance), `guard` (something you must not do while a run is live).
+
+## Guards for runs against shared environments
+
+A run that exercises a deployed environment (an integration test, a regression, a load test) is invalidated by anything that redeploys or reconfigures that environment, including your own actions. Pushes are the common trap: a push to a branch with continuous deployment restarts the service under test, even when the commit only touches documents.
+
+- Before launching such a run, find out what triggers deployments of the target (pushes to which branches, merges, scheduled jobs) and add a `guard` entry naming the forbidden action and the run it protects.
+- Check the guard list before every push, merge, deploy, or config change. Commit locally and push after the run ends.
+- Brief the executor to accept any build whose relevant code is unchanged from the baseline, instead of pinning one commit. Have it confirm no deployment is in progress before it starts, and check again at the end.
 
 ## States
 

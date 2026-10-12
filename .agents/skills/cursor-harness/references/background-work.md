@@ -69,6 +69,8 @@ echo "WAITER-DONE $(cat "$END")"
 
 If the waiter itself dies (session reclaimed, turn stopped), the tmux run continues. The turn-start inventory catches it via the end marker.
 
+**Stopping a run on purpose** (verified 2026-10-12): after `tmux kill-session`, the waiter prints `SESSION-GONE-NO-END` and exits 3 on its next check, so the stop arrives as a normal job completion. Rename the run's artifacts (for example `<run>-attempt1.*`) before relaunching under the same name, and record the cancellation and its reason in the ledger.
+
 ## Timers as a safety net (Cloud Agent, documented)
 
 - `subscribe_timer` with `once: true` and `delaySeconds` enqueues a prompt that runs when you are otherwise free. Name it after the ledger entry; names deduplicate.
@@ -79,5 +81,5 @@ If the waiter itself dies (session reclaimed, turn stopped), the tmux run contin
 ## Hangs
 
 - Watch output growth, not just elapsed time. A run with no output growth for far longer than its normal cadence is suspect.
-- Before killing anything, save the log, and confirm the PID belongs to this run (the launcher's recorded PID, or the output file header). Never kill by `pgrep -f` or `ps | grep` on prompt text: that matches the waiter and your own shell.
+- Before killing anything, save the log, and confirm the PID belongs to this run (the launcher's recorded PID, or the output file header). Never kill by `pgrep -f` or `ps | grep` on prompt text: that matches the waiter and your own shell. (Verified 2026-10-12: a `/proc/*/cmdline` scan for a run's brief name matched only the scanning shell itself.)
 - After killing a hung run, retry once. Escalate or switch vehicles if it fails again, and record both attempts in the ledger.
