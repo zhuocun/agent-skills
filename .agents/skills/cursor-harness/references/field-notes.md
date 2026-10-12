@@ -37,6 +37,16 @@ Entry format:
 - **Fact:** A launcher that runs two agents as `( ... ) &` subshells under `set -u` lost one leg silently: an environment line copied from another script referenced a variable defined elsewhere in that script, so the subshell died with `unbound variable` before creating its log. The other leg kept running, and the combined end marker would still have been written.
 - **Do:** After launch, confirm each leg's log file exists and shows the expected model. When you copy environment lines from another script, copy the variables they reference too, or test the copied lines alone under `set -u` first. Prefer one tmux session and one end marker per agent.
 
+### Use printf, not echo, to pipe captured JSON in zsh
+- **Status:** verified 2026-10-12
+- **Fact:** zsh's builtin `echo` interprets backslash escapes, so `echo "$out" | node ...` turns `\n` inside JSON strings into raw newlines, and `JSON.parse` fails with "Bad control character".
+- **Do:** Pipe with `printf '%s' "$out"`, or avoid the variable and pipe the command directly.
+
+### Check list ordering before polling for "the latest" item
+- **Status:** verified 2026-10-12
+- **Fact:** A deployment list API returned the oldest page first, with a page-size cap. A poller that read only page 1 would never have seen the new deployment and would have spun until it timed out.
+- **Do:** Before writing a poller, confirm the sort order and pagination (`hasMore`, page size limit) once by hand. Match on a unique key, such as the commit hash, rather than on "first item".
+
 ### Quote heredoc delimiters when the body has backticks or `$`
 - **Status:** verified (before 2026-10-12)
 - **Fact:** With an unquoted delimiter (`<<EOF`), backticks and `$()` in the body run as commands. One such heredoc accidentally started an agent CLI.
