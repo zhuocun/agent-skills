@@ -178,7 +178,7 @@ the tier edges to the product's own description of its modes: the standard
 full-capability mode, never a light or cheap mode (too-cheap edge) or an
 oversized premium mode meant for orchestration (too-expensive edge), and never
 a mode that exists mainly for speed unless the user's fast-mode scope covers
-that agent, where it counts as the Fast request.
+every model or names that mode, where it counts as the Fast request.
 Inspect the dispatch schema and set every exposed parameter on every subagent
 call, using the source's exact advertised effort token (lowercase `xhigh` on
 Codex). Never accept the platform default: it can route to a forbidden tier,
@@ -190,8 +190,10 @@ section, **Source** included.
 Claude family, Claude Code, then Devin, then Cursor; for the GPT family, Codex,
 then Devin, then Cursor. A mode-only route, one that lets the caller pick a
 product mode bundling model, effort and speed but not a model or an effort,
-such as Devin child sessions, is the last resort: it ranks after every
-available route that carries the model per agent, in either family's order.
+such as Devin child sessions, is never a source's in-product mechanism and is
+the last resort: it ranks after every available route that carries the model
+per agent, the row's Fallback family included, and **Fallbacks** treats it as
+a source that offers no model of either family.
 
 Resolve routes from the current host's exposed tools, permissions and installed
 CLI help. Tool names, arguments and commands in this skill describe supported
@@ -445,7 +447,8 @@ not proof of the serving tier:
 - **Role**: a short label for what the agent does.
 - **Model**: the model's name with its version, not its ID or an alias; when
   the dispatch carried a mode instead of a model, the product name and the
-  mode, such as "Devin Normal".
+  mode, such as "Devin Normal", with no Fast slot when the mode carried the
+  Fast request.
 - **Effort**: the level the dispatch carried, including an explicit override,
   written Low, Medium, High, xHigh, Max or Ultra; left out when the dispatch
   carried none.
@@ -544,11 +547,11 @@ Before declaring the task done, confirm:
 - [ ] Every subagent ran the family and effort level **Model selection** assigns
   its role, or what those rules put in its place — a fallback, an effort-limit
   level or inherited default, the choice when no source offers either family, a
-  mode chosen by those rules on a mode-only route of last resort, or an
-  explicit instruction — on the newest version in the source's own model
-  list, through the highest-priority available source for that family: the
-  host's in-product mechanism for its own source, its own CLI when that
-  mechanism cannot carry the assignment, and a CLI for any other.
+  mode chosen by those rules, or an explicit instruction — on the newest version
+  in the source's own model list, through the highest-priority available source
+  for that family: the host's in-product mechanism for its own source, its own
+  CLI when that mechanism cannot carry the assignment, and a CLI for any other,
+  or a mode-only route only when no route that carries the model was available.
 - [ ] Every subagent call set every exposed parameter explicitly, the mode
   included on a mode-only route — no silent platform default, and no too-cheap
   or too-expensive tier unless instructed.
