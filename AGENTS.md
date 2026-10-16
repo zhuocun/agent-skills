@@ -36,9 +36,8 @@ validator checks `references/cli-dispatch.md`, which each skill ships as an
 identical copy, and, in Model selection, the table's Task type, First choice and
 Fallback columns and the Model ID and Fast mode blocks. The rest differs in role
 names, section names or layout, so keep its shared rules in step by hand: the
-tier list (**Tiers.**), the
-source order (burst's **Subagent sources**, proxy's **Source.**), rules 1–7,
-**Fallbacks**, **Effort limits** and **Reporting**.
+tier list (**Tiers.**), the source order (burst's **Subagent sources**, proxy's
+**Source.**), rules 1–7, **Fallbacks**, **Effort limits** and **Reporting**.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
