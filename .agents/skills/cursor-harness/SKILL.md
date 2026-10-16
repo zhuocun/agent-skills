@@ -24,7 +24,7 @@ At the start of every turn, including a follow-up message or a timer prompt:
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
 3. Process completed work: verify the result, record it, and trigger the next step. Then handle the new message.
 
-After compaction, the conversation is a summary. Before this inventory, confirm what the summary claims against ground truth (git, PRs, CI, the actual files), never from the summary alone.
+After compaction, the conversation is a summary. Before this inventory, confirm what the summary claims against the ledger and ground truth (git, PRs, CI, the actual files), not against the summary alone.
 
 ### 3. Classify every new message before acting
 

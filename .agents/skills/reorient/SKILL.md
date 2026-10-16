@@ -52,7 +52,7 @@ Give a concise recap:
 
 Item 1 is the recap's answer line, so leading with it satisfies an answer-first rule.
 
-End by resuming the top to-do or asking which to take, per what the user signalled. When an orchestration run is driving to an agreed definition of done, resume the top to-do without waiting for confirmation.
+End by resuming the top to-do or asking which to take, per what the user signalled. When an orchestration run is driving to a definition of done set before dispatch, resume the top to-do without waiting for confirmation.
 
 ## Failure modes
 

@@ -1,6 +1,6 @@
 # Delegation
 
-Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Run each delegate on a top-tier model suited to its role: never a mini or distilled variant, and never an oversized premium tier whose cost outruns its value for delegated work. Before launching an external CLI, confirm it is installed and authorized, and pick the model from its current model list. This reference covers Cursor-side mechanics.
+Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Run each delegate on a top-tier model suited to its role: never a mini or distilled variant, and never an oversized premium tier whose cost outruns its value for delegated work. Set effort and every other exposed parameter explicitly. Before launching an external CLI, confirm it is installed and authorized, and pick the model from its current model list. This reference covers Cursor-side mechanics.
 
 ## Task-tool subagents (documented)
 
