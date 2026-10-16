@@ -73,13 +73,14 @@ Before any work starts, confirm the orchestrator-consultant has set the to-dos
 and a high-standard definition of done, set at the highest standard that can
 still be verified within the user's scope, constraints and budget: every
 requirement already set for the task's done — targets, guardrails,
-verification — is folded in and planning starts from any methods, inputs and
-schedule already set for it, any method available for raising a task's
-standard raises it further, and it is never lower than what was already set; a
-target set as the aim above done stays the aim, not part of the definition of
-done, and the result is reported against both; the items that need the user's
-confirmation go to the user. Then keep the loop moving with perseverance: drive
-dispatch → review → re-consult until the final-gate reviewer returns `done`.
+verification — is folded in, any method available for raising a task's standard
+raises it further, and it is never lower than what was already set; a target
+set as the aim above done stays the aim, not part of the definition of done,
+and the result is reported against both; the items that need the user's
+confirmation go to the user. Then, with planning starting from any methods,
+inputs and schedule already set for the task, keep the loop moving with
+perseverance: drive dispatch → review → re-consult until the final-gate
+reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
@@ -97,14 +98,15 @@ for the user to confirm.
 
 Dispatch an orchestrator-consultant subagent with the task as received. Before
 dispatching, relay the items the task's brief asks the user to confirm to the
-user verbatim, never to a subagent. Its brief:
+user verbatim, never to a subagent. The consultant's brief:
 
 - the user's task verbatim, plus the context and files it needs to plan;
 - the task's brief verbatim when one exists before planning — written by the
   user or a subagent, never by you, since rewriting the task is a planning
-  decision — with the user's answers so far, the instruction to add the items
-  the user approved and leave out the declined or unanswered ones, and to
-  include the brief's verification in what the final-gate reviewer checks;
+  decision — with the user's answers so far, the instruction to add to the
+  definition of done the items the user approved and leave out the declined or
+  unanswered ones, and to include the brief's verification in what the
+  final-gate reviewer checks;
 - the definition-of-done rule from **Run it to done**, verbatim, to set the
   definition of done by, together with, verbatim, any method available to you
   for raising a task's standard, for it to apply when setting the definition of
@@ -116,14 +118,16 @@ user verbatim, never to a subagent. Its brief:
   of each subtask, named as exactly one row of the **Model selection** table,
   with the families and effort levels its row assigns; the brief for each
   worker, each stating that the worker is a leaf; the success criteria per
-  subtask; and what the final-gate reviewer should check;
+  subtask; what the final-gate reviewer should check; and any items that need
+  the user's confirmation;
 - that table, its legend and its numbered rules, verbatim, to classify by.
 
 If it names no row, or more than one, for a subtask, re-consult rather than
 choose. Then follow its plan. If the plan is ambiguous, or you hit a fork it did
 not cover, go back to an orchestrator-consultant — do not resolve it yourself.
 Re-consult whenever reality diverges from the plan (a worker uncovers new scope,
-a review forces a rethink).
+a review forces a rethink) or the user approves an item that needed their
+confirmation, since adding work is planning.
 
 ## Pass 2 — Dispatch workers
 
@@ -166,13 +170,13 @@ done decision are still not yours.
 
 You do not declare the task done. When every subtask has passed its reviewer,
 dispatch a final-gate reviewer subagent with: the original task; the to-dos and
-definition of done the orchestrator-consultant set in Pass 1, with what it said
-this gate should check; each subtask's goal and final artifact; and the
-cross-cutting integration to inspect. Ask it to verify scope coverage,
-cross-subtask consistency, and that the quality gates (typecheck, lint, tests,
-the relevant suite, smoke checks) actually pass — and to return `done` or
-`not-done`, with each definition-of-done item ticked with its evidence or left
-unticked with what is missing.
+definition of done the orchestrator-consultant set in Pass 1, plus the items the
+user approved since, with what it said this gate should check; each subtask's
+goal and final artifact; and the cross-cutting integration to inspect. Ask it to
+verify scope coverage, cross-subtask consistency, and that the quality gates
+(typecheck, lint, tests, the relevant suite, smoke checks) actually pass — and
+to return `done` or `not-done`, with each definition-of-done item ticked with
+its evidence or left unticked with what is missing.
 
 - `done` → you may declare completion and report.
 - `not-done` → relay its gaps into a fresh worker → reviewer cycle, or back to
