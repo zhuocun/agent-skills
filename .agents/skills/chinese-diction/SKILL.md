@@ -1,7 +1,7 @@
 ---
 name: chinese-diction
 description: >-
-  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use when the user wants to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, notices, UI strings, marketing copy, contracts, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms the field leaves in English, product names, field names, citations, clause and statute numbers (their value; in translation, their official Chinese form), quoted figures with their units, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
+  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use when the user asks for Chinese prose for people, whatever language the request itself is in: to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, notices, UI strings, marketing copy, contracts, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms the field leaves in English, product names, field names, citations, clause and statute numbers (their value unchanged; in translation, a statute's title in its official Chinese form and a clause number in the target citation's form), quoted figures with their units, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
 ---
 
 # Chinese Diction
@@ -12,7 +12,7 @@ Priority order, highest first: **fidelity, preserved meaning, Chinese sentence s
 
 ## The core instinct
 
-Settle five variables first. Infer each from the text and the ask; ask the user only where a setting changes the wording and nothing in front of you decides it.
+Settle five variables first. Infer each from the text and the ask; where nothing in front of you decides a setting, use its bracketed default, and ask the user only where a setting changes the wording and that default would not fit the text.
 
 - **Register** — professional / casual / creative. [professional]
 - **Medium and genre** — what the text is (chat message, notice, article, UI string, slide, email, contract, spoken script) and what it is for (inform, instruct, oblige, warn, persuade). [running prose, to inform]
@@ -95,7 +95,7 @@ Reaching for force or certainty the claim doesn't warrant reads as strident or n
 
 Bound a strong claim rather than softening it away: pair a confident claim with scope, condition, evidence, or limitation, and with numbers include the measurement basis when it matters. Prefer `在该测试场景下可降低请求耗时`、`代码完成度 = 正确实现数 / 功能点总数`、`准确性有限` over `全面提升准确性`、`仍有优化空间`.
 
-The opposite failure is over-hedging into mush: stacking softeners (`可能…也许…或许…`) or weakening the verb itself buries the claim. State the cause→effect flatly and quarantine the single honest qualifier into one measured quantifier.
+The opposite failure is over-hedging into mush: stacking softeners (`可能…也许…或许…`) or weakening the verb itself buries the claim. State the cause→effect flatly and quarantine each honest uncertainty into one measured quantifier on the part it qualifies, never two softeners on one part.
 
 - ✗ 相关信息如果不在 AI 的注意力焦点内，可能也许不太会被考虑到 → ✓ 相关信息若不在 AI 的注意力焦点内，往往不会被纳入考虑
 
@@ -150,7 +150,7 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 - [ ] No coinage — every nonstandard term, and every `面`/`态`/`位`/`键` suffix form, passes the substitution test: replaced by a plain description of what it denotes, the text loses no information. A term settled for this audience stays; one settled only inside a narrower field is expanded.
 - [ ] No vividness the text's purpose doesn't need — no personification, branded labels, noun-metaphor, slogans, drama, or wrong-connotation words; in creative and persuasive prose, each figure earns its effect and still names something checkable.
 - [ ] Register, medium and relationship match what was settled — professional / casual / creative, the medium's own forms, upward / downward / peer / outward — and hold steady, never mixing within the text except where the text quotes a speaker, marks an aside, or stages a deliberate collision in creative prose, each set off as quotation or aside.
-- [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute, or the settled genre is one that imposes obligation — contract, policy, safety notice, regulatory text — where `应`/`不得`/`严禁` are the correct form; and no over-hedge mush (`可能…也许…或许`) — one qualifier, placed precisely, not counting distance markers written upward or to a client (`是否方便…`/`我们这边…`), which are politeness rather than hedging.
+- [ ] No absolute/categorical words reached for by default (`只能`/`必须`/`一定`/`永远`/`一旦…就`) — measured phrasing unless the claim is genuinely absolute, or the settled genre is one that imposes obligation — contract, policy, safety notice, regulatory text — where `应`/`不得`/`严禁` are the correct form; and no over-hedge mush (`可能…也许…或许`) — one qualifier per real uncertainty, placed precisely, not counting distance markers written upward or to a client (`是否方便…`/`我们这边…`), which are politeness rather than hedging.
 - [ ] No clipped/over-shortened words in running prose — each written in its complete natural form (`重复录入` not `重录`, `手动维护` not `手维护`); display slots and casual chat keep their own short forms, and so does a settled industry short form that heads its own sentence on first mention and heads its own compounds (`压测`/`灰度`/`联调`; `压测平台`), but not one that merely trails its long form nearby (`冒烟`, `回归`).
 - [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B，而非A` only with B fronted and meaning unchanged; one-thought clauses welded with a native connective (`之所以…是因为`/`与其…不如`), not left as disjointed facts; sentences bundling definition + justification + instruction are split, except where the genre binds a condition to its consequence in one clause (a contract).
 - [ ] Identifiers, numbers, citations, author names, URLs, statute and clause numbers, drug names and doses, quoted figures with units, and trademarks are byte-for-byte unchanged — including through any 简繁 conversion; in translation only, a drug's generic name and a statute's title take their official Chinese form and a clause number takes the target citation's form with its value unchanged.
