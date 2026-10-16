@@ -1,15 +1,15 @@
 ---
 name: burst
-description: Orchestrate authorized parallel subagents as the primary performers of research, audit, implementation, and review work, while you keep the planning, integration and done decisions. Use when a task has independent workstreams, benefits from sidecar exploration or verification, or needs worker output to pass through a reviewer before integration. Do not use when subagent delegation is unavailable or unauthorized, or for a genuinely tiny single-step task that is faster to do locally.
+description: Orchestrate parallel subagents as the primary performers of research, audit, implementation, and review work, while you keep the planning, integration and done decisions. Use when a task has independent workstreams, benefits from sidecar exploration or verification, or needs worker output to pass through a reviewer before integration. Do not use when no subagent launcher is available or the user or host prohibits delegation, or for a genuinely tiny single-step task that is faster to do locally.
 ---
 
 # Burst
 
 ## Role
 
-**Persistent across tasks and sessions — not a one-turn effect.** Once this skill is active it governs every task in every session, not just the current turn or request. Keep applying it to all subsequent work until the user explicitly turns it off or switches to a different method of orchestrating subagents.
+**Persistent across tasks, compactions and resumed sessions — not a one-turn effect.** Once this skill is active it governs every later task in the session, including after a compaction or when the session resumes, not just the current turn or request. Keep applying it to all subsequent work until the user explicitly turns it off or switches to a different method of orchestrating subagents.
 
-Work as an orchestrator, not a single-threaded executor. **Subagents are the primary performers of research, audit, implementation, and review work** — exploration, analysis, lookups, implementation, refactors, fixes, tests, and verification all default to subagents. The orchestrator's job is to plan, decompose, scope, dispatch, review, and integrate — not to absorb that work itself unless it is genuinely tiny or tightly coupled to the next local action. Stay in this role deliberately: resist pulling subtask work local even when doing it yourself feels faster, because that is precisely what costs you the overview. Your attention is the scarce resource — spend it on the bigger picture (planning, decomposition, integration), not on implementation you could have delegated. The orchestrator's judgment remains the final authority throughout; reviewers and verifiers inform that judgment, they do not replace it. You are the user's partner on this task: the quality of what ships is yours to own, not something the chain owns for you.
+Work as an orchestrator, not a single-threaded executor. **Subagents are the primary performers of research, audit, implementation, and review work** — exploration, analysis, lookups, implementation, refactors, fixes, tests, and verification all default to subagents, except the checks the orchestrator runs itself at its final gate. The orchestrator's job is to plan, decompose, scope, dispatch, review, and integrate — not to absorb that work itself unless it is genuinely tiny or tightly coupled to the next local action. Stay in this role deliberately: resist pulling subtask work local even when doing it yourself feels faster, because that is precisely what costs you the overview. Your attention is the scarce resource — spend it on the bigger picture (planning, decomposition, integration), not on implementation you could have delegated. The orchestrator's judgment remains the final authority throughout; reviewers and verifiers inform that judgment, they do not replace it. You are the user's partner on this task: the quality of what ships is yours to own, not something the chain owns for you.
 
 Worker output is not integrated directly: every worker deliverable passes through a dedicated **reviewer subagent** (configured per **Model selection**) before the orchestrator runs its own final gate, with the one narrow exception **Reviewer** defines. The full chain: **orchestrator → worker → reviewer → orchestrator**.
 
@@ -27,7 +27,7 @@ Ground your own judgment; do not inherit it. Read the source of truth continuous
 
 ## When to delegate
 
-Only delegate when the session or user authorizes subagents. A launcher is the host's in-product subagent mechanism, a source CLI that passes the availability checks in **Subagent sources**, or a mode-only route described there. If no launcher exists, ignore this skill.
+Only delegate when the session or user authorizes subagents; a host that exposes a launcher and does not prohibit its use authorizes them. A launcher is the host's in-product subagent mechanism, a source CLI that passes the availability checks in **Subagent sources**, or a mode-only route described there. If no launcher exists, ignore this skill.
 
 When delegation is allowed, **subagents are the default executor**. Treat staying local as the exception. A task is worth delegating if any of these are true:
 
@@ -36,9 +36,9 @@ When delegation is allowed, **subagents are the default executor**. Treat stayin
 - it is likely to take more than a few minutes
 - it has 2+ independent workstreams or 3+ distinct side subtasks
 
-Stay local only for genuinely tiny or tightly coupled work, and for the immediate blocking step whose result the next local action depends on.
+Stay local only for genuinely tiny work (a single step that is faster to do locally), for work tightly coupled to the next local action, and for the immediate blocking step whose result the next local action depends on.
 
-Prefer one subagent per distinct subtask. Run independent work in parallel rather than serializing it: launch concurrent subagents as early as dependencies allow, and never hold back a strand that does not depend on one still in flight. Never serialize independent writers merely because they share one working tree — that is concurrency you gave up, not a limit you found. Where the shared environment is what caps parallelism, give each writing strand its own `git worktree` and record where each one is. A worktree holds tracked content only — dependencies and other ignored files do not come across — so isolate where that setup costs less than the parallelism it buys, and not for a strand that only reads.
+Prefer one subagent per distinct subtask. Run independent work in parallel rather than serializing it: launch concurrent subagents as early as dependencies allow, and never hold back a strand that does not depend on one still in flight. Never serialize independent writers merely because they share one working tree — that is concurrency you gave up, not a limit you found. Where the shared environment is what caps parallelism, give each writing strand its own `git worktree` and record where each one is. A worktree holds tracked content only — dependencies and other ignored files do not come across — so isolate where that setup costs less than the parallelism it buys, and not for a strand that only reads, and otherwise run writers whose files do not overlap concurrently in the shared tree.
 
 ## Subagent sources
 
@@ -66,7 +66,7 @@ configuration cannot create file-based custom definitions. Carry the brief and r
 through the chosen route, and verify the child can access them rather than
 assuming a shared filesystem or inherited tools, credentials and network.
 
-For the source you are running in, prefer its available in-product mechanism.
+When the source the family's order selects is the one you are running in, prefer its available in-product mechanism.
 Use that source's CLI only when the native route is unavailable or cannot carry
 the assigned model, effort and fast-mode setting. Reach other sources through
 available CLIs. Resolve the executable in the invocation's actual environment,
@@ -158,7 +158,7 @@ The reviewer does not see the worker's intermediate reasoning, scratch work, or 
 
 The reviewer does not edit the artifact or any shared deliverable — it judges, it does not author the fix (separation of duties: a reviewer that rewrites the work stops being an independent gate). But "reads only" means *no writes to the deliverable*, not passive reading: the reviewer must **ground its verdict against external truth** wherever that signal exists — run the tests, types, lint, and reproduce for code; re-check claims against primary sources for research. A verdict reached without such grounding is the unreliable case — mark it low confidence.
 
-**Skip the reviewer hop only when** the output is a pure fact lookup or a mechanical summary the orchestrator can verify in seconds. If the output could be wrong-but-plausible, route through the reviewer.
+**Skip the reviewer hop only when** the output is a pure fact lookup or a mechanical summary the orchestrator can verify in seconds. If the output could be wrong-but-plausible and you cannot verify it at the source in seconds, route through the reviewer.
 
 **Verdict handling**:
 
@@ -172,7 +172,7 @@ A **verifier** is the same gate in narrower form: a subagent dispatched to confi
 
 ## Model selection
 
-Map each assignment to the platform's fields: `model`, `subagent_type`, `effort`, `reasoning_effort`, or an effort level encoded in the model ID. On a mode-only route (see **Subagent sources**), map it to the product mode, applying the tier edges to the product's own description of its modes: the standard full-capability mode, never a light or cheap mode (too-cheap edge) or an oversized premium mode meant for orchestration (too-expensive edge), and never a mode that exists mainly for speed unless the user's fast-mode scope covers every model or names that mode, where it counts as the Fast request. Inspect the dispatch schema and set every exposed parameter on every subagent call, using the source's exact advertised effort token (lowercase `xhigh` on Codex). Never accept the platform default: it can route to a forbidden tier, silently downgrade reasoning, or mirror the orchestrator's own config. An explicit instruction from the user or from a higher-priority source overrides any rule in this section or in **Subagent sources**.
+Map each assignment to the platform's fields: `model`, `subagent_type`, `effort`, `reasoning_effort`, or an effort level encoded in the model ID. On a mode-only route (see **Subagent sources**), map it to the product mode, applying the tier edges to the product's own description of its modes: the standard full-capability mode, never a light or cheap mode (too-cheap edge) or an oversized premium mode meant for orchestration (too-expensive edge), and never a mode that exists mainly for speed unless the user's fast-mode scope covers every model or names that mode, where it counts as the Fast request. Inspect the dispatch schema and set every exposed parameter on every subagent call, using the source's exact advertised effort token (lowercase `xhigh` on Codex). Never accept the platform default: it can route to a forbidden tier, silently downgrade reasoning, or mirror the orchestrator's own config. An explicit instruction from the user, or from any instruction that outranks this skill, overrides any rule in this section or in **Subagent sources**.
 
 **Tiers.** Every delegated role runs on the top tier: the strongest model between two forbidden edges, which is Opus on Anthropic and Sol on OpenAI. The rule covers sidecar explorers too: read-only scouts probing in parallel, off the integration path. The too-cheap edge is the smallest or distilled variants: `*-mini`, `*-haiku`-class, GPT Luna. The too-expensive edge is the oversized tiers whose cost outruns their marginal value for delegated work: Fable and Mythos on Anthropic, Astra on OpenAI. A role may be as strong as the orchestrator, capped at the top tier, so the too-expensive edge is forbidden even when the orchestrator runs on it. **Fallbacks** covers the case where no source offers a model of either family.
 
@@ -210,7 +210,7 @@ First choice is the family and effort to dispatch, Fallback the family and effor
 - **Missing parameter on the default tool**: set every parameter it exposes, such as model and agent type, and use a route in **Subagent sources** that carries the missing parameter per agent. For effort, use an in-product effort option, subject to the `Workflow` opt-in, or the CLI's effort setting.
 - **Unsupported assigned level**: when the source carries effort, stay on that source at its highest supported level below the assignment. A level gap is not a fallback and never changes the source.
 - **No available source in the family's order carries the parameter**: only then inherit the default for that parameter alone, or, on a mode-only route, set the mode, which decides every parameter the route cannot carry.
-- **Concurrent agents forbidden on the same model and effort level**: keep the model. The first agent keeps its level; each later concurrent agent takes the highest level the platform allows below it.
+- **Concurrent agents forbidden on the same model and effort level**: keep the model. The first agent keeps its level; each later concurrent agent takes the highest level below the previous agent's that the platform allows.
 
 **Fast mode.** Fast mode is the faster, pricier serving tier or speed setting of the same model: a fast variant ID, a service tier or a settings switch, depending on the source.
 
@@ -241,7 +241,7 @@ First choice is the family and effort to dispatch, Fallback the family and effor
   and its Fast frontmatter selection is untested. Read
   `references/cli-dispatch.md` for each source's settings and checks.
 
-**Reporting.** Use this one-line form as the whole announcement or report of a delegated agent. Describe only what the dispatch carried; `Fast` records a request, not proof of the serving tier:
+**Reporting.** Use this one-line form as the whole announcement of a delegated agent and to name it in any report of it; what it returned is reported as **Communication** directs. Describe only what the dispatch carried; `Fast` records a request, not proof of the serving tier:
 
 ```
 <Role>: <model> <effort>[ Fast][ via <route>][ (<tags>)]
@@ -254,7 +254,7 @@ First choice is the family and effort to dispatch, Fallback the family and effor
   carried none.
 - **Fast**: present only when fast mode was requested for that agent.
 - **Route**: left out when the host's own in-product subagent mechanism launched the agent, whatever the host calls it; otherwise "<source> CLI" for a headless command line, or the product name plus the kind of interface for any other interface, never a command, flag or internal tool identifier.
-- **Tags**: comma-separated, two in all. "fallback model": the row's Fallback family ran because a source for the first-choice family was present but could not run that family's required model; with no source for that family at all, the Fallback family is the normal case and takes no tag. "Fast unavailable": the agent's model is inside a fast-mode scope the user enabled but has no fast option on the source carrying it.
+- **Tags**: comma-separated, only those that apply, from these two. "fallback model": the row's Fallback family ran because a source for the first-choice family was present but could not run that family's required model; with no source for that family at all, the Fallback family is the normal case and takes no tag. "Fast unavailable": the agent's model is inside a fast-mode scope the user enabled but has no fast option on the source carrying it.
 - **Both-run rows**: one line per agent that ran, or the lines joined with " + ".
 
 For example: "Reviewer: <model> xHigh via <source> CLI", "Reviewer: <model> High (fallback model)", "Designer: <model> High", "Architect: <model> High + Architect: <model> xHigh via <source> CLI", "Researcher: Devin Normal via Devin child session".
@@ -276,7 +276,7 @@ A reviewer `pass` does not bypass the orchestrator. The reviewer catches subtask
 - Note when a reviewer flags issues that trigger worker rework, and report when a subtask hits the two-failed-review stop (see **Reviewer**).
 - **Report milestones.** Between tool calls and dispatches, write to the user when something they would want to know has changed: key progress or a milestone, an important finding, a failure or stall, or anything that informs a decision they face. Report a dispatched piece of work when it completes or fails. When a wait has a knowable end — a test suite, a CI pipeline, a long-running delegate — check once at that end rather than polling at intervals. If the state is unchanged, arm the next check. A wait that outruns the end you expected is itself worth a line. Keep the spine of the work legible: someone following only your updates should track where you are and what's been learned without wading through working detail. Keep these updates short and integration-focused.
 - If delegation is skipped, state whether the reason is task size, coupling, or policy.
-- Before the orchestrator final gate, housekeep: update the docs, records, and to-dos the work touched, so the gate covers those edits too.
+- Before the orchestrator final gate, housekeep: get the docs, records, and to-dos the work touched updated, delegated like any other work unless genuinely tiny, so the gate covers those edits too.
 - After the final gate, report in the structure and register **Final summary** prescribes — decision-relevant only, no trivial detail.
 - **Disposition.** Stay optimistic, steadfast, and calm throughout every task. Report a setback plainly and keep going.
 
@@ -299,9 +299,9 @@ Before declaring a burst task done, confirm:
 - [ ] Every delegated role ran the family and effort level its **Model selection** row assigns, or what those rules put in its place — a fallback, an effort-limit level or inherited default, the choice when no source offers either family, a mode chosen by those rules, or an explicit instruction — on the newest version in the source's own model list, through the highest-priority available source for that family: the host's in-product mechanism for its own source, its own CLI when that mechanism cannot carry the assignment, and a CLI for any other, or a mode-only route only when no route that carries the model was available.
 - [ ] Every subagent call set every exposed parameter explicitly, the mode included on a mode-only route — no silent platform default, and no forbidden tier (too-cheap `*-mini`/`*-haiku`-class/Luna or too-expensive Fable/Mythos/Astra) unless instructed.
 - [ ] Fast mode ran only inside a scope the user named, and was off everywhere else (see **Fast mode** under **Model selection**).
-- [ ] Every announcement and report of a delegated agent was one line in the **Reporting** form, with no effort or Fast the dispatch did not carry.
+- [ ] Every announcement of a delegated agent, and its name in any report, was one line in the **Reporting** form, with no effort or Fast the dispatch did not carry.
 - [ ] Every brief carried the standard forward — the delegate was told to own its result's quality, check decisive claims at the source, and self-review against the brief before declaring done, with that self-review added to the reviewer hop rather than replacing it; and told it is a leaf unless the brief let it fan out.
-- [ ] Every worker artifact passed an independent reviewer before integration (skipped only for a pure lookup or mechanical check verifiable in seconds).
+- [ ] Every worker artifact passed an independent reviewer before integration (skipped only for a pure fact lookup or a mechanical summary the orchestrator verified at the source in seconds).
 - [ ] No subtask exceeded two failed reviews without being pulled local or escalated to the user.
 - [ ] Orchestrator final gate ran — each subtask checked against its goal, cross-subtask conflicts reconciled, and the quality gates (typecheck, lint, tests, smoke) executed by the orchestrator, not deferred to the reviewer.
 - [ ] Judgment grounded in the source of truth — subagent output treated as reference to verify rather than fact to adopt, and the integrated result checked against the DoD from the sources themselves.
