@@ -18,7 +18,7 @@ The essay names four types, in this order:
 
 - **Speed:** the same work done in less time. The essay calls this the core of AI's economic value (for example, writing code faster), well established and needing little creativity, and deliberately does not develop it further.
 - **Altitude:** moving up in abstraction, so the model works toward the outcome rather than a single task.
-- **Depth:** treating a task as a field-leading expert would, going one level below the task to its underlying data, tools and problems.
+- **Depth:** working to a field-leading expert's standard, which means reaching beneath the task itself to the raw data, tools and problems it rests on.
 - **Range:** drawing on several fields, not only the one the task obviously belongs to, and bringing in knowledge, tools and techniques from outside the usual toolkit.
 
 ### Altitude
@@ -33,7 +33,7 @@ The worked example is a quarterly business review (QBR) deck at an imagined comp
 
 What the essay says about when altitude fits, its limits, and its payoff:
 
-- It works best when you really are after an ultimate outcome and less well for creative work. A good sign that it fits is that the work will be discussed in meetings.
+- It suits work aimed at a final outcome and suits creative work less. A good sign that it fits is that the work will be discussed in meetings.
 - There are current limits: an open-ended instruction such as telling the model to go and make money does not seem to work for most businesses on its own in 2026, although the author observes that models seem able to work at higher abstraction as they grow more capable.
 - Altitude is where lasting workflows that remove the human from the loop come from, so the user needs to hand the model new tasks less often. Getting there often means changing the workflow first. For the crash-free goal, the author first had to let Claude fetch crash reports easily, map each app version to its git commit, and use Windows, macOS and Linux machines so it could reproduce and verify fixes on its own.
 
@@ -41,19 +41,19 @@ What the essay says about when altitude fits, its limits, and its payoff:
 
 Depth is for when the task must be done exceptionally well: press the model to work with the instruments, methods, formats and expertise the leading practitioners use, and to continue until those practitioners could learn from the result. The running example is the same QBR, assuming Acme Inc has a customer-churn problem. The essay's techniques:
 
-- **Use the instruments the best practitioners use.** Asked to act like a professional, "models often switch vocabulary without actually switching methods". Insist on the real methods, for example databases and statistical models instead of markdown tables. The user need not know what experts use; the model usually does.
-- **Set unreasonable goals and tell the model they are reasonable.** If a page must load in 5 s instead of 10 s, ask for 200 ms. If the model thinks something is impossible, tell it that it is solvable and that it needs to keep going.
-- **Challenge what you know.** Many business beliefs are rough approximations. Give the model the raw data and ask it to check assumptions adversarially, for example by trying to reproduce from the raw data the belief that churn is an onboarding problem.
+- **Use the instruments the best practitioners use.** Asked to act like a professional, "models often switch vocabulary without actually switching methods". Hold it to the real methods of leading data scientists and statisticians, such as databases and statistical models rather than markdown tables; the model usually knows what those are even when the user does not.
+- **Set unreasonable goals and tell the model they are reasonable.** Ask for far more than you need (the essay's example: needing a 5 s page load instead of 10 s, ask for 200 ms), and when the model calls something impossible, insist that it is solvable and have it keep going.
+- **Challenge what you know.** Business beliefs are often only rough approximations, so have the model test them adversarially against the raw data; the essay's example is trying to reproduce from that data the belief that churn is an onboarding problem.
 - **Produce new knowledge.** Once the model is deep in the data, ask it for blind spots: for example, have it model the customer base so that it replays the past year from the logs, look for the earliest churn signal that nobody knows about yet, and test that signal on data the model has not seen.
-- **Use an outside judge.** "Do not ask the model to judge itself." The author expects this to be solved as models improve, but as of October 2026 he urges outside validation, ideally a check the model can execute itself and get feedback from at once.
+- **Use an outside judge.** "Do not ask the model to judge itself." The author expects this to be solved as models improve, but as of October 2026 he urges outside validation, ideally a tool the model can run on its own for instant feedback.
 
 The section ends with a short prompt the author often uses, which opens "I want a deeper version of this task, not a bigger one." It has the model first answer four questions (what an expert would add that the request leaves out, which unprocessed sources they would begin with, which methods and tools they would apply, and what independent check, neither the model nor the user, would confirm the result) and then restate the request around those answers.
 
 ### Range
 
-Range means looking at the work from the perspective of several fields, more than would have been economical before. The author compares it to heist films, which spend their opening assembling a crew with different skills. As multi-agent setups (several threads, orchestrators or subagents) get easier to run, he reports interesting results from asking Claude to bring in more fields. He admits it is hard and needs creativity: he had never thought of using Claude to build 3D environments for his homepage, despite having made video games, until he saw his colleague Alex Albert render interior designs in Blender. He nonetheless sees the most striking results here. Techniques:
+Range means bringing more fields to bear on the work than it would once have paid to involve. The author compares it to heist films, which spend their opening assembling a crew with different skills. As multi-agent setups (several threads, orchestrators or subagents) get easier to run, he reports interesting results from asking Claude to bring in more fields. He admits it is hard and needs creativity: he had never thought of using Claude to build 3D environments for his homepage, despite having made video games, until he saw his colleague Alex Albert render interior designs in Blender. He nonetheless sees the most striking results here. Techniques:
 
-- **Replace nouns with verbs**, a trick from *The Art of Innovation* by Tom Kelley and Jonathan Littman. Restated as an activity, the QBR is about persuading time-poor executives of a causal account and getting a decision made, despite uncertainty, within a half-hour meeting. Stating the verb shows both user and model which fields could contribute.
+- **Replace nouns with verbs**, a trick from *The Art of Innovation* by Tom Kelley and Jonathan Littman. Restated as an activity, the QBR is about persuading busy people of a causal account and getting them to decide, despite uncertainty, within a half-hour meeting. Stating the verb shows both user and model which fields could contribute.
 - **Assemble the crew.** Imagine, as the essay jokes, that aliens will destroy Earth unless the deck is excellent, and ask who humanity would recruit: for production quality an analyst, a journalist and an editor; for a presentation, a motion and audio designer; and as an adversarial red team, a short seller and a forensic accountant.
 
 The essay's caveat: this easily turns into role play, which makes the transcript stranger without improving the outcome. Use the crew exercise to find fields and techniques, then have the model carry out the actual work of that role; the essay's example is to ask it not to imitate a short seller's style but to "do what a short seller does to research their position".
