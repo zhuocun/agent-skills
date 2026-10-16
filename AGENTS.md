@@ -38,7 +38,7 @@ Fallback columns and the Model ID and Fast mode blocks. The rest differs in role
 names, section names or layout, so keep its shared rules in step by hand: the
 tier list (**Tiers.**, minus the advisor exception that only burst's carries),
 the source order (burst's **Subagent sources**, proxy's **Source.**), rules 1–7,
-**Fallbacks**, **Effort limits** and **Reporting**.
+**Fallbacks**, **Effort limits** (minus burst's advisor level) and **Reporting**.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
