@@ -28,7 +28,7 @@ Use this reference for Cursor tools and platform rules during long, concurrent w
 - `subscribe_slack_thread`, `subscribe_slack_channel`, `subscribe_linear_issue`, and `subscribe_linear_comment`: event-driven wake-ups.
 - `list_subscriptions` and `unsubscribe`: check subscriptions during turn-start inventory. Remove each subscription when its ledger entry closes. Safety-timer inventory and cleanup are also **verified 2026-10-12**.
 
-For GitHub, Slack, Linear, or CI events, use the `subscribe` skill rather than a safety timer.
+For GitHub, Slack, Linear, or CI events, use an event subscription for that source rather than a safety timer.
 
 ## Cloud Agent and self-hosted rules that affect bookkeeping
 

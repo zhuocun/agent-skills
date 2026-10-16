@@ -32,7 +32,7 @@ A section with nothing to report prints `None.` A section not examined this cycl
 
 ### 1. Gather — reach every source, and record every source you could not reach
 
-Before writing a line, collect: history since the last anchor; open change requests and their review state; results of automated checks on the current revision; the project's own tracking documents, specs, and plans; who is assigned to each piece of work, which agent runs or sessions are live now, and each person's latest dated activity; test and coverage output with the date it was produced; release or deployment state and what actually reached users; and the prior report, for its anchor and counts. Look for each of these whatever your access — a shell, an API, or neither. **Any source you cannot reach becomes an `Unverified claims` line, never a guess, and never silence.** Record for each unreachable source what would confirm the claim that depends on it.
+Before writing a line, collect: history since the last anchor; open change requests and their review state; results of automated checks on the current revision; the project's own tracking documents, specs, and plans, and any task ledger or running checklist the work keeps; who is assigned to each piece of work, which agent runs or sessions are live now, and each person's latest dated activity; test and coverage output with the date it was produced; release or deployment state and what actually reached users; and the prior report, for its anchor and counts. Look for each of these whatever your access — a shell, an API, or neither. **Any source you cannot reach becomes an `Unverified claims` line, never a guess, and never silence.** Record for each unreachable source what would confirm the claim that depends on it.
 
 ### 2. Build the Tasks table
 
@@ -85,7 +85,7 @@ Its matching `Action required` item; Reconciliation needs no item of its own, be
 
 ### 3. Count progress — the denominator rule
 
-This is the rule the format lives or dies on. Progress is a count of real units, and **the denominator must be an enumerable set that exists today and could be listed on request.** If you cannot name its members, you do not have a denominator: write the numerator and its unit alone — `4 states researched, total set not fixed`.
+This is the rule the format lives or dies on. Progress is a count of real units, and **the denominator must be an enumerable set that exists today and could be listed on request.** A definition-of-done checklist the task carries is one such set. If you cannot name its members, you do not have a denominator: write the numerator and its unit alone — `4 states researched, total set not fixed`.
 
 - A task row writes `<done subtasks>/<total subtasks> subtasks done`, with a bar; the set is enumerable by construction, since its members are the rows below. `Dropped` subtasks count in neither number. A task with zero or one counted subtask writes `—`.
 - A subtask row counts its own real units. A `Not started` subtask writes `—`; there are no units yet to count.

@@ -6,7 +6,8 @@ description: >-
   done. Use when subagents are authorized and you want planning, execution,
   review, and the done/not-done judgment all made by subagents rather than by
   the main agent. Do not use when subagent delegation is unavailable, or for a
-  trivial single-step task that is faster to just do.
+  trivial single-step task that is faster to just do. Do not use when you are to
+  plan and gate the work yourself while subagents perform it.
 ---
 
 # Proxy
@@ -14,7 +15,7 @@ description: >-
 **Persistent across tasks and sessions — not a one-turn effect.** Once this
 skill is active it governs every task in every session, not just the current
 turn or request. Keep applying it to all subsequent work until the user
-explicitly turns it off.
+explicitly turns it off or asks for a different way of running subagents.
 
 ## Role
 
@@ -44,9 +45,11 @@ reviewer**, with you executing and relaying at every hop.
 
 **Every delegate is a leaf.** Every brief you write — orchestrator-consultant,
 reviewer, final-gate reviewer — states that the delegate must not invoke any
-skill that delegates work to subagents, or spawn subagents or workflows. Ask the
-orchestrator-consultant to put the same line in each worker brief it drafts, so
-the worker brief still passes verbatim.
+skill that delegates work to subagents, or spawn subagents or workflows, and is
+worded in correctness and reliability terms, since some providers stop a run
+whose brief reads as security testing. Ask the orchestrator-consultant to hold
+each worker brief it drafts to the same two rules, so the worker brief still
+passes verbatim.
 
 ## Priority order
 
@@ -78,7 +81,9 @@ Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
 decisions to a subagent, not to the user. Keep a running record of the to-dos
-and progress through the chain so nothing drifts over a long session.
+and progress through the chain (a running checklist, kept in a file or the
+tracker the work already uses, so it survives a compaction) so nothing drifts
+over a long session.
 
 After a context compaction, rebuild that record from ground truth (the files,
 the branch, test output, the artifacts already integrated), not from the

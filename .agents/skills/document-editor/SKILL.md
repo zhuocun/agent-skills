@@ -190,7 +190,7 @@ This section only supplements the governance fields allowed when the owner expli
 
 Author a new document from authoritative sources; nothing pre-exists to preserve, so there is no inventory or lossless-accounting pass. Writing to the standard from the first line is far cheaper than retrofitting.
 
-1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, and any owner or format constraints.
+1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, any owner or format constraints, and any outcome, targets, out-of-scope or definition of done already set for the task, as bounds of the reader contract.
 2. **Gather authorities before writing.** Collect the sources each claim type needs per **Claim-type authority**. Do not write a claim no source supports; record each genuine gap in the open-question form instead of inventing an answer or a current state.
 3. **Outline by reader path.** Draft the section order from the matching reader path, then walk the outline once for forward reading order: every concept a section uses must be established by an earlier section or defined in place.
 4. **Draft to the standard.** Apply every applicable Document standard rule and all eight hard prohibitions from the first draft — placement, evidence chains, registries, media discipline, and governance applicability included.
@@ -243,7 +243,7 @@ Keep the owner-specified target language, register, and terminology scheme consi
 
 ## Communication
 
-**Create mode** — deliver the document, then summarize: the reader contract and path chosen, the authorities each major claim rests on, open questions registered instead of answered, which checks ran, and what remains uncertain.
+**Create mode** — deliver the document, then summarize: the reader contract and path chosen, the authorities each major claim rests on, open questions registered instead of answered, which checks ran, what remains uncertain, and the result against any definition of done set for the task.
 
 **Optimize mode** — edit directly, then summarize what was reorganized, what remained unchanged to preserve truth, what was removed or deduplicated, how protected content was accounted for, which evidence or actionability gaps improved, which checks ran, and what ambiguity remains.
 
