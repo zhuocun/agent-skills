@@ -30,7 +30,7 @@ Priority order, highest first: **grounded truth, the answer actually asked for, 
 - ✗ `The file was modified and an error was encountered.`
 - ✓ `I modified the file, and I then found an error.`
 - Use the simple tenses only. Do not build a complex tense with `have`, `had`, or `is ...ing`.
-- Do not use regional words or slang, except where they match the user's own wording.
+- Do not use regional words, slang or a field's informal jargon, except where they match the user's own wording.
 - Do not use a Latin abbreviation. Write `for example`, `that is`, and `and so on`.
 - Replace a pronoun that could point at more than one thing with the noun it names. Give `this` an explicit noun the same way.
 - Do not drop a word to shorten a sentence. Keep the article, the subject, and the verb.

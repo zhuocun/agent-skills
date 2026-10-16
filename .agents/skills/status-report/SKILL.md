@@ -94,7 +94,7 @@ This is the rule the format lives or dies on. Progress is a count of real units,
 - Two axes on one subtask — built and exposed — are written as both, separated by a semicolon.
 - Mark movement in the cell: `(unchanged)` only where the row's status moved but its count did not, `(new)` for a row absent then, `(+n)` for a changed count, `(was <status>)` for a changed status. `(was <status>)` follows the Status value in the Status cell, and every other marker goes in Progress; the status vocabularies apply to the value before the marker. Mark only rows that changed; a delta on every row is noise. A first report carries no delta markers. A task row, and any row carrying a folded count, marks movement on Status only.
 - If the unit or denominator changed, write `(rebaselined from <old count>)` and make the rebaseline a `Changes since` bullet.
-- A task row's count carries a bar, and a subtask's count may carry one, each under the exact-denominator rule in pass 9. The count is the claim and the bar is an aid: if anything has to go, the bar goes first.
+- A task row's count carries a bar, and a subtask's count may carry one, each under the exact-denominator rule in pass 9. The count is the claim and the bar is an aid: when a cell cannot hold both, the bar goes first; a bar sits inside its cell, so dropping it saves no line against the length budget.
 
 ### 4. Write `Changes since <prior anchor>`
 

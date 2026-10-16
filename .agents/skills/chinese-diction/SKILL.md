@@ -99,9 +99,9 @@ The opposite failure is over-hedging into mush: stacking softeners (`可能…�
 
 - ✗ 相关信息如果不在 AI 的注意力焦点内，可能也许不太会被考虑到 → ✓ 相关信息若不在 AI 的注意力焦点内，往往不会被纳入考虑
 
-Two carve-outs. **Deontic force:** where the settled genre is one that imposes obligation — contract, policy, safety notice, regulatory text — the categorical word *is* the correct form and softening it is a defect — ✓ 严禁在设备通电时拆卸外壳 · ✓ 未经甲方书面同意，乙方不得转让本协议项下的权利和义务. Contract, policy and safety Chinese carries `应` / `不得` / `严禁`, not `需` / `通常`. **Politeness:** distance is not hedging — writing upward or to a client, ✓ 是否方便本周内给我们一个初步意见 · ✓ 我们这边先把口径对齐 are politeness and do not spend the one-qualifier budget.
+Two carve-outs. **Deontic force:** where the settled genre is one that imposes obligation — contract, policy, safety notice, regulatory text, but not a procedure such as instructions, a runbook or a recipe, whose required steps take `需` — the categorical word *is* the correct form and softening it is a defect — ✓ 严禁在设备通电时拆卸外壳 · ✓ 未经甲方书面同意，乙方不得转让本协议项下的权利和义务. Contract, policy and safety Chinese carries `应` / `不得` / `严禁`, not `需` / `通常`. **Politeness:** distance is not hedging — writing upward or to a client, ✓ 是否方便本周内给我们一个初步意见 · ✓ 我们这边先把口径对齐 are politeness and do not spend the one-qualifier budget.
 
-*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. In casual or creative prose an intensifier is often voice rather than a claim (✓ 这也太好用了吧) — judge it only where it asserts something. (Fittingly, this rule is itself a default, not an absolute.)
+*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false, while a step a procedure requires is an instruction, not such a fact, and takes `需`. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. In casual or creative prose an intensifier is often voice rather than a claim (✓ 这也太好用了吧) — judge it only where it asserts something. (Fittingly, this rule is itself a default, not an absolute.)
 
 ### 6. 过度压缩 — clipped words that should be written in full
 

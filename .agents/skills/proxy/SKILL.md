@@ -422,7 +422,9 @@ Fallback effort once the family has fallen back. Apply these cases:
   set the mode, which decides every parameter the route cannot carry.
 - **Concurrent agents forbidden on the same model and effort level**: keep the model. The
   first agent keeps its level; each later concurrent agent takes the highest
-  level below the previous agent's that the platform allows.
+  level below the previous agent's that the platform allows, and an agent with
+  no such level left waits until a running agent on that model finishes, never
+  changing the model or its source.
 
 **Fast mode.** Fast mode is the faster, pricier serving tier or speed setting of
 the same model: a fast variant ID, a service tier or a settings switch,

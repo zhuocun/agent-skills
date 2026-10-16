@@ -210,7 +210,7 @@ First choice is the family and effort to dispatch, Fallback the family and effor
 - **Missing parameter on the default tool**: set every parameter it exposes, such as model and agent type, and use a route in **Subagent sources** that carries the missing parameter per agent. For effort, use an in-product effort option, subject to the `Workflow` opt-in, or the CLI's effort setting.
 - **Unsupported assigned level**: when the source carries effort, stay on that source at its highest supported level below the assignment. A level gap is not a fallback and never changes the source.
 - **No available source in the family's order carries the parameter**: only then inherit the default for that parameter alone, or, on a mode-only route, set the mode, which decides every parameter the route cannot carry.
-- **Concurrent agents forbidden on the same model and effort level**: keep the model. The first agent keeps its level; each later concurrent agent takes the highest level below the previous agent's that the platform allows.
+- **Concurrent agents forbidden on the same model and effort level**: keep the model. The first agent keeps its level; each later concurrent agent takes the highest level below the previous agent's that the platform allows, and an agent with no such level left waits until a running agent on that model finishes, never changing the model or its source.
 
 **Fast mode.** Fast mode is the faster, pricier serving tier or speed setting of the same model: a fast variant ID, a service tier or a settings switch, depending on the source.
 
