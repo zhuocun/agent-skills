@@ -1,7 +1,7 @@
 ---
 name: cursor-harness
 description: >-
-  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or resuming after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
+  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or restoring open tasks and runs from the ledger after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
 ---
 
 # Cursor Harness
@@ -22,7 +22,7 @@ At the start of every turn, including a follow-up message or a timer prompt:
 
 1. Read the ledger. After a compaction, treat each claim in the summary as unverified until the ledger or ground truth (git state, PRs, CI, the files themselves) confirms it.
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
-3. Process completed work: verify the result, record it, and trigger the next step. Then handle the new message.
+3. Process completed work: record it, then verify the result and trigger the next step before handling the new message, unless the verification needs a long-running check, in which case handle the new message first.
 
 ### 3. Classify every new message before acting
 
@@ -36,8 +36,8 @@ Choose a vehicle with [background work](references/background-work.md#choosing-t
 
 Only a timer, a background Task subagent, or a user message wakes an idle agent, and a user message cuts a blocking wait short. So, while any run is going:
 
-- Do independent ledger work first. When none remains, block on an **any-end waiter** over every running end marker.
-- Keep a recurring **safety timer** subscribed whose prompt says "run the inventory from the ledger". Its prompts can arrive late and batched, so treat each as an inventory request.
+- Do independent ledger work first. When none remains, block on the detached run's waiter, or on an **any-end waiter** over every running end marker when two or more detached runs are going, or, when only background shell jobs are running, on a job by id.
+- Keep a **safety timer** subscribed, one-shot at a known end time or recurring when the end is uncertain, whose prompt says "run the inventory from the ledger". Its prompts can arrive late and batched, so treat each as an inventory request.
 - After an interruption, handle the message, then start a fresh waiter and block again in the same turn.
 
 Details, exceptions, and evidence: [wait routine](references/background-work.md#wait-routine).
@@ -47,7 +47,7 @@ Details, exceptions, and evidence: [wait routine](references/background-work.md#
 Before your final message:
 
 1. Update the ledger.
-2. Confirm every running entry has a live completion signal ([registration](references/task-ledger.md#registration)) and a safety timer covers it ([wait routine](references/background-work.md#wait-routine)).
+2. Confirm every running entry has a live completion signal ([registration](references/task-ledger.md#registration)) and a safety timer covers it ([wait routine](references/background-work.md#wait-routine)), or, where no timer tool exists, that the report says nothing collects the run until the user's next message.
 3. Report open work using [ledger reporting](references/task-ledger.md#reporting).
 
 ## References
@@ -74,10 +74,10 @@ When you confirm a reusable Cursor Harness fact or fix:
 
 ## Self-check
 
-- [ ] Every ask, subagent, job, run, and timer I own has a ledger entry with a completion signal and a next action.
+- [ ] Every ask that leaves work owed, and every subagent, job, run, and timer I own, has a ledger entry with a completion signal and a next action.
 - [ ] I ran the turn-start inventory before handling the new message.
 - [ ] No detached process runs without a waiter.
-- [ ] While runs were going, a safety timer was subscribed, and after each interruption I re-armed the any-end waiter.
+- [ ] While runs were going, a safety timer was subscribed, and after each interruption I started a fresh waiter over the remaining runs, unless the wait routine let me leave only the safety timer.
 - [ ] Nothing was marked done without evidence; acceptances quote the user.
 - [ ] My final message lists what is still running, where to look, and what happens next.
 - [ ] New reusable facts went to the right reference with a status label.

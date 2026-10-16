@@ -1,6 +1,6 @@
 ---
 name: cr-fe
-description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings; not for judging visual design or layout, and not for backend services, infrastructure, or non-UI logic.
+description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings; not for judging visual design or page layout, and not for backend services, infrastructure, or non-UI logic.
 ---
 
 # Frontend Code Review
@@ -68,7 +68,7 @@ Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const {
 These are Blockers:
 
 - **`dangerouslySetInnerHTML` / `innerHTML`** with unsanitized boundary input is the XSS vector → sanitize (e.g. DOMPurify) or avoid; never feed it raw network, input, or URL data.
-- **URL / attribute injection** — a user-controlled value flowing into `href`, `src`, or `window.location` can be a `javascript:` or `data:` URL that executes → validate the scheme (allow `http(s)` / `mailto`).
+- **URL / attribute injection** — a user-controlled value flowing into `href`, `src`, or `window.location` can be a `javascript:` or `data:` URL that executes → validate the scheme (allow `http(s)` / `mailto`, and relative URLs, which resolve to the page's own scheme).
 - **Data loss** — name the concrete cases: an uncontrolled→controlled input reset wiping what the user typed, direct state mutation dropping edits, and navigation away from unsaved state.
 
 ## Error handling
@@ -123,7 +123,7 @@ Highest-signal, frontend-specific:
 - **Flag soup** — `isLoading` / `isError` / `isEmpty` as separate booleans that can contradict → one discriminated union (`status: 'idle' | 'loading' | 'error' | 'success'`).
 - **Magic values** → named constants.
 - **Pyramid JSX, nested ternaries, inline IIFE** → early returns, guard clauses, extracted components.
-- **Direct state mutation** → copy, then set.
+- **Direct state mutation** → copy, then set; when the mutation drops a user's edit, it is a data-loss Blocker.
 - Dead code, stray `console.log`, commented-out blocks.
 
 ## Folder structure & layering
@@ -160,7 +160,7 @@ Rules:
 
 | Severity | Meaning | Examples |
 |---|---|---|
-| **Blocker** | Throws at runtime, loses data, loops infinitely, or is a security hole | Unguarded boundary access on a live path; render loop; `dangerouslySetInnerHTML` or a `javascript:` href with unsanitized input |
+| **Blocker** | Throws at runtime, loses data, loops infinitely, or is a security hole | Unguarded access to a boundary value that its contract allows to be missing, on a live path, even where no current data lacks it; render loop; `dangerouslySetInnerHTML` or a `javascript:` href with unsanitized input |
 | **Major** | Latent error on a plausible path, a leak, or wrong behavior | Stale closure; missing cleanup; swallowed catch; `||` eating `0`; `as` on unvalidated data |
 | **Minor** | Quality that will bite later | Over-`?.`; flag soup; god component; flat structure |
 | **Nit** | Style or preference | Naming, ordering, formatting |
@@ -169,7 +169,7 @@ Lead with Blockers and Majors. Do not drown a real crash under nits.
 
 ## How to report
 
-- One finding per issue, led by its severity: **`[Severity] file:line`**, then one full sentence on what throws or fails and the input or render that triggers it, then the fix.
+- One finding per issue, led by its severity: **`[Severity] file:line`**, listing every `file:line` where the same issue repeats, then one full sentence on what throws or fails and the input or render that triggers it, then the fix.
 - Show the fix as a minimal diff or exact replacement, not a paraphrase.
 - Separate "will throw" from "could throw" from "smell" — calibrated severity is what makes the review trustworthy. If unsure a path is reachable, say so and mark confidence.
 - If the diff is clean on an axis, say so in a line rather than padding.
@@ -185,5 +185,5 @@ Lead with Blockers and Majors. Do not drown a real crash under nits.
 - [ ] try-catch covers what throws and no catch is swallowed; `await` is present where rejections must be caught; `all` vs `allSettled` is correct.
 - [ ] Hook deps are exhaustive and stable; effects clean up; fetch effects handle races; no effect that should be a handler or a render-time computation; rules of hooks hold; no `async` effect callback; no `ref.current` read or write during render; `use`/suspending code has `<Suspense>` plus an error boundary.
 - [ ] No god components, duplication, prop drilling, flag soup, magic values, or direct mutation.
-- [ ] Structure the diff touches follows the repo's layering convention (or the template if none), with one-way deps and a presentational/logic split — neither flattened nor over-nested.
+- [ ] Structure the diff introduces or worsens follows the repo's layering convention (or the template if none), with one-way deps and a presentational/logic split — neither flattened nor over-nested.
 - [ ] Findings cite `file:line` with a concrete failure path, calibrated severity, and a precise fix.

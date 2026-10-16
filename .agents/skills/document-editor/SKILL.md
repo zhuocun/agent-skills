@@ -4,13 +4,13 @@ description: >-
   Author, edit, and review formal human-facing documents at the document level
   without silently changing their meaning. Use for design docs, RFCs,
   implementation plans, proposals, specs, research reports, guides, decision
-  memos, and review docs when the work concerns authoring from sources, scope,
-  reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
-  registries, structured assets, document governance, concision, or
-  reviewability. Do not use for casual notes, chat replies, routine status
-  updates, pure sentence-level wording or translation polish, or
-  agent-instruction files such as SKILL.md, prompts, workflows, or
-  tool-routing docs.
+  memos, and design-review documents when the work concerns authoring from
+  sources, scope, reader path, structure, abstraction, factual grounding,
+  evidence, tradeoffs, registries, structured assets, document governance,
+  concision, or reviewability. Do not use for casual notes, chat replies,
+  routine status updates, pure sentence-level wording or translation polish, or
+  agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing
+  docs.
 ---
 
 # Document Editor
@@ -25,11 +25,11 @@ These eight rules are absolute for every document this skill touches; the rest o
 
 1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, or correction notes, and no "updated" markers, "as of" notes, or before-vs-after narration that describe a change to the document. Fold every change into the owning passage so the document always reads as if written correct the first time. A date that bounds when a claim holds — a measurement date, data snapshot, or the evaluated version — is evidence and stays next to the claim.
 2. **No deferral to other documents.** Never offload content readers need to another document in the same working set — the documents being authored or edited together in this task — through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Naming an approved source as the authority for a claim is not deferral when the document also states the content the reader needs. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
-3. **No cross-references between sections.** No "see chapter 6", "as described above/below", or forward/backward pointers. Order sections so each is understandable where it stands; when another section's fact is needed, restate the minimum inline without naming the section.
+3. **No cross-references between sections.** No "see chapter 6", "as described above/below", table of contents, or forward/backward pointers. Order sections so each is understandable where it stands; when another section's fact is needed, restate the minimum inline without naming the section.
 4. **Prefer titled bullets over paragraphs.** When one to five parallel, independent points suffice, present them as bullet points, each opening with a clear and precise title, rather than paragraph prose. A causal chain or reasoning in which each sentence depends on the one before stays prose.
 5. **No unnecessary table columns.** Every column must carry decision-relevant information that varies across rows; drop or merge any column that repeats another, restates the row label, or exists only for symmetry.
 6. **No coined vocabulary or jargon.** Use plain words and terms established in the field or in the source material; never invent labels, metaphors, or shorthand names for the document's own concepts.
-7. **No direct code references.** Never cite class, method, function, or variable names, file paths, or line numbers in the document. Describe the behavior in business or domain terms instead. Identifiers that are part of the subject's own contract, or that the reader must type or locate to act, stay byte-exact. These include table and field names, status enums, API fields, and, in a runbook or setup path, commands, configuration keys, and file paths.
+7. **No direct code references.** Never cite class, method, function, or variable names, file paths, or line numbers in the document. Describe the behavior in business or domain terms instead. Identifiers that are part of the subject's own contract, or that the reader must type or locate to act, stay byte-exact. These include table and field names, status enums, API fields, and the commands, configuration keys, and file paths that a step tells the reader to run, set, or open, as in a runbook, a setup path, or the steps of an implementation plan.
 8. **No context-bound terms from other sections or documents.** Never use a term, code, or label whose meaning is established only in another section or another document — a bare error code, an internal task name, an abbreviation defined elsewhere. State the fact in plain wording in place; keep such a code only where the document itself establishes what it means.
 
 ## Modes
@@ -134,7 +134,7 @@ This section governs where content appears in the main text or appendix; abstrac
 Keep three layers distinct:
 
 1. **Decision narrative** (main reading path): only the minimum facts, conditions, conclusions, costs, and re-evaluation triggers needed for the current review. Do not reproduce full ledger entries or point readers to the appendix.
-2. **Registries and audit ledgers** (appendix of the same document): the unique, complete open-issue, blocker, and verification ledgers.
+2. **Registries and audit ledgers** (appendix of the same document): the unique, complete open-issue, blocker, and verification ledgers, each entry's one authoritative location; the passage an entry qualifies restates only the minimum its reader needs there.
 3. **Operational detail** (procedures, runbook steps, configuration): kept out of the decision narrative. Place it with the implementation layer later in the same document, or omit it when the reader contract does not need it.
 
 Rules:
@@ -181,8 +181,8 @@ Choose the representation from the judgment the reader needs to make; do not def
 
 This section only supplements the governance fields allowed when the owner explicitly requires them; it creates no exception to the eight hard prohibitions.
 
-1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document read only by repository collaborators carries no signature fields or lifecycle labels; its opening holds only what a reader needs to use the content.
-2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle, provide the requested non-revision metadata: status, accountable owner, approver, and approval date. Governance authorization does not waive any hard prohibition. Revision dates, change histories, and re-review narratives remain excluded; process traces belong in an external governance system.
+1. Governance apparatus requires a real, external publication or approval lifecycle. An unpublished repository working document read only by repository collaborators carries no signature fields, lifecycle labels, or status or owner fields, even when the owner asks for them, so name this rule and ask whether the document has an external lifecycle before adding any; its opening holds only what a reader needs to use the content.
+2. Only when the owner explicitly mandates governance for a document with a genuine external lifecycle, provide only the non-revision metadata the owner requests from this set: status, accountable owner, approver, and approval date. Governance authorization does not waive any hard prohibition. Revision dates, change histories, and re-review narratives remain excluded; process traces belong in an external governance system.
 3. Follow the document's real lifecycle rather than inventing one. Attribute approval only when it exists, return materially changed approved content to the appropriate review state, and record the true reason for re-review in the external lifecycle system.
 4. Review history, consequential dissent, and lifecycle evidence belong in an external governance system; the edited document never carries them.
 
@@ -207,20 +207,20 @@ Edit an existing document without changing its meaning. The source document's co
 3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
 4. Identify owner or format constraints, any success criteria or scope limits already set for the task, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
 5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
-6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record (your working notes and your summary to the user), in an external approval record, or in a file the owner names, never in the edited document or any other file in its repository. If the owner requires a pre-edit approval gate, present that mapping before editing.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record (your working notes and your summary to the user), in an external approval record, or in a file the owner names outside the document's repository, never in the edited document or any other file in its repository. If the owner requires a pre-edit approval gate, present that mapping before editing.
 7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
 8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
 ### Preserve source meaning
 
-1. Preserve the source meaning, facts, scope, and decisions unless the user explicitly requests a substantive change.
+1. Preserve the source meaning, facts, scope, and decisions unless the user explicitly requests a substantive change or the authority for that claim type shows a stated fact is wrong, in which case correct it and report the correction.
 2. Do not silently change numbers, dates, owners, names, identifiers, field or API contracts, formulas, requirements, conditional direction, or decisions.
 
 ### Preserve structured assets
 
 1. Before editing, inventory the load-bearing assets: decisions, open questions and blockers, conditional branch tables, tradeoff matrices, invariants, non-goals, risks, rollout batches, diagrams, exact contracts, error catalogs, and critical checklists, as applicable.
 2. Preserve existing diagrams, images, videos, code blocks, callouts, evidence citations, and other native blocks unless the user requests a change or a source-backed edit requires one.
-3. Give every inventoried passage or asset a disposition: preserved in place, moved to a named destination, merged into a named authoritative item, or intentionally removed with a reason and the required authorization. Keep this mapping only in the editing-session record or an external approval record, never in the edited document. Do not use compression as an unreported deletion path.
+3. Give every inventoried passage or asset a disposition: preserved in place, moved to a named destination, merged into a named authoritative item, or intentionally removed with a reason and the required authorization. Keep this mapping only in the editing-session record, an external approval record, or a file the owner names outside the document's repository, never in the edited document. Do not use compression as an unreported deletion path.
 4. Extend the relocation discipline for registries to every inventoried asset, not only registry entries. Treat conversion to a table or movement to an appendix as relocation under that discipline.
 5. Treat exact schemas, interface signatures, identifiers, error definitions, and other contract artifacts as deliverables in their own right. Preserve their completeness and exactness even when surrounding explanation is condensed.
 6. Treat an asset's item count or byte identity as a protected baseline only when the owner or delivery format defines it. For a controlled baseline change, keep the pre-change and post-change values and any required authorization only in the editing-session record or external approval record; never place them in the edited document or change the baseline silently.
@@ -239,7 +239,7 @@ The exit gate for both Create and Optimize output; Review mode runs this section
 
 ## Language and terminology boundary
 
-Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules for truth and authority. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and every repeated mention, and byte-exact identifiers, numbers, and quoted contracts.
+Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules for truth and authority. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope. Within this skill, enforce only the document-level constraints and the term rules of the hard prohibitions: no coined vocabulary, no context-bound terms, stable concept names across headings, tables, and every repeated mention, and byte-exact identifiers, numbers, and quoted contracts.
 
 ## Communication
 

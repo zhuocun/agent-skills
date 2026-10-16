@@ -26,7 +26,7 @@ Run work in the background when it takes more than a few minutes or is independe
 | --- | --- |
 | Under a few minutes, and your next step needs it | foreground shell call, with `block_until_ms` sized to the expected runtime |
 | Longer, but does not need to survive the session | background shell job (`block_until_ms: 0`), then one smoke check of its output file |
-| Must survive the session, needs a human to attach, or is an agent CLI run (Codex, Devin, Cursor CLI), a deployment, or a long regression | tmux run with an end marker plus a waiter |
+| Must survive the session, needs a human to attach, or is an agent CLI run (Codex, Devin, Cursor CLI, Claude Code), a deployment, or a long regression | tmux run with an end marker plus a waiter |
 | Analysis, review, or coding a subagent can do | background Task subagent ([delegation.md](delegation.md)) |
 
 Pair every detached run with a waiter. The completion table above explains why the detached launch itself gives no completion signal.
@@ -35,9 +35,9 @@ Pair every detached run with a waiter. The completion table above explains why t
 
 A **blocking wait** uses `AwaitShell` to wait for output from a waiter. A **safety timer** is a `subscribe_timer` subscription that prompts an idle agent to run the ledger inventory.
 
-**Pair the mechanisms — verified 2026-10-12:** keep a safety timer subscribed while any run is going. While independent ledger work exists, do that work. When no independent work remains, use a blocking wait. For one detached run, wait on its waiter. For two or more detached runs, use the [any-end waiter](#any-end-waiter). A background shell job is tracked by Cursor and needs no extra waiter: wait on it by job id with `AwaitShell` ([mechanics](#shell-job-mechanics-documented)). Background Task subagents follow [result delivery](delegation.md#task-tool-subagents-documented) instead. A blocking wait reacts within seconds of completion. A safety timer reacts at its next fire, subject to the delivery delays in [safety timers](#safety-timers).
+**Pair the mechanisms — verified 2026-10-12:** keep a safety timer subscribed while any run is going. While independent ledger work exists, do that work. When no independent work remains, use a blocking wait. For one detached run, wait on its waiter. For two or more detached runs, use the [any-end waiter](#any-end-waiter). A background shell job is tracked by Cursor and needs no extra waiter: wait on it by job id with `AwaitShell` ([mechanics](#shell-job-mechanics-documented)) when no detached run is going, and otherwise block on the detached runs' waiter and collect the job at the next inventory. Background Task subagents follow [result delivery](delegation.md#task-tool-subagents-documented) instead. A blocking wait reacts within seconds of completion. A safety timer reacts at its next fire, subject to the delivery delays in [safety timers](#safety-timers).
 
-**After an interruption — verified 2026-10-12:** a user message releases a blocking wait early. Handle the message through the [operating loop](../SKILL.md#operating-loop), then run the inventory again. Start a fresh waiter over the remaining runs and resume the blocking wait in the same turn. Use an any-end waiter when several runs remain. Leave only the safety timer if the user asked you to stop or the runs will take much longer than the timer interval.
+**After an interruption — verified 2026-10-12:** a user message releases a blocking wait early. Handle the message through the [operating loop](../SKILL.md#operating-loop), then run the inventory again. Start a fresh waiter over the remaining runs and resume the blocking wait in the same turn. Use an any-end waiter when several runs remain. Leave only the safety timer if the user asked you to stop working or the runs will take much longer than the timer interval.
 
 **Queue check — documented:** before a long blocking wait on a Cloud Agent, check `cursor-cloud.get-message-queue`. Handle queued user messages first and defer slow verification while messages remain queued.
 
