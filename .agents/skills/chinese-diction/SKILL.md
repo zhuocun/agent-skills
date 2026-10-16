@@ -1,7 +1,7 @@
 ---
 name: chinese-diction
 description: >-
-  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use whenever you write Chinese prose a person will read, every chat reply to the user in Chinese included, and when the user, in any language, asks you to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, notices, UI strings, marketing copy, contracts, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms the field leaves in English, product names, field names, citations, clause and statute numbers (their value unchanged; in translation, a statute's title in its official Chinese form and a clause number in the target citation's form), quoted figures with their units, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
+  Write natural Chinese that fits its target register — professional, casual, or creative — at the word-choice, phrasing, and register level. Use for every chat reply you write to the user in Chinese, however short, and when the user, in any language, asks you to write Chinese, translate into Chinese, polish Chinese wording, remove translationese, make Chinese sound more idiomatic, or choose better Chinese diction, in any human-facing prose — documents, reports, chat messages, announcements, notices, UI strings, marketing copy, contracts, or casual and creative writing. Preserve meaning and keep code identifiers, acronyms the field leaves in English, product names, field names, citations, clause and statute numbers (their value unchanged; in translation, a statute's title in its official Chinese form and a clause number in the target citation's form), quoted figures with their units, numbers, and URLs unchanged. This improves wording, phrasing, and register only, not document structure or section order. Do not use for agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing docs.
 ---
 
 # Chinese Diction
@@ -12,10 +12,10 @@ Priority order, highest first: **fidelity, preserved meaning, Chinese sentence s
 
 ## The core instinct
 
-Settle five variables first. Infer each from the text and the ask; where nothing in front of you decides a setting, use its bracketed default, and ask the user only where a setting changes the wording and that default would not fit the text.
+Settle five variables first. Infer each from the text and the ask — for a chat reply to the user, from the user's own message; where nothing in front of you decides a setting, use its bracketed default, and ask the user only where a setting changes the wording and that default would not fit the text.
 
 - **Register** — professional / casual / creative. [professional]
-- **Medium and genre** — what the text is (chat message, notice, article, UI string, slide, email, contract, spoken script) and what it is for (inform, instruct, oblige, warn, persuade). [running prose, to inform; a chat reply to the user is a chat message]
+- **Medium and genre** — what the text is (chat message, notice, article, UI string, slide, email, contract, spoken script) and what it is for (inform, instruct, oblige, warn, persuade). [running prose, to inform]
 - **Locale and script** — mainland / Taiwan / Hong Kong / Singapore, and simplified / traditional. Two axes, not one. [mainland simplified]
 - **Relationship** — upward / downward / peer / outward to a client or the public. [peer]
 - **Domain** — the field whose settled vocabulary governs. [none assumed]
