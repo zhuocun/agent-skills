@@ -5,9 +5,8 @@ whose frontmatter says when to use it, and whose body is the procedure the agent
 
 Every skill works on its own: none names another, depends on another, or hands work to another.
 Installed together, each covers a different responsibility, so an agent can load several for
-one task without them conflicting. Where two cover similar work, their descriptions say which one
-fits: `burst` and `proxy` both run a task through subagents but differ on who makes the final
-calls, so a task loads one of them.
+one task. The exception is `burst` and `proxy`: both run a task through subagents but differ on
+who makes the final calls, so a task loads one of them; their descriptions say which fits.
 
 ## Skills
 
@@ -15,9 +14,9 @@ calls, so a task loads one of them.
 
 | Skill | What it does |
 | --- | --- |
-| `raise-ambition` | Before a non-trivial task starts, rewrites its brief to aim higher, in any domain, through four lenses: Altitude (the outcome the task serves), Depth (the methods, targets and checks an expert would use) and Range (methods from other fields), from Felix Rieseberg's essay on ambition, plus Speed (a deadline, early checks, parallel work). Keeps the user's scope, constraints, permissions and budget, and returns one brief with a definition of done. The agent uses it on its own initiative when a new non-trivial request names a deliverable but no method and no acceptance criteria. Not for trivial tasks, fixes whose cause is known, tasks that already have a spec, or questions that need only an answer. |
+| `raise-ambition` | Before a non-trivial task starts, rewrites its brief to aim higher, in any domain, through four lenses: Altitude (the outcome the task serves), Depth (the methods, targets and checks an expert would use) and Range (methods from other fields), from Felix Rieseberg's essay on ambition, plus Speed (a deadline, early checks, parallel work). Keeps the user's scope, constraints, permissions and budget, and returns one brief with a definition of done. The agent uses it on its own initiative when a new non-trivial request names a deliverable but no method and no acceptance criteria. Also used when asked to make a task, prompt or plan more ambitious. Unless the user asks, not for trivial tasks, fixes whose cause is known, tasks that already have a spec, or questions that need only an answer. |
 | `burst` | Runs research, audit, implementation and review work through parallel subagents, with a reviewer before integration. The agent keeps the planning, integration and done decisions. Needs a way to launch subagents; not for a tiny single-step task. |
-| `proxy` | Delegates every decision and every unit of work, including how to split the task and whether it is done, to top-tier subagents. For when the user wants subagents, not the main agent, to make those calls. Needs a way to launch subagents. |
+| `proxy` | Delegates every decision and every unit of work, including how to split the task and whether it is done, to top-tier subagents. For when the user wants subagents, not the main agent, to make those calls. Needs a way to launch subagents; not for a trivial single-step task. |
 
 **Writing**
 
@@ -63,12 +62,12 @@ git clone https://github.com/zhuocun/agent-skills.git
 mkdir -p ~/.claude
 ln -s "$(pwd)/agent-skills/.agents/skills" ~/.claude/skills
 
-# Or link individual skills into a folder of your own:
+# Or link skills one at a time (when ~/.claude/skills is a regular folder):
 mkdir -p ~/.claude/skills
 ln -s "$(pwd)/agent-skills/.agents/skills/cr-fe" ~/.claude/skills/cr-fe
 ```
 
-Swap `~/.claude/skills` for `~/.agents/skills` if that is where your runtime loads skills.
+Swap `~/.claude` for `~/.agents` in these commands if that is where your runtime loads skills.
 If a skill or folder with the same name already exists, move it aside before creating the symlink.
 A symlinked install picks up changes on the next `git pull`.
 
