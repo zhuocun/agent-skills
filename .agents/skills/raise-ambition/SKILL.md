@@ -11,19 +11,21 @@ description: >-
   Use on your own initiative whenever a non-trivial task is about to start and its description
   names the deliverable — a design or architecture, a research or analysis question, a
   business review, a strategy or plan, a piece of writing, an operational process, a personal
-  project — with any constraints but no acceptance criteria or method; every new request in a
-  conversation is a new task, even when it continues earlier work.
+  project — with any constraints (limits on scope, length, budget, time or tools) but no
+  acceptance criteria (a measurable target or required structure the result must meet) or
+  method; every new request in a conversation is a new task, even when it continues earlier
+  work.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
   already known, a task that already has acceptance criteria or a spec, a task whose method
-  the user fixed, a step inside a request already briefed (answering a worker's question,
-  fixing a review finding, a status check), or a question that needs only an answer; never
+  the user fixed, a step you take inside a request already briefed (a clarification about the
+  work, fixing a review finding, a status check), or a question that needs only an answer; never
   use it for executing the task or reviewing finished work.
 ---
 
 # Raise Ambition
 
-Before work starts, rewrite an ordinary task description into one self-contained brief that aims higher and can still be checked, so whoever executes it holds the work to at least the brief's definition of done. The brief rests on four lenses: **Altitude**, the outcome the deliverable serves, one level up; **Depth**, the raw inputs, methods, targets and outside checks a field-leading expert would use; **Range**, methods borrowed from other fields that change the result; and **Speed**, a schedule that reaches a verified result early. It keeps the user's scope, constraints, permissions and budget, and asks the user about every change that needs consent before any work on that change starts. The skill rewrites only: it does not execute the task, review finished work, or grade an existing plan, and whoever was asked to do the task, including you if you were, then does it under the brief. The lenses come from Felix Rieseberg's essay "How to be more ambitious: A tutorial for humans with models" (2026-10-13, https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/; summarized in `references/rieseberg-ambition.md` for reading offline); Speed is not developed there, and its mechanisms below come from other sources, cited where they are used.
+Before work starts, rewrite an ordinary task description into one self-contained brief that aims higher and can still be checked, so whoever executes it holds the work to at least the brief's definition of done. The brief rests on four lenses: **Altitude**, the outcome the deliverable serves, one level up; **Depth**, the raw inputs, methods, targets and outside checks a field-leading expert would use; **Range**, methods borrowed from other fields that change the result; and **Speed**, a schedule that reaches a verified result early. It keeps the user's scope, constraints, permissions and budget, and asks the user about every change that needs consent before any work on that change starts. The skill rewrites only: it does not execute the task, review finished work, or grade an existing plan, and whoever was asked to do the task, including you if you were, then does it under the brief. The lenses come from Felix Rieseberg's essay "How to be more ambitious: A tutorial for humans with models" (2026-10-13, https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/; summarized in `references/rieseberg-ambition.md` for reading offline); Speed is not developed there.
 
 Priority order, highest first: **the user's constraints, safety and permissions → verifiability → Altitude → Depth → Range → Speed → concision.** A target raised beyond what an outside check can confirm is worse than the original target, so verifiability caps every lens. Apply the lenses in the same order: Altitude sets the outcome, Depth sets the standard and methods that reach it, Range adds methods to Depth, and Speed schedules the work the first three define.
 
@@ -76,7 +78,7 @@ First restate the deliverable as what it must accomplish, starting with a verb (
 
 ### 5. Speed — time to a verified result
 
-Speed shortens the time to a result that passed its outside check, not to an unchecked draft. It rests on four mechanisms, each cited where it is stated:
+Speed shortens the time to a result that passed its outside check, not to an unchecked draft. It rests on four mechanisms:
 
 1. Set a tight deadline at the start (Collison's "Fast" list of projects that met hard goals on short deadlines).
 2. Get the first outside check early: a small part of the result, a sample, a pilot, a draft review; a short observe–decide–act cycle (the OODA loop) corrects course sooner.

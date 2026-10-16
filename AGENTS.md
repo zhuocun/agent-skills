@@ -32,8 +32,10 @@ order, and `references/cli-dispatch.md`. Change them together. Both SKILL.md
 files keep one line per paragraph so shared text compares byte for byte. The
 validator checks `references/cli-dispatch.md`, which each skill ships as an
 identical copy, and, in Model selection, the table's Task type, First choice and
-Fallback columns and the Model ID and Fast mode blocks. The rest of Model
-selection names each skill's own roles; keep its shared rules in step by hand.
+Fallback columns and the Model ID and Fast mode blocks. The rest names each
+skill's own roles, so keep it in step by hand: the tier list (**Tiers.**), the
+source order (burst's **Subagent sources**, proxy's **Source.**), rules 1–7,
+**Fallbacks**, **Effort limits** and **Reporting**.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
@@ -62,11 +64,11 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
   fixed form"), the substance as numbered passes or failure modes
   (`cr-fe`'s review passes, `chinese-diction`'s seven failure modes), and a
   terminal `## Self-check` the agent runs before declaring done.
-- **Every conditional exception ships with a ✓ example of the case it
-  excuses** — in `chinese-diction`, every register-conditional exception has a
-  ✓ example in the register it excuses. A case named only in a waiver is not
-  covered by the skill, it is merely exempted, and a model will read the waiver
-  as licence to skip the rule rather than as a different standard to meet.
+- **In `chinese-diction`, every register- or genre-conditional exception ships
+  with a ✓ example** in the register or genre it excuses. A case named only in
+  a waiver is not covered by the skill, it is merely exempted, and a model will
+  read the waiver as licence to skip the rule rather than as a different
+  standard to meet.
 - **Write for an agent, not a human reader.** Skills are instructions a model
   follows; keep them imperative, concrete, and self-contained. Do not run the
   prose-editing skills (`chinese-diction`, `document-editor`) on SKILL.md files

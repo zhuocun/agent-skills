@@ -4,7 +4,7 @@
 - **Published:** 13 October 2026
 - **Original, for the full text:** https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/
 
-This file is a summary in our own words, not the essay. Phrases in quotation marks are the essay's own wording; everything else paraphrases it. Sections follow the essay's order; the essay's own headings are Altitude, Depth, Range and "We have been here before", and the others are added here.
+This file is a summary in our own words, not the essay. Phrases in quotation marks are the essay's own wording; everything else paraphrases it.
 
 ## Summary
 
