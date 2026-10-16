@@ -23,7 +23,7 @@ The essay names four types, in this order:
 
 ### Altitude
 
-A task given to a model is the user's own guess at a route to the outcome they want; ambition in altitude means handing over the outcome itself. The guiding question is what should follow once the task is done: "What's the goal beyond the goal?" The author's own example is moving from having Claude repair crashes one at a time to giving it the goal of crash-free apps.
+A task given to a model encodes the user's own guess at the route to an outcome; ambition in altitude means handing over the outcome itself. The guiding question is what should follow once the task is done: "What's the goal beyond the goal?" The author's own example is moving from having Claude repair crashes one at a time to giving it the standing job of keeping the apps free of crashes.
 
 The worked example is a quarterly business review (QBR) deck at an imagined company, Acme Inc. Merely filling in a slide template is the unambitious baseline. The essay then climbs in three steps:
 
@@ -41,7 +41,7 @@ What the essay says about when altitude fits, its limits, and its payoff:
 
 Depth is for when the task must be done exceptionally well: press the model to work with the instruments, methods, formats and expertise the leading practitioners use, and to continue until those practitioners could learn from the result. The running example is the same QBR, assuming Acme Inc has a customer-churn problem. The essay's techniques:
 
-- **Use the instruments the best practitioners use.** Asked to act like a professional, "models often switch vocabulary without actually switching methods". Hold it to the real methods of leading data scientists and statisticians, such as databases and statistical models rather than markdown tables; the model usually knows what those are even when the user does not.
+- **Use the instruments the best practitioners use.** Told to behave like a professional, "models often switch vocabulary without actually switching methods". Hold it to the real methods of leading data scientists and statisticians, such as databases and statistical models rather than markdown tables; the model usually knows what those are even when the user does not.
 - **"Pick unreasonable goals and tell the model that they're very reasonable."** Ask for far more than you need (the essay's example: needing a 5 s page load instead of 10 s, ask for 200 ms), and when the model calls something impossible, insist that it is solvable and have it keep going.
 - **Challenge what you know.** Business beliefs are often only rough approximations, so have the model test them adversarially against the raw data; the essay's example is trying to reproduce from that data the belief that churn is an onboarding problem.
 - **Produce new knowledge.** Once the model is deep in the data, ask it for blind spots: for example, have it model the customer base so that it replays the past year from the logs, search it for the first early warning of churn the company has not yet identified, and show the warning holds on held-out data.
@@ -56,7 +56,7 @@ Range means bringing more fields to bear on the work than it would once have pai
 - **Replace nouns with verbs**, a trick from *The Art of Innovation* by Tom Kelley and Jonathan Littman. Restated as an activity, the QBR is about persuading busy people of a causal account and getting them to decide, despite uncertainty, within a half-hour meeting. Stating the verb shows both user and model which fields could contribute.
 - **Assemble the crew.** Imagine, as the essay jokes, that aliens will destroy Earth unless the deck is excellent, and ask who humanity would recruit: for production quality an analyst, a journalist and an editor; for a presentation, a motion and audio designer; and as an adversarial red team, a short seller and a forensic accountant.
 
-The essay's caveat: this easily turns into role play, which adds theatre to the conversation and does nothing for the result. Use the crew exercise to find fields and techniques, then have the model carry out the actual work of that role; the essay's example is to ask it not to imitate a short seller's style but to "do what a short seller does to research their position".
+The essay's caveat: this easily turns into role play, which adds theatre to the conversation and does nothing for the result. Use the crew exercise only to discover which fields and techniques apply, then have the model carry out the actual work of that role; the essay's example is to ask it not to imitate a short seller's style but to "do what a short seller does to research their position".
 
 ### A precondition for the approaches described
 
