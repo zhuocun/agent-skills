@@ -33,6 +33,6 @@ For Slack or Linear events, use the matching subscription above rather than a sa
 ## Cloud Agent and self-hosted rules that affect bookkeeping
 
 - Before the first commit on a self-hosted machine, check `user.name` and `user.email`. Git identity comes from the machine's configuration. Set identity per repository only if unset.
-- Use the platform's pull-request tool, when `GetDynamicTools` or the built-in namespace lists one, rather than forge CLIs. If the tool refuses, for example because the forge host is unconfigured, treat the refusal as final for the run. Record it in the ledger and tell the user.
+- Use the platform's pull-request tool, from `GetDynamicTools` or the built-in namespace, for pull requests, never forge CLIs. If the tool refuses, for example because the forge host is unconfigured, treat the refusal as final for the run. Record it in the ledger and tell the user.
 - Shell working directory and environment variables persist between calls in one session. For tmux environment rules, see the [launcher](background-work.md#tmux-run-plus-waiter-verified-2026-10-12).
 - The terminals folder contains one file per shell session with a metadata header. Read the first lines before starting a duplicate process.

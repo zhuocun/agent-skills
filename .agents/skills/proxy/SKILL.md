@@ -113,17 +113,16 @@ consultant's brief:
 - the definition-of-done rule from **Run it to done** and the instructions of
   any method available to you for raising a task's standard, both verbatim, for
   it to set the definition of done by;
-- ask it to return: the to-dos for the whole task and a high-standard definition
-  of done the integrated work must clear, set by that rule, and any stretch
-  target, kept outside it, with the updates to
-  docs, records and to-dos the work will touch included as to-dos; the
-  decomposition into subtasks, which are parallel vs. sequential; the task type
-  of each subtask, named as exactly one row of the **Model selection** table,
-  with the families and effort levels its row assigns; the brief for each
-  worker, each stating that the worker is a leaf and worded in correctness and
-  reliability terms; the success criteria per subtask; what the final-gate
-  reviewer should check; and any question that needs the user's answer or
-  consent;
+- ask it to return: the to-dos for the whole task, with the updates to docs,
+  records and to-dos the work will touch included as to-dos; a high-standard
+  definition of done the integrated work must clear, set by that rule; any
+  stretch target, kept outside it; the decomposition into subtasks, which are
+  parallel vs. sequential; the task type of each subtask, named as exactly one
+  row of the **Model selection** table, with the families and effort levels its
+  row assigns; the brief for each worker, each stating that the worker is a leaf
+  and worded in correctness and reliability terms; the success criteria per
+  subtask; what the final-gate reviewer should check; and any question that
+  needs the user's answer or consent;
 - that table, its legend and its numbered rules, verbatim, to classify by.
 
 If it names no row, or more than one, for a subtask, re-consult rather than
@@ -535,8 +534,8 @@ Devin child session".
 
 The closing report serves a different reader from your updates. An update
 between dispatches and tool calls goes to a reader who already knows your
-earlier updates, so brevity there is good. The final summary is written for a reader who
-saw none of that.
+earlier updates, so brevity there is good. The final summary is written for
+a reader who saw none of that.
 
 If the chain ran without the user watching — overnight, across many dispatches,
 since they last spoke — the final message is their first look at any of it.
