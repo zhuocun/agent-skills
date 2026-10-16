@@ -36,7 +36,7 @@ What remains is the one-sentence goal minus everything Pass 2 verified as done. 
 - failing or skipped tests, and `TODO` / `FIXME` markers in the touched code,
 - the user's last explicit ask — the most authoritative "what next."
 
-Order the list by dependency: what unblocks the most, or what the next step needs first. Where someone else decides the order of this work, give them the list and follow the order they return.
+Order the list by dependency: what unblocks the most, or what the next step needs first. Where someone else decides the order of this work, give them the list and follow the order they set.
 
 ### 4. Fill context gaps — what is needed to continue perfectly
 
@@ -46,7 +46,7 @@ For the next one or two to-dos, list what you would need to do them correctly: t
 
 Give a concise recap:
 
-1. **What we have been doing** — the goal, in a sentence or two; the recap opens with it.
+1. **What we have been doing** — the goal, in a sentence or two.
 2. **What is finished** — each item backed by a verifiable anchor (commit sha, PR number, merged/CI state, file, or wherever a non-git output lives), so the user can check it. List unverified items apart, marked unverified.
 3. **The to-dos** — the ordered remaining work from Pass 3.
 

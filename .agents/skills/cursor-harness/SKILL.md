@@ -20,7 +20,7 @@ Keep all work you own in one durable ledger file. A **ledger entry** records one
 
 At the start of every turn, including a follow-up message or a timer prompt:
 
-1. Read the ledger. After a compaction, check each claim in the summary against the ledger and ground truth (git, PRs, CI, the actual files), never against the summary alone.
+1. Read the ledger. After a compaction, treat each claim in the summary as unverified until the ledger or ground truth (git state, PRs, CI, the files themselves) confirms it.
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
 3. Process completed work: verify the result, record it, and trigger the next step. Then handle the new message.
 

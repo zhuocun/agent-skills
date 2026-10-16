@@ -9,14 +9,13 @@ description: >-
   Keeps the user's scope, constraints, permissions and budget; the result is one brief,
   definition of done included, that whoever does the work follows.
   Use when a non-trivial task is about to start and its description names only the
-  deliverable: a design or architecture, a
-  research or analysis question, a business review, a strategy or plan, a piece of writing, an
-  operational process, a personal project.
+  deliverable: a design or architecture, a research or analysis question, a business review,
+  a strategy or plan, a piece of writing, an operational process, a personal project.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
-  already known, a task that already has acceptance criteria or a spec, a task
-  whose method the user fixed, a follow-up inside a task already briefed, or a question that
-  needs only an answer; never use it for executing the task or reviewing finished work.
+  already known, a task that already has acceptance criteria or a spec, a task whose method
+  the user fixed, a follow-up inside a task already briefed, or a question that needs only an
+  answer; never use it for executing the task or reviewing finished work.
 ---
 
 # Raise Ambition
@@ -25,7 +24,7 @@ Before work starts, rewrite an ordinary task description into one self-contained
 
 Priority order, highest first: **the user's constraints, safety and permissions → verifiability → Altitude → Depth → Range → Speed → concision.** A target raised beyond what an outside check can confirm is worse than the original target, so verifiability caps every lens. Apply the lenses in the same order: Altitude sets the outcome, Depth sets the standard and methods that reach it, Range adds methods to Depth, and Speed schedules the work the first three define.
 
-Run the skill once per task, in one pass that includes recording the user's later approvals in Definition of done (pass 6); do not raise a brief that this skill already produced. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
+Run the skill once per task, and do not raise a brief that this skill already produced; adding the user's later approvals to Definition of done, as pass 6 directs, is part of that one run. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
 
 ## The brief
 

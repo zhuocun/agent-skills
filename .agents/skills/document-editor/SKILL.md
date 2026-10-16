@@ -8,7 +8,7 @@ description: >-
   reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
   registries, structured assets, document governance, concision, or
   reviewability. Do not use for casual notes, chat replies, routine status
-  updates, forms filled to a fixed template, pure sentence-level wording or
+  updates, pure sentence-level wording or
   translation polish, or agent-instruction files such as SKILL.md, prompts,
   workflows, or tool-routing docs.
 ---

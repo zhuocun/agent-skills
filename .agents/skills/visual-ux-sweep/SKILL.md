@@ -248,8 +248,8 @@ Before declaring a sweep done, confirm:
 - [ ] No shot reviewed as rendered appears in the harness's `UNRENDERED`
   list (content wait missed or page error), whatever its hash. Every PNG
   was hashed (`md5sum`) and no two distinct routes share a hash; identical
-  hashes between media variants of one route whose shots both passed their
-  content wait, other than reduced motion, were filed as findings, not
+  hashes between media variants of one route, other than reduced motion,
+  were filed as findings whenever both shots passed their content wait, not
   re-captured. Reduced motion was judged by
   the computed-style probe or in code, never by its hash. Any blank, stuck,
   or odd shot got its recorded API hits and console/page errors read,

@@ -81,9 +81,9 @@ requirement already set for the task is folded in, including the qualities it
 must not degrade and the checks it must pass, any method available for raising
 a task's standard raises it further, and it is never lower than what was
 already set. A stretch target stays outside the definition of done as an aim,
-and the final summary reports the result against it. A change that needs the
-user's consent goes to the user before the work that depends on it starts, and
-joins the definition of done once they approve it. Then, building on any plan
+and the final summary reports the result against it. Work that goes beyond the
+user's scope, constraints or budget goes to the user before it starts, and each
+item they approve joins the definition of done. Then, building on any plan
 already set for the task, keep the loop moving with perseverance: drive
 dispatch → review → re-consult until the final-gate reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
@@ -103,9 +103,8 @@ answer without waiting for the user to confirm.
 
 ## Pass 1 — Consult the orchestrator-consultant
 
-Dispatch an orchestrator-consultant subagent with the task as received. Before
-dispatching, put any question the task leaves for the user to the user
-verbatim, never to a subagent. The consultant's brief:
+Dispatch an orchestrator-consultant subagent with the task as received. The
+consultant's brief:
 
 - the user's task and any requirements, success criteria and checks already
   set for it, verbatim, with the user's answers so far, plus the context and
@@ -126,13 +125,13 @@ verbatim, never to a subagent. The consultant's brief:
 - that table, its legend and its numbered rules, verbatim, to classify by.
 
 If it names no row, or more than one, for a subtask, re-consult rather than
-choose. Then put its questions for the user to the user verbatim, never to a
-subagent, and follow its plan. If the plan is ambiguous, or you hit a fork it
-did not cover, go back to an orchestrator-consultant — do not resolve it
-yourself.
+choose. Then ask the user each question it returned for them, verbatim and
+never through a subagent, and follow its plan. If the plan is ambiguous, or you
+hit a fork it did not cover, go back to an orchestrator-consultant — do not
+resolve it yourself.
 Re-consult whenever reality diverges from the plan (a worker uncovers new scope,
-a review forces a rethink) or the user approves a change that needed their
-consent, since adding work is planning.
+a review forces a rethink) or the user approves an item that goes beyond their
+scope, constraints or budget, since adding work is planning.
 
 ## Pass 2 — Dispatch workers
 
