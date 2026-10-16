@@ -70,8 +70,10 @@ do so always traces back to a subagent's instruction.
 ## Run it to done
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
-and definition of done. Then keep the loop moving with perseverance: drive
-dispatch → review → re-consult until the final-gate reviewer returns `done`.
+and definition of done, the latter taken from the raise-ambition brief when that
+skill produced one for the task. Then keep the loop moving with perseverance:
+drive dispatch → review → re-consult until the final-gate reviewer returns
+`done`.
 Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
