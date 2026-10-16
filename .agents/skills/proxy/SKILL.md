@@ -71,18 +71,20 @@ do so always traces back to a subagent's instruction.
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
 and a high-standard definition of done, set at the highest standard that can
-still be verified: every target, guardrail and verification already set for the
-task is folded in, any method available for raising a task's standard raises it
-further, it is never lower than what was already set, and the items that need
-the user's confirmation go to the user. Then keep the loop moving with
+still be verified: every requirement already set for the task's done — targets,
+guardrails, verification — is folded in, any method available for raising a
+task's standard raises it further, and it is never lower than what was already
+set; a target set as the aim above done stays the aim, not part of the
+definition of done, and the result is reported against both; the items that
+need the user's confirmation go to the user. Then keep the loop moving with
 perseverance: drive dispatch → review → re-consult until the final-gate
 reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
-decisions to a subagent, not to the user; the brief's confirm items are never
-trivial. Keep a running record of the to-dos and progress through the chain so
-nothing drifts over a long session.
+decisions to a subagent, not to the user; the items a brief asks the user to
+confirm are never trivial. Keep a running record of the to-dos and progress
+through the chain so nothing drifts over a long session.
 
 After a context compaction, rebuild that record from ground truth (the files,
 the branch, test output, the artifacts already integrated), not from the
@@ -98,16 +100,15 @@ brief:
 - the user's task verbatim, plus the context and files it needs to plan;
 - the task's brief verbatim when one exists before planning — written by the
   user or a subagent, never by you, since rewriting the task is a planning
-  decision — with the user's answers to any items it asks the user to confirm,
-  which you relay to the user verbatim and never route to a subagent; and the
-  instruction to build the definition of done on the brief's when it defines
-  one, keeping any higher bar of its own, adding the items the user approved
-  and leaving out the declined or unanswered ones, to treat any target the
-  brief sets above that definition as the aim and report the result against
-  both, and to include the brief's verification in what the final-gate
-  reviewer checks;
-- ask it to return: the to-dos for the whole task and the definition of done the
-  integrated work must clear, with the updates to docs, records and to-dos the
+  decision. Relay the items it asks the user to confirm to the user verbatim,
+  never to a subagent, and include the user's answers; include too the
+  instruction to build the definition of done on the brief's definition of
+  done, adding the items the user approved and leaving out the declined or
+  unanswered ones, and to include the brief's verification in what the
+  final-gate reviewer checks;
+- ask it to return: the to-dos for the whole task and a high-standard
+  definition of done the integrated work must clear, set as **Run it to done**
+  describes, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are
   parallel vs. sequential; the task type of each subtask, named as exactly one
   row of the **Model selection** table, with the families and effort levels its
