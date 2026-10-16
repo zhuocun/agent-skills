@@ -70,8 +70,8 @@ do so always traces back to a subagent's instruction.
 ## Run it to done
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
-and definition of done, the latter taken from the raise-ambition brief when that
-skill produced one for the task. Then keep the loop moving with perseverance:
+and definition of done, the latter taken from the task's brief when the brief
+already defines one. Then keep the loop moving with perseverance:
 drive dispatch → review → re-consult until the final-gate reviewer returns
 `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
@@ -92,13 +92,12 @@ Dispatch an orchestrator-consultant subagent with the task as received. Its
 brief:
 
 - the user's task verbatim, plus the context and files it needs to plan;
-- the raise-ambition brief and the user's answers to its Confirm before starting
-  items, verbatim, when that skill produced one for the task, with the
-  instruction to take the definition of done from the brief's minimum targets,
-  guardrails and Verification pass conditions, with the Confirm items the user
-  approved added to it and the declined ones left out, to treat the high target
-  as the aim, and to include its Verification in what the final-gate reviewer
-  checks;
+- the task's brief verbatim when one was written before planning, with the
+  user's answers to any items it asked them to confirm, and the instruction to
+  take the definition of done from the brief when it defines one, adding the
+  items the user approved and leaving out the declined or unanswered ones, to
+  treat any target the brief sets above that definition as the aim, and to
+  include the brief's verification in what the final-gate reviewer checks;
 - ask it to return: the to-dos for the whole task and the definition of done the
   integrated work must clear, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are
