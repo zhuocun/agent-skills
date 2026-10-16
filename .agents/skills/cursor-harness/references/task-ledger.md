@@ -4,7 +4,7 @@ Use this reference to register work, choose a ledger location, record states, an
 
 ## Registration
 
-Before starting work or launching a job, add a ledger entry. Include user asks, subagents, background shell jobs, tmux runs, scheduled safety timers, and work waiting on the user. Before launching a wave, register every member of the wave, then launch.
+Before starting work or launching a job, add a ledger entry. Include user asks other than a question you answer in the same turn, subagents, background shell jobs, tmux runs, scheduled safety timers, and work waiting on the user. Before launching a wave, register every member of the wave, then launch.
 
 Each running ledger entry names its completion signal and the next action on completion. Signals include a shell job, an end marker, a subagent result, or a safety timer. A run without a live signal is a ledger defect. Give it a waiter or safety timer, or poll it now.
 
@@ -14,7 +14,7 @@ Quote the user's exact words for new tasks and acceptances.
 
 Pick the first location that applies. State the location in your first progress note.
 
-1. **The project's own tracker.** Use an existing task document or ledger the project already keeps for user-facing tasks. Keep run-level detail in a side file next to it.
+1. **The project's own tracker.** Use an existing task document or ledger the project already keeps for user-facing tasks. Keep run-level detail in a side file next to it, where a broad `git add` would not commit it.
 2. **A persistent agent store**, when the system context lists one for the current agent. It survives compactions and new turns for this agent. Use `<store>/ledger.md`.
 3. **A scratch file outside version control**, such as a directory the repo already ignores. Never put the ledger where a broad `git add` would commit it.
 
@@ -47,7 +47,7 @@ Redeploying or reconfiguring a deployed environment invalidates a run against it
 
 Use `queued → running → verifying → done` for work. Other states are `blocked` (name the blocker), `waiting-user` (record the exact question), `accepted` (the user accepted), `cancelled` (record who cancelled and why), and `failed` (record evidence and the decision taken).
 
-- Mark a ledger entry `done` only with evidence: exit code and artifact for runs, a reviewed result for subagents, and an observable outcome for tasks.
+- Mark a ledger entry `done` only with evidence: exit code and artifact for runs, a result verified as [verification](delegation.md#verifying-delegated-results) describes for subagents, and an observable outcome for tasks.
 - For delegated results, follow [verification](delegation.md#verifying-delegated-results).
 - Keep a task that needs user sign-off `verifying` or `waiting-user` until the user accepts, and quote the acceptance as [registration](#registration) requires.
 
@@ -58,7 +58,7 @@ After the [turn-start inventory](../SKILL.md#2-turn-start-inventory-before-anyth
 1. Split the message into parts. Classify each as a new task, a change to an existing task, a question, an acceptance or rejection, or a stop. Update the corresponding ledger entries before acting on any part.
 2. Handle the cheapest high-value part first, usually the answer or acceptance record. Then resume the most blocked work.
 3. For a question, answer and resume running work. A question does not cancel work.
-4. For a scope change, let a correct running job finish and add a follow-up ledger entry for the change. Stop the job only if it is wrong or the user says stop.
+4. For a scope change, let a correct running job finish and add a follow-up ledger entry for the change. Stop the job only if it is wrong or the user tells you to stop the job itself; a user who tells you to stop working leaves the runs going.
 5. When the user switches topic, retain the old ledger entries in their real states. Mention them in turn-end reports until they close or the user drops them.
 
 If the message releases a blocking wait, follow the [wait routine](background-work.md#wait-routine).
