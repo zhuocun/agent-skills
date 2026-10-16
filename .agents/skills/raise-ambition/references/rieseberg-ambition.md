@@ -23,7 +23,7 @@ The essay names four types, in this order:
 
 ### Altitude
 
-A task handed to a model is the user's best guess at how to reach the outcome they want; ambition in altitude means handing over the outcome itself. The guiding question is what you want to happen next: "What's the goal beyond the goal?" The author's own example is moving from asking Claude to fix individual crashes to asking it to keep the apps crash-free.
+A task given to a model is the user's own guess at a route to the outcome they want; ambition in altitude means handing over the outcome itself. The guiding question is what should follow once the task is done: "What's the goal beyond the goal?" The author's own example is moving from having Claude repair crashes one at a time to giving it the goal of crash-free apps.
 
 The worked example is a quarterly business review (QBR) deck at an imagined company, Acme Inc. Merely filling in a slide template is the unambitious baseline. The essay then climbs in three steps:
 
