@@ -11,7 +11,7 @@ Priority order, highest first: **runtime safety and security → error handling 
 
 ## When to use
 
-**Primary target is React / TypeScript / JavaScript** — the idioms below are React-centric. Other component frameworks (Vue, Svelte, Solid) are in scope, but map the React specifics by analogy rather than expecting a literal match. Also reach for this on narrower asks: null-safety audits, leak hunts, and folder-structure or layering questions.
+**Primary target is React / TypeScript / JavaScript** — the idioms below are React-centric. Other component frameworks (Vue, Svelte, Solid) are in scope, but map the React specifics by analogy rather than expecting a literal match.
 
 ## The central instinct: trust nothing that crosses a boundary
 

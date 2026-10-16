@@ -109,7 +109,7 @@ Extracts; a real brief fills every slot it keeps.
 - Fields: labor economics (causal identification), organizational psychology (team coordination); one line argues the opposite policy from the same evidence.
 - Confirm before starting: use of internal HR data.
 
-**Business — "Prepare the quarterly business review deck."** (the essay's example)
+**Business — "Prepare the quarterly business review deck."**
 - Outcome: leadership spots problems earlier and decides on resources.
 - Methods: start from the raw data, find the three most urgent decisions, and give the case for and against each.
 - Definition of done: three decisions drawn from the raw data, each with its case for and against; the mechanism in Confirm before starting is added once approved.

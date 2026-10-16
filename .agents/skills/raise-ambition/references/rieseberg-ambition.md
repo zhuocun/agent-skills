@@ -1,10 +1,10 @@
 # How to be more ambitious: A tutorial for humans with models
 
 - **Author:** Felix Rieseberg (engineering manager at Anthropic, working on Claude)
-- **Published:** 13 October 2026 (the page gives an 8-minute reading time)
+- **Published:** 13 October 2026
 - **Original, for the full text:** https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/
 
-This file is a summary in our own words, not the essay. Phrases in quotation marks are the essay's own wording; everything else paraphrases it. The summary runs to the end of the file; no notes of our own are added. Sections follow the essay's order; the essay's own headings are Altitude, Depth, Range and "We have been here before", and the others are added here.
+This file is a summary in our own words, not the essay. Phrases in quotation marks are the essay's own wording; everything else paraphrases it. Sections follow the essay's order; the essay's own headings are Altitude, Depth, Range and "We have been here before", and the others are added here.
 
 ## Summary
 
@@ -70,4 +70,4 @@ The closing section explains why the advice is needed. People are held back by w
 - **Seeing someone else do it:** Roger Bannister broke the four-minute mile in May 1954 and was the only one to have done so for just 46 days. The essay sees the same with the two-hour marathon: in London in April 2026 Sabastian Sawe became the first to finish an official marathon in under two hours, and the second-placed runner in that race did so too.
 - **Permitting yourself to fail:** *The Inner Game of Tennis* argues that you do not play your best when trying very hard; Linux was announced as just a hobby that would not become big and professional.
 
-The essay ends by saying self-efficacy is an old problem made more powerful now that abilities leap every few weeks, so people need techniques for doing things they had not considered or believed possible, and it invites readers to send the author further techniques. The post's image is Francisco Goya's "Modo de volar" (A Way of Flying).
+The essay ends by saying self-efficacy is an old problem made more powerful now that abilities leap every few weeks, so people need techniques for doing things they had not considered or believed possible.

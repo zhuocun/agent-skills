@@ -48,14 +48,19 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
   `cr-fe`, `document-editor`, `chinese-diction`).
 - **Keep the frontmatter YAML-safe.** When the `description` contains
   characters that could break strict parsers, use a folded `>-` block scalar
-  rather than a bare string — `chinese-diction` does this and notes it in a
-  Maintenance section.
+  rather than a bare string — `chinese-diction`, `cursor-harness` and others
+  do this.
 - **Body pattern:** an `# H1` title, a one-paragraph statement of the skill's
   role, an explicit priority order where the work is ranked (e.g. `cr-fe`'s
   "runtime safety → … → layering", `status-report`'s "grounded evidence → … →
   fixed form"), the substance as numbered passes or failure modes
   (`cr-fe`'s review passes, `chinese-diction`'s seven failure modes), and a
   terminal `## Self-check` the agent runs before declaring done.
+- **Every conditional exception ships with a ✓ example of the case it
+  excuses** — in `chinese-diction`, every register-conditional exception has a
+  ✓ example in the register it excuses. A case named only in a waiver is not
+  covered by the skill, it is merely exempted, and a model will read the waiver
+  as licence to skip the rule rather than as a different standard to meet.
 - **Write for an agent, not a human reader.** Skills are instructions a model
   follows; keep them imperative, concrete, and self-contained. Do not run the
   prose-editing skills (`chinese-diction`, `document-editor`) on SKILL.md files

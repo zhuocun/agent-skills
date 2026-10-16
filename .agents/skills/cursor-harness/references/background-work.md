@@ -14,7 +14,7 @@ An **end marker** is a file written after a process exits that records its exit 
 | Task subagent with `run_in_background: true` | yes | [result delivery](delegation.md#task-tool-subagents-documented) | documented |
 | `subscribe_timer` (Cloud Agent) | yes | a follow-up prompt that starts a new turn | verified 2026-10-12 |
 
-**After the turn ends — verified 2026-10-12:** only a timer, a background Task subagent, or a user message wakes an idle agent. A background shell job or waiter that finishes then does not start a turn. In the verification, a background `sleep 60` job finished without starting a turn. A one-shot 120-second `subscribe_timer` fired on time and started a turn.
+**After the turn ends — verified 2026-10-12:** only a timer, a background Task subagent, or a user message wakes an idle agent. A background shell job or waiter that finishes then does not start a turn.
 
 **Unverified:** whether background shell jobs survive session reclamation. Treat a tmux run plus end marker as the source of truth.
 
@@ -29,7 +29,7 @@ Run work in the background when it takes more than a few minutes or is independe
 | Must survive the session, needs a human to attach, or is an agent CLI run (Codex, Devin, Cursor CLI, Claude Code), a deployment, or a long regression | tmux run with an end marker plus a waiter |
 | Analysis, review, or coding a subagent can do | background Task subagent ([delegation.md](delegation.md)) |
 
-Pair every detached run with a waiter. The completion table above explains why the detached launch itself gives no completion signal.
+Pair every detached run with a waiter.
 
 ## Wait routine
 
@@ -116,7 +116,7 @@ Use `AwaitShell` with `pattern: ANY-END`. When the waiter finishes, process that
 
 Keep each run's own waiter to detect `SESSION-GONE-NO-END`. If the any-end waiter is the only waiter, add `tmux has-session` checks.
 
-**Status: verified 2026-10-12.** Five consecutive hand-offs covered a worker, two review rounds, a regression run, and a render capture. Each result was processed within seconds of its end marker.
+**Status: verified 2026-10-12.**
 
 ## Safety timers
 

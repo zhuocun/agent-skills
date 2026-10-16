@@ -21,7 +21,7 @@ Apply this priority order: **truth and authority → reader contract and scope �
 
 ## Hard prohibitions
 
-These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them. If the user explicitly asks for content a prohibition forbids, name the conflict and ask before including it, as with a template protection marker that conflicts with a prohibition.
+These eight rules are absolute for every document this skill touches. If the user explicitly asks for content a prohibition forbids, name the conflict and ask before including it, as with a template protection marker that conflicts with a prohibition.
 
 1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, or correction notes, and no "updated" markers, "as of" notes, or before-vs-after narration that describe a change to the document. Fold every change into the owning passage so the document always reads as if written correct the first time. A date that bounds when a claim holds — a measurement date, data snapshot, or the evaluated version — is evidence and stays next to the claim.
 2. **No deferral to other documents.** Never offload content readers need to another document in the same working set — the documents being authored or edited together in this task — through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Naming an approved source as the authority for a claim is not deferral when the document also states the content the reader needs. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
@@ -41,8 +41,6 @@ Pick the mode first; all three share the same **Document standard** below and di
 - **Review** — judge a document without editing it. Run **Review and verify** alone and report findings.
 
 ## Document standard
-
-What every finished document must satisfy, regardless of how it was produced.
 
 ### Forward reading order
 
@@ -188,7 +186,7 @@ This section only supplements the governance fields allowed when the owner expli
 
 ## Create mode
 
-Author a new document from authoritative sources; nothing pre-exists to preserve, so there is no inventory or lossless-accounting pass. Writing to the standard from the first line is far cheaper than retrofitting.
+Author a new document from authoritative sources; nothing pre-exists to preserve, so there is no inventory or lossless-accounting pass.
 
 1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, any owner or format constraints, and any success criteria or scope limits already set for the task.
 2. **Gather authorities before writing.** Collect the sources each claim type needs per **Claim-type authority**. Do not write a claim no source supports; record each genuine gap in the open-question form instead of inventing an answer or a current state.
