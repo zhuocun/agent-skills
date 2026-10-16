@@ -24,10 +24,20 @@ frontmatter and H1, and `.claude/settings.json` makes it the active output style
 (`Baseline`). Edit both files together; the validator fails when the bodies
 differ.
 
+Each `agent` and `pulse` copy also carries `.claude/output-styles/baseline.md`;
+when syncing, make its body equal `communicate`'s body as `output-style-mirror`
+compares them (below the frontmatter, the H1 and one blank line, trailing blank
+lines included), since `skills-drift` does not check it.
+
 `burst` and `proxy` share the Model selection table, the tier list, the source
-order, and `references/cli-dispatch.md`. Change them together. The validator
-checks only `references/cli-dispatch.md`, which each skill ships as an identical
-copy; keep the table's First choice and Fallback columns identical by hand.
+order, and `references/cli-dispatch.md`. Change them together. Both SKILL.md
+files keep one line per paragraph so shared text compares byte for byte. The
+validator checks `references/cli-dispatch.md`, which each skill ships as an
+identical copy, and, in Model selection, the table's Task type, First choice and
+Fallback columns and the Model ID and Fast mode blocks. The rest differs in role
+names, section names or layout, so keep its shared rules in step by hand: the
+tier list (**Tiers.**), the source order (burst's **Subagent sources**, proxy's
+**Source.**), rules 1–7, **Fallbacks**, **Effort limits** and **Reporting**.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
@@ -48,14 +58,19 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
   `cr-fe`, `document-editor`, `chinese-diction`).
 - **Keep the frontmatter YAML-safe.** When the `description` contains
   characters that could break strict parsers, use a folded `>-` block scalar
-  rather than a bare string — `chinese-diction` does this and notes it in a
-  Maintenance section.
+  rather than a bare string — `chinese-diction`, `cursor-harness` and others
+  do this.
 - **Body pattern:** an `# H1` title, a one-paragraph statement of the skill's
   role, an explicit priority order where the work is ranked (e.g. `cr-fe`'s
   "runtime safety → … → layering", `status-report`'s "grounded evidence → … →
   fixed form"), the substance as numbered passes or failure modes
   (`cr-fe`'s review passes, `chinese-diction`'s seven failure modes), and a
   terminal `## Self-check` the agent runs before declaring done.
+- **In `chinese-diction`, every register- or genre-conditional exception ships
+  with a ✓ example** in the register or genre it excuses. A case named only in
+  a waiver is not covered by the skill, it is merely exempted, and a model will
+  read the waiver as licence to skip the rule rather than as a different
+  standard to meet.
 - **Write for an agent, not a human reader.** Skills are instructions a model
   follows; keep them imperative, concrete, and self-contained. Do not run the
   prose-editing skills (`chinese-diction`, `document-editor`) on SKILL.md files
@@ -97,4 +112,7 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
 > must equal `communicate/SKILL.md` line for line, trailing blank lines included. And it runs
 > `shared-reference-identical`: the `burst` and `proxy` copies of `references/cli-dispatch.md`
-> must be byte-identical. Run the same command locally before pushing.
+> must be byte-identical. And it runs `shared-section-identical`: in the `## Model selection`
+> sections of `burst` and `proxy`, the table's first three columns and the blocks from
+> `**Model ID.**` to `**Task types.**` and from `**Fast mode.**` to `**Reporting.**` must be
+> byte-identical. Run the same command locally before pushing.

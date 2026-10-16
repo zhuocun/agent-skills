@@ -28,7 +28,7 @@ Entry format:
 
 ### Quote heredoc delimiters when the body has backticks or `$`
 - **Status:** verified (before 2026-10-12)
-- **Fact:** With an unquoted delimiter (`<<EOF`), backticks and `$()` in the body run as commands. One such heredoc accidentally started an agent CLI.
+- **Fact:** With an unquoted delimiter (`<<EOF`), backticks and `$()` in the body run as commands.
 - **Do:** Use `<<'EOF'` for literal text.
 
 ### Expect a Codex workspace-write sandbox to keep `.agents` read-only

@@ -101,7 +101,7 @@ The opposite failure is over-hedging into mush: stacking softeners (`可能…�
 
 Two carve-outs. **Deontic force:** where the settled genre is one that imposes obligation — contract, policy, safety notice, regulatory text, but not a procedure such as instructions, a runbook or a recipe, whose required steps take `需` while a safety warning inside it stays a safety notice — the categorical word *is* the correct form and softening it is a defect — ✓ 严禁在设备通电时拆卸外壳 · ✓ 未经甲方书面同意，乙方不得转让本协议项下的权利和义务. Contract, policy and safety Chinese carries `应` / `不得` / `严禁`, not `需` / `通常`. **Politeness:** distance is not hedging — writing upward or to a client, ✓ 是否方便本周内给我们一个初步意见 · ✓ 我们这边先把口径对齐 are politeness and do not spend the one-qualifier budget.
 
-*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false, while a step a procedure requires is an instruction, not such a fact, and takes `需`. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. In casual or creative prose an intensifier is often voice rather than a claim (✓ 这也太好用了吧) — judge it only where it asserts something. (Fittingly, this rule is itself a default, not an absolute.)
+*Principle:* keep an absolute only when the claim genuinely is absolute — "盖章后不可逆" is a fact, and hedging it would be false, while a step a procedure requires is an instruction, not such a fact, and takes `需`. The rule is don't reach for force you don't need, not "never be definite" — and equally, don't drown a real finding in stacked maybes. In casual or creative prose an intensifier is often voice rather than a claim (✓ 这也太好用了吧) — judge it only where it asserts something.
 
 ### 6. 过度压缩 — clipped words that should be written in full
 
@@ -160,9 +160,3 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 - [ ] Locale and script match the settled setting — mainland `软件`/`数据`/`网络` against Taiwan `軟體`/`資料`/`網路`; no simplified and traditional mixed in one text outside the spans mode 7 protects; the 简繁 pass did not run over those spans.
 - [ ] Chinese punctuation is fullwidth throughout (，。：；、——……), and quotation marks follow the settled locale — “” for mainland and Singapore, 「」 for Taiwan and Hong Kong; halfwidth marks appear only inside identifiers, URLs, quoted English, or where they are the surrounding non-Chinese sentence's own punctuation around a cited Chinese phrase.
 - [ ] Re-read cold: every term the three vocabulary tests flagged was replaced, defined at first use, or, where the source supplies nothing to restore, kept and flagged to the user, and no sentence needed a second pass to parse.
-
-## Maintenance
-
-Keep the frontmatter YAML-safe. The description uses folded `>-` style so stricter parsers can load it reliably.
-
-Every register-conditional exception in this file ships with a ✓ example in the register it excuses. A register named only in a waiver is not covered by the skill, it is merely exempted, and a model will read the waiver as licence to skip the rule rather than as a different standard to meet.
