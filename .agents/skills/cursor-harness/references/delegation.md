@@ -8,7 +8,7 @@ Use this reference to dispatch subagents and external agent CLIs inside Cursor a
 - **Background Task:** use `run_in_background: true` for the background vehicle in [background-work.md](background-work.md#choosing-the-vehicle). You cannot poll or await a background subagent. Its result arrives after your turn ends. Keep working or end the turn.
 - **Parallel launch:** put independent Task calls in one message.
 - **Resume:** use a finished subagent's agent id for a follow-up, such as sending reviewer issues to the worker verbatim. Resuming a running subagent fails. Wait for its result first.
-- **Model:** pass only a slug from the available model list. An invalid slug fails the call. Use `inherit` unless the user or the role's model choice asks for a specific model.
+- **Model:** pass a slug from the available model list that meets the rule above. An invalid slug fails the call. Use `inherit` only when the user asks for it.
 - **Cloud subagents:** `environment: cloud` gives each subagent its own VM and branch. Use cloud only when the user asks for it. Follow the user's instruction on whether to merge, check out, or ignore that branch.
 - **Descriptions:** give each subagent a concrete, distinct visible name, such as "Review T3 patch r2". Reuse the name in the ledger.
 
