@@ -1,7 +1,7 @@
 ---
 name: cursor-harness
 description: >-
-  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or resuming after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor (use that runtime's own guidance).
+  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or resuming after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
 ---
 
 # Cursor Harness
@@ -20,11 +20,9 @@ Keep all work you own in one durable ledger file. A **ledger entry** records one
 
 At the start of every turn, including a follow-up message or a timer prompt:
 
-1. Read the ledger.
+1. Read the ledger. After a compaction, treat each claim in the summary as unverified until the ledger or ground truth (git state, PRs, CI, the files themselves) confirms it.
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
 3. Process completed work: verify the result, record it, and trigger the next step. Then handle the new message.
-
-After compaction, the conversation is a summary. Before this inventory, confirm what the summary claims against the ledger and ground truth (git, PRs, CI, the actual files), not against the summary alone.
 
 ### 3. Classify every new message before acting
 

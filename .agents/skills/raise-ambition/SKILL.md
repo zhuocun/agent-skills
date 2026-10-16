@@ -6,27 +6,25 @@ description: >-
   up), Depth (the raw material, methods, hard targets, tested assumptions and outside
   verification a field-leading expert would use), Range (methods from other fields that change
   the result) and Speed (a deadline, an early first check, parallel work and no avoidable waits).
-  Keeps the user's scope, constraints, permissions and budget; the result is one brief that
-  this agent, a subagent, an orchestrator or the user executes, definition of done included.
-  Use when a non-trivial task is about to start, including before the task's definition of
-  done is set, and its description names only the deliverable: a design or architecture, a
-  research or analysis question, a business review, a strategy or plan, a piece of writing, an
-  operational process, a personal project.
+  Keeps the user's scope, constraints, permissions and budget; the result is one brief,
+  definition of done included, that whoever does the work follows.
+  Use when a non-trivial task is about to start and its description names only the
+  deliverable: a design or architecture, a research or analysis question, a business review,
+  a strategy or plan, a piece of writing, an operational process, a personal project.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
-  already known, a task that already has acceptance criteria or a spec, whoever set them, a task
-  whose method the user fixed, a follow-up inside a task already briefed, or a question that
-  needs only an answer; never use it for executing the task, orchestrating subagents, or
-  reviewing finished work.
+  already known, a task that already has acceptance criteria or a spec, a task whose method
+  the user fixed, a follow-up inside a task already briefed, or a question that needs only an
+  answer; never use it for executing the task or reviewing finished work.
 ---
 
 # Raise Ambition
 
-Before work starts, rewrite an ordinary task description into one self-contained brief that aims higher and can still be checked, so whoever executes it holds the work to at least the brief's definition of done. The brief rests on four lenses: **Altitude**, the outcome the deliverable serves, one level up; **Depth**, the raw inputs, methods, targets and outside checks a field-leading expert would use; **Range**, methods borrowed from other fields that change the result; and **Speed**, a schedule that reaches a verified result early. It keeps the user's scope, constraints, permissions and budget, and asks the user about every change that needs consent before any work on that change starts. The skill rewrites only: it does not execute the task, decompose or dispatch work, choose models, or review finished work or grade an existing plan. The lenses come from Felix Rieseberg's essay "How to be more ambitious: A tutorial for humans with models" (2026-10-13, https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/); Speed is not developed there, and its mechanisms below come from other sources, cited where they are used.
+Before work starts, rewrite an ordinary task description into one self-contained brief that aims higher and can still be checked, so whoever executes it holds the work to at least the brief's definition of done. The brief rests on four lenses: **Altitude**, the outcome the deliverable serves, one level up; **Depth**, the raw inputs, methods, targets and outside checks a field-leading expert would use; **Range**, methods borrowed from other fields that change the result; and **Speed**, a schedule that reaches a verified result early. It keeps the user's scope, constraints, permissions and budget, and asks the user about every change that needs consent before any work on that change starts. The skill rewrites only: it does not execute the task, review finished work, or grade an existing plan. The lenses come from Felix Rieseberg's essay "How to be more ambitious: A tutorial for humans with models" (2026-10-13, https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/); Speed is not developed there, and its mechanisms below come from other sources, cited where they are used.
 
 Priority order, highest first: **the user's constraints, safety and permissions → verifiability → Altitude → Depth → Range → Speed → concision.** A target raised beyond what an outside check can confirm is worse than the original target, so verifiability caps every lens. Apply the lenses in the same order: Altitude sets the outcome, Depth sets the standard and methods that reach it, Range adds methods to Depth, and Speed schedules the work the first three define.
 
-Run the skill once per task, in one pass; do not raise a brief that this skill already produced. Recording the user's approvals in Definition of done afterwards (pass 6) is not a second pass. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
+Run the skill once per task, and do not raise a brief that this skill already produced; adding the user's later approvals to Definition of done, as pass 6 directs, is part of that one run. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
 
 ## The brief
 
@@ -82,11 +80,11 @@ Speed shortens the time to a result that passed its outside check, not to an unc
 3. List the lines of work that can run in parallel and name the serial critical path, since the serial part, not the parallel work, sets the finish time (Amdahl's law).
 4. Remove avoidable waits, starting with the step that holds up everything else (theory of constraints): batch the questions and approvals at the start, get data and access in place before work begins, and cut work that does not serve the Outcome, never a part the user asked for.
 
-Never buy speed by skipping verification, and never write "faster" without a mechanism. Speed is about the schedule; do not infer from it that a model's fast mode should be switched on.
+Never buy speed by skipping verification, and never write "faster" without a mechanism.
 
 ### 6. Close the brief
 
-Fill Out of scope with what the brief deliberately leaves out. Fill Confirm before starting with every item that changes the deliverable or its audience, needs access the resource check did not find, spends money, exceeds a budget or deadline the user set, or, when the user set none, needs clearly more effort than the task as given implies (as a rule of thumb, more than about twice). Include any proposal to relax a user constraint. Ask the user about these items before starting them; only the user can answer them, so when a subagent wrote the brief, whoever dispatched it relays them to the user verbatim. Work that does not depend on them proceeds, and until the user agrees, each such item stays out of the working plan. Raises of methods, targets and verification that fit inside those limits need no consent: state them in the brief and proceed. A deadline set earlier than the user's is a raise, not a change of time. Fill Definition of done with the minimum targets, the guardrails and the pass conditions in Verification, and copy into it the rule that the high target is what the work aims for, not part of done, and that the final report states the result against both the high and the minimum target, so the rule travels with the brief. Each Confirm before starting item is added to it once the user approves it, by whoever dispatched the brief when a subagent wrote it; declined or unanswered items stay out. Fill Lenses skipped with each skipped or lightened lens and its reason.
+Fill Out of scope with what the brief deliberately leaves out. Fill Confirm before starting with every item that changes the deliverable or its audience, needs access the resource check did not find, spends money, exceeds a budget or deadline the user set, or, when the user set none, needs clearly more effort than the task as given implies (as a rule of thumb, more than about twice). Include any proposal to relax a user constraint. Ask the user about these items before starting them; only the user can answer them, so when you cannot reach the user yourself, return them verbatim with the brief. Work that does not depend on them proceeds, and until the user agrees, each such item stays out of the working plan. Raises of methods, targets and verification that fit inside those limits need no consent: state them in the brief and proceed. A deadline set earlier than the user's is a raise, not a change of time. Fill Definition of done with the minimum targets, the guardrails and the pass conditions in Verification, and copy into it the rule that the high target is what the work aims for, not part of done, and that the final report states the result against both the high and the minimum target, so the rule travels with the brief. Each Confirm before starting item is added to it once the user approves it; declined or unanswered items stay out. Fill Lenses skipped with each skipped or lightened lens and its reason.
 
 ## Examples
 

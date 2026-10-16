@@ -1,6 +1,6 @@
 ---
 name: cr-fe
-description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings. Not for a rendered visual audit of the running app, such as layout, theme, or visual regressions seen in screenshots, and not for backend services, infrastructure, or non-UI logic.
+description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings; not for judging visual design or layout, and not for backend services, infrastructure, or non-UI logic.
 ---
 
 # Frontend Code Review
@@ -51,14 +51,15 @@ Rule: `?.` + `??` at the boundary is good; deep `?.` in business logic is usuall
 Where "looks fine, throws later" lives:
 
 - `||` for defaults eats valid `0`, `""`, `false` → use `??` when those are valid values.
-- `Number(x)` and `parseInt(x)` both yield `NaN`, which poisons math and comparisons, but differ: `Number(x)` is strict (`'12px'` → `NaN`), while `parseInt(x[, radix])` is lenient (`'12px'` → `12`) and needs an explicit radix → pick deliberately, then validate with `Number.isFinite`. `NaN === NaN` is `false`, so test with `Number.isNaN`, never `=== NaN`. `Number('')`, `Number('  ')` and `Number(null)` are `0`, not `NaN`, so a cleared field passes `Number.isFinite` as `0` → reject null and blank input explicitly (`s == null || s.trim() === ''`) before converting.
+- `Number(x)` and `parseInt(x)` both yield `NaN`, which poisons math and comparisons, but differ: `Number(x)` is strict (`'12px'` → `NaN`), while `parseInt(x[, radix])` is lenient (`'12px'` → `12`) and needs an explicit radix → pick deliberately, then validate with `Number.isFinite`. `NaN === NaN` is `false`, so test with `Number.isNaN`, never `=== NaN`.
+- `Number('')`, `Number('  ')` and `Number(null)` are `0`, not `NaN`, so a cleared field passes `Number.isFinite` → reject null and blank input (`s == null || s.trim() === ''`) before converting.
 - `JSON.parse` throws on bad input → wrap it with a typed fallback (see Error handling).
 - Template literals and `String()` turn `null` / `undefined` into the literal strings `"null"` / `"undefined"` shown to users → guard first.
 - `new Date(x)` can be `Invalid Date` → check before formatting.
 - `[]` and `{}` are truthy → test `.length` or keys, not the value itself.
 - Use `===`, except the deliberate `== null` that catches null and undefined together.
 
-### Common throw sites
+### Common throw sites and silent resets
 
 Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const { a } = obj` → `const { a } = obj ?? {}`; a parameter default `= {}` covers only `undefined`, not the `null` JSON returns); index access assumed present; storage reads (`JSON.parse(localStorage.getItem(...))` — both the read and the parse can fail); `e.target` shape assumptions; index-as-`key` in lists that reorder, insert, or delete (not append-only) → React reuses the wrong instance: stale input values, wrong state, not necessarily a crash. A controlled `value={x}` where `x` may be `undefined`/`null` flips the input uncontrolled→controlled (React warns; cursor/state can reset) → default `value={x ?? ''}`.
 
@@ -67,7 +68,7 @@ Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const {
 These are Blockers:
 
 - **`dangerouslySetInnerHTML` / `innerHTML`** with unsanitized boundary input is the XSS vector → sanitize (e.g. DOMPurify) or avoid; never feed it raw network, input, or URL data.
-- **URL / attribute injection** — a user-controlled value flowing into `href`, `src`, or `window.location` can be a `javascript:` or `data:` URL that executes → validate the scheme (allow `http(s)` / `mailto`). `target="_blank"` should carry `rel="noopener"` for older engines (modern browsers imply it).
+- **URL / attribute injection** — a user-controlled value flowing into `href`, `src`, or `window.location` can be a `javascript:` or `data:` URL that executes → validate the scheme (allow `http(s)` / `mailto`).
 - **Data loss** — name the concrete cases: an uncontrolled→controlled input reset wiping what the user typed, direct state mutation dropping edits, and navigation away from unsaved state.
 
 ## Error handling
@@ -76,7 +77,7 @@ These are Blockers:
 
 - **Wrap what throws**: `JSON.parse`, network and `await fetch`, storage (can throw on quota or in private mode), dynamic `import()`, third-party SDK calls, any parse of untrusted input.
 - **Never swallow.** An empty `catch {}` turns a crash into silent wrong behavior, which is worse. Every catch must do one thing: recover with a real fallback, surface to the user (error state or toast), or rethrow / log *with context*.
-- **Async correctness.** A missing `await` means try-catch catches nothing — `try { doAsync() }` without `await` is a no-op guard. Promise chains need `.catch`. `Promise.all` rejects on the first failure (the sibling promises still run, since `Promise.all` doesn't cancel them, so their side effects still happen; their later rejections are absorbed silently); use `allSettled` when partial success is acceptable.
+- **Async correctness.** A missing `await` means try-catch catches nothing — `try { doAsync() }` without `await` is a no-op guard. Promise chains need `.catch`. `Promise.all` rejects on the first failure but cancels nothing: the other promises still run their side effects, and their later rejections are ignored; use `allSettled` when partial success is acceptable.
 - **Limits of catching.** Error Boundaries catch render and lifecycle throws but **not** event handlers, async code, or the legacy synchronous `renderToString` — those need their own handling. With streaming SSR (`renderToPipeableStream`), a server throw inside `<Suspense>` emits that boundary's fallback, fires `onError`, and retries on the client; an error boundary catches it only if the client render also throws. A try-catch in a component catches only that component's own synchronous code, never its children's render.
 
 ## Hooks & effects
@@ -92,7 +93,7 @@ The array says "re-run when these change," so it must list every reactive value 
 
 ### Effects
 
-- **Cleanup is mandatory** for anything that outlives the render: timers and intervals, subscriptions, event listeners, observers, `AbortController`, sockets. Missing cleanup → leaked timers/listeners/subscriptions, state updates landing after unmount (a wasted render or race; React 18 dropped the old "setState on unmounted" warning), and duplicate subscriptions under StrictMode's dev double-invoke.
+- **Cleanup is mandatory** for anything that outlives the render: timers and intervals, subscriptions, event listeners, observers, `AbortController`, sockets. Missing cleanup → leaked timers/listeners/subscriptions, state updates landing after unmount, which waste a render or race a newer request, and duplicate subscriptions under StrictMode's dev double-invoke.
 - **Races** in fetch effects: fast-changing deps let responses resolve out of order → capture an `ignore` flag flipped in cleanup, or abort the request.
 - **The effect callback must not be `async`** — an `async` callback returns a promise, not a cleanup function → define an async function inside and call it.
 - **You might not need the effect.** Syncing state from props, transforming data for render, or reacting to a user event are not effects — compute during render (or `useMemo`), or do the work in the handler. An effect whose only job is `setState` from other state is almost always wrong: an extra render plus loop risk. For the genuine "reset state when a prop changes" case, prefer a `key` to remount or the previous-prop-compare set-during-render pattern, not an effect.
@@ -168,7 +169,7 @@ Lead with Blockers and Majors. Do not drown a real crash under nits.
 
 ## How to report
 
-- One finding per issue, led by its severity: **`[Severity] file:line`**, then what throws or fails and the input or render that triggers it, each as a full sentence, then the fix.
+- One finding per issue, led by its severity: **`[Severity] file:line`**, then one full sentence on what throws or fails and the input or render that triggers it, then the fix.
 - Show the fix as a minimal diff or exact replacement, not a paraphrase.
 - Separate "will throw" from "could throw" from "smell" — calibrated severity is what makes the review trustworthy. If unsure a path is reachable, say so and mark confidence.
 - If the diff is clean on an axis, say so in a line rather than padding.

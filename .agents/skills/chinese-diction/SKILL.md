@@ -6,7 +6,7 @@ description: >-
 
 # Chinese Diction
 
-A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for. Once active it persists across later tasks and sessions until the user explicitly turns it off; it never decides whether to write Chinese, only how, so it governs any Chinese prose you go on to write, translate, or polish for a human reader, and still never applies to agent-instruction files.
+A **methodology, not a lookup table.** It teaches the few principles behind good Chinese prose so you can judge *any* phrasing on your own, rather than match a fixed list of fixes. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for. Once active, it governs every later piece of Chinese prose you write, translate, or polish for a human reader, across tasks and sessions, until the user explicitly turns it off; it never applies to agent-instruction files.
 
 Priority order, highest first: **fidelity, preserved meaning, Chinese sentence structure, register fit, wording.** Fidelity outranks every wording rule: where a token is both a literal identifier and an English word with a settled Chinese form, it stays verbatim — `config 文件` keeps `config` because it names an actual file, while a bare `capability` in running prose becomes `能力` under mode 2. Where two wording rules disagree, the one that restores information to the reader outranks the one that removes a word: expand the clipped form (mode 6) before trimming the figure (mode 3), and keep earned concreteness (mode 4) over reflexive plainness.
 
@@ -105,7 +105,7 @@ Two carve-outs. **Deontic force:** where the settled genre is one that imposes o
 
 ### 6. 过度压缩 — clipped words that should be written in full
 
-Trimming a word or phrase below its natural Chinese form to save characters reads as incomplete shorthand, not concision. Write the whole form. (Distinct from document-level concision, which removes redundant *sentences* — never truncate an individual word.)
+Trimming a word or phrase below its natural Chinese form to save characters reads as incomplete shorthand, not concision, which cuts redundant sentences and never a word's characters. Write the whole form.
 
 - ✗ 无需重录 → ✓ 无需重复录入
 - ✗ 交人把关 → ✓ 交由负责人把关
@@ -139,9 +139,9 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 
 ## How to apply
 
-- **Create** — write to these principles from the first draft; far cheaper than retrofitting.
-- **Optimize** — read the whole text before changing a word, so the five variables are settled from all of it rather than from the first paragraph; then revise against the failure modes and the vocabulary tests without over-correcting (mode 4), and check the result with the self-check.
-- **Translate** — read for *meaning*, then write that meaning as Chinese; never go clause-by-clause. Translation is where 翻译腔 creeps in most.
+- **Writing** — write to these principles from the first draft; far cheaper than retrofitting.
+- **Polishing** — read the whole text before changing a word, so the five variables are settled from all of it rather than from the first paragraph; then revise against the failure modes and the vocabulary tests without over-correcting (mode 4), and check the result with the self-check.
+- **Translating** — read for *meaning*, then write that meaning as Chinese; never go clause-by-clause. Translation is where 翻译腔 creeps in most.
 
 ## Self-check
 

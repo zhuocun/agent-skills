@@ -36,4 +36,3 @@ For GitHub, Slack, Linear, or CI events, use an event subscription for that sour
 - Use the PR management tool for pull requests. Do not use forge CLIs. If the tool refuses, for example because the forge host is unconfigured, treat the refusal as final for the run. Record it in the ledger and tell the user.
 - Shell working directory and environment variables persist between calls in one session. For tmux environment rules, see the [launcher](background-work.md#tmux-run-plus-waiter-verified-2026-10-12).
 - The terminals folder contains one file per shell session with a metadata header. Read the first lines before starting a duplicate process.
-- After compaction, follow the [turn-start inventory](../SKILL.md#2-turn-start-inventory-before-anything-new) before an irreversible step.

@@ -1,6 +1,6 @@
 # Delegation
 
-Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Run each delegate on a top-tier model suited to its role: never a mini or distilled variant, and never an oversized premium tier whose cost outruns its value for delegated work. Set effort and every other exposed parameter explicitly. Before launching an external CLI, confirm it is installed and authorized, and pick the model from its current model list. This reference covers Cursor-side mechanics.
+Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Run each delegate on a top-tier model suited to its role: never a mini or distilled variant, and never an oversized premium tier whose cost outruns its value for delegated work. Set effort and every other exposed parameter explicitly. Before launching an external CLI, confirm it is installed and authorized, read its `--help` for the non-interactive mode, and pick the model from its current model list.
 
 ## Task-tool subagents (documented)
 
@@ -23,10 +23,10 @@ External agent CLIs can run for many minutes and outlast your turn.
 
 - Treat a subagent or CLI report as a claim. Check the diff, run the test, or open the artifact before marking the ledger entry done.
 - Pass reviewer issues to the worker verbatim and record the round in the ledger. Do not silently fix issues and claim the worker's result.
-- Record each delegate's kind, name, model, effort, speed, and brief path in the ledger so a later turn can resume or audit it.
+- Record each delegate's kind, name, model, effort, any other parameter you set, and brief path in the ledger so a later turn can resume or audit it.
 
 ## Keeping the overview
 
-- Delegate the work. Keep the ledger and the acceptance records with you, and record who made each acceptance decision.
+- Keep the ledger and acceptance records yourself even when delegates do the work.
 - Register the whole wave using [ledger registration](task-ledger.md#registration) before the first launch, then confirm each delegate started.
 - Process results as they arrive, even out of order. Wait for the whole wave only when the next step needs all results.

@@ -7,8 +7,8 @@ description: >-
   memos, and review docs when the work concerns authoring from sources, scope,
   reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
   registries, structured assets, document governance, concision, or
-  reviewability. Do not use for casual notes, chat replies, project status
-  reports in a fixed slot-based form, pure sentence-level wording or
+  reviewability. Do not use for casual notes, chat replies, routine status
+  updates, pure sentence-level wording or
   translation polish, or agent-instruction files such as SKILL.md, prompts,
   workflows, or tool-routing docs.
 ---
@@ -19,9 +19,9 @@ Produce and maintain formal human-facing documents so readers can understand the
 
 Apply this priority order: **truth and authority → reader contract and scope → decisions and evidence → abstraction and structure → completeness and actionability → concision and presentation**. Apply only the controls relevant to the document type and its owner-defined governance.
 
-## Hard prohibitions (owner-mandated)
+## Hard prohibitions
 
-These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them. If the user explicitly asks for content a prohibition forbids, name the conflict and ask before including it, as with a template protection marker that conflicts with a prohibition. The skill's owner set these rules; everywhere else in this skill, "owner" means the document's owner.
+These eight rules are absolute for every document this skill touches; the rest of this skill is written to be consistent with them. If the user explicitly asks for content a prohibition forbids, name the conflict and ask before including it, as with a template protection marker that conflicts with a prohibition.
 
 1. **No patch-style updates.** Never leave update residue: no addenda, errata, changelogs, revision histories, or correction notes, and no "updated" markers, "as of" notes, or before-vs-after narration that describe a change to the document. Fold every change into the owning passage so the document always reads as if written correct the first time. A date that bounds when a claim holds — a measurement date, data snapshot, or the evaluated version — is evidence and stays next to the claim.
 2. **No deferral to other documents.** Never offload content readers need to another document in the same working set — the documents being authored or edited together in this task — through companion-volume pointers, document maps, or directions such as "see the implementation document." The document carries what its reader needs and omits the rest. Naming an approved source as the authority for a claim is not deferral when the document also states the content the reader needs. Evidence citations to externally published sources in research reports establish attribution and are not deferral; retain them.
@@ -190,7 +190,7 @@ This section only supplements the governance fields allowed when the owner expli
 
 Author a new document from authoritative sources; nothing pre-exists to preserve, so there is no inventory or lossless-accounting pass. Writing to the standard from the first line is far cheaper than retrofitting.
 
-1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, any owner or format constraints, and any success criteria or scope limits already set for the task, as bounds of the reader contract.
+1. **Frame the document.** Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support. Identify the concrete bottleneck the document exists to resolve, what readers already know, any owner or format constraints, and any success criteria or scope limits already set for the task.
 2. **Gather authorities before writing.** Collect the sources each claim type needs per **Claim-type authority**. Do not write a claim no source supports; record each genuine gap in the open-question form instead of inventing an answer or a current state.
 3. **Outline by reader path.** Draft the section order from the matching reader path, then walk the outline once for forward reading order: every concept a section uses must be established by an earlier section or defined in place.
 4. **Draft to the standard.** Apply every applicable Document standard rule and all eight hard prohibitions from the first draft — placement, evidence chains, registries, media discipline, and governance applicability included.
@@ -205,9 +205,9 @@ Edit an existing document without changing its meaning. The source document's co
 1. Read the full document once without editing. Record the current section order as a compact outline.
 2. Identify the document type, intended audience, primary purpose, target language, abstraction level, and reader contract: the decision or action the document promises to support.
 3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
-4. Identify owner or format constraints, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
+4. Identify owner or format constraints, any success criteria or scope limits already set for the task, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
 5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
-6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record — your working notes and your summary to the user, not a file in the document's repository unless the owner names one — or an external approval record, never in the edited document. If the owner requires a pre-edit approval gate, present that mapping before editing.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record (your working notes and your summary to the user) or in an external approval record, never in the edited document or, unless the owner names one, in a file in its repository. If the owner requires a pre-edit approval gate, present that mapping before editing.
 7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
 8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
@@ -231,7 +231,7 @@ Edit an existing document without changing its meaning. The source document's co
 
 The exit gate for both Create and Optimize output; Review mode runs this section alone.
 
-1. For high-risk work, separate producing from independent verification when available. Use a capability tier and reasoning depth sufficient for the document's domain and risk; do not bind the skill to a vendor, model name, or fixed role topology.
+1. For high-risk work, give verification to a reviewer other than the producer, capable enough for the document's domain and risk, when one is available.
 2. When author-reviewer separation is required, keep the independent review read-only and return requested changes to the author or editor. Let the accountable owner or a designated adjudicator who did not produce the work resolve disagreements independently; a producer's self-report is not verification.
 3. Programmatically check every applicable deterministic constraint: declared lengths or counts, protected-asset inventory and byte identity, diagram rendering, target-format validity, prohibited patterns, terminology cleanup, identifier and evidence-citation existence, and diff hygiene.
 4. Use semantic review for truth, authority, decision quality, evidence, and reader fit. Deterministic checks cannot establish those qualities, and semantic confidence cannot replace a failing hard check.
