@@ -1,7 +1,7 @@
 ---
 name: reorient
 description: >-
-  Reconstruct and verify your working context after a context compaction, then resume an in-progress task safely. Use when a long conversation was summarized and detail was lost; when you are unsure what is finished versus still pending; or when the user says "catch up", "where were we", "recap", "rebuild context", "restore context", "re-orient", or "continue where we left off" about the work in progress in this conversation. The summary is a lossy pointer — confirm what is done against ground truth (git, PRs, CI, the actual files) before acting, never from the summary alone. Do not use for a request to summarize a document, meeting, or topic, for a brand-new task with no prior work, a trivial single-step request, when full context is already in hand, or a project-level status report for a reader outside this conversation.
+  Reconstruct and verify your working context after a context compaction, then resume an in-progress task safely. Use when a long conversation was summarized and detail was lost; when you are unsure what is finished versus still pending; or when the user says "catch up", "where were we", "recap", "rebuild context", "restore context", "re-orient", or "continue where we left off" about the work in progress in this conversation. The summary is a lossy pointer — confirm what is done against ground truth (git, PRs, CI, the actual files) before acting, never from the summary alone. Do not use for a request to summarize a document, meeting, or topic, for a brand-new task with no prior work, a trivial single-step request, when full context is already in hand, or for a project-level status report for a reader outside this conversation.
 ---
 
 # Context Rebuild
@@ -32,7 +32,7 @@ Classify every item into exactly one bucket: **merged/landed · pushed-unmerged 
 
 What remains is the one-sentence goal minus everything Pass 2 verified as done. Cross-check that delta against every record of remaining work, then order it:
 
-- todo trackers (`docs/todo/*`, issue lists, plan docs), PR-description checklists, and any task ledger or running checklist of the work,
+- todo trackers (`docs/todo/*`, issue lists, plan docs), PR-description checklists, and any to-do checklist or log kept alongside the work,
 - failing or skipped tests, and `TODO` / `FIXME` markers in the touched code,
 - the user's last explicit ask — the most authoritative "what next."
 

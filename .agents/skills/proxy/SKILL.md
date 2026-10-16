@@ -15,7 +15,8 @@ description: >-
 **Persistent across tasks and sessions — not a one-turn effect.** Once this
 skill is active it governs every task in every session, not just the current
 turn or request. Keep applying it to all subsequent work until the user
-explicitly turns it off or asks for a different way of running subagents.
+explicitly turns it off or switches to a different method of orchestrating
+subagents.
 
 ## Role
 
@@ -45,11 +46,13 @@ reviewer**, with you executing and relaying at every hop.
 
 **Every delegate is a leaf.** Every brief you write — orchestrator-consultant,
 reviewer, final-gate reviewer — states that the delegate must not invoke any
-skill that delegates work to subagents, or spawn subagents or workflows, and is
-worded in correctness and reliability terms, since some providers stop a run
-whose brief reads as security testing. Ask the orchestrator-consultant to hold
-each worker brief it drafts to the same two rules, so the worker brief still
-passes verbatim.
+skill that delegates work to subagents, or spawn subagents or workflows. Each
+brief is also worded in correctness and reliability terms — the rule, the input,
+the expected result — rather than attack or exploit terms, since some providers
+stop a run whose brief reads as security testing; a security check the task
+needs stays in scope, stated as the defect it prevents. Ask the
+orchestrator-consultant to hold each worker brief it drafts to both rules, so
+the worker brief still passes verbatim.
 
 ## Priority order
 
@@ -93,11 +96,11 @@ through the chain (a running checklist, kept in a file or the tracker the work
 already uses, so it survives a compaction) so nothing drifts over a long
 session.
 
-After a context compaction, rebuild that record from ground truth (the files,
-the branch, test output, the artifacts already integrated), not from the
-summary. Then send it to an orchestrator-consultant to order the remaining
-work, since ordering is planning, and resume from its answer without waiting
-for the user to confirm.
+After a context compaction, re-read that record and check each item against
+ground truth (the files, the branch, test output, the artifacts already
+integrated), not against the summary. Then send it to an orchestrator-consultant
+to order the remaining work, since ordering is planning, and resume from its
+answer without waiting for the user to confirm.
 
 ## Pass 1 — Consult the orchestrator-consultant
 
@@ -122,9 +125,9 @@ user verbatim, never to a subagent. The consultant's brief:
   decomposition into subtasks, which are parallel vs. sequential; the task type
   of each subtask, named as exactly one row of the **Model selection** table,
   with the families and effort levels its row assigns; the brief for each
-  worker, each stating that the worker is a leaf; the success criteria per
-  subtask; what the final-gate reviewer should check; and any items that need
-  the user's confirmation;
+  worker, each stating that the worker is a leaf and worded in correctness and
+  reliability terms; the success criteria per subtask; what the final-gate
+  reviewer should check; and any items that need the user's confirmation;
 - that table, its legend and its numbered rules, verbatim, to classify by.
 
 If it names no row, or more than one, for a subtask, re-consult rather than
