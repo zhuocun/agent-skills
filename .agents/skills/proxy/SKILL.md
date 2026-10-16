@@ -102,9 +102,10 @@ brief:
   which you relay to the user verbatim and never route to a subagent; and the
   instruction to build the definition of done on the brief's when it defines
   one, keeping any higher bar of its own, adding the items the user approved
-  and leaving out the declined or unanswered ones, to treat any target the brief sets above that definition as
-  the aim and report the result against both, and to include the brief's
-  verification in what the final-gate reviewer checks;
+  and leaving out the declined or unanswered ones, to treat any target the
+  brief sets above that definition as the aim and report the result against
+  both, and to include the brief's verification in what the final-gate
+  reviewer checks;
 - ask it to return: the to-dos for the whole task and the definition of done the
   integrated work must clear, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are
