@@ -1,6 +1,6 @@
 # Delegation
 
-Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Use the `burst` skill's model selection and `references/cli-dispatch.md` to choose a model and vehicle. This reference covers Cursor-side mechanics.
+Use this reference to dispatch subagents and external agent CLIs inside Cursor and verify their results. Run each delegate on a top-tier model suited to its role: never a mini or distilled variant, and never an oversized premium tier whose cost outruns its value for delegated work. Before launching an external CLI, confirm it is installed and authorized, and pick the model from its current model list. This reference covers Cursor-side mechanics.
 
 ## Task-tool subagents (documented)
 
@@ -8,7 +8,7 @@ Use this reference to dispatch subagents and external agent CLIs inside Cursor a
 - **Background Task:** use `run_in_background: true` for the background vehicle in [background-work.md](background-work.md#choosing-the-vehicle). You cannot poll or await a background subagent. Its result arrives after your turn ends. Keep working or end the turn.
 - **Parallel launch:** put independent Task calls in one message.
 - **Resume:** use a finished subagent's agent id for a follow-up, such as sending reviewer issues to the worker verbatim. Resuming a running subagent fails. Wait for its result first.
-- **Model:** pass only a slug from the available model list. An invalid slug fails the call. Use `inherit` unless the user or routing table asks for a specific model.
+- **Model:** pass only a slug from the available model list. An invalid slug fails the call. Use `inherit` unless the user or the role's model choice asks for a specific model.
 - **Cloud subagents:** `environment: cloud` gives each subagent its own VM and branch. Use cloud only when the user asks for it. Follow the user's instruction on whether to merge, check out, or ignore that branch.
 - **Descriptions:** give each subagent a concrete, distinct visible name, such as "Review T3 patch r2". Reuse the name in the ledger.
 

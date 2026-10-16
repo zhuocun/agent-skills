@@ -8,9 +8,9 @@ description: >-
   reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
   registries, structured assets, document governance, concision, or
   reviewability. Do not use for casual notes, chat replies, project status
-  reports in the status-report form (use status-report), pure sentence-level
-  wording or translation polish, or agent-instruction files such as SKILL.md,
-  prompts, workflows, or tool-routing docs.
+  reports in a fixed slot-based form, pure sentence-level wording or
+  translation polish, or agent-instruction files such as SKILL.md, prompts,
+  workflows, or tool-routing docs.
 ---
 
 # Document Editor
