@@ -18,6 +18,7 @@ this repo.
 - `status-report` — produces a one-page project status report with fixed slots for a reader who was not watching the work.
 - `cursor-harness` — operating manual for agents running inside Cursor: a durable task ledger, turn-start and turn-end routines, background-job waiting (including detached tmux runs), subagent delegation, and Cursor tool quirks, with topic references that grow over time.
 - `visual-ux-sweep` — reviews UI and UX regressions, and fixes them when asked, from headless-browser screenshots across routes, viewports, themes, and interaction states.
+- `raise-ambition` — rewrites a task's brief before work starts so it aims higher, through four lenses (Altitude, Depth, Range, Speed), within the user's scope, constraints and budget.
 
 ## Layout
 
