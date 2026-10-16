@@ -25,9 +25,12 @@ frontmatter and H1, and `.claude/settings.json` makes it the active output style
 differ.
 
 `burst` and `proxy` share the Model selection table, the tier list, the source
-order, and `references/cli-dispatch.md`. Change them together. The validator
-checks only `references/cli-dispatch.md`, which each skill ships as an identical
-copy; keep the table's First choice and Fallback columns identical by hand.
+order, and `references/cli-dispatch.md`. Change them together. Both SKILL.md
+files keep one line per paragraph so shared text compares byte for byte. The
+validator checks `references/cli-dispatch.md`, which each skill ships as an
+identical copy, and, in Model selection, the table's Task type, First choice and
+Fallback columns and the Model ID and Fast mode blocks. The rest of Model
+selection names each skill's own roles; keep its shared rules in step by hand.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
@@ -102,4 +105,7 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
 > must equal `communicate/SKILL.md` line for line, trailing blank lines included. And it runs
 > `shared-reference-identical`: the `burst` and `proxy` copies of `references/cli-dispatch.md`
-> must be byte-identical. Run the same command locally before pushing.
+> must be byte-identical. And it runs `shared-section-identical`: in the `## Model selection`
+> sections of `burst` and `proxy`, the table's first three columns and the blocks from
+> `**Model ID.**` to `**Task types.**` and from `**Fast mode.**` to `**Reporting.**` must be
+> byte-identical. Run the same command locally before pushing.
