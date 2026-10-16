@@ -22,7 +22,7 @@ At the start of every turn, including a follow-up message or a timer prompt:
 
 1. Read the ledger. After a compaction, treat each claim in the summary as unverified until the ledger or ground truth (git state, PRs, CI, the files themselves) confirms it.
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
-3. Process completed work: record it, verify the result, and trigger the next step, then handle the new message; when the verification is slow, handle the new message before verifying and triggering the next step.
+3. Process completed work: record it, then verify the result and trigger the next step before handling the new message, unless the verification needs a long-running check, in which case handle the new message first.
 
 ### 3. Classify every new message before acting
 

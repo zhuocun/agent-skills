@@ -8,7 +8,7 @@ description: >-
 
 A compaction replaces a long conversation with a short summary: detail is dropped, "done" is asserted without proof, and the *why* behind earlier decisions is gone. The summary is a pointer to ground truth, not ground truth itself. Before you take any action that assumes the prior state, **rebuild that state from the sources that cannot lie — the repo, the history, the files — then report a crisp recap so the user can check you are oriented.**
 
-Priority order, highest first: **ground truth over the summary → understand before acting → verified-done over assumed-done → report 1–3 to the user, keep #4 internal.** When the summary and the repo disagree, the repo wins.
+Priority order, highest first: **ground truth over the summary → understand before acting → verified-done over assumed-done → report what passes 1–3 found to the user, keep pass 4 internal.** When the summary and the repo disagree, the repo wins.
 
 ## Rebuild passes
 

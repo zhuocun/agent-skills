@@ -47,8 +47,7 @@ Redeploying or reconfiguring a deployed environment invalidates a run against it
 
 Use `queued → running → verifying → done` for work. Other states are `blocked` (name the blocker), `waiting-user` (record the exact question), `accepted` (the user accepted), `cancelled` (record who cancelled and why), and `failed` (record evidence and the decision taken).
 
-- Mark a ledger entry `done` only with evidence: exit code and artifact for runs, a result verified as [verification](delegation.md#verifying-delegated-results) describes for subagents, and an observable outcome for tasks.
-- For delegated results, follow [verification](delegation.md#verifying-delegated-results).
+- Mark a ledger entry `done` only with evidence: exit code and artifact for runs, a result verified as [verification](delegation.md#verifying-delegated-results) describes for subagents and external agent CLIs, and an observable outcome for tasks.
 - Keep a task that needs user sign-off `verifying` or `waiting-user` until the user accepts, and quote the acceptance as [registration](#registration) requires.
 
 ## Handling interruptions

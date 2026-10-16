@@ -37,9 +37,8 @@ regression behind a loading spinner.
    here and report each issue with its severity (blocks use, degrades
    use, or cosmetic), confidence, route × viewport × theme, the
    screenshot, the probe result and the `file:line` of the cause; run
-   steps 7–8 only when the user asked for fixes or confirms a fix you
-   proposed; agreeing that the issues are real is not a request for
-   fixes.
+   steps 7–8 only when the user asks for fixes or confirms a fix you
+   proposed, not when they only agree that the issues are real.
 7. **Fix in themed batches**, one commit each. Re-capture after each
    batch and confirm the issue is gone.
 8. **Quality gates + clean repo** before commit. See **Quality bar**.

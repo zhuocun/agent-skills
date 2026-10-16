@@ -50,10 +50,10 @@ write — orchestrator-consultant, reviewer, final-gate reviewer — states that
 delegate must not invoke any skill that delegates work to subagents, or spawn
 subagents or workflows. Each brief is also worded in correctness and reliability
 terms — the rule, the input, the expected result — rather than attack or exploit
-terms, since some providers stop a run whose brief reads as security testing; a
-security check the task needs stays in scope, stated as the defect it prevents.
-Ask the orchestrator-consultant to hold each worker brief it drafts to both
-rules, so the worker brief still passes verbatim.
+terms, with any security check the task needs stated as the defect it prevents,
+since some providers stop a run whose brief reads as security testing. Ask the
+orchestrator-consultant to hold each worker brief it drafts to both rules, so
+the worker brief still passes verbatim.
 
 ## Priority order
 
@@ -100,9 +100,10 @@ and the checklist survives a compaction.
 
 After a context compaction, re-read that checklist and check each item against
 ground truth (the files, the branch, test output, the artifacts already
-integrated), not against the summary. Then send it to an orchestrator-consultant
-to order the remaining work, since ordering is planning, and resume from its
-answer without waiting for the user to confirm.
+integrated), not against the summary. Then send it, with any order you drafted
+yourself passed as input only, to an orchestrator-consultant to order the
+remaining work, since ordering is planning, and resume from its answer without
+waiting for the user to confirm.
 
 ## Pass 1 — Consult the orchestrator-consultant
 
@@ -261,11 +262,11 @@ Check that the host exposes the selected tool and fields before using them.
 **This skill requires explicit opt-in for `Workflow`, separately from the host's
 availability and permission checks. Opt-in starts when the user invokes or names
 this skill (for example `/proxy`), asks for subagents or a workflow, or enables
-ultracode. It stays in force for later tasks in the session. Loading this skill
-yourself does not establish opt-in when the user has never invoked or named it.
-In that case, use a custom subagent, or `claude -p` when that route is
-unavailable or cannot carry the assignment.** A single-agent workflow is a valid
-dispatch under this opt-in.
+Claude Code's ultracode mode. It stays in force for later tasks in the session.
+Loading this skill yourself does not establish opt-in when the user has never
+invoked or named it. In that case, use a custom subagent, or `claude -p` when
+that route is unavailable or cannot carry the assignment.** A single-agent
+workflow is a valid dispatch under this opt-in.
 
 Write each generated Claude custom definition under the active user
 configuration directory's `agents/<name>.md`, one file per model and effort
@@ -344,7 +345,7 @@ means Sol.
 | Review | GPT `xhigh` | Claude `high` | reviewers, verifiers, and reviews or audits of existing work, security review included (rules 3–4) |
 | Backend architecture design | Claude `high` and GPT `xhigh`, both run (rule 6) | whichever one is available, alone | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices, and the review, verification or audit of that work (rules 4 and 6) |
 | Visual design | Claude `high` | GPT `xhigh` | visual and interaction design of a product UI, visualizations that present information (diagrams, charts, HTML pages, slide decks) with the markup that draws them, design prototypes not meant to ship, and the review, verification or audit of that work (rule 4) |
-| Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), UI strings, written or translated, other translation, Chinese writing |
+| Documentation | GPT `xhigh` | Claude `high` | prose documents (docs, READMEs, guides, reports, code samples inside them included), agent-instruction files (SKILL.md, AGENTS.md, prompts, briefs), UI strings, and any other writing or translation, in any language |
 | Research | GPT `xhigh` | Claude `high` | exploration, data analysis, debugging or root-causing that reports a cause, reproducing a user-reported problem before any work exists |
 | Brainstorming and discussion | Claude `high` and GPT `xhigh`, both run (rule 7) | whichever one is available, alone | brainstorming (generating ideas, options, names, hypotheses, test-case ideas) and multi-agent discussion, where agents read and respond to each other (debate, critique panel, deliberation) |
 | Other simple work | GPT `high` | Claude `medium` | a single-step fact lookup, or any other task that is single-step, mechanical and verifiable in seconds (rule 2) |
