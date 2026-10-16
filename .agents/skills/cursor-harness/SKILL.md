@@ -1,7 +1,7 @@
 ---
 name: cursor-harness
 description: >-
-  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or resuming after a context compaction, when the ledger restores open tasks and runs. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
+  Cursor Harness operating manual: never lose a task, never block on a long process. Use whenever you run as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker) and the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or restoring open tasks and runs from the ledger after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks; the references directory holds topic files that grow over time. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
 ---
 
 # Cursor Harness
@@ -22,7 +22,7 @@ At the start of every turn, including a follow-up message or a timer prompt:
 
 1. Read the ledger. After a compaction, treat each claim in the summary as unverified until the ledger or ground truth (git state, PRs, CI, the files themselves) confirms it.
 2. Collect completion signals: shell job notifications, end markers, `tmux ls`, and delivered subagent results.
-3. Process completed work: record it, then verify the result and trigger the next step, except that a slow verification waits until the new message is handled. Then handle the new message.
+3. Process completed work: record it, then verify the result and trigger the next step; when the verification is slow, handle the new message first, then verify and trigger the next step. Then handle the new message.
 
 ### 3. Classify every new message before acting
 

@@ -65,14 +65,14 @@ round.
 
 ## When this applies
 
-Use only when the session authorizes subagents and a launcher exists; if either
-is missing, this skill does not apply. A launcher is the host's in-product
-subagent mechanism, a source CLI that passes the availability checks in
-**Source**, or a mode-only route described there. Once authorized, treat
-*every* planning or gate decision as out of your hands. You may perform the
-mechanical execution a plan requires — editing
-files, running commands, applying a diff a worker produced — but the decision to
-do so always traces back to a subagent's instruction.
+Use only when the session authorizes subagents, which a host that exposes a
+launcher and does not prohibit its use does, and a launcher exists; if either is
+missing, this skill does not apply. A launcher is the host's in-product subagent
+mechanism, a source CLI that passes the availability checks in **Source**, or a
+mode-only route described there. Once authorized, treat *every* planning or gate
+decision as out of your hands. You may perform the mechanical execution a plan
+requires — editing files, running commands, applying a diff a worker produced —
+but the decision to do so always traces back to a subagent's instruction.
 
 ## Run it to done
 
@@ -191,11 +191,12 @@ item ticked with its evidence or left unticked with what is missing.
   an orchestrator-consultant if it needs re-planning. Re-consult the final-gate
   reviewer before declaring done.
 
-If the final-gate reviewer, asked whether a gap is one it named before, returns
-`not-done` on that same gap again after a fresh worker and reviewer cycle on it,
-stop the loop and report to the user: the original task, the gap as the
-final-gate reviewer stated it verbatim, and what has been tried. Surfacing a
-stuck chain is not deciding — you still do not declare the task done.
+If the final-gate reviewer, given its previous verdict verbatim and asked
+whether a gap is one it named there, returns `not-done` on that same gap again
+after a fresh worker and reviewer cycle on it, stop the loop and report to the
+user: the original task, the gap as the final-gate reviewer stated it verbatim,
+and what has been tried. Surfacing a stuck chain is not deciding — you still do
+not declare the task done.
 
 Never substitute your own judgment for the final-gate verdict, even when the
 work "obviously" looks complete.
@@ -214,8 +215,8 @@ Inspect the dispatch schema and set every exposed parameter on every subagent
 call, using the source's exact advertised effort token (lowercase `xhigh` on
 Codex). Never accept the platform default: it can route to a forbidden tier,
 silently downgrade reasoning, or mirror your own config. An explicit instruction
-from the user, or from any instruction that outranks this skill, overrides any
-rule in this section, **Source** included.
+from the user, or from any source whose instructions outrank this skill,
+overrides any rule in this section, **Source** included.
 
 **Source.** Take the first available source in the family's order: for the
 Claude family, Claude Code, then Devin, then Cursor; for the GPT family, Codex,
@@ -513,9 +514,9 @@ Devin child session".
   **Reporting** under **Model selection** gives, so the user can see what runs
   each role.
 - Relay subagent inputs and outputs verbatim — never paraphrase a brief, a
-  verdict, or a set of issues; an update may say in plain words what happened
-  around the quoted material, such as that a reviewer forced rework, and only
-  the closing report is yours to write (see **Final summary**).
+  verdict, or a set of issues; beyond the closing report (see **Final
+  summary**), your own words are limited to saying, in an update, what happened
+  around the quoted material, such as that a reviewer forced rework.
 - Note when a reviewer forces rework, and when you re-consult the
   orchestrator-consultant or the final-gate reviewer.
 - Your updates relay the subagents' judgments, which are the record, rather
@@ -561,11 +562,11 @@ plus the items the user approved since, never one written to fit the result,
 ticked as the final-gate reviewer left it rather than by your own assessment —
 with every ticked item naming the evidence that proves it, and every unticked
 item saying what is missing and why. The result against any stretch target.
-Any risk a subagent reported that the checklist does not already carry. What
-remains as open work, as the final-gate reviewer and the orchestrator-consultant
-left it. Last, and separately, each thing you need from the reader — anything
-that blocks the work or needs their decision — explained as if new; if you need
-nothing, ask nothing.
+Any risk a subagent reported, or a failure you observed while executing, that
+the checklist does not already carry. What remains as open work, as the
+final-gate reviewer and the orchestrator-consultant left it. Last, and
+separately, each thing you need from the reader — anything that blocks the work
+or needs their decision — explained as if new; if you need nothing, ask nothing.
 
 ## Self-check
 

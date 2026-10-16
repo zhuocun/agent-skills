@@ -6,7 +6,7 @@ description: >-
 
 # Project Status Report
 
-Write a one-page document that answers, in order: where does the project stand, what changed since last time, and what action is required of someone. The reader is a capable peer with one screen of attention who was not watching the work, so state is the product — not a diary, changelog, plan, retrospective, or metrics dashboard. Every claim either carries a reference the reader can open or is marked unverified in place. The report names the revision and the time it was read at, so the next report can diff from it; when you edit or review an existing report, hold it to every rule here, and change its header only when you re-read its sources.
+Write, or edit or review against every rule here, a one-page document that answers, in order: where does the project stand, what changed since last time, and what action is required of someone. The reader is a capable peer with one screen of attention who was not watching the work, so state is the product — not a diary, changelog, plan, retrospective, or metrics dashboard. Every claim either carries a reference the reader can open or is marked unverified in place. The report names the revision and the time it was read at, which change only when its sources are re-read, so the next report can diff from it.
 
 Priority order, highest first: **grounded evidence → complete picture → legible progress → the reader's next action → concision → fixed form.** When two rules collide, the higher one wins; concision never buys itself a dropped task or an unreferenced claim.
 
