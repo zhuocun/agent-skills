@@ -8,9 +8,9 @@ description: >-
   reader path, structure, abstraction, factual grounding, evidence, tradeoffs,
   registries, structured assets, document governance, concision, or
   reviewability. Do not use for casual notes, chat replies, routine status
-  updates, pure sentence-level wording or
-  translation polish, or agent-instruction files such as SKILL.md, prompts,
-  workflows, or tool-routing docs.
+  updates, pure sentence-level wording or translation polish, or
+  agent-instruction files such as SKILL.md, prompts, workflows, or
+  tool-routing docs.
 ---
 
 # Document Editor
@@ -207,7 +207,7 @@ Edit an existing document without changing its meaning. The source document's co
 3. Identify the concrete bottleneck, failure mode, or uncertainty the document exists to resolve, what readers already know, and what context they need before judging the rest.
 4. Identify owner or format constraints, any success criteria or scope limits already set for the task, required content slots, governance state, referenced sources, and any content that must be preserved exactly or structurally.
 5. Determine which rules in this skill apply. For required or high-risk controls, record an explicit not-applicable reason when one does not. Treat an owner-defined length or structural budget as a constraint; if it must change, expose the content-level cause, follow the owner's approval process, and resolve asset or format conflicts during lossless asset verification.
-6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record (your working notes and your summary to the user) or in an external approval record, never in the edited document or, unless the owner names one, in a file in its repository. If the owner requires a pre-edit approval gate, present that mapping before editing.
+6. Before a loss-sensitive restructure, split, or compression, build the content and asset mapping described under **Preserve structured assets**. Keep the mapping only in the editing-session record (your working notes and your summary to the user), in an external approval record, or in a file the owner names, never in the edited document or any other file in its repository. If the owner requires a pre-edit approval gate, present that mapping before editing.
 7. Diagnose and fix by dependency in this order: authority and scope → reader contract → bottleneck framing → section order (forward reading order) → decision and evidence chain → abstraction boundaries → action path → accuracy → duplication → presentation. Fix any truth issue as soon as it is found; this sequence never delays it.
 8. Integrate changes into the owning passages, run the applicable checks, and report unresolved ambiguity instead of hiding it in smoother prose.
 
@@ -239,7 +239,7 @@ The exit gate for both Create and Optimize output; Review mode runs this section
 
 ## Language and terminology boundary
 
-Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules for truth and authority. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope — treat them as separate wording work. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and every repeated mention, and byte-exact identifiers, numbers, and quoted contracts.
+Keep the owner-specified target language, register, and terminology scheme consistent while applying the authoritative-definition and identifier-fidelity rules for truth and authority. Sentence-level word choice, phrasing, naturalness, and register are outside this skill's scope. Within this skill, enforce only the document-level constraints: stable concept names across headings, tables, and every repeated mention, and byte-exact identifiers, numbers, and quoted contracts.
 
 ## Communication
 

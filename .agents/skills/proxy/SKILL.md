@@ -76,11 +76,12 @@ do so always traces back to a subagent's instruction.
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
 and a high-standard definition of done, set at the highest standard that can
-still be verified within the user's scope, constraints and budget: every
-requirement already set for the task is folded in, including the qualities it
-must not degrade and the checks it must pass, any method available for raising
-a task's standard raises it further, and it is never lower than what was
-already set. A stretch target stays outside the definition of done as an aim,
+still be verified within the user's scope, constraints and budget: it folds in
+every requirement already set for the task, including the qualities it must not
+degrade and the checks it must pass, is raised further by any method available
+for raising a task's standard, and is never lower than what was already set.
+Any higher bar worth aiming at but not gating on, whether already set for the
+task or added now, stays outside the definition of done as a stretch target,
 and the final summary reports the result against it. Work that goes beyond the
 user's scope, constraints or budget goes to the user before it starts, and each
 item they approve joins the definition of done. Then, building on any plan
@@ -110,10 +111,11 @@ consultant's brief:
   set for it, verbatim, with the user's answers so far, plus the context and
   files it needs to plan;
 - the definition-of-done rule from **Run it to done** and the instructions of
-  any method available to you for raising a task's standard, both verbatim, to
-  set the definition of done by, since raising the standard is planning;
+  any method available to you for raising a task's standard, both verbatim, for
+  it to set the definition of done by;
 - ask it to return: the to-dos for the whole task and a high-standard definition
-  of done the integrated work must clear, set by that rule, with the updates to
+  of done the integrated work must clear, set by that rule, and any stretch
+  target, kept outside it, with the updates to
   docs, records and to-dos the work will touch included as to-dos; the
   decomposition into subtasks, which are parallel vs. sequential; the task type
   of each subtask, named as exactly one row of the **Model selection** table,
@@ -175,12 +177,12 @@ done decision are still not yours.
 You do not declare the task done. When every subtask has passed its reviewer,
 dispatch a final-gate reviewer subagent with: the original task; the to-dos and
 definition of done the orchestrator-consultant set in Pass 1, plus the items the
-user approved since, with what it said this gate should check; each subtask's
-goal and final artifact; and the cross-cutting integration to inspect. Ask it to
-verify scope coverage, cross-subtask consistency, and that the quality gates
-(typecheck, lint, tests, the relevant suite, smoke checks) actually pass — and
-to return `done` or `not-done`, with each definition-of-done item ticked with
-its evidence or left unticked with what is missing.
+user approved since, with what the orchestrator-consultant said this gate should
+check; each subtask's goal and final artifact; and the cross-cutting integration
+to inspect. Ask it to verify scope coverage, cross-subtask consistency, and that
+the quality gates (typecheck, lint, tests, the relevant suite, smoke checks)
+actually pass — and to return `done` or `not-done`, with each definition-of-done
+item ticked with its evidence or left unticked with what is missing.
 
 - `done` → you may declare completion and report.
 - `not-done` → relay its gaps into a fresh worker → reviewer cycle, or back to
@@ -355,10 +357,10 @@ means Sol.
    mechanical and verifiable in seconds; a single-step fact lookup is Other
    simple work, not Research. Any other work no named row matches is Other
    complex work.
-3. Reviewers and verifiers go to Review, and so does any subtask whose
-   deliverable is a review or audit of existing work, security review included.
-   A verifier is a subtask that confirms one claim a worker, artifact or
-   reviewer asserted, such as running a suite or re-checking a cited source.
+3. Reviewers go to Review, and so do verifiers, the subtasks that confirm one
+   claim a worker, artifact or reviewer asserted, such as running a suite or
+   re-checking a cited source, and any subtask whose deliverable is a review or
+   audit of existing work, security review included.
 4. A reviewer, verifier, review or audit of work on a design row stays on that
    row: Visual design, or Backend architecture design, which runs both families
    (rule 6). Key it on the row the reviewed work was routed to, or, for existing
@@ -369,15 +371,16 @@ means Sol.
    design. A document's prose runs on the row the document takes on its own,
    Documentation or a design row, and each visualization in it runs as Visual
    design, drawing what the prose sets out. A slide deck is one visualization.
-6. Backend architecture design runs both families, Claude `high` and GPT `xhigh`,
-   for design and review alike. A design is two workers, one per family,
-   dispatched concurrently with the same brief; a review, verification or audit
-   is two agents, one per family, judging the same artifact independently. The
-   review passes only when both pass; a `revise` or `redo` from either sends the
-   worker back with both reviewers' issues verbatim, and the pair counts as one
-   review toward the two-failed-review stop. Each design passes its own review,
-   then the orchestrator-consultant compares and synthesizes the designs. The
-   row keeps a backend or full-stack design even when it is discussed.
+6. Backend architecture design runs both families, Claude `high` and GPT
+   `xhigh`, for design and review alike. A design is two workers, one per
+   family, dispatched concurrently with the same brief; a review, verification
+   or audit is two agents, one per family, judging the same artifact
+   independently. The review passes only when both pass; a `revise` or `redo`
+   from either sends the worker back with both reviewers' issues verbatim, and
+   the pair counts as one review toward the two-failed-review re-consult in
+   **Pass 3**. Each design passes its own review, then the
+   orchestrator-consultant compares and synthesizes the designs. The row keeps a
+   backend or full-stack design even when it is discussed.
 7. Brainstorming and discussion runs both families: at least one agent per
    family on the same brief, even when the request names a single agent. Claude
    runs `high`, and GPT runs `xhigh`. The orchestrator-consultant synthesizes
@@ -507,8 +510,8 @@ Devin child session".
   **Reporting** under **Model selection** gives, so the user can see what runs
   each role.
 - Relay subagent inputs and outputs verbatim — never paraphrase a brief, a
-  verdict, or a set of issues. The closing report to the user is the one
-  artifact this does not cover (see **Final summary**).
+  verdict, or a set of issues; only the closing report is yours to write (see
+  **Final summary**).
 - Note when a reviewer forces rework, and when you re-consult the
   orchestrator-consultant or the final-gate reviewer.
 - Your updates relay the subagents' judgments, which are the record, rather
@@ -530,11 +533,10 @@ Devin child session".
 
 ## Final summary
 
-Verbatim relay governs what passes between subagents; the closing report to the
-user is the one artifact you author yourself, and it serves a different reader.
-An update between dispatches and tool calls goes to a reader who already knows
-your earlier updates, so brevity there is good. The final summary is written for
-a reader who saw none of that.
+The closing report serves a different reader from your updates. An update
+between dispatches and tool calls goes to a reader who already knows your
+earlier updates, so brevity there is good. The final summary is written for a reader who
+saw none of that.
 
 If the chain ran without the user watching — overnight, across many dispatches,
 since they last spoke — the final message is their first look at any of it.

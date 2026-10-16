@@ -1,6 +1,6 @@
 ---
 name: visual-ux-sweep
-description: Review (and, when asked, fix) UI/UX regressions in a web app via headless-browser screenshots across routes, viewports, themes, and interaction states. Use when asked to audit the UI, review the design, find visual or accessibility regressions, screenshot the app, verify visual changes look right, or "make the UI look right." Framework-agnostic (React/Vue/Svelte/plain). Renders the running app and pairs each screenshot with a root-cause probe and, when fixes are wanted, a surgical fix. Not for a review that does not render the app, for product/feature work, or for new pages.
+description: Review (and, when asked, fix) UI/UX regressions in a web app via headless-browser screenshots across routes, viewports, themes, and interaction states. Use when asked to audit the UI, review the design, find visual or accessibility regressions, screenshot the app, verify visual changes look right, or "make the UI look right." Framework-agnostic (React/Vue/Svelte/plain). Renders the running app and pairs each screenshot with a root-cause probe and, when fixes are wanted, a surgical fix. Needs an app that builds and runs locally; not for product/feature work or new pages.
 ---
 
 # Visual UX Sweep
@@ -190,7 +190,7 @@ Per PNG, in both light and dark and at phone + desktop widths:
   `emulateReducedTransparency` step, which sets it and confirms
   `matchMedia("(prefers-reduced-transparency: reduce)").matches` before
   the shot. Otherwise verify the CSS in code.
-- **Anti-patterns that look wrong but are correct:** intentional
+- **Looks wrong but is correct:** intentional
   translucency/blur, deliberately muted "coming soon" controls,
   brand-specific spacing. Confirm against tokens/design intent before
   "fixing" them.
@@ -199,7 +199,8 @@ Per PNG, in both light and dark and at phone + desktop widths:
 
 - Fix **root causes, not symptoms**.
 - Do **not** add features, refactor architecture, introduce
-  dependencies, or write new tests unless an existing test breaks.
+  dependencies, or write new tests, and touch a test only when an
+  existing one breaks.
 - Gates before each commit, using the commands this repo's scripts
   define: typecheck clean, the tests covering the touched paths green,
   full test suite green.
@@ -249,14 +250,14 @@ Before declaring a sweep done, confirm:
   list (content wait missed or page error), whatever its hash. Every PNG
   was hashed (`md5sum`) and no two distinct routes share a hash; identical
   hashes between media variants of one route, other than reduced motion,
-  were filed as findings whenever both shots passed their content wait, not
-  re-captured. Reduced motion was judged by
-  the computed-style probe or in code, never by its hash. Any blank, stuck,
+  were filed as findings rather than re-captured when both shots passed
+  their content wait, and reduced motion was judged by the computed-style
+  probe or in code, never by its hash. Any blank, stuck,
   or odd shot got its recorded API hits and console/page errors read,
   together with a one-shot `page.evaluate` dump of `location.href` and
   trimmed `document.body.innerText`, before the app's code was blamed.
 - [ ] Every PNG was reviewed against all five checklist groups — layout,
-  theme, state, a11y modes, anti-patterns — and the issue list was written
+  theme, state, a11y modes, looks-wrong-but-correct — and the issue list was written
   before the first fix. `colorScheme`, `contrast: "more"`,
   `reducedMotion: "reduce"` and `forcedColors: "active"` were driven
   through `emulateMedia`. `prefers-reduced-transparency` was driven over CDP
