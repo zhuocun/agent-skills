@@ -70,15 +70,17 @@ do so always traces back to a subagent's instruction.
 ## Run it to done
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
-and definition of done, the latter taken from the task's brief when the brief
-already defines one. Then keep the loop moving with perseverance:
-drive dispatch → review → re-consult until the final-gate reviewer returns
-`done`.
+and definition of done. The task's brief, when one exists, is the input to
+planning; the definition of done is taken from it when it defines one, and the
+items it asks the user to confirm go to the user. Then keep the loop moving with
+perseverance: drive dispatch → review → re-consult until the final-gate
+reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
-decisions to a subagent, not to the user. Keep a running record of the to-dos
-and progress through the chain so nothing drifts over a long session.
+decisions to a subagent, not to the user; the brief's confirm items are never
+trivial. Keep a running record of the to-dos and progress through the chain so
+nothing drifts over a long session.
 
 After a context compaction, rebuild that record from ground truth (the files,
 the branch, test output, the artifacts already integrated), not from the
@@ -92,12 +94,15 @@ Dispatch an orchestrator-consultant subagent with the task as received. Its
 brief:
 
 - the user's task verbatim, plus the context and files it needs to plan;
-- the task's brief verbatim when one was written before planning, with the
-  user's answers to any items it asked them to confirm, and the instruction to
-  take the definition of done from the brief when it defines one, adding the
-  items the user approved and leaving out the declined or unanswered ones, to
-  treat any target the brief sets above that definition as the aim, and to
-  include the brief's verification in what the final-gate reviewer checks;
+- the task's brief verbatim when one exists before planning — written by the
+  user or a subagent, never by you, since rewriting the task is a planning
+  decision — with the user's answers to any items it asks the user to confirm,
+  which you relay to the user verbatim and never route to a subagent; and the
+  instruction to take the definition of done from the brief when it defines
+  one, adding the items the user approved and leaving out the declined or
+  unanswered ones, to treat any target the brief sets above that definition as
+  the aim and report the result against both, and to include the brief's
+  verification in what the final-gate reviewer checks;
 - ask it to return: the to-dos for the whole task and the definition of done the
   integrated work must clear, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are

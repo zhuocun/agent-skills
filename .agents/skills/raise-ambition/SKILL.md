@@ -8,10 +8,10 @@ description: >-
   the result) and Speed (a deadline, an early first check, parallel work and no avoidable waits).
   Keeps the user's scope, constraints, permissions and budget; the result is one brief that
   this agent, a subagent, an orchestrator or the user executes, definition of done included.
-  Use when a non-trivial task is about to start, including before its definition of done is
-  set, and its description names only
-  the deliverable: a design or architecture, a research or analysis question, a business
-  review, a strategy or plan, a piece of writing, an operational process, a personal project.
+  Use when a non-trivial task is about to start, including before the task's definition of
+  done is set, and its description names only the deliverable: a design or architecture, a
+  research or analysis question, a business review, a strategy or plan, a piece of writing, an
+  operational process, a personal project.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
   already known, a task that already has acceptance criteria or a spec, a task whose method the
@@ -26,7 +26,7 @@ Before work starts, rewrite an ordinary task description into one self-contained
 
 Priority order, highest first: **the user's constraints, safety and permissions → verifiability → Altitude → Depth → Range → Speed → concision.** A target raised beyond what an outside check can confirm is worse than the original target, so verifiability caps every lens. Apply the lenses in the same order: Altitude sets the outcome, Depth sets the standard and methods that reach it, Range adds methods to Depth, and Speed schedules the work the first three define.
 
-Run the skill once per task, in one pass; do not raise a brief that this skill already produced. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
+Run the skill once per task, in one pass; do not raise a brief that this skill already produced. Recording the user's approvals in Definition of done afterwards (pass 6) is not a second pass. Scale the rewrite to the task: a small task keeps only Task as given, Constraints kept, Outcome, Targets, Verification, Definition of done, Fields and Confirm before starting, with the other slots dropped and listed together in one line of Lenses skipped; on any task, a lens that does not fit is skipped with its reason. Write the brief in the task's language (slot labels may stay English), gloss each lens name in plain words on first use, and return one recommended brief, never alternatives side by side. Word the whole brief in correctness and reliability terms; avoid security-testing vocabulary, because some model providers stop a run whose brief reads as security testing.
 
 ## The brief
 
@@ -41,7 +41,7 @@ Inputs:               <primary sources and raw data>
 Methods:              <method or tool → what it produces>
 Assumptions to test:  <assumption → test that could disprove it> (2–3)
 Verification:         <check outside the author → how to run it → pass condition>
-Definition of done:   <minimum targets; guardrails; Verification pass conditions; Confirm items the user approved>
+Definition of done:   <minimum targets; guardrails; Verification pass conditions; Confirm items the user approved> (the high target in Targets is the aim, not part of done; report the result against both)
 Fields:               <field → method → what it changes> (3–5, one tries to disprove the result; a small task keeps one method and the disproof line)
 Schedule:             <deadline; critical path; parallel lines; waits removed; time of first outside check>
 Out of scope:         <what this brief does not cover>
@@ -86,7 +86,7 @@ Never buy speed by skipping verification, and never write "faster" without a mec
 
 ### 6. Close the brief
 
-Fill Out of scope with what the brief deliberately leaves out. Fill Confirm before starting with every item that changes the deliverable or its audience, needs access the resource check did not find, spends money, exceeds a budget or deadline the user set, or, when the user set none, needs clearly more effort than the task as given implies (as a rule of thumb, more than about twice). Include any proposal to relax a user constraint. Ask the user about these items before starting them; only the user can answer them, so when a subagent wrote the brief, whoever dispatched it relays them to the user verbatim. Work that does not depend on them proceeds, and until the user agrees, each such item stays out of the working plan. Raises of methods, targets and verification that fit inside those limits need no consent: state them in the brief and proceed. A deadline set earlier than the user's is a raise, not a change of time. Fill Definition of done with the minimum targets, the guardrails and the pass conditions in Verification, and add each Confirm before starting item once the user approves it; declined or unanswered items stay out. The high target is what the work aims for, not part of done, and the final report states the result against both the high and the minimum target. Fill Lenses skipped with each skipped or lightened lens and its reason.
+Fill Out of scope with what the brief deliberately leaves out. Fill Confirm before starting with every item that changes the deliverable or its audience, needs access the resource check did not find, spends money, exceeds a budget or deadline the user set, or, when the user set none, needs clearly more effort than the task as given implies (as a rule of thumb, more than about twice). Include any proposal to relax a user constraint. Ask the user about these items before starting them; only the user can answer them, so when a subagent wrote the brief, whoever dispatched it relays them to the user verbatim. Work that does not depend on them proceeds, and until the user agrees, each such item stays out of the working plan. Raises of methods, targets and verification that fit inside those limits need no consent: state them in the brief and proceed. A deadline set earlier than the user's is a raise, not a change of time. Fill Definition of done with the minimum targets, the guardrails and the pass conditions in Verification, and copy into it the rule that the high target is what the work aims for, not part of done, and that the final report states the result against both the high and the minimum target, so the rule travels with the brief. Each Confirm before starting item is added to it once the user approves it, by whoever dispatched the brief when a subagent wrote it; declined or unanswered items stay out. Fill Lenses skipped with each skipped or lightened lens and its reason.
 
 ## Examples
 
@@ -98,7 +98,7 @@ Extracts; a real brief fills every slot it keeps.
 - Methods: a queueing capacity model, a load simulation, a TLA+ model of retries and deduplication.
 - Fields: SRE (failure drills that switch off a dependency), scheduling theory (weighted fair queueing); a reviewer argues the design fails when one tenant floods the queue.
 - Verification: model-checker output, load data, a replay of historical peaks.
-- Definition of done: p99 ≤ 3 s at current peak with no tenant delayed by another's load, cost per message not higher, and the model checker finds no lost or duplicated message; the replay of historical peaks joins once production-log access is approved.
+- Definition of done: p99 ≤ 3 s at current peak with no tenant delayed by another's load, cost per message not higher, and the model checker finds no lost or duplicated message; the replay of historical peaks is added once production-log access is approved.
 - Confirm before starting: access to production logs.
 
 **Research — "Summarize the research on whether remote work lowers productivity, for the company's office policy."**
@@ -106,14 +106,14 @@ Extracts; a real brief fills every slot it keeps.
 - Methods: a systematic search with stated inclusion criteria, effect sizes weighted by study design, split by task type.
 - Assumptions to test: productivity means output, not hours.
 - Verification: a second reviewer applies the inclusion criteria blind to the conclusions; conclusions are written down before the internal data is opened.
-- Definition of done: the blind second review agrees with the inclusion decisions and the conclusions were fixed before the internal data was opened; the internal HR data joins only if its use is approved.
+- Definition of done: the blind second review agrees with the inclusion decisions and the conclusions were fixed before the internal data was opened; the internal HR data is added once its use is approved.
 - Fields: labor economics (causal identification), organizational psychology (team coordination); one line argues the opposite policy from the same evidence.
 - Confirm before starting: use of internal HR data.
 
 **Business — "Prepare the quarterly business review deck."** (the essay's example)
 - Outcome: leadership spots problems earlier and decides on resources.
 - Methods: start from the raw data, find the three most urgent decisions, and give the case for and against each.
-- Definition of done: three decisions drawn from the raw data, each with its case for and against; the mechanism in Confirm before starting joins only if approved.
+- Definition of done: three decisions drawn from the raw data, each with its case for and against; the mechanism in Confirm before starting is added once approved.
 - Confirm before starting (Altitude one more level): a mechanism that catches problems before the quarterly review, run alongside it for one quarter.
 
 **Writing — "Write a 1,500-word essay arguing that cities should remove parking minimums."**
@@ -147,7 +147,7 @@ Extracts; a real brief fills every slot it keeps.
 - [ ] The Outcome is observable, one level up, and does not replace the task.
 - [ ] Every target has a number and a unit, or, for work judged on quality, a pass condition an outside reader applies; there is a high target and a minimum target, a learning target if the task is novel or complex, and guardrails.
 - [ ] Inputs are primary sources where they exist; Methods name concrete tools; two or three assumptions each have a test that could disprove them.
-- [ ] Verification comes from outside the author and states how to run it and what passes; Definition of done holds the minimum targets, guardrails, those pass conditions and only the Confirm items the user approved, never the high target.
+- [ ] Verification comes from outside the author and states how to run it and what passes; Definition of done holds the minimum targets, guardrails, those pass conditions and only the Confirm items the user approved, never the high target, and states that the high target is the aim and the result is reported against both.
 - [ ] Each Fields line names a method and what it changes, with no persona; one tries to disprove the result, worded so it does not read as security testing.
 - [ ] The Schedule has a deadline, critical path, parallel lines, waits removed (questions and approvals first) and the time of the first outside check.
 - [ ] Every item pass 6 requires consent for is in Confirm before starting, and no work that depends on those items starts until the user agrees.
