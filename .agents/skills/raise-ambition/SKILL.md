@@ -8,15 +8,17 @@ description: >-
   the result) and Speed (a deadline, an early first check, parallel work and no avoidable waits).
   Keeps the user's scope, constraints, permissions and budget; the result is one brief,
   definition of done included, that whoever does the work follows.
-  Use when a non-trivial task is about to start and its description names the deliverable
-  — a design or architecture, a research or analysis question, a business review, a strategy
-  or plan, a piece of writing, an operational process, a personal project — with any
-  constraints but no acceptance criteria or method.
+  Use on your own initiative whenever a non-trivial task is about to start and its description
+  names the deliverable — a design or architecture, a research or analysis question, a
+  business review, a strategy or plan, a piece of writing, an operational process, a personal
+  project — with any constraints but no acceptance criteria or method; every new request in a
+  conversation is a new task, even when it continues earlier work.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
   already known, a task that already has acceptance criteria or a spec, a task whose method
-  the user fixed, a follow-up inside a task already briefed, or a question that needs only an
-  answer; never use it for executing the task or reviewing finished work.
+  the user fixed, a step inside a request already briefed (answering a worker's question,
+  fixing a review finding, a status check), or a question that needs only an answer; never
+  use it for executing the task or reviewing finished work.
 ---
 
 # Raise Ambition
