@@ -31,6 +31,7 @@ who makes the final calls, so a task loads one of them; their descriptions say w
 
 | Skill | What it does |
 | --- | --- |
+| `backend-code-review` | Reviews backend code or a backend diff for correctness against its requirements and contracts: authorization and validation order, normal, boundary and failure behavior, transactions and external calls, concurrency, compatibility and regression, test effectiveness, and documentation drift, with every finding independently verified and counted. Not for designing a system's architecture or for frontend code. |
 | `cr-fe` | Reviews frontend code or a frontend diff for runtime safety, security and data integrity, error handling, hook and effect correctness, type honesty, code smell and folder layering. Reads source and reports findings. Not for visual design or page layout, or for backend code. |
 | `visual-ux-sweep` | Finds visual, UX and accessibility regressions in a web app from headless-browser screenshots across routes, viewports, themes and interaction states, and fixes them when asked. Needs an app that builds and runs locally. Not for building new features or pages. |
 
