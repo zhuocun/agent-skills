@@ -92,9 +92,11 @@ Dispatch an orchestrator-consultant subagent with the task as received. Its
 brief:
 
 - the user's task verbatim, plus the context and files it needs to plan;
-- the raise-ambition brief verbatim, when that skill produced one for the task,
-  with the instruction to take the definition of done from it and to include its
-  Verification in what the final-gate reviewer checks;
+- the raise-ambition brief and the user's answers to its Confirm before starting
+  items, verbatim, when that skill produced one for the task, with the
+  instruction to take the definition of done from the brief's minimum targets,
+  guardrails and Verification pass conditions, to treat the high target as the
+  aim, and to include its Verification in what the final-gate reviewer checks;
 - ask it to return: the to-dos for the whole task and the definition of done the
   integrated work must clear, with the updates to docs, records and to-dos the
   work will touch included as to-dos; the decomposition into subtasks, which are
