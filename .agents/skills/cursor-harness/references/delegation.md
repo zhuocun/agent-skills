@@ -23,7 +23,7 @@ External agent CLIs can run for many minutes and outlast your turn.
 
 - Treat a subagent or CLI report as a claim. Check the diff, run the test, or open the artifact before marking the ledger entry done.
 - Pass reviewer issues to the worker verbatim and record the round in the ledger. Do not silently fix issues and claim the worker's result.
-- Record each delegate's kind, name, model, speed, and brief path in the ledger so a later turn can resume or audit it.
+- Record each delegate's kind, name, model, effort, speed, and brief path in the ledger so a later turn can resume or audit it.
 
 ## Keeping the overview
 
