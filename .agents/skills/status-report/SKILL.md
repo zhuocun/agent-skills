@@ -85,7 +85,7 @@ Its matching `Action required` item; Reconciliation needs no item of its own, be
 
 ### 3. Count progress — the denominator rule
 
-This is the rule the format lives or dies on. Progress is a count of real units, and **the denominator must be an enumerable set that exists today and could be listed on request.** A definition-of-done checklist the task carries is one such set. If you cannot name its members, you do not have a denominator: write the numerator and its unit alone — `4 states researched, total set not fixed`.
+This is the rule the format lives or dies on. Progress is a count of real units, and **the denominator must be an enumerable set that exists today and could be listed on request**, such as the subtasks under a task or a checklist of a task's success criteria. If you cannot name the set's members, you do not have a denominator: write the numerator and its unit alone — `4 states researched, total set not fixed`.
 
 - A task row writes `<done subtasks>/<total subtasks> subtasks done`, with a bar; the set is enumerable by construction, since its members are the rows below. `Dropped` subtasks count in neither number. A task with zero or one counted subtask writes `—`.
 - A subtask row counts its own real units. A `Not started` subtask writes `—`; there are no units yet to count.

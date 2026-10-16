@@ -14,11 +14,10 @@ description: >-
   operational process, a personal project.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
-  already known, a task that already has acceptance criteria or a spec, including a delegated
-  subtask whose brief sets its scope and success criteria, a task whose method the
-  user fixed, a follow-up inside a task already briefed, or a question that needs only an
-  answer; never use it for executing the task, orchestrating subagents, or reviewing finished
-  work.
+  already known, a task that already has acceptance criteria or a spec, whoever set them, a task
+  whose method the user fixed, a follow-up inside a task already briefed, or a question that
+  needs only an answer; never use it for executing the task, orchestrating subagents, or
+  reviewing finished work.
 ---
 
 # Raise Ambition
