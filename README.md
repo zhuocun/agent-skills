@@ -15,7 +15,7 @@ who makes the final calls, so a task loads one of them; their descriptions say w
 | Skill | What it does |
 | --- | --- |
 | `raise-ambition` | Before a non-trivial task starts, rewrites its brief to aim higher, in any domain, through four lenses: Altitude (the outcome the task serves), Depth (the methods, targets and checks an expert would use) and Range (methods from other fields), from Felix Rieseberg's essay on ambition, plus Speed (a deadline, early checks, parallel work). Keeps the user's scope, constraints, permissions and budget, and returns one brief with a definition of done. The agent uses it on its own initiative when a new non-trivial request names a deliverable but no method and no acceptance criteria. Also used when asked to make a task, prompt or plan more ambitious. Unless the user asks, not for trivial tasks, fixes whose cause is known, tasks that already have a spec, or questions that need only an answer. |
-| `burst` | Runs research, audit, implementation and review work through parallel subagents, with a reviewer before integration. The agent keeps the planning, integration and done decisions. Needs a way to launch subagents; not for a tiny single-step task. |
+| `burst` | Runs research, audit, implementation and review work through parallel subagents, with a reviewer before integration. The agent keeps the planning, integration and done decisions, and consults advisors on the strongest available models, over as many rounds as needed, on any hard decision it is still unsure about. Needs a way to launch subagents; not for a tiny single-step task. |
 | `proxy` | Delegates every decision and every unit of work, including how to split the task and whether it is done, to top-tier subagents. For when the user wants subagents, not the main agent, to make those calls. Needs a way to launch subagents; not for a trivial single-step task. |
 
 **Writing**
@@ -27,12 +27,12 @@ who makes the final calls, so a task loads one of them; their descriptions say w
 | `document-editor` | Authors, edits and reviews formal documents (design docs, RFCs, plans, specs, research reports, guides, decision memos) at the document level without silently changing their meaning. Not for chat replies, routine status updates, sentence-level wording or translation polish, or agent-instruction files. |
 | `status-report` | Produces a one-page project status report with fixed slots (Tasks, Changes since, Action required, Health, Unverified claims) for a reader who was not watching the work. |
 
-**Review**
+**Architecture and review**
 
 | Skill | What it does |
 | --- | --- |
 | `ddd-hexagonal` | Designs, reviews, audits and plans the evolution of backend architecture against textbook Domain-Driven Design with hexagonal (ports and adapters) architecture as the default standard: bounded contexts and aggregates, use-case inbound ports and consumer-owned outbound ports, inward dependency direction, an explicit composition root, executable architecture guards, persistence and consistency, failure semantics, migration and compatibility, and unnecessary complexity. Not for line-by-line diff correctness or for frontend code. |
-| `backend-code-review` | Reviews backend code or a backend diff for correctness against its requirements and contracts: authorization and validation order, normal, boundary and failure behavior, transactions and external calls, concurrency, compatibility and regression, test effectiveness, and documentation drift, with every finding independently verified and counted. Not for designing a system's architecture or for frontend code. |
+| `backend-code-review` | Reviews backend code or a backend diff for correctness against its requirements and contracts: authorization and validation order, normal, boundary and failure behavior, transactions and external calls, concurrency, compatibility and regression, test effectiveness, and documentation drift, with every finding independently verified and counted, and each proposed fix kept within the system's established architecture. Not for designing a system's architecture or for frontend code. |
 | `cr-fe` | Reviews frontend code or a frontend diff for runtime safety, security and data integrity, error handling, hook and effect correctness, type honesty, code smell and folder layering. Reads source and reports findings. Not for visual design or page layout, or for backend code. |
 | `visual-ux-sweep` | Finds visual, UX and accessibility regressions in a web app from headless-browser screenshots across routes, viewports, themes and interaction states, and fixes them when asked. Needs an app that builds and runs locally. Not for building new features or pages. |
 
@@ -71,7 +71,7 @@ ln -s "$(pwd)/agent-skills/.agents/skills/cr-fe" ~/.claude/skills/cr-fe
 
 Swap `~/.claude` for `~/.agents` in these commands if that is where your runtime loads skills.
 If a skill or folder with the same name already exists, move it aside before creating the symlink.
-A symlinked install picks up changes on the next `git pull`.
+A symlinked install picks up changes on the next `git pull`; when a skill is renamed, recreate any link made under its old name.
 
 ## Changing a skill
 
