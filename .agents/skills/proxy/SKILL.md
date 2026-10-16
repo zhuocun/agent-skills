@@ -70,12 +70,11 @@ do so always traces back to a subagent's instruction.
 ## Run it to done
 
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
-and a high-standard definition of done, set even when no brief exists. When the
-task's brief exists, it is the input to planning and the definition of done is
-built on it: everything its definition of done requires is included, any part
-of the consultant's own bar that is higher is kept, the definition of done is
-never lower than the brief's, and the items it asks the user to confirm go to
-the user. Then keep the loop moving with
+and a high-standard definition of done, set at the highest standard that can
+still be verified: every target, guardrail and verification already set for the
+task is folded in, any method available for raising a task's standard raises it
+further, it is never lower than what was already set, and the items that need
+the user's confirmation go to the user. Then keep the loop moving with
 perseverance: drive dispatch → review → re-consult until the final-gate
 reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
