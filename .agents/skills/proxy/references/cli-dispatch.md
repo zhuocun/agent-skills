@@ -126,7 +126,8 @@ supported `CLAUDE_CONFIG_DIR` override rather than assuming a home location.
   required Opus; otherwise pin the full supported ID from `/model` or the model
   configuration reference. `ANTHROPIC_DEFAULT_OPUS_MODEL` repoints the alias;
   cloud providers can map it differently, so pin their full Opus ID. Do not use
-  `best`, `default`, `opusplan`, `sonnet`, `haiku` or `fable` for delegated roles.
+  `best`, `default`, `opusplan`, `sonnet`, `haiku`, `fable` or any alias for
+  another tier **Tiers.** forbids for delegated roles.
 - **Effort**: where exposed, pass `--effort <level>` and unset
   `CLAUDE_CODE_EFFORT_LEVEL` for the child or set it to the same level, because
   it overrides the flag. Check stderr and effective settings: builds can ignore
@@ -222,9 +223,9 @@ before relying on a sandbox mode.
   interactive `/model` picker or fresh applicable account catalog; no family
   alias is documented. `codex debug models --bundled` and the documentation's
   Models page describe capabilities, not account access. Never pick Astra,
-  Luna or `-mini`. A failed fetch or bundled fallback does not prove account
-  unavailability; only a successful applicable catalog lacking Sol establishes
-  that the family is absent.
+  Luna, `-mini` or any other model **Tiers.** forbids. A failed fetch or
+  bundled fallback does not prove account unavailability; only a successful
+  applicable catalog lacking Sol establishes that the family is absent.
 - **Effort**: explicitly set the assigned supported level with
   `-c model_reasoning_effort=<level>`; there is no dedicated effort flag. Check
   the effort levels available for the selected model and client in `/model` or
