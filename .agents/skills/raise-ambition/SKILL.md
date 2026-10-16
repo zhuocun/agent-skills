@@ -11,10 +11,10 @@ description: >-
   Use on your own initiative whenever a non-trivial task is about to start and its description
   names the deliverable — a design or architecture, a research or analysis question, a
   business review, a strategy or plan, a piece of writing, an operational process, a personal
-  project — with any constraints (limits on scope, length, budget, time or tools) but no
-  acceptance criteria (a measurable target or required structure the result must meet) or
-  method; every new request in a conversation is a new task, even when it continues earlier
-  work.
+  project — with any constraints (limits on audience, scope, length, format, budget, time or
+  tools) but no method and no acceptance criteria (a stated test of whether the result is good
+  enough, such as a target metric or a reviewer's pass condition); every new request in a
+  conversation is a new task, even when it continues earlier work.
   Also use when asked to make a task, prompt or plan more ambitious or to raise its standard.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
   already known, a task that already has acceptance criteria or a spec, a task whose method

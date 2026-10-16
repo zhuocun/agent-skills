@@ -18,22 +18,25 @@ don't duplicate them here.
 The `agent` and `pulse` repos hold copies under their own `.agents/skills/`,
 not symlinks. A merge here reaches them only when someone copies it over. Until then, their
 weekly `skills-drift` check fails for each skill they hold that the merge changed.
-Each copy also carries `.claude/output-styles/baseline.md`; when syncing, update
-its body to match `communicate`'s current body (keep that file's own frontmatter
-and H1), since `skills-drift` does not check it.
 
 `.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
 frontmatter and H1, and `.claude/settings.json` makes it the active output style
 (`Baseline`). Edit both files together; the validator fails when the bodies
 differ.
 
+Each `agent` and `pulse` copy also carries `.claude/output-styles/baseline.md`;
+when syncing, make its body equal `communicate`'s body as `output-style-mirror`
+compares them (below the frontmatter, the H1 and one blank line, trailing blank
+lines included), since `skills-drift` does not check it.
+
 `burst` and `proxy` share the Model selection table, the tier list, the source
 order, and `references/cli-dispatch.md`. Change them together. Both SKILL.md
 files keep one line per paragraph so shared text compares byte for byte. The
 validator checks `references/cli-dispatch.md`, which each skill ships as an
 identical copy, and, in Model selection, the table's Task type, First choice and
-Fallback columns and the Model ID and Fast mode blocks. The rest names each
-skill's own roles, so keep it in step by hand: the tier list (**Tiers.**), the
+Fallback columns and the Model ID and Fast mode blocks. The rest differs in role
+names, section names or layout, so keep its shared rules in step by hand: the
+tier list (**Tiers.**), the
 source order (burst's **Subagent sources**, proxy's **Source.**), rules 1–7,
 **Fallbacks**, **Effort limits** and **Reporting**.
 
