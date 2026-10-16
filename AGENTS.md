@@ -18,6 +18,9 @@ don't duplicate them here.
 The `agent` and `pulse` repos hold copies under their own `.agents/skills/`,
 not symlinks. A merge here reaches them only when someone copies it over. Until then, their
 weekly `skills-drift` check fails for each skill they hold that the merge changed.
+Each copy also carries `.claude/output-styles/baseline.md`; when syncing, update
+its body to match `communicate`'s current body (keep that file's own frontmatter
+and H1), since `skills-drift` does not check it.
 
 `.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
 frontmatter and H1, and `.claude/settings.json` makes it the active output style
