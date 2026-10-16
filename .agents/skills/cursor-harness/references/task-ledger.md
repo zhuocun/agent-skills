@@ -41,7 +41,7 @@ Redeploying or reconfiguring a deployed environment invalidates a run against it
 
 - Before launch, identify deployment triggers: pushes to which branches, merges, and scheduled jobs. Add a `guard` entry naming the forbidden action and the protected run.
 - Check guards before every push, merge, deploy, or configuration change. Commit locally and push after the run ends.
-- Brief the executor to accept any build whose relevant code matches the baseline, rather than pinning one commit. Require it to confirm no deployment is in progress before the run and again at the end.
+- Brief whoever runs it, you or a delegate, to accept any build whose relevant code matches the baseline, rather than pinning one commit. Require it to confirm no deployment is in progress before the run and again at the end.
 
 ## States
 
@@ -49,7 +49,7 @@ Use `queued → running → verifying → done` for work. Other states are `bloc
 
 - Mark a ledger entry `done` only with evidence: exit code and artifact for runs, a reviewed result for subagents, and an observable outcome for tasks.
 - For delegated results, follow [verification](delegation.md#verifying-delegated-results).
-- Keep a task that needs user sign-off `verifying` or `waiting-user` until the user accepts. Apply the quotation rule in [registration](#registration).
+- Keep a task that needs user sign-off `verifying` or `waiting-user` until the user accepts, and quote the acceptance as [registration](#registration) requires.
 
 ## Handling interruptions
 

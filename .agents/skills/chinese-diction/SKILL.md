@@ -12,7 +12,7 @@ Priority order, highest first: **fidelity, preserved meaning, Chinese sentence s
 
 ## The core instinct
 
-Settle five variables first. Infer each from the text and the ask; ask the user only where a setting changes the wording and nothing in front of you decides it. All five select **wording only** — never the document's sections or their order.
+Settle five variables first. Infer each from the text and the ask; ask the user only where a setting changes the wording and nothing in front of you decides it.
 
 - **Register** — professional / casual / creative. [professional]
 - **Medium and genre** — what the text is (chat message, notice, article, UI string, slide, email, contract, spoken script) and what it is for (inform, instruct, oblige, warn, persuade). [running prose, to inform]
@@ -154,7 +154,7 @@ Use these wherever the prose makes claims a reader will act on — technical, bu
 - [ ] No clipped/over-shortened words in running prose — each written in its complete natural form (`重复录入` not `重录`, `手动维护` not `手维护`); display slots and casual chat keep their own short forms, and so does a settled industry short form that heads its own sentence on first mention and heads its own compounds (`压测`/`灰度`/`联调`; `压测平台`), but not one that merely trails its long form nearby (`冒烟`, `回归`).
 - [ ] Contrast phrasing preserves emphasis: `不是A而是B` kept when natural, or rewritten as `是B，而非A` only with B fronted and meaning unchanged; one-thought clauses welded with a native connective (`之所以…是因为`/`与其…不如`), not left as disjointed facts; sentences bundling definition + justification + instruction are split, except where the genre binds a condition to its consequence in one clause (a contract).
 - [ ] Identifiers, numbers, citations, author names, URLs, statute and clause numbers, drug names and doses, quoted figures with units, and trademarks are byte-for-byte unchanged — including through any 简繁 conversion; in translation only, a drug's generic name and a statute's title take their official Chinese form and a clause number takes the target citation's form with its value unchanged.
-- [ ] Technical claims name a mechanism, dependency, or scope; generic praise or business outcomes like `全面提升`、`智能化水平`、`高质量增长`、`赋能` are replaced with the concrete substance the source states, or flagged to the user when it states none, not swapped for milder slogans, unless the source truly supports them.
+- [ ] Technical claims name a mechanism, dependency, or scope; generic praise or business outcomes like `全面提升`、`智能化水平`、`高质量增长`、`赋能` stay only where the source supports them; otherwise they are replaced with the concrete substance the source states, or flagged to the user when it states none, never swapped for milder slogans.
 - [ ] Every advantage, tradeoff and limitation stated in the source appears in the output; no source-stated negative was dropped or softened, and none was invented for balance.
 - [ ] Every nonstandard term passes the three vocabulary tests — defined at first use, one meaning everywhere (no count-bound shorthand, no one-name-two-concepts), and compressing defined repetition rather than hiding an unstated subject, condition, action, or result; a term the source gives nothing to restore is kept as written and flagged to the user, never filled in.
 - [ ] Locale and script match the settled setting — mainland `软件`/`数据`/`网络` against Taiwan `軟體`/`資料`/`網路`; no simplified and traditional mixed in one text outside the spans mode 7 protects; the 简繁 pass did not run over those spans.

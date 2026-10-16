@@ -7,7 +7,7 @@ description: Comprehensive frontend code review focused on runtime safety (JS er
 
 Review frontend code so it cannot throw at runtime, recovers when something does, and stays legible as it grows. Report general logic bugs you find as well; the passes below add the failure modes specific to the browser: untyped data crossing boundaries, a render loop you do not control, and structure that hides both.
 
-Priority order, highest first: **runtime safety → error handling → hook/effect correctness → type honesty → code smell → layering.** A crash outranks a smell; fix correctness before structure.
+Priority order, highest first: **runtime safety and security → error handling → hook/effect correctness → type honesty → code smell → layering.** A crash outranks a smell; fix correctness before structure.
 
 ## When to use
 
@@ -61,7 +61,7 @@ Where "looks fine, throws later" lives:
 
 ### Common throw sites and silent resets
 
-Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const { a } = obj` → `const { a } = obj ?? {}`; a parameter default `= {}` covers only `undefined`, not the `null` JSON returns); index access assumed present; storage reads (`JSON.parse(localStorage.getItem(...))` — both the read and the parse can fail); `e.target` shape assumptions; index-as-`key` in lists that reorder, insert, or delete (not append-only) → React reuses the wrong instance: stale input values, wrong state, not necessarily a crash. A controlled `value={x}` where `x` may be `undefined`/`null` flips the input uncontrolled→controlled (React warns; cursor/state can reset) → default `value={x ?? ''}`.
+Array methods on possibly-non-arrays; destructuring `null`/`undefined` (`const { a } = obj` → `const { a } = obj ?? {}`; a parameter default `= {}` covers only `undefined`, not the `null` JSON returns); index access assumed present; storage reads (`JSON.parse(localStorage.getItem(...))` — both the read and the parse can fail); `e.target` shape assumptions; index-as-`key` in lists that reorder, insert, or delete (not append-only) → React reuses the wrong instance: stale input values, wrong state, not necessarily a crash; and a controlled `value={x}` where `x` may be `undefined`/`null`, which flips the input uncontrolled→controlled (React warns; cursor/state can reset) → default `value={x ?? ''}`.
 
 ### Injection & data integrity
 
