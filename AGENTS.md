@@ -63,10 +63,8 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
 
 ## Repo conventions
 
-- **Branch names** for AI-authored work: `claude/<short-topic>`.
-- **Commits**: imperative subject; concise body explaining *why*; footer
-  `https://claude.ai/code/session_<id>`. Never include AI model identifiers in
-  commits, PR titles/bodies, or code comments.
+- **Commits**: imperative subject; concise body explaining *why*. Never
+  include AI model identifiers in commits, PR titles/bodies, or code comments.
 
 ## Claude Code auto-compact (`.claude/settings.json`)
 
