@@ -34,8 +34,10 @@ regression behind a loading spinner.
 6. **Probe root cause** for every issue with a one-shot `page.evaluate`
    before editing. Reading code excerpts guesses wrong on framework
    traps. If the ask was to audit, review, screenshot, or verify, stop
-   here and report the issue list with its probe evidence; run steps
-   7–8 only when the user asked for fixes or confirms them.
+   here and report each issue with its severity, confidence, route ×
+   viewport × theme, the screenshot, the probe result and the
+   `file:line` of the cause; run steps 7–8 only when the user asked for
+   fixes or confirms them.
 7. **Fix in themed batches**, one commit each. Re-capture after each
    batch and confirm the issue is gone.
 8. **Quality gates + clean repo** before commit. See **Quality bar**.

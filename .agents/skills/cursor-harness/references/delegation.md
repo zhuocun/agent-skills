@@ -27,6 +27,6 @@ External agent CLIs can run for many minutes and outlast your turn.
 
 ## Keeping the overview
 
-- Delegate the work. Keep the ledger, acceptance records, and final decision with you.
+- Delegate the work. Keep the ledger and the acceptance records with you, and record who made each acceptance decision.
 - Register the whole wave using [ledger registration](task-ledger.md#registration) before the first launch, then confirm each delegate started.
 - Process results as they arrive, even out of order. Wait for the whole wave only when the next step needs all results.
