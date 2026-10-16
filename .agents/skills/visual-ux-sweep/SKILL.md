@@ -15,9 +15,9 @@ regression behind a loading spinner.
 
 1. **Set up the capture environment.** See **Setup** — this is where
    sweeps fail, so do every step.
-2. **Discover the surface** (routes × viewports × themes × interaction
-   states) from the repo, not from memory. See **Repo-agnostic
-   discovery**.
+2. **Discover the surface** (routes × themes × interaction states, at
+   the harness's viewports) from the repo, not from memory. See
+   **Repo-agnostic discovery**.
 3. **Capture** the matrix with the harness in
    `references/playwright-harness.md`. Keep the harness structure
    (mocks, content wait, error capture, verification) unchanged;
