@@ -6,8 +6,7 @@ description: >-
   done. Use when subagents are authorized and you want planning, execution,
   review, and the done/not-done judgment all made by subagents rather than by
   the main agent. Do not use when subagent delegation is unavailable, or for a
-  trivial single-step task that is faster to just do. Do not use when you are to
-  plan and gate the work yourself while subagents perform it.
+  trivial single-step task that is faster to just do.
 ---
 
 # Proxy
@@ -78,20 +77,20 @@ do so always traces back to a subagent's instruction.
 Before any work starts, confirm the orchestrator-consultant has set the to-dos
 and a high-standard definition of done, set at the highest standard that can
 still be verified within the user's scope, constraints and budget: every
-requirement already set for the task's done — targets, guardrails,
-verification — is folded in, any method available for raising a task's standard
-raises it further, and it is never lower than what was already set; a target
-set as the aim above done stays the aim, not part of the definition of done,
-and the result is reported against both; the items that need the user's
-confirmation go to the user. Then, with planning starting from any methods,
-inputs and schedule already set for the task, keep the loop moving with
-perseverance: drive dispatch → review → re-consult until the final-gate
-reviewer returns `done`.
+requirement already set for the task is folded in, including the qualities it
+must not degrade and the checks it must pass, any method available for raising
+a task's standard raises it further, and it is never lower than what was
+already set. A stretch target stays outside the definition of done as an aim,
+and the final summary reports the result against it. A change that needs the
+user's consent goes to the user before the work that depends on it starts, and
+joins the definition of done once they approve it. Then, building on any plan
+already set for the task, keep the loop moving with perseverance: drive
+dispatch → review → re-consult until the final-gate reviewer returns `done`.
 Clear obstacles by routing each to the right subagent, never by deciding
 yourself; don't stall on a fork — re-consult and proceed. Don't stop mid-flight
 while to-dos are still open and actionable. Route trivial or obvious-answer
-decisions to a subagent, not to the user; the items that need the user's
-confirmation are never trivial. Keep a running checklist of the to-dos and
+decisions to a subagent, not to the user; a decision that needs the user's
+consent is never one of them. Keep a running checklist of the to-dos and
 progress through the chain, in a file or in the tracker the work already uses,
 so that nothing drifts over a long session and the checklist survives a
 compaction.
@@ -105,20 +104,15 @@ answer without waiting for the user to confirm.
 ## Pass 1 — Consult the orchestrator-consultant
 
 Dispatch an orchestrator-consultant subagent with the task as received. Before
-dispatching, relay the items the task's brief asks the user to confirm to the
-user verbatim, never to a subagent. The consultant's brief:
+dispatching, put any question the task leaves for the user to the user
+verbatim, never to a subagent. The consultant's brief:
 
-- the user's task verbatim, plus the context and files it needs to plan;
-- the task's brief verbatim when one exists before planning — written by the
-  user or a subagent, never by you, since rewriting the task is a planning
-  decision — with the user's answers so far, the instruction to add to the
-  definition of done the items the user approved and leave out the declined or
-  unanswered ones, and to include the brief's verification in what the
-  final-gate reviewer checks;
-- the definition-of-done rule from **Run it to done**, verbatim, to set the
-  definition of done by, together with, verbatim, any method available to you
-  for raising a task's standard, for it to apply when setting the definition of
-  done;
+- the user's task and any requirements, success criteria and checks already
+  set for it, verbatim, with the user's answers so far, plus the context and
+  files it needs to plan;
+- the definition-of-done rule from **Run it to done** and the instructions of
+  any method available to you for raising a task's standard, both verbatim, to
+  set the definition of done by, since raising the standard is planning;
 - ask it to return: the to-dos for the whole task and a high-standard definition
   of done the integrated work must clear, set by that rule, with the updates to
   docs, records and to-dos the work will touch included as to-dos; the
@@ -127,15 +121,18 @@ user verbatim, never to a subagent. The consultant's brief:
   with the families and effort levels its row assigns; the brief for each
   worker, each stating that the worker is a leaf and worded in correctness and
   reliability terms; the success criteria per subtask; what the final-gate
-  reviewer should check; and any items that need the user's confirmation;
+  reviewer should check; and any question that needs the user's answer or
+  consent;
 - that table, its legend and its numbered rules, verbatim, to classify by.
 
 If it names no row, or more than one, for a subtask, re-consult rather than
-choose. Then follow its plan. If the plan is ambiguous, or you hit a fork it did
-not cover, go back to an orchestrator-consultant — do not resolve it yourself.
+choose. Then put its questions for the user to the user verbatim, never to a
+subagent, and follow its plan. If the plan is ambiguous, or you hit a fork it
+did not cover, go back to an orchestrator-consultant — do not resolve it
+yourself.
 Re-consult whenever reality diverges from the plan (a worker uncovers new scope,
-a review forces a rethink) or the user approves an item that needed their
-confirmation, since adding work is planning.
+a review forces a rethink) or the user approves a change that needed their
+consent, since adding work is planning.
 
 ## Pass 2 — Dispatch workers
 
@@ -558,11 +555,11 @@ checklist — the one the orchestrator-consultant set before the work started,
 plus the items the user approved since, never one written to fit the result,
 ticked as the final-gate reviewer left it rather than by your own assessment —
 with every ticked item naming the evidence that proves it, and every unticked
-item saying what is missing and why, and, where an aim was set above done, the
-result against it. Any risk the checklist does not already carry. What remains
-as open work. Last, and separately, each thing you need from the reader —
-anything that blocks the work or needs their decision — explained as if new; if
-you need nothing, ask nothing.
+item saying what is missing and why. The result against any stretch target.
+Any risk the checklist does not already carry. What remains as open work. Last,
+and separately, each thing you need from the reader — anything that blocks the
+work or needs their decision — explained as if new; if you need nothing, ask
+nothing.
 
 ## Self-check
 
@@ -600,5 +597,5 @@ Before declaring the task done, confirm:
 - [ ] The checklist in the report is the definition of done the
   orchestrator-consultant set before the work started, plus the items the user
   approved since, never one written to fit the result, ticked as the final-gate
-  reviewer left it; every ticked item names its evidence, and every unticked
-  item says what is missing.
+  reviewer left it; every ticked item names its evidence, every unticked item
+  says what is missing, and no stretch target was counted as part of it.

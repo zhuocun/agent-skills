@@ -14,7 +14,7 @@ Quote the user's exact words for new tasks and acceptances.
 
 Pick the first location that applies. State the location in your first progress note.
 
-1. **The project's own tracker.** Use an existing task document or harness ledger, such as `current-*.md`, for user-facing tasks. Keep run-level detail in a side file next to it.
+1. **The project's own tracker.** Use an existing task document or ledger the project already keeps for user-facing tasks. Keep run-level detail in a side file next to it.
 2. **A persistent agent store**, when the system context lists one for the current agent. It survives compactions and new turns for this agent. Use `<store>/ledger.md`.
 3. **A scratch file outside version control**, such as a directory the repo already ignores. Never put the ledger where a broad `git add` would commit it.
 

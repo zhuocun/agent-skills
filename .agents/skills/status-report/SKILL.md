@@ -1,7 +1,7 @@
 ---
 name: status-report
 description: >-
-  Produce a one-page project status report with fixed slots — Tasks, Changes since, Action required, Health, Unverified claims — for a capable peer who was not watching the work. The Tasks table lists each task with its subtasks, and shows who is assigned to each subtask and whether it is being executed now. Use when asked for a project-level status report or update — where a project or its tasks stand, a weekly or milestone report, a state-of-play summary, or a hand-off snapshot of a project. Also use when editing or reviewing an existing report in this form; keep the form. Do not use for changelogs, release notes, retrospectives, plans, roadmaps, metrics dashboards, or an activity log of what was worked on — this is a state document, so forward per-item actions and effort narratives belong elsewhere. Do not use for a quick progress note on the current task, which is an ordinary reply, or for recovering a conversation's working context after a compaction, which is a recap of the in-progress task, not a project report.
+  Produce a one-page project status report with fixed slots — Tasks, Changes since, Action required, Health, Unverified claims — for a capable peer who was not watching the work. The Tasks table lists each task with its subtasks, and shows who is assigned to each subtask and whether it is being executed now. Use when asked for a project-level status report or update — where a project or its tasks stand, a weekly or milestone report, a state-of-play summary, or a hand-off snapshot of a project. Also use when editing or reviewing an existing report in this form; keep the form. Do not use for changelogs, release notes, retrospectives, plans, roadmaps, metrics dashboards, or an activity log of what was worked on — this is a state document, so forward per-item actions and effort narratives belong elsewhere. Do not use for a quick progress note or recap of the current task in this conversation, which is an ordinary reply.
 ---
 
 # Project Status Report
@@ -26,13 +26,13 @@ Slots print in this order, always, whatever the project:
 ## Unverified claims
 ```
 
-A section with nothing to report prints `None.` A section not examined this cycle prints `Not checked.` A section whose sources were all unreachable prints `Not checked.` and gets one `Unverified claims` line naming what would confirm it. A section whose sources were partly reached prints what was reached, marks each field it could not fill `(unverified)`, and gives each such field an `Unverified claims` line. Never omit a heading: an absent heading and an unexamined project read identically. Length budget is at most about 50 lines — a chosen editorial ceiling, not a target, so a small project's report is shorter. It is not a property of any screen either: screen height is a viewer property and the report must not depend on one. Count every physical line — headings, blanks, table rows, fenced blocks. An illustration that costs six lines costs an eighth of the report.
+A section with nothing to report prints `None.` A section not examined this cycle prints `Not checked.` A section whose sources were all unreachable prints `Not checked.` and gets one `Unverified claims` line naming what would confirm it. A section whose sources were partly reached prints what was reached, marks each field it could not fill `(unverified)`, and gives each such field an `Unverified claims` line. Never omit a heading: an absent heading and an unexamined project read identically. Length budget is at most about 50 lines — a chosen editorial ceiling, not a target, so a small project's report is shorter. Count every physical line — headings, blanks, table rows, fenced blocks. An illustration that costs six lines costs an eighth of the report.
 
 ## Passes
 
 ### 1. Gather — reach every source, and record every source you could not reach
 
-Before writing a line, collect: history since the last anchor; open change requests and their review state; results of automated checks on the current revision; the project's own tracking documents, specs, and plans, and any to-do checklist or log kept alongside the work; who is assigned to each piece of work, which agent runs or sessions are live now, and each person's latest dated activity; test and coverage output with the date it was produced; release or deployment state and what actually reached users; and the prior report, for its anchor and counts. Look for each of these whatever your access — a shell, an API, or neither. **Any source you cannot reach becomes an `Unverified claims` line, never a guess, and never silence.** Record for each unreachable source what would confirm the claim that depends on it.
+Before writing a line, collect: history since the last anchor; open change requests and their review state; results of automated checks on the current revision; the project's own tracking documents (trackers, checklists, work logs), specs, and plans; who is assigned to each piece of work, which agent runs or sessions are live now, and each person's latest dated activity; test and coverage output with the date it was produced; release or deployment state and what actually reached users; and the prior report, for its anchor and counts. Look for each of these whatever your access — a shell, an API, or neither. **Any source you cannot reach becomes an `Unverified claims` line, never a guess, and never silence.** Record for each unreachable source what would confirm the claim that depends on it.
 
 ### 2. Build the Tasks table
 
@@ -102,7 +102,7 @@ Bullets, cap five. On overflow, fold changes of the same kind into one bullet, t
 
 ### 5. Write `Action required`
 
-One slot; it replaces separate blocked and decision sections. An item belongs here only when someone other than the writer must act or decide before the work can proceed: a named person or team, an owner outside the project's control, or, where no owner is known, whoever can assign one. It is not a backlog. Each item opens with its type: **Blocked** (the action is known, someone must perform it) or **Decision** (the action is unknown, someone must choose). Format:
+An item belongs in this one slot only when someone other than the writer must act or decide before the work can proceed: a named person or team, an owner outside the project's control, or, where no owner is known, whoever can assign one. It is not a backlog. Each item opens with its type: **Blocked** (the action is known, someone must perform it) or **Decision** (the action is unknown, someone must choose). Format:
 
 `- **<Blocked|Decision>** — <ask> — unblocks when <action or date>, owner <who, or "outside the project's control"> — <cost of leaving it> — <reference>`
 
