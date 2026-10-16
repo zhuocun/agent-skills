@@ -43,8 +43,8 @@ Chain: **orchestrator-consultant → (worker → reviewer)\* → final-gate
 reviewer**, with you executing and relaying at every hop.
 
 **Every delegate is a leaf.** Every brief you write — orchestrator-consultant,
-reviewer, final-gate reviewer — states that the delegate must not invoke the
-burst or proxy skills, or spawn subagents or workflows. Ask the
+reviewer, final-gate reviewer — states that the delegate must not invoke any
+skill that delegates work to subagents, or spawn subagents or workflows. Ask the
 orchestrator-consultant to put the same line in each worker brief it drafts, so
 the worker brief still passes verbatim.
 

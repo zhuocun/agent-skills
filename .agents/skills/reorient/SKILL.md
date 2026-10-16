@@ -36,7 +36,7 @@ What remains is the one-sentence goal minus everything Pass 2 verified as done. 
 - failing or skipped tests, and `TODO` / `FIXME` markers in the touched code,
 - the user's last explicit ask — the most authoritative "what next."
 
-Order the list by dependency: what unblocks the most, or what the next step needs first. When proxy is active, do not order the list yourself: send the reconstructed list to an orchestrator-consultant and follow its order.
+Order the list by dependency: what unblocks the most, or what the next step needs first. When planning decisions are delegated to a subagent, do not order the list yourself: send the reconstructed list to that planning subagent and follow its order.
 
 ### 4. Fill context gaps — what is needed to continue perfectly
 
@@ -52,7 +52,7 @@ Give a concise recap:
 
 Item 1 is the recap's answer line, so leading with it satisfies an answer-first rule.
 
-End by resuming the top to-do or asking which to take, per what the user signalled. When a burst or proxy run is driving to a definition of done, resume the top to-do without waiting for confirmation.
+End by resuming the top to-do or asking which to take, per what the user signalled. When an orchestration run is driving to a definition of done set before dispatch, resume the top to-do without waiting for confirmation.
 
 ## Failure modes
 
