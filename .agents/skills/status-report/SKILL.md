@@ -142,7 +142,7 @@ An illustration is mandatory only if all three hold: constant cost (at most one 
 - **Activity reported as progress** — work done, meetings held, effort spent. A bullet or count qualifies only if a status, a count, or an `Action required` item changed.
 - **A task silently dropped** — quiet is not closed. A task leaves only after one report in `Done` or `Dropped`.
 - **A release folded into another subtask** — a task closed as `Done` when its code is integrated or deployed but switched off for everyone. Release is its own subtask, short of `Done` until users have it.
-- **`Running` without live evidence** — an assignment, a plan, or last week's activity read as work happening now. Without a run or session live at the header time, or a person's dated activity since the prior report, the subtask is `Paused`, `Blocked` or `Not started`, whichever fits.
+- **`Running` without live evidence** — an assignment, a plan, or activity from before the prior report read as work happening now. Without a run or session live at the header time, or a person's dated activity since the prior report, the subtask is `Paused`, `Blocked` or `Not started`, whichever fits.
 - **A paused subtask with no ask** — `Paused` without a matching `Action required` item hides work that nobody is doing. Every `Paused` subtask has one.
 - **A hand-written task status** — a task Status that contradicts its subtasks, such as `In progress` over a `Blocked` subtask or `Done` over a `Paused` one. Derive it from the subtasks by the rule in pass 2.
 - **An omitted heading** — the reader cannot tell an empty section from an unexamined one. Print every heading, with `None.` or `Not checked.`

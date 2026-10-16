@@ -258,14 +258,15 @@ Before declaring a sweep done, confirm:
   `steps` and named by its `state`.
 - [ ] No shot reviewed as rendered appears in the harness's `UNRENDERED`
   list (content wait missed or page error), whatever its hash. Every PNG
-  was hashed (`md5sum`) and no two distinct routes share a hash; identical
-  hashes between media variants of one route, other than reduced motion,
-  were filed as findings rather than re-captured when both shots passed
-  their content wait, and reduced motion was judged by the computed-style
-  probe or in code, never by its hash. Any blank, stuck,
-  or odd shot got its recorded API hits and console/page errors read,
-  together with a one-shot `page.evaluate` dump of `location.href` and
-  trimmed `document.body.innerText`, before the app's code was blamed.
+  was hashed (`md5sum`), and no two distinct routes, and no state shot and
+  its route's base shot, share a hash; identical hashes between media
+  variants of one route, other than reduced motion, were filed as findings
+  rather than re-captured when both shots passed their content wait, and
+  reduced motion was judged by the computed-style probe or in code, never by
+  its hash. Any blank, stuck, or odd shot got its recorded API hits and
+  console/page errors read, together with a one-shot `page.evaluate` dump of
+  `location.href` and trimmed `document.body.innerText`, before the app's
+  code was blamed.
 - [ ] Every PNG was reviewed against all five checklist groups — layout,
   theme, state, a11y modes, looks-wrong-but-correct — and the issue list was written
   before the first fix. `colorScheme`, `contrast: "more"`,

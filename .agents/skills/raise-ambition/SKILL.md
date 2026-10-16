@@ -52,7 +52,7 @@ Lenses skipped:       <lens or slot → reason>
 
 ### 1. Fix the frame and check resources
 
-Copy the task verbatim, and copy verbatim every explicit user constraint (scope, length, deadline, budget, tools, audience, actions to ask about first), meaning each limit the user set beyond the deliverable and its subject, which Task as given already carries. Then make a read-only check of what actually exists: the data, tools, access, prior work, and who uses the result. Name only resources the check found; one the raised brief needs but the check did not find becomes a precondition in Confirm before starting. Neither the check nor the brief obtains access, spends money, contacts anyone outside or takes an irreversible step on its own authority.
+Copy the task verbatim, and copy verbatim every explicit user constraint (scope, length, deadline, budget, tools, audience, actions to ask about first), meaning each limit the user set beyond the deliverable and its subject, which Task as given already carries. Then make one read-only check of what actually exists: the data, tools, access, prior work, and who uses the result. Name only resources the check found; one the raised brief needs but the check did not find becomes a precondition in Confirm before starting. Neither the check nor the brief obtains access, spends money, contacts anyone outside or takes an irreversible step on its own authority.
 
 ### 2. Altitude — the outcome the deliverable serves
 
