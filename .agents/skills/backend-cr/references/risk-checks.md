@@ -40,7 +40,7 @@ Use a section only when its trigger appears in the change, and only the checks t
 
 ## Data Protection and Technical Operations
 
-- **Values reaching technical operations.** Trace client values into SQL, shell commands, file paths, URLs, templates and deserialization. Each must arrive bound, escaped or checked against an allowed set under the real execution rules; a value pasted into statement text breaks on quotes and changes the statement. Validation elsewhere does not make it safe there. Do not demand blanket sanitization of ordinary fields.
+- **Values reaching technical operations.** Trace client values into SQL, shell commands, file paths, URLs, templates and deserialization. Each must arrive bound, escaped or checked against an allowed set under the real execution rules; a value pasted into statement text breaks on quotes and changes the statement. Validation elsewhere does not make it safe there. A dynamic target (file path, outbound URL, class name) must come from an allowed set. Do not demand blanket sanitization of ordinary fields.
 - **Personal and secret data.** Trace it through responses, logs, caches, messages, samples, backups and deletion. A debug setting must not disable peer authentication or transport encryption; secrets are replaceable, not hard-coded. Use the project's classification and mechanisms; do not invent cryptography.
 
 ## Migration, Release and Configuration
@@ -52,7 +52,7 @@ Use a section only when its trigger appears in the change, and only the checks t
 
 ## Compatibility Evidence
 
-- **Real encoders and decoders.** Test a protocol or format change with versioned real encoders and decoders, old to new and new to old, for requests and responses. Assert an old decoder skips each added field where the protocol allows. Check types, IDs, units, enum values and unknown fields, or the required version negotiation or approved rejection.
+- **Real encoders and decoders.** Test a protocol or format change with versioned real encoders and decoders, old to new and new to old, for requests and responses. Assert an old decoder skips each added field where the protocol allows. Check types, IDs, units, enum values and unknown fields, or the required version negotiation or approved rejection. Check that stored data, queued messages and old clients still pass any new validation.
 - **Duration.** Derive the needed combinations from client lifetimes, deploy overlap, retained and replayable messages, queued jobs, stored formats and promised backup restores.
 - **Samples.** Produce samples with the delivered producer and the real client encoding; handwritten samples alone prove nothing.
 - **Artifact dependencies.** Check dependency declarations, version authority, packaging and the target runtime, and build the affected artifacts; a host compile does not prove runtime compatibility.
