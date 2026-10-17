@@ -1,5 +1,5 @@
 ---
-name: cr-fe
+name: frontend-cr
 description: Comprehensive frontend code review focused on runtime safety (JS errors from null/undefined access, type coercion, unguarded boundary data), security and data integrity (XSS, dangerouslySetInnerHTML, javascript-URL and attribute injection, lost user input), error handling (try-catch, async/await, error boundaries), React hook dependencies and effect correctness (stale closures, cleanup, races), code smell, type honesty, and folder-structure layering. Use when reviewing or auditing frontend code or a frontend diff/PR (React, TypeScript, JavaScript, and other component frameworks), or when asked to check UI code for runtime errors, XSS or injection, hook bugs, code smell, or architecture. Reads source and reports findings; not for judging visual design or page layout, and not for backend services, infrastructure, or non-UI logic.
 ---
 
