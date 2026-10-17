@@ -47,7 +47,7 @@ the source order (burst's **Subagent sources**, proxy's **Source.**), rules 1–
 ## Skill authoring conventions
 
 Derived from the skills already in this repo (`burst`, `chinese-diction`,
-`cr-fe`, `document-editor`, `status-report`):
+`frontend-cr`, `document-editor`, `status-report`):
 
 - **One directory per skill**, and the directory name must equal the skill's
   `name` frontmatter field. The directory holds a `SKILL.md`, plus optional
@@ -56,16 +56,16 @@ Derived from the skills already in this repo (`burst`, `chinese-diction`,
   `description`; other keys are allowed. The
   description carries the routing triggers inline — a "Use when…" clause and,
   where the skill is easily over-applied, a "Do not use for…" clause (see
-  `cr-fe`, `document-editor`, `chinese-diction`).
+  `frontend-cr`, `document-editor`, `chinese-diction`).
 - **Keep the frontmatter YAML-safe.** When the `description` contains
   characters that could break strict parsers, use a folded `>-` block scalar
   rather than a bare string — `chinese-diction`, `cursor-harness` and others
   do this.
 - **Body pattern:** an `# H1` title, a one-paragraph statement of the skill's
-  role, an explicit priority order where the work is ranked (e.g. `cr-fe`'s
+  role, an explicit priority order where the work is ranked (e.g. `frontend-cr`'s
   "runtime safety → … → layering", `status-report`'s "grounded evidence → … →
   fixed form"), the substance as numbered passes or failure modes
-  (`cr-fe`'s review passes, `chinese-diction`'s seven failure modes), and a
+  (`frontend-cr`'s review passes, `chinese-diction`'s seven failure modes), and a
   terminal `## Self-check` the agent runs before declaring done.
 - **In `chinese-diction`, every register- or genre-conditional exception ships
   with a ✓ example** in the register or genre it excuses. A case named only in
