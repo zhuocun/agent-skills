@@ -35,7 +35,7 @@ Priority order: **authorization, data integrity and business correctness > failu
 
 ## Step 2: Hunt
 
-For each entry, work a section only when the entry does what its heading names, and list skipped sections in one line. Answer the section's questions in order, and before reporting a defect sign check whether a usually-correct look-alike applies. A sign or a "Candidate" is not a finding until Step 3 confirms it. Do not infer risk from line count or recommend a mechanism only because this skill names it.
+For each entry, work a section only when the entry does what its heading names, and list skipped sections in one line. Answer the section's questions in order, and before reporting a defect sign check whether a usually-correct look-alike applies. A sign or "Candidate" is not a finding until Step 3 confirms it. Do not infer risk from line count or recommend a mechanism only because this skill names it.
 
 ### 2.1 Authorization and input
 
@@ -115,7 +115,7 @@ Usually correct: ignored best-effort telemetry failures; catching one expected e
 - **Money.** Binary floating point (`float`, `double`, a JavaScript `number` with fractions) for amounts stored, charged, compared or summed is a defect; use decimals or integer minor units. Check currency minor units (JPY 0 decimals, KWD 3), the rounding mode and where it applies (per line or on the total, per the contract), split parts adding up to the total (allocate the remainder), truncating integer division, and the order of conversion and rounding.
 - **Numbers.** Units (milliseconds versus seconds), percentages as 0.15 versus 15, division by zero, parse failures, overflow and values out of the column's range.
 - **Time.** Candidate: an instant stored in local time or with no offset; confirm it when the schema, a contract or another reader expects UTC. Apply date-only rules (due today, end of month) in the contract's time zone. Check daylight-saving changes, month ends, leap days, and inclusive versus exclusive end times.
-- **Text.** Normalize case and whitespace alike on write and lookup; check collation and whether a length limit counts bytes or characters.
+- **Text.** Normalize case and whitespace alike on write and lookup; check collation and whether length limits count bytes or characters.
 
 Usually correct: floats for non-money ratios and metrics; rounding only for display when stored values are exact.
 
@@ -242,7 +242,7 @@ Order findings by severity, with Uncertain items and suggestions kept out. Count
 
 For several independent concerns or a requested full report, add a requirement → evidence map (missing, inapplicable and unverified items marked), one block per concern, each candidate's disposition, owner decisions, remediation and release steps (for a released fix: the signal to watch, its owner, the stop condition) and, when 2.10 applied, compatibility evidence.
 
-Recommend acceptance only within what you verified; a clean review does not prove production behavior.
+Recommend acceptance only within what you verified; a clean review proves nothing about production.
 
 ## Self-check
 
