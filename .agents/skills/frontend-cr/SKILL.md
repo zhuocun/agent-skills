@@ -12,14 +12,14 @@ description: >-
 
 # Frontend Code Review
 
-Find defects that would break the UI for real users, with few false alarms. Trace concrete values and timing across files. Report a defect only after proving a reachable trigger and searching for an existing defense.
+Find user-visible frontend defects with few false alarms. Report only proven reachable violations after searching for defenses.
 
 Priority: **runtime safety, security and data integrity → failure handling → state and effect correctness → type honesty → maintainability and layering → style**. Follow explicit user and project requirements first.
 
 ## Review rules
 
 - Review without editing code. Propose repairs separately. Remediate only with explicit permission.
-- Record the revision and initial workspace changes. Do not overwrite unrelated work. Check command side effects before running tests. Do not read credentials, reset shared data, or change shared services.
+- Record the revision and initial workspace changes. Preserve unrelated work. Check command side effects; run only authorized, isolated checks without changing reviewed files, shared data, or services. Do not read credentials.
 - On a diff review, report only defects introduced or worsened by the diff. Read unchanged dependencies to understand the changed behavior.
 - Prefer the narrowest fix within the existing design. Do not turn a repair into a component rewrite or architecture change.
 - Treat every sign below as a candidate, not a finding. Syntax, a lint warning, a missing test, or a preferred pattern alone proves no defect.
@@ -38,17 +38,17 @@ Priority: **runtime safety, security and data integrity → failure handling →
 
 ## Step 2: Hunt each entry
 
-Apply each relevant section to every inventory entry. Compare each sign with its usually-correct look-alikes. Do not stop after the first defect. List skipped sections and reasons in one line.
+Apply every relevant section to each inventory entry. Derive expected behavior from the rule, not the implementation; contrast legal inputs, states, or completion orders differing in one relevant dimension. Trace across files and compare usually-correct look-alikes. Continue across independent decisions and effects without proving each candidate first. Explain skipped sections.
 
 ### 2.1 Boundary values and transformations
 
 - Trace each value past its first use. Check null, missing fields, empty arrays, absent indices, and wrong shapes where the contract permits them. Check destructuring, array methods, nested access, and renderable types.
 - Follow `?.` results downstream. Does `undefined` later reach `.length`, a calculation, or a required child prop? Use a fallback only if its meaning is valid. An empty list must not disguise a failed load.
-- Check `||` replacing valid `0`, `false`, or empty text. Check blank/null input becoming zero, partial `parseInt` results, `NaN`, infinities, invalid dates, and seconds/milliseconds confusion against the accepted values.
+- Retain original values through transformations. Try legal inputs whose type-valid outputs change required meaning or collapse distinct identities/values. Check `||` replacing valid falsy values, blank/null becoming zero, partial `parseInt`, `NaN`, infinities, invalid dates, seconds/milliseconds confusion, and precision/rounding.
 - Check storage reads and `JSON.parse` failures separately. A parsed value still needs the shape its consumer assumes.
 - Trace `any`, assertions, and non-null `!` back to their proof. Type declarations alone do not validate external data. Check that schema validation runs and handles failure. Follow the validated value onward.
 
-Usually correct: a field guaranteed by the response contract; access after an earlier guard or successful schema parse; an internal prop guaranteed by every caller; deliberate `||` for all falsy values; optional rendering of absent content; a proven assertion. Do not invent contract violations or demand repeated validation.
+Usually correct: contract-guaranteed fields; props guaranteed by every caller; guarded access or successful schema parsing; deliberate `||` for all falsy values; optional rendering of absent content; proven assertions; contract-defined normalization or loss. Raw differences or round-trip failures alone do not prove defects. Do not invent violations or demand repeated validation.
 
 ### 2.2 State, forms, identity and navigation
 
@@ -104,7 +104,7 @@ Usually correct: React text interpolation and ordinary escaped attributes; trust
 ### 2.7 Server rendering, dates and locale
 
 - When SSR applies, compare server HTML with the first client render. Check browser-only APIs, random IDs, current time, local storage, and differing data or locale. Trace a mismatch to broken hydration or incorrect UI.
-- Trace date-only values versus instants, timezone conversion, locale parsing, currency/units, and rounding against the contract. Does a date shift days or a displayed value change meaning?
+- Trace date-only values versus instants, local-time and timezone conversion, locale parsing, currency/units, and rounding against the contract.
 
 Usually correct: client-only rendering; browser reads after hydration; stable serialized data and framework IDs; an intentional isolated hydration exception; user-local formatting when the contract asks for it. Do not demand UTC display or identical locale output without a requirement.
 
@@ -128,8 +128,8 @@ For each candidate, try to disprove it:
 
 1. Locate the contract: PR description and product rules; types, schemas, and API docs; callers, tests, and established behavior; project standards. Distinguish compile-time promises from runtime enforcement.
 2. Check baseline UI obligations too. Supported inputs must not crash. Untrusted content must not execute. Edits must not silently move to another record or disappear during the promised flow. Failed work must not appear successful. Displayed results must match their stated identity and freshness.
-3. Write a reachable trigger: user action, permitted response value, state, or completion order. Name every file in the path. Do not invent malformed data a verified boundary rejects.
-4. Search the provided code for a defense in callers, schemas, adapters, shared hooks, framework behavior, and cache configuration. Trace whether it actually blocks this trigger. Drop the candidate if it does.
+3. Trace the exact trigger's branch conditions and intermediate values across files; confirm branch reachability and rule violation. Exclude boundary-rejected data. Static trace and arithmetic can suffice; use permitted isolated probes only for decisive uncertainty.
+4. Search callers, schemas, adapters, shared hooks, framework behavior, and cache configuration for defenses. Trace each against this trigger; drop blocked candidates.
 5. Name the user-visible consequence and narrowest fix. Keep valid guards and recovery behavior.
 6. Classify: **Confirmed** requires the reachable trigger, violated contract, and evidence. **Uncertain** means a decisive fact or contract is silent or ambiguous; state the exact question and decision owner. **Suggestion** means an optional improvement without a demonstrated violation. Keep the three separate. Drop disproved candidates.
 
