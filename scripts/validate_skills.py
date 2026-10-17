@@ -48,6 +48,9 @@ SHARED_SECTIONS = (
 SHARED_TABLE_COLUMNS = 3
 REQUIRED_KEYS = ("name", "description")
 FENCE = "---"
+POLICY_FILES = (Path("AGENTS.md"), Path("README.md"))
+POLICY_START = "<!-- skill-selection-policy:start -->"
+POLICY_END = "<!-- skill-selection-policy:end -->"
 
 CHECKS = (
     ("skill-md-present", "every skill directory contains a SKILL.md"),
@@ -60,8 +63,9 @@ CHECKS = (
     ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
     ("shared-reference-identical", "each reference file two skills share is byte-identical in both"),
     ("shared-section-identical", "each section two skills share has a byte-identical table (first three columns) and shared blocks"),
+    ("skill-selection-policy-mirror", "AGENTS.md and README.md carry one non-empty, byte-identical marked selection policy"),
 )
-REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror", "shared-reference-identical", "shared-section-identical"}
+REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror", "shared-reference-identical", "shared-section-identical", "skill-selection-policy-mirror"}
 
 
 @dataclass(frozen=True)
@@ -117,6 +121,27 @@ def check_symlink(root: Path) -> list[Failure]:
     if not resolved.is_dir():
         return [Failure("claude-skills-symlink", where, f"resolves to `{resolved}`, which is not a directory")]
     return []
+
+
+def check_selection_policy(root: Path) -> list[Failure]:
+    failures: list[Failure] = []
+    policies: list[bytes] = []
+    for path in POLICY_FILES:
+        try:
+            lines = (root / path).read_bytes().splitlines(keepends=True)
+            starts = [i for i, line in enumerate(lines) if line.rstrip(b"\r\n") == POLICY_START.encode()]
+            ends = [i for i, line in enumerate(lines) if line.rstrip(b"\r\n") == POLICY_END.encode()]
+            if len(starts) != 1 or len(ends) != 1 or starts[0] >= ends[0]:
+                raise ValueError("expected exactly one ordered pair of selection-policy markers")
+            policy = b"".join(lines[starts[0] + 1 : ends[0]])
+            if not policy.strip():
+                raise ValueError("selection policy is empty")
+            policies.append(policy)
+        except (OSError, ValueError) as exc:
+            failures.append(Failure("skill-selection-policy-mirror", str(path), str(exc)))
+    if len(policies) == len(POLICY_FILES) and policies[0] != policies[1]:
+        failures.append(Failure("skill-selection-policy-mirror", "README.md", "selection policy differs from AGENTS.md; edit both blocks together"))
+    return failures
 
 
 def mirrored_body(path: Path) -> str:
@@ -303,7 +328,7 @@ def main() -> int:
         sys.stderr.write(f"validate_skills: {skills_root} contains no skill directories\n")
         return 2
 
-    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root) + check_shared_references(root) + check_shared_sections(root)
+    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root) + check_shared_references(root) + check_shared_sections(root) + check_selection_policy(root)
     skips: list[Skipped] = []
     for directory in directories:
         directory_failures, directory_skips = check_skill(directory, root)

@@ -2,6 +2,33 @@
 
 This repo is a collection of portable agent skills, distributed by symlink or by copy.
 
+<!-- skill-selection-policy:start -->
+## Automatic skill selection
+
+- At task start and phase changes, inspect installed skill names and descriptions
+  through the host's metadata listing or discovery/search. If a listing is partial,
+  search for each responsibility in the request before selecting. Do not assume a
+  search result is the full inventory or read every skill body to build one.
+- Use descriptions as the sole applicability source. Match ordinary-language intent,
+  scope and exclusions, not just skill names. Do not use a separate catalog or a fixed
+  task-to-skill table. Select relevant skills without requiring the user to name them.
+- Honor explicit skill selections and exclusions, subject to higher-priority
+  instructions, permissions and host capabilities. Load only selected skill bodies.
+  If a requested skill is absent or unreadable, disclose the limitation rather than
+  inventing its procedure; continue permitted work without claiming to use it.
+- Combine compatible methods for mixed tasks, applying each only within its scope.
+  Preserve the user's explicit process role and decision authority. Do not combine
+  roles that disagree on who plans, performs or accepts work. If the descriptions
+  leave a consequential role choice unresolved, ask rather than guess.
+- Reconsider selection when the goal, phase or available capabilities change. Keep
+  applicable ongoing constraints, but do not rerun completed one-time steps such as
+  briefing merely because execution or review begins.
+- Selection grants no permission to spend resources, change files, delegate, use a
+  browser or take other actions. Follow user and host limits. If discovery or a
+  matching skill is unavailable, state any material coverage gap and use only
+  permitted alternatives; never claim that an unavailable skill ran.
+<!-- skill-selection-policy:end -->
+
 ## What ships from this repo
 
 Skills are the only product. Each skill is a directory at
@@ -117,3 +144,5 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > sections of `burst` and `proxy`, the table's first three columns and the blocks from
 > `**Model ID.**` to `**Task types.**` and from `**Fast mode.**` to `**Reporting.**` must be
 > byte-identical. Run the same command locally before pushing.
+> It also checks `skill-selection-policy-mirror`: the marked selection policy in this
+> file and the copyable README block must be non-empty and byte-identical.

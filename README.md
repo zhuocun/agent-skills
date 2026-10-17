@@ -10,6 +10,9 @@ who makes the final calls, so a task loads one of them; their descriptions say w
 
 ## Skills
 
+This catalog is a human-readable overview, not selection metadata. Agents select from
+the descriptions of the skills actually installed in their host.
+
 **Planning and orchestration**
 
 | Skill | What it does |
@@ -73,6 +76,67 @@ Swap `~/.claude` for `~/.agents` in these commands if that is where your runtime
 If a skill or folder with the same name already exists, move it aside before creating the symlink.
 A symlinked install picks up changes on the next `git pull`; when a skill is renamed, recreate any link made under its old name.
 
+### Enable automatic selection outside this repo
+
+Skill discovery and instruction loading are separate. Inside this repository,
+`AGENTS.md` carries the selection policy and `CLAUDE.md` imports it with `@AGENTS.md`.
+A symlink to `.agents/skills` exposes skill directories, not the repository's
+`AGENTS.md` or `CLAUDE.md`. Copied skills likewise do not install this policy.
+
+To enable the policy across projects, manually add the block below once, near the
+start of your host's global instructions. Preserve existing instructions; replace
+an older copy of this block rather than adding duplicates. This is a separate,
+user-approved configuration step, not part of the symlink commands above.
+
+- **Claude Code:** use `~/.claude/CLAUDE.md`, the documented user-instructions file.
+  This installs only the selection policy, not this repository's development rules.
+  See [Claude Code instruction loading](https://code.claude.com/docs/en/memory).
+- **Codex:** use `AGENTS.md` in `CODEX_HOME` (default `~/.codex`). If a non-empty
+  `AGENTS.override.md` exists there, Codex loads it instead; place the policy in that
+  effective file. See [Codex instruction discovery](https://developers.openai.com/codex/guides/agents-md).
+- **Other hosts:** use their documented always-loaded user-instructions surface.
+  A skills path such as `~/.agents/skills` does not imply that
+  `~/.agents/AGENTS.md` is a global instruction file.
+
+Copy this block without the surrounding code fence:
+
+```markdown
+<!-- skill-selection-policy:start -->
+## Automatic skill selection
+
+- At task start and phase changes, inspect installed skill names and descriptions
+  through the host's metadata listing or discovery/search. If a listing is partial,
+  search for each responsibility in the request before selecting. Do not assume a
+  search result is the full inventory or read every skill body to build one.
+- Use descriptions as the sole applicability source. Match ordinary-language intent,
+  scope and exclusions, not just skill names. Do not use a separate catalog or a fixed
+  task-to-skill table. Select relevant skills without requiring the user to name them.
+- Honor explicit skill selections and exclusions, subject to higher-priority
+  instructions, permissions and host capabilities. Load only selected skill bodies.
+  If a requested skill is absent or unreadable, disclose the limitation rather than
+  inventing its procedure; continue permitted work without claiming to use it.
+- Combine compatible methods for mixed tasks, applying each only within its scope.
+  Preserve the user's explicit process role and decision authority. Do not combine
+  roles that disagree on who plans, performs or accepts work. If the descriptions
+  leave a consequential role choice unresolved, ask rather than guess.
+- Reconsider selection when the goal, phase or available capabilities change. Keep
+  applicable ongoing constraints, but do not rerun completed one-time steps such as
+  briefing merely because execution or review begins.
+- Selection grants no permission to spend resources, change files, delegate, use a
+  browser or take other actions. Follow user and host limits. If discovery or a
+  matching skill is unavailable, state any material coverage gap and use only
+  permitted alternatives; never claim that an unavailable skill ran.
+<!-- skill-selection-policy:end -->
+```
+
+Start a new session or run after editing global instructions. Verify from an unrelated
+project that the host loads the policy and exposes the installed descriptions or a
+way to search them, including when only a subset of skills is installed. If either
+surface is unavailable, the policy cannot provide complete automatic selection.
+These are model-followed instructions, not an enforced runtime hook or a guarantee
+of every host's invocation behavior. The global copy is manual: a later `git pull`
+updates symlinked skills, but you must replace this block yourself if it changes.
+
 ## Changing a skill
 
 This repo is the canonical source; make skill changes here. Before pushing, run:
@@ -88,3 +152,6 @@ title and has a `## Self-check` section, that `.claude/skills` links to `.agents
 `references/cli-dispatch.md` and of the shared parts of their Model selection sections. Keep the
 rest of the text they share in step by hand. It needs PyYAML (`pip install pyyaml`). Authoring
 conventions are in `AGENTS.md`.
+It also checks that the marked selection-policy blocks in `AGENTS.md` and this README
+are non-empty and byte-identical. Run its regression tests with
+`python3 -m unittest discover -s scripts -p 'test_*.py'`.

@@ -7,10 +7,12 @@ description: >-
   memos, and design-review documents when the work concerns authoring from
   sources, scope, reader path, structure, abstraction, factual grounding,
   evidence, tradeoffs, registries, structured assets, document governance,
-  concision, or reviewability. Do not use for casual notes, chat replies,
-  routine status updates, pure sentence-level wording or translation polish, or
-  agent-instruction files such as SKILL.md, prompts, workflows, or tool-routing
-  docs.
+  concision, or reviewability. Do not use for mechanical extraction,
+  reformatting, or list generation when wording and organization are prescribed
+  and no document-level judgment is needed; for casual notes, chat replies,
+  routine status updates, or pure sentence-level wording or translation polish;
+  or for agent-instruction files such as SKILL.md, prompts, workflows, or
+  tool-routing docs.
 ---
 
 # Document Editor

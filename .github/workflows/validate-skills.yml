@@ -27,3 +27,6 @@ jobs:
 
       - name: Validate skill files
         run: python3 scripts/validate_skills.py
+
+      - name: Test validator
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
