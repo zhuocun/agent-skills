@@ -20,13 +20,13 @@ Priority: **runtime safety, security and data integrity → failure handling →
 
 - Review without editing code. Propose repairs separately. Remediate only with explicit permission.
 - Record the revision and initial workspace changes. Preserve unrelated work. Check command side effects; run only authorized, isolated checks without changing reviewed files, shared data, or services. Do not read credentials.
-- On a diff review, report only defects introduced or worsened by the diff; list any other defect you notice only on the Pre-existing line. Read unchanged dependencies to understand the changed behavior.
+- On a diff review, report only defects introduced or worsened by the diff; put other verified defects you notice on the Pre-existing line. Read unchanged dependencies to understand the changed behavior.
 - Prefer the narrowest fix within the existing design. Do not turn a repair into a component rewrite or architecture change.
 - Treat every sign below as a candidate, not a finding. Syntax, a lint warning, a missing test, or a preferred pattern alone proves no defect.
 
 ## Step 1: Map the change
 
-1. Read the PR description, requirements, project rules, and whole diff. Read any given QA story set (user stories with acceptance criteria) as requirements; never invent stories. On a later round of the same change, review only changes since the last reviewed revision and verify each earlier finding's fix. Identify the framework version, rendering mode, router, and state/cache libraries.
+1. Read the PR description, requirements, project rules, and whole diff. Read any given QA story set (user stories with acceptance criteria) as requirements; never invent stories. On a later review round, review only changes since the last reviewed revision and verify earlier fixes. Identify the framework version, rendering mode, router, and state/cache libraries.
 2. Read unchanged callers, consumers, types, schemas, shared hooks, API adapters, and wrappers the change relies on. Follow imports until you can see validation, error ownership, and state ownership. Respect an explicit review boundary. List unavailable code as a coverage gap.
 3. Make a short inventory before hunting. For each changed component, hook, helper, or action, record:
    - Each boundary value: network response, input, route/query parameter, storage, browser API, SDK, or external prop. Note its contract, guard, and downstream uses.
@@ -34,7 +34,7 @@ Priority: **runtime safety, security and data integrity → failure handling →
    - Each effect: dependencies, captured values, resources, and cleanup.
    - Each async action: initiator, pending state, success, failure, cancellation, and completion writes.
    - Each rendered untrusted string: source, transformations, and final text, HTML, URL, or attribute context.
-4. Connect the entries across files. Trace response → adapter → hook/cache → component → user action → write. Include covering tests. Map each in-scope story to its changed code path and covering test.
+4. Connect the entries across files. Trace response → adapter → hook/cache → component → user action → write. Include covering tests. Map each in-scope story to its code path and covering test.
 
 ## Step 2: Hunt each entry
 
@@ -126,7 +126,7 @@ Usually correct: small colocated components; intentional composition or prop pas
 
 For each candidate, try to disprove it:
 
-1. Locate the contract: PR description, given stories and acceptance criteria, and product rules; types, schemas, and API docs; callers, tests, and established behavior; project standards. Distinguish compile-time promises from runtime enforcement. A story silent on the case confirms nothing; a missing story is never a defect.
+1. Locate the contract: PR description, given stories and acceptance criteria, and product rules; types, schemas, and API docs; callers, tests, and established behavior; project standards. Distinguish compile-time promises from runtime enforcement. A story silent on the case confirms nothing; the absence of a story is never itself a defect.
 2. Check baseline UI obligations too. Supported inputs must not crash. Untrusted content must not execute. Edits must not silently move to another record or disappear during the promised flow. Failed work must not appear successful. Displayed results must match their stated identity and freshness.
 3. Trace the exact trigger's branch conditions and intermediate values across files; confirm branch reachability and rule violation. Exclude boundary-rejected data. Static trace and arithmetic can suffice; use permitted isolated probes only for decisive uncertainty.
 4. Search callers, schemas, adapters, shared hooks, framework behavior, and cache configuration for defenses. Trace each against this trigger; drop blocked candidates.
@@ -143,7 +143,7 @@ Use the project's severity scheme, else rate confirmed impact and reachability:
 
 Do not rate by syntax. An unguarded access is not automatically a Blocker.
 
-Use this compact form. Omit empty sections. Order findings by severity. Report each defect class once, listing every instance. Do not repeat an earlier round's finding unless its fix failed or the new change worsened it. Give each given story one status: violated (a finding), uncertain (an Uncertain item), not covered by a test (no violation, no effective test: a test gap), met (satisfied and tested), or outside scope. Keep the Stories line when no set was given. Expand only for multiple independent flows or a requested full report.
+Use this compact form. Omit empty sections. Order findings by severity. Combine repeated instances of one cause, not distinct defects; list every instance. Do not repeat a fixed earlier finding; carry an unfixed, failed-fix or worsened one under its original ID. Give each given story one status: violated (a finding), uncertain (an Uncertain item), not covered by a test (no violation, no effective test: a test gap), met (satisfied and tested), or outside scope. Keep the Stories line even with no set. Expand only for multiple independent flows or a requested full report.
 
 ```text
 Scope: <revision/diff and flows reviewed; later round: base revision, fixes verified>
@@ -156,7 +156,7 @@ F1 [severity] <title> — <file:line; related locations>
   Fix: <narrowest repair; exact replacement when useful>
   Verify: <regression assertion that fails before and passes after>
 Uncertain: <question; missing fact/source; owner>
-Stories: <S1 met, S2 violated F1, …; or no story set given>
+Stories: <S1 met, S2 violated F1, …; or none given>
 Pre-existing: <file:line — defect the diff did not introduce or worsen>
 Test gaps / suggestions: <separate from defects>
 Skipped / unavailable: <sections or code — reason, in one line>
@@ -168,8 +168,8 @@ Propose the verification; do not implement it during review without permission. 
 
 ## Self-check
 
-- [ ] Every changed flow has an inventory. Read unchanged callers, types, shared hooks, and consumers needed for its contract. Each given story has a code path, test, and status, or Stories says none was given.
+- [ ] Every changed flow has an inventory. Read unchanged callers, types, shared hooks, and consumers needed for its contract. Each given story has a path, test, and status, or Stories says none given.
 - [ ] Trace each applicable hunt section across files, including stale completions and failure paths. List skipped or unavailable coverage.
 - [ ] Each finding has a reachable trigger, contract, location, consequence, evidence, searched defense, and narrow fix.
 - [ ] Reject usually-correct look-alikes. Separate uncertain cases, test gaps, structural concerns, and optional suggestions from confirmed behavior defects.
-- [ ] Scale severity and report length to proven impact. One finding per defect class; pre-existing defects and repeats stay out; a later round reviews newer changes and earlier fixes. Record checks honestly. Keep review separate from remediation and preserve unrelated work.
+- [ ] Scale severity and report length to proven impact. One finding per cause, with every instance; pre-existing defects on their own line; fixed earlier findings not repeated; a later round reviews newer changes and earlier fixes. Record checks honestly. Keep review separate from remediation and preserve unrelated work.
