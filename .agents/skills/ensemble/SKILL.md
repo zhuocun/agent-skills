@@ -10,7 +10,7 @@ description: >-
 
 # Ensemble
 
-Treat every explicit invocation, including a repeat in the same session, as explicit invocation of every member below, made again even for a member invoked, loaded or active earlier. Use their actual installed instructions, not copies of their rules in this skill. Each member remains independently usable.
+Treat every explicit invocation, including a repeat in the same session, as a fresh explicit invocation of every member below, even one invoked, loaded or active earlier. Use their actual installed instructions, not copies of their rules in this skill. Each member remains independently usable.
 
 Priority order: **existing instruction hierarchy and user overrides → faithful member behavior → convenience.** The list sets loading order, not authority between members.
 
@@ -28,10 +28,10 @@ Priority order: **existing instruction hierarchy and user overrides → faithful
 
 3. **Apply as directly invoked.** Do not re-filter this explicit request through automatic selection triggers. Honor each member's substantive prerequisites, exclusions and permissions. Preserve the user's task scope and overrides, and each member's own authority, lifecycle and conditions for stopping. Re-invoking a member restores its instructions; its own rules decide what the current request needs, so reuse an existing binding brief and completed work under those rules rather than creating a second brief or repeating finished steps. Resolve conflicts through the existing instruction hierarchy and the members' own priorities; ask the user about genuinely unresolved material conflicts.
 
-4. **Continue faithfully.** Between explicit invocations, on later tasks, compaction or resumption, restore any needed actual member instructions in full, not stale summaries, and continue under each member's lifecycle. Do not silently re-enable a member the user disabled.
+4. **Continue faithfully.** Between explicit invocations, on later tasks, compaction or resumption, restore any needed actual member instructions in full, not stale summaries, and continue under each member's lifecycle. Do not re-enable a member the user disabled until the next explicit invocation; that invocation re-enables it, and you say so, unless the user excludes it in the same message.
 
 ## Self-check
 
-- [ ] Every listed member was invoked again on this invocation, before other work and even if invoked earlier, and its full actual instructions were obtained, or the unavailable member and host limit were named without a complete-activation claim.
+- [ ] Every listed member the user did not exclude in this message was invoked on this invocation, before other work and even if invoked earlier, and its full actual instructions were obtained, or the unavailable member and host limit were named without a complete-activation claim.
 - [ ] Applicable member instructions are considered together as explicit invocations, without inventing native capabilities, authority or list-order precedence.
 - [ ] User overrides, member prerequisites and lifecycles, the binding brief and completed work remain intact.
