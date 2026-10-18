@@ -36,12 +36,12 @@ OUTPUT_STYLE_MIRRORS = (
     (Path(".claude/output-styles/baseline.md"), Path(".agents/skills/communicate/SKILL.md")),
 )
 SHARED_REFERENCES = (
-    (Path(".agents/skills/burst/references/cli-dispatch.md"), Path(".agents/skills/proxy/references/cli-dispatch.md")),
+    (Path(".agents/skills/conductor/references/cli-dispatch.md"), Path(".agents/skills/proxy/references/cli-dispatch.md")),
 )
 SHARED_SECTIONS = (
     (
         "## Model selection",
-        (Path(".agents/skills/burst/SKILL.md"), Path(".agents/skills/proxy/SKILL.md")),
+        (Path(".agents/skills/conductor/SKILL.md"), Path(".agents/skills/proxy/SKILL.md")),
         (("**Model ID.**", "**Task types.**"), ("**Fast mode.**", "**Reporting.**")),
     ),
 )
