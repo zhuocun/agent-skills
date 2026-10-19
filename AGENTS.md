@@ -46,8 +46,9 @@ the source order (conductor's **Subagent sources**, proxy's **Source.**), rules 
 
 ## Skill authoring conventions
 
-Derived from the skills already in this repo (`conductor`, `chinese-diction`,
-`frontend-cr`, `document-editor`, `status-report`):
+These conventions follow the skills already in this repo (`conductor`,
+`chinese-diction`, `frontend-cr`, `document-editor`, `status-report`) and the
+standard their audits apply:
 
 - **One directory per skill**, and the directory name must equal the skill's
   `name` frontmatter field. The directory holds a `SKILL.md`, plus optional
@@ -84,8 +85,8 @@ Derived from the skills already in this repo (`conductor`, `chinese-diction`,
   such as "the last rule".
 - **Rewrite a rule when you change it**, so the result reads as if written that
   way from the start. Do not append a clause, exception or sentence that
-  patches one case. Do not word a rule as a reply to an earlier version: no "no
-  longer", and no "even when" or "not X but Y" answering removed text.
+  patches one case. Do not word a rule as a reply to an earlier version, such as
+  "no longer", or an "even when" or "not X but Y" that answers removed text.
 - **Examples only illustrate.** With every example deleted, the rule text alone
   must still give the right result.
 - **Match each Self-check line to its rule exactly**, no stricter and no
