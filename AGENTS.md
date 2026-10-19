@@ -40,34 +40,51 @@ Derived from the skills already in this repo (`conductor`, `chinese-diction`,
 audits apply:
 
 - **One directory per skill**, and the directory name must equal the skill's
-  `name` frontmatter field. The directory holds a `SKILL.md`, plus optional
-  `references/` and `agents/` subdirectories when a skill needs them.
-- **YAML frontmatter** with two required keys, `name` and a dense
-  `description`; other keys are allowed. The
-  description carries the routing triggers inline — a "Use when…" clause and,
-  where the skill is easily over-applied, a "Do not use for…" clause (see
-  `frontend-cr`, `document-editor`, `chinese-diction`).
+  `name` frontmatter field. Give the skill a short name that says what it does.
+  The directory holds a `SKILL.md`, plus optional `references/` and `agents/`
+  subdirectories when a skill needs them.
+- **YAML frontmatter** with two required keys, `name` and `description`; other
+  keys are allowed. The description states only what the skill does and when to
+  use it, in at most 1024 characters, and includes the triggers, keywords and
+  exclusions that route requests, with a "Use when…" clause and, where the skill
+  is easily over-applied, a "Do not use for…" clause (see `frontend-cr`,
+  `document-editor`, `chinese-diction`). Operating rules, output form and
+  rationale belong in the body.
 - **Keep the frontmatter YAML-safe.** When the `description` contains
   characters that could break strict parsers, use a folded `>-` block scalar
   rather than a bare string — `chinese-diction`, `cursor-harness` and others
   do this.
 - **Body pattern:** an `# H1` title, a one-paragraph statement of the skill's
-  role, an explicit priority order where the work is ranked (e.g. `frontend-cr`'s
-  "runtime safety → … → layering", `status-report`'s "grounded evidence → … →
-  fixed form"), the substance as numbered passes or failure modes
-  (`frontend-cr`'s review passes, `chinese-diction`'s seven failure modes), and a
-  terminal `## Self-check` the agent runs before declaring done.
+  role, an explicit priority order where the work is ranked (e.g.
+  `frontend-cr`'s "runtime safety → … → layering", `status-report`'s "grounded
+  evidence → … → fixed form"), the substance as numbered passes or failure modes
+  (`frontend-cr`'s review passes, `chinese-diction`'s seven failure modes), and
+  a terminal `## Self-check` the agent runs before declaring done.
 - **In `chinese-diction`, every register- or genre-conditional exception ships
   with a ✓ example** in the register or genre it excuses. A case named only in
   a waiver is not covered by the skill, it is merely exempted, and a model will
   read the waiver as licence to skip the rule rather than as a different
   standard to meet.
+- **Make each skill stand alone and compose.** A skill works with no other skill
+  loaded and does not conflict with skills loaded beside it. It does not name
+  another skill, use terms only that skill defines, depend on its outputs or add
+  a rule for its case; an exclusion describes the other domain instead. The only
+  exception is `ensemble`, which loads its listed skills on explicit request. A
+  skill whose subject is not specific to software also works outside software.
 - **Write for an agent, not a human reader.** Skills are instructions a model
-  follows; keep them imperative, concrete, and self-contained. Make them clear,
-  precise, concise and natural: give each sentence one reading, and use standard
-  professional terms rather than coined jargon. Do not run the prose-editing
-  skills (`chinese-diction`, `document-editor`) on SKILL.md files — they
-  explicitly exclude agent-instruction files.
+  follows; keep them imperative, concrete and self-contained. The body holds
+  only text the executing agent uses, including the reasons that help it apply a
+  rule. It holds no maintainer notes, provenance or attribution, and it states a
+  source's ideas as the skill's own rules. Make skills clear, precise, concise
+  and natural: give each sentence one reading, and use standard professional
+  terms rather than coined jargon. Do not run the prose-editing skills
+  (`chinese-diction`, `document-editor`) on SKILL.md files — they explicitly
+  exclude agent-instruction files.
+- **Keep tool and product facts correct as products change.** Choose a model,
+  tool or product mode by a stable property, such as its place in the provider's
+  own lineup, with a fallback for when nothing qualifies. Check each fact a
+  skill states about a tool or product against that tool's or product's current
+  documentation or observed behaviour.
 - **State each rule once within a skill**, with its exceptions inside it; a
   Self-check line is its rule's check, not a second statement. A cross-reference
   names a section, a bold label or a number such as "pass 6", never a relative
@@ -75,7 +92,9 @@ audits apply:
 - **Rewrite a rule when you change it**, so it reads as if written that way from
   the start, not as the old rule plus an appended clause, exception or sentence.
   Do not word a rule as a reply to an earlier version, such as a "no longer",
-  "even when" or "not X but Y" that answers removed text.
+  "even when" or "not X but Y" that answers removed text. When you relax a rule,
+  widen it only by the cases the change is meant to allow, and keep its limiting
+  words, such as "only".
 - **Examples only illustrate**, including the ✓ examples `chinese-diction`
   requires: with every example deleted, the rule text alone must still give the
   right result.
@@ -83,6 +102,11 @@ audits apply:
   looser.
 - **Keep cuts behaviour-neutral.** A cut removes only text whose removal changes
   no behaviour; make a behaviour change as its own deliberate decision.
+- **Claim a routing or behaviour improvement only from a behaviour test.** The
+  test runs the new and the previous version on cases the editor has not seen:
+  requests routed from descriptions alone, or scenarios given to fresh readers
+  who see only the skill. A result equal to the previous version's shows only
+  that those cases did not regress.
 
 ## Repo conventions
 
