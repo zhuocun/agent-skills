@@ -85,7 +85,7 @@ audits apply:
   position such as "the last rule".
 - **Rewrite a rule when you change it**, so it reads as if written that way from
   the start, not as the old rule plus an appended clause, exception or sentence.
-  Do not word a rule as a reply to an earlier version: no "no longer", and no
+  Do not word a rule as a reply to an earlier version, such as a "no longer",
   "even when" or "not X but Y" that answers removed text.
 - **Examples only illustrate**, including the ✓ examples `chinese-diction`
   requires: with every example deleted, the rule text alone must still give the
