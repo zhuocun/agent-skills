@@ -9,11 +9,11 @@ description: >-
   before.
   Also use when asked to raise the ambition or standard of a task, prompt or plan.
   Do not use, unless the user asks, for a trivial or mechanical task, a fix whose cause is
-  known, a task whose method the user fixed, a task with a spec or acceptance criteria (a target
+  known, a task whose method the user named, a task with a spec or acceptance criteria (a target
   figure, required sections or a reviewer's pass condition), a step you take inside a briefed
   request (a clarification or a fix for a review finding), or a question that needs only an
-  answer. Limits on audience, scope, length, size, format, budget, time or tools are not a
-  method or acceptance criteria. Never use it for executing the task or reviewing finished work.
+  answer. A stated audience or limits on scope, length, size, format, budget, time or tools are not a
+  method or acceptance criteria. Never use it to execute a task or review finished work.
 ---
 
 # Raise Ambition
