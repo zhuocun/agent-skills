@@ -6,9 +6,7 @@ whose frontmatter says when to use it, and whose body is the procedure the agent
 Ordinary skills work on their own: none names another, depends on another, or hands work to
 another. `ensemble` is the explicit skill-loading shortcut: it names its members, each of
 which still works independently. Installed together, ordinary skills cover different
-responsibilities, so an agent can load several for one task. `conductor` and `proxy` are alternatives:
-both run a task through subagents but differ on who makes the final calls, so a task loads one
-of them; their descriptions say which fits.
+responsibilities, so an agent can load several for one task.
 
 ## Skills
 
@@ -19,7 +17,6 @@ of them; their descriptions say which fits.
 | `ensemble` | Explicit shortcut that loads every skill in its maintained member list as if each were explicitly invoked, again on every invocation, including members already loaded. Uses the host's skill-loading mechanism or supported instruction-file reading, and reports unavailable members and host limits. For an explicit request only, not automatic selection, model voting or work coordination. |
 | `raise-ambition` | Before a non-trivial task starts, rewrites its brief to aim higher, in any domain, through four lenses: Altitude (the outcome the task serves), Depth (the methods, targets and checks an expert would use), Range (methods from other fields) and Speed (a deadline and an early outside check). Keeps the user's scope, constraints, permissions and budget, and returns one brief laid out under those four lenses, with a definition of done. The agent uses it on its own initiative when a new non-trivial request names a deliverable but no method and no acceptance criteria. Also used when asked to make a task, prompt or plan more ambitious. Unless the user asks, not for trivial tasks, fixes whose cause is known, tasks that already have a spec, or questions that need only an answer. |
 | `conductor` | Runs research, audit, implementation and review work through parallel subagents, with a reviewer before integration. The agent keeps the planning, integration and done decisions, and consults advisors on the strongest available models, over as many rounds as needed, on any hard decision it is still unsure about. Needs a way to launch subagents; not for a tiny single-step task. |
-| `proxy` | Delegates every decision and every unit of work, including how to split the task and whether it is done, to top-tier subagents. For when the user wants subagents, not the main agent, to make those calls. Needs a way to launch subagents; not for a trivial single-step task. |
 
 **Writing**
 
@@ -86,8 +83,6 @@ python3 scripts/validate_skills.py
 
 It checks that every skill directory has a `SKILL.md` whose frontmatter parses as YAML with a
 non-empty `name` (matching the directory) and `description`, that the body opens with a `# `
-title and has a `## Self-check` section, that `.claude/skills` links to `.agents/skills`, that
-`baseline.md` matches `communicate`, and that `conductor` and `proxy` have identical copies of
-`references/cli-dispatch.md` and of the shared parts of their Model selection sections. Keep the
-rest of the text they share in step by hand. It needs PyYAML (`pip install pyyaml`). Authoring
+title and has a `## Self-check` section, that `.claude/skills` links to `.agents/skills`, and that
+`baseline.md` matches `communicate`. It needs PyYAML (`pip install pyyaml`). Authoring
 conventions are in `AGENTS.md`.

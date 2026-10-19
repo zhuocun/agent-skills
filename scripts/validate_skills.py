@@ -35,17 +35,6 @@ SYMLINK = Path(".claude/skills")
 OUTPUT_STYLE_MIRRORS = (
     (Path(".claude/output-styles/baseline.md"), Path(".agents/skills/communicate/SKILL.md")),
 )
-SHARED_REFERENCES = (
-    (Path(".agents/skills/conductor/references/cli-dispatch.md"), Path(".agents/skills/proxy/references/cli-dispatch.md")),
-)
-SHARED_SECTIONS = (
-    (
-        "## Model selection",
-        (Path(".agents/skills/conductor/SKILL.md"), Path(".agents/skills/proxy/SKILL.md")),
-        (("**Model ID.**", "**Task types.**"), ("**Fast mode.**", "**Reporting.**")),
-    ),
-)
-SHARED_TABLE_COLUMNS = 3
 REQUIRED_KEYS = ("name", "description")
 FENCE = "---"
 
@@ -58,10 +47,8 @@ CHECKS = (
     ("self-check-section", "the body has a `## Self-check` section"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
     ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
-    ("shared-reference-identical", "each reference file two skills share is byte-identical in both"),
-    ("shared-section-identical", "each section two skills share has a byte-identical table (first three columns) and shared blocks"),
 )
-REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror", "shared-reference-identical", "shared-section-identical"}
+REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror"}
 
 
 @dataclass(frozen=True)
@@ -161,65 +148,6 @@ def check_output_style_mirrors(root: Path) -> list[Failure]:
 
 
 
-def check_shared_references(root: Path) -> list[Failure]:
-    failures: list[Failure] = []
-    for copies in SHARED_REFERENCES:
-        missing = [str(path) for path in copies if not (root / path).is_file()]
-        if missing:
-            failures.extend(Failure("shared-reference-identical", where, "does not exist; the skills that share it each ship a copy") for where in missing)
-            continue
-        first = (root / copies[0]).read_bytes()
-        for path in copies[1:]:
-            if (root / path).read_bytes() != first:
-                failures.append(Failure("shared-reference-identical", str(path), f"differs from `{copies[0]}`; edit every copy together"))
-    return failures
-
-
-def section_lines(path: Path, heading: str) -> list[str]:
-    """Return the lines of the `## ` section titled `heading`, heading excluded. Raises ValueError if absent."""
-    lines = path.read_text(encoding="utf-8").split("\n")
-    if heading not in lines:
-        raise ValueError(f"has no `{heading}` section")
-    start = lines.index(heading) + 1
-    end = next((i for i in range(start, len(lines)) if lines[i].startswith("## ")), len(lines))
-    return lines[start:end]
-
-
-def shared_parts(lines: list[str], blocks: tuple[tuple[str, str], ...]) -> dict[str, str]:
-    """Map each shared part's name to its text: the table's first columns, and each block from its label to the next label."""
-    rows = [line.split("|")[1 : SHARED_TABLE_COLUMNS + 1] for line in lines if line.startswith("|")]
-    parts = {"table": "\n".join("|".join(cell.strip() for cell in row) for row in rows)}
-    for start, stop in blocks:
-        first = next((i for i, line in enumerate(lines) if line.startswith(start)), None)
-        if first is None:
-            raise ValueError(f"has no block starting `{start}`")
-        last = next((i for i in range(first + 1, len(lines)) if lines[i].startswith(stop)), None)
-        if last is None:
-            raise ValueError(f"block `{start}` is not followed by `{stop}`")
-        parts[start] = "\n".join(lines[first:last])
-    return parts
-
-
-def check_shared_sections(root: Path) -> list[Failure]:
-    failures: list[Failure] = []
-    for heading, copies, blocks in SHARED_SECTIONS:
-        found: list[tuple[Path, dict[str, str]]] = []
-        for path in copies:
-            if not (root / path).is_file():
-                failures.append(Failure("shared-section-identical", str(path), f"does not exist; the skills that share `{heading}` each ship a copy"))
-                continue
-            try:
-                found.append((path, shared_parts(section_lines(root / path, heading), blocks)))
-            except ValueError as exc:
-                failures.append(Failure("shared-section-identical", str(path), f"`{heading}`: {exc}"))
-        for path, parts in found[1:]:
-            first_path, first = found[0]
-            for name, text in first.items():
-                if parts[name] != text:
-                    failures.append(Failure("shared-section-identical", str(path), f"`{heading}` {name} differs from `{first_path}`; edit every copy together"))
-    return failures
-
-
 def check_skill(directory: Path, root: Path) -> Result:
     failures: list[Failure] = []
     skill_md = directory / "SKILL.md"
@@ -303,7 +231,7 @@ def main() -> int:
         sys.stderr.write(f"validate_skills: {skills_root} contains no skill directories\n")
         return 2
 
-    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root) + check_shared_references(root) + check_shared_sections(root)
+    failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root)
     skips: list[Skipped] = []
     for directory in directories:
         directory_failures, directory_skips = check_skill(directory, root)
