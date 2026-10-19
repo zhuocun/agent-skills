@@ -99,7 +99,7 @@ The reviewer must **ground its verdict against external truth** wherever that si
 
 **Verdict handling**:
 
-- `pass` → the orchestrator reconciles the verdict before accepting it (see **Orchestrator final gate**); the full final gate runs once, at the end of the run
+- `pass` → the orchestrator reconciles the verdict before accepting it (see **Orchestrator final gate**); the full final gate runs at the end of the run
 - `revise` → send the worker back with the reviewer's issues verbatim; do not paraphrase
 - `redo` → re-brief from scratch or reassign to a fresh worker, passing the reviewer's issues verbatim either way
 
@@ -138,7 +138,7 @@ Map each assignment to the platform's fields: `model`, `subagent_type`, `effort`
 
 **Model ID.** Use the newest version of the family that the source offers, read from that source's own model list, never an ID remembered from earlier work or training. Use an alias that resolves to the latest version only when it cannot land on a forbidden tier; otherwise pin the full ID from the list. Never use a bare family alias such as `gpt`: it does not guarantee the required tier, effort or speed.
 
-**Task types.** Each delegated role runs the family and effort level of its row, never lower and never higher except as **Fallbacks** and **Effort limits** direct.
+**Task types.** Each delegated role runs the family and effort level of its row, neither lower nor higher, unless **Fallbacks** or **Effort limits** direct otherwise.
 
 First choice is the family and effort to dispatch, Fallback the family and effort to dispatch when the first-choice family has no available source, and Includes, by example, what routes to the row; "Claude" and "GPT" mean each provider's top-tier line (see **Tiers.**), today Opus and Sol.
 
@@ -204,12 +204,12 @@ For example: "Reviewer: <model> xHigh via <source> CLI", "Reviewer: <model> High
 
 ## Orchestrator final gate
 
-A reviewer `pass` does not bypass the orchestrator. Everything a worker, reviewer, verifier or advisor returns is reference material by default — a claim to check, not a fact to adopt. Before accepting any verdict, `pass`, `revise` or `redo`, weigh it critically and reconcile it yourself against the source of truth and the DoD. Handle an accepted `revise` or `redo` as **Reviewer** directs, and treat a rejected one as a `pass`.
+A reviewer `pass` does not bypass the orchestrator. Everything a worker, reviewer, verifier or advisor returns is reference material by default — a claim to check, not a fact to adopt. Before accepting any verdict, `pass`, `revise` or `redo`, weigh it critically and reconcile it yourself against the source of truth and the DoD. Handle an accepted `revise` or `redo` as **Reviewer** directs, and proceed on a rejected one as on an accepted `pass`.
 
 - Verify each subtask against its original goal — scope, expected output, ownership, constraints — and the integrated whole against the DoD.
 - Reconcile conflicts with surrounding code, conventions, and other concurrent subagent edits.
 - Run the relevant quality gates (typecheck, lint, targeted tests, full suite, manual smoke checks) before declaring a task done.
-- If integration issues surface, send the worker back with a precise correction prompt and route the corrected work through the reviewer, redo locally, or re-brief through a fresh reviewer cycle — do not paper over.
+- If integration issues surface, send the worker back with a precise correction prompt and route the corrected work through a fresh reviewer, redo locally, or re-brief through a fresh reviewer cycle — do not paper over.
 - Surface unresolved risks, skipped checks, or known gaps explicitly in the final summary.
 
 ## Communication
@@ -238,7 +238,7 @@ Before declaring a conductor task done, confirm:
 - [ ] Delegation honored — every non-trivial workstream went to a subagent; nothing was pulled local except genuinely tiny steps, work tightly coupled to the next local action, the immediate blocking step, the orchestrator's own final gate, and work pulled local after two failed reviews or an integration redo (see **Reviewer** and **Orchestrator final gate**).
 - [ ] Concurrency maximized — independent strands ran in parallel, not serialized.
 - [ ] Every delegated role ran the family and effort level **Model selection** assigns it, and every advisor the model and effort **Advisor model** assigns it, or what those rules put in its place — a fallback, an effort-limit level or inherited default, the choice when no source offers either family, a mode chosen by those rules, or an explicit instruction — in the newest version in its source's own model list.
-- [ ] Each ran through the first available source in its family's order (for an advisor, the first that offers its model): through that source's in-product mechanism when you run in that source and the mechanism can carry the assignment, otherwise through that source's CLI, and through a mode-only route only when no route that carries the model was available.
+- [ ] Every delegated role and every advisor ran through the first available source in its family's order (for an advisor, the first that offers its model): through that source's in-product mechanism when you run in that source and the mechanism can carry the assignment, otherwise through that source's CLI, and through a mode-only route only when no route that carries the model was available.
 - [ ] Every subagent call set every exposed parameter explicitly, the mode included on a mode-only route — no silent platform default, and no tier **Tiers.** forbids for that role unless instructed.
 - [ ] Every decision that needed the user's consent went straight to the user; every other hard decision went to an advisor wherever one could run. Each round asked something new, the advisors were briefed without your leaning or the intermediate reasoning behind any result, and you checked their advice at the source before deciding.
 - [ ] Fast mode ran only inside a scope the user named, and was off everywhere else (see **Fast mode** under **Model selection**).
