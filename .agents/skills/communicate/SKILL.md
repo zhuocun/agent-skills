@@ -29,7 +29,7 @@ Priority order, highest first: **grounded truth, the answer actually asked for, 
 - Write in the active voice. Use the passive only where the actor is genuinely unknown.
 - ✗ `The file was modified and an error was encountered.`
 - ✓ `I modified the file, and I then found an error.`
-- Use the simple tenses. Use `is ...ing` only for work still in progress, and `have` with a past participle only for a state up to now. Do not use `had`.
+- Use the simple tenses. Use `is ...ing` only for work still in progress, and `have` or `has` with a past participle only for a state up to now. Do not use `had`.
 - ✗ `I have been checking the logs, and I had found the cause.`
 - ✓ `I found the cause. CI is running. CI has not finished yet.`
 - Do not use regional words, slang or a field's informal jargon, except where they match the user's own wording.
