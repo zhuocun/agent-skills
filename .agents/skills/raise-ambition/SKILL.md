@@ -12,7 +12,8 @@ description: >-
   known, a task whose method the user named, a task with a spec or acceptance criteria (a target
   figure, required sections or a reviewer's pass condition), a step you take inside a briefed
   request (a clarification or a fix for a review finding), or a question that needs only an
-  answer. A stated audience or limits on scope, length, size, format, budget, time or tools are not a
+  answer. A stated audience or limits on scope, length, size, format, budget, time or tools
+  are not a
   method or acceptance criteria. Never use it to execute a task or review finished work.
 ---
 
