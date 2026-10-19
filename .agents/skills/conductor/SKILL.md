@@ -15,7 +15,7 @@ Worker output is not integrated directly: every worker deliverable passes throug
 
 ## Run it to done
 
-Before dispatching anything, define the to-dos and a high-standard definition of done (DoD) — the explicit bar the integrated work must clear. Set it at the highest standard that can still be verified within the user's scope, constraints and budget: fold in every requirement already set for the task, including the qualities it must not degrade and the checks it must pass, raise it further with any method you have for raising a task's standard, and never set it lower than what was already set. Any higher bar worth aiming at but not gating on, whether already set for the task or added now, stays outside the DoD as a stretch target, and the final summary reports the result against it. Ask the user before starting any work that goes beyond their scope, constraints or budget, and add each item they approve to the DoD. Then, building on any plan already set for the task, orchestrate with perseverance until that DoD is met: keep the chain running, proactively resolve blockers as they surface, and make the decisions the run needs — any choice that advances the DoD is yours to make, except one that needs the user's consent, and on a hard one you first consult an advisor (see **Advisor**). Do not pause mid-flight and call a round finished while DoD to-dos are still open and actionable. Escalate only a genuine blocker — a decision you still cannot ground, or a subtask that fails its second review and that you do not pull local (see **Reviewer**) — not a trivial or obvious-answer fork; otherwise decide and keep moving. Proactively record the to-dos and progress in a running checklist, kept in a file or in the tracker the work already uses, so that nothing drifts over a long session and the checklist survives a compaction.
+Before dispatching anything, define the to-dos and a high-standard definition of done (DoD) — the explicit bar the integrated work must clear. Set it at the highest standard that can still be verified within the user's scope, constraints and budget: fold in every requirement already set for the task, including the qualities it must not degrade and the checks it must pass, raise it further with any method you have for raising a task's standard, and never set it lower than what was already set. Any higher bar worth aiming at but not gating on, whether already set for the task or added now, stays outside the DoD as a stretch target, and the final summary reports the result against it. Ask the user before starting any work that goes beyond their scope, constraints or budget, and add each item they approve to the DoD. Then, building on any plan already set for the task, orchestrate with perseverance until that DoD is met: keep the chain running, proactively resolve blockers as they surface, and make the decisions the run needs — any choice that advances the DoD is yours to make, except one that needs the user's consent, and on a hard one you first consult an advisor (see **Advisor**). Do not pause mid-flight and call a round finished while DoD to-dos are still open and actionable. Escalate only a genuine blocker — a decision you still cannot ground, or a subtask with two failed reviews that you do not pull local (see **Reviewer**) — not a trivial or obvious-answer fork; otherwise decide and keep moving. Proactively record the to-dos and progress in a running checklist, kept in a file or in the tracker the work already uses, so that nothing drifts over a long session and the checklist survives a compaction.
 
 ## Stay grounded
 
@@ -36,7 +36,7 @@ When delegation is allowed, **subagents are the default executor**. Treat stayin
 - it is likely to take more than a few minutes
 - it has 2+ independent workstreams or 3+ distinct side subtasks
 
-Stay local only for genuinely tiny work (a single step that is faster to do locally), for work tightly coupled to the next local action, and for the immediate blocking step whose result the next local action depends on. Work kept wholly local this way needs no DoD, running checklist, **Final summary** form or **Self-check**; state the reason as **Communication** directs.
+Stay local only for genuinely tiny work (a single step that is faster to do locally), for work tightly coupled to the next local action, and for the immediate blocking step whose result the next local action depends on. A task kept wholly local this way needs no DoD, running checklist, **Final summary** form or **Self-check**; state the reason as **Communication** directs.
 
 Prefer one subagent per distinct subtask. Run independent work in parallel rather than serializing it: launch concurrent subagents as early as dependencies allow, and never hold back a strand that does not depend on one still in flight. Never serialize independent writers merely because they share one working tree — that is concurrency you gave up, not a limit you found. Where the shared environment is what caps parallelism and a worktree's setup costs less than the parallelism it buys, give each writing strand its own `git worktree` and record where each one is; a worktree holds tracked content only, so dependencies and other ignored files do not come across. Everywhere else, a strand that only reads included, work in the shared tree, running writers concurrently when their files do not overlap.
 
@@ -103,7 +103,7 @@ The reviewer does not edit the artifact or any shared deliverable and does not a
 - `revise` → send the worker back with the reviewer's issues verbatim; do not paraphrase
 - `redo` → re-brief from scratch or reassign to a fresh worker
 
-Stop after two failed reviews on the same subtask (initial review + one retry). Pull the work local or escalate to the user — do not start a third review. A fresh reviewer cycle from the final gate continues this count.
+Stop after two failed reviews on the same subtask: pull the work local or escalate to the user, and do not review it again. The count runs across every reviewer cycle the subtask gets, so a fresh reviewer cycle from the final gate continues it and a `pass` between failures does not reset it.
 
 A **verifier** is the same gate in narrower form: a subagent dispatched to confirm one specific claim or behavior that a worker, artifact or reviewer asserted — run the test suite, reproduce a bug, re-check a cited source — rather than judge a whole artifact. Verifiers follow the reviewer's rules: independent, grounded in external truth, never the author of the fix.
 
@@ -113,11 +113,11 @@ Consult an advisor on every hard decision: one that is consequential to the DoD 
 
 **Advisor model.** Consult one advisor per family, on the too-expensive edge whatever model you run on, that same model included, unless a later step applies. Choose each family's advisor by these steps in order:
 
-1. Among the family's too-expensive-edge models (see **Tiers.**) that a successfully retrieved catalog of one of its sources offers, take the strongest as its provider ranks them, or the costlier where that ranking does not separate two, in its newest version (see **Model ID**), from the first source in the family's order that offers it. Run it at the effort the Brainstorming and discussion row gives that family, Claude `high` and GPT `xhigh`. For example, an orchestrator on Astra consults Astra and the stronger of Fable and Mythos, not Sol or Opus.
+1. Among the family's too-expensive-edge models (see **Tiers.**) that a successfully retrieved catalog of one of its sources offers, take the strongest as its provider ranks them, or the costlier where that ranking does not separate two, in its newest version (see **Model ID**), from the first source in the family's order that offers it. Run it at the effort the Brainstorming and discussion row gives that family, Claude `high` and GPT `xhigh`; take only the effort from that row, never its top-tier model. For example, an orchestrator on Astra consults Astra and the stronger of Fable and Mythos, not Sol or Opus.
 2. When none of the family's sources offers such a model, take its top-tier model the same way, today Opus for Claude and Sol for GPT.
 3. When no source offers a model of either family, choose each advisor as **Fallbacks** chooses for that row, taking the strongest model the available sources offer, oversized tiers included.
 4. On a mode-only route, carry the advisor in the standard full-capability mode, as any role.
-5. When a dispatch fails at run time, treat that source as unavailable for that model and apply steps 1–3 again.
+5. When a dispatch fails at run time, treat that source's catalog as not offering that model and apply steps 1–3 again.
 6. When only one advisor can run, consult it alone; when no route can run one, decide on your own grounding, or escalate when you cannot ground it.
 
 In the first round, run the advisors concurrently on the same question, neither seeing the other's answer, or one after the other when a concurrency limit allows only one. On a CLI route, apply `references/cli-dispatch.md` with the advisor's model in place of the top-tier model it names, pinning that model's full ID, and set aside its bans on too-expensive-edge models.
@@ -223,7 +223,7 @@ A reviewer `pass` does not bypass the orchestrator. Everything a worker, reviewe
 
 ## Final summary
 
-Write the final summary for a reader who saw none of your updates: a re-grounding, not a continuation of the working thread.
+Write the final summary for a reader who saw none of the working thread: a re-grounding, not a continuation of it.
 
 In the summary itself, drop the working shorthand. Write complete sentences. Spell out terms. Don't use arrow chains, hyphen-stacked compounds, or labels you made up mid-run. When you mention files, commits, flags, or other identifiers, give each one its own plain-language clause.
 
@@ -241,8 +241,8 @@ Before declaring a conductor task done, confirm:
 - [ ] Fast mode ran only inside a scope the user named, and was off everywhere else (see **Fast mode** under **Model selection**).
 - [ ] Every announcement of a delegated agent, and its name in any report, was one line in the **Reporting** form, with no effort or Fast the dispatch did not carry.
 - [ ] Every brief carried the standard forward — the delegate was told to own its result's quality, check decisive claims at the source, and self-review against the brief before declaring done, with that self-review added to the reviewer hop rather than replacing it; and told it is a leaf unless the brief let it fan out.
-- [ ] Every worker artifact passed an independent reviewer before integration (skipped only for a pure fact lookup or a mechanical summary the orchestrator verified at the source in seconds).
-- [ ] No subtask got a third review: after two failed reviews it was pulled local or escalated to the user.
+- [ ] Every worker artifact got an independent reviewer's verdict before integration and was integrated only on a `pass` or on a `revise`/`redo` you rejected (skipped only for a pure fact lookup or a mechanical summary the orchestrator verified at the source in seconds).
+- [ ] No subtask was reviewed again after its second failed review: it was pulled local or escalated to the user.
 - [ ] Orchestrator final gate ran — each subtask checked against its goal, cross-subtask conflicts reconciled, and the relevant quality gates (typecheck, lint, tests, smoke) executed by the orchestrator, not deferred to the reviewer.
 - [ ] Judgment grounded in the source of truth — subagent output treated as reference to verify rather than fact to adopt, and the integrated result checked against the DoD from the sources themselves.
 - [ ] Any stretch of the run you know only through a summary, rather than the thread you actually ran, was rebuilt from ground truth before the next dispatch or acceptance (see **Stay grounded**).
