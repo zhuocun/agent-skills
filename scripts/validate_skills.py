@@ -36,12 +36,14 @@ OUTPUT_STYLE_MIRRORS = (
     (Path(".claude/output-styles/baseline.md"), Path(".agents/skills/communicate/SKILL.md")),
 )
 REQUIRED_KEYS = ("name", "description")
+MAX_DESCRIPTION_LENGTH = 1024
 FENCE = "---"
 
 CHECKS = (
     ("skill-md-present", "every skill directory contains a SKILL.md"),
     ("frontmatter-parses", "SKILL.md opens with a --- block that parses as a YAML mapping"),
     ("required-keys", "frontmatter has non-empty `name` and `description`"),
+    ("description-length", f"frontmatter `description` is at most {MAX_DESCRIPTION_LENGTH} characters"),
     ("name-matches-directory", "frontmatter `name` equals the skill's directory name"),
     ("h1-title", "the body opens with an `# ` H1 title"),
     ("self-check-section", "the body has a `## Self-check` section"),
@@ -195,6 +197,13 @@ def check_skill(directory: Path, root: Path) -> Result:
                 failures.append(Failure("required-keys", str(rel), f"frontmatter `{key}` is present but empty"))
 
     skipped: list[Skipped] = []
+    description = data.get("description")
+    if isinstance(description, str) and description.strip():
+        if len(description) > MAX_DESCRIPTION_LENGTH:
+            failures.append(Failure("description-length", str(rel), f"skill `{directory.name}` has a {len(description)}-character description; the limit is {MAX_DESCRIPTION_LENGTH}"))
+    else:
+        skipped.append(Skipped("description-length", str(rel), "`description` is missing or not a usable string"))
+
     name = data.get("name")
     if isinstance(name, str) and name.strip():
         if name.strip() != directory.name:

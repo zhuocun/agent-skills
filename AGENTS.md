@@ -114,7 +114,8 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > `main`. A push to a branch with no pull request open is not validated. It enforces the
 > authoring conventions above mechanically: every skill directory has a `SKILL.md`, the
 > frontmatter parses as a YAML mapping, `name` and `description` are present and non-empty,
-> `name` equals the directory name, the body opens with an `# ` H1, the body carries a
+> `description` is at most 1024 characters (the Agent Skills specification's cap), `name`
+> equals the directory name, the body opens with an `# ` H1, the body carries a
 > `## Self-check` section, and `.claude/skills` still resolves to `.agents/skills`.
 > Frontmatter keys beyond those two are allowed. It also runs `output-style-mirror`: below
 > the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
