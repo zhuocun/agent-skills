@@ -29,16 +29,36 @@ when syncing, make its body equal `communicate`'s body as `output-style-mirror`
 compares them (below the frontmatter, the H1 and one blank line, trailing blank
 lines included), since `skills-drift` does not check it.
 
-`conductor` and `proxy` share the Model selection table, the tier list, the source
-order, and `references/cli-dispatch.md`. Change them together. Both SKILL.md
-files keep one line per paragraph so shared text compares byte for byte. The
-validator checks `references/cli-dispatch.md`, which each skill ships as an
-identical copy, and, in Model selection, the table's Task type, First choice and
-Fallback columns and the Model ID and Fast mode blocks. The rest differs in role
-names, section names or layout, so keep its shared rules in step by hand: the
-tier list (**Tiers.**, minus the advisor exception that only conductor's carries),
-the source order (conductor's **Subagent sources**, proxy's **Source.**), rules 1–7,
-**Fallbacks**, **Effort limits** and **Reporting**.
+`conductor` and `proxy` share `references/cli-dispatch.md` and most of their
+model-selection and source text; change shared text in both. Both SKILL.md files
+keep one line per paragraph so shared text compares byte for byte. The validator
+checks that the two copies of `references/cli-dispatch.md` are identical and, in
+Model selection, the table's Task type, First choice and Fallback columns and the
+**Model ID.** and **Fast mode.** blocks. Keep byte-identical by hand: the legend
+paragraph beginning "First choice is", rules 4 and 5, the mode-only route text,
+the paragraphs beginning "Resolve routes", "When the source the family's order
+selects" and "On Codex", the two Claude custom-definition paragraphs, and the
+**Reporting** bullets and example. Keep in step the text that differs only in role
+names, section names, the skill's own name or layout: the mode-mapping paragraph
+that opens Model selection, rule 7, **Fallbacks**, **Effort limits**, the
+`Workflow` opt-in paragraph and the source order. The rest is shared in substance
+only; keep it in step around these differences: in the table's Includes column,
+conductor lists sidecar explorers under Research and proxy lists the
+orchestrator-consultant under Other complex work; conductor's **Tiers.** opens
+with "Delegated work" where proxy's opens with "Every subagent role", adds a
+sentence on sidecar explorers, states the strength cap against the orchestrator
+where proxy's states it against "you", and ends with the advisor exception;
+proxy's **Task types.** adds the row each of its roles takes; rule 1 classifies
+each delegated role in conductor and each subtask in proxy; conductor's rule 2
+also places sidecar explorers; proxy's rule 3 defines verifiers; rule 6 counts a
+review pair toward conductor's two-failed-review stop and toward proxy's
+re-consult in **Pass 3**; conductor's Claude Code `Agent` paragraph alone checks
+that neither `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` nor
+`CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL` overrides the per-agent model; conductor's
+`references/cli-dispatch.md` sentence also covers every CLI dispatch and gives the
+reason; only conductor has the source table and the paragraph before it; and in
+the **Reporting** first paragraph, conductor reports what an agent returned and
+proxy relays it.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
