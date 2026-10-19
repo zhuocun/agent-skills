@@ -46,9 +46,9 @@ the source order (conductor's **Subagent sources**, proxy's **Source.**), rules 
 
 ## Skill authoring conventions
 
-These conventions follow the skills already in this repo (`conductor`,
-`chinese-diction`, `frontend-cr`, `document-editor`, `status-report`) and the
-standard their audits apply:
+Derived from the skills already in this repo (`conductor`, `chinese-diction`,
+`frontend-cr`, `document-editor`, `status-report`) and from the standard their
+audits apply:
 
 - **One directory per skill**, and the directory name must equal the skill's
   `name` frontmatter field. The directory holds a `SKILL.md`, plus optional
@@ -75,24 +75,25 @@ standard their audits apply:
   standard to meet.
 - **Write for an agent, not a human reader.** Skills are instructions a model
   follows; keep them imperative, concrete, and self-contained. Make them clear,
-  precise, concise and natural: give each sentence one reading, use standard
-  professional terms, not coined jargon, and write as a fluent technical writer
-  would. Do not run the prose-editing skills (`chinese-diction`,
-  `document-editor`) on SKILL.md files — they explicitly exclude
-  agent-instruction files.
-- **State each rule once.** Put each rule in one place, with its exceptions
-  inside it. A cross-reference names a section or bold label, never a position
-  such as "the last rule".
-- **Rewrite a rule when you change it**, so the result reads as if written that
-  way from the start. Do not append a clause, exception or sentence that
-  patches one case. Do not word a rule as a reply to an earlier version, such as
-  "no longer", or an "even when" or "not X but Y" that answers removed text.
-- **Examples only illustrate.** With every example deleted, the rule text alone
-  must still give the right result.
+  precise, concise and natural: give each sentence one reading, and use standard
+  professional terms rather than coined jargon. Do not run the prose-editing
+  skills (`chinese-diction`, `document-editor`) on SKILL.md files — they
+  explicitly exclude agent-instruction files.
+- **State each rule once within a skill**, with its exceptions inside it; a
+  Self-check line is its rule's check, not a second statement. A cross-reference
+  names a section, a bold label or a number such as "pass 6", never a relative
+  position such as "the last rule".
+- **Rewrite a rule when you change it**, so it reads as if written that way from
+  the start, not as the old rule plus an appended clause, exception or sentence.
+  Do not word a rule as a reply to an earlier version: no "no longer", and no
+  "even when" or "not X but Y" that answers removed text.
+- **Examples only illustrate**, including the ✓ examples `chinese-diction`
+  requires: with every example deleted, the rule text alone must still give the
+  right result.
 - **Match each Self-check line to its rule exactly**, no stricter and no
   looser.
-- **Cut only text whose removal changes no behaviour.** Change behaviour only
-  as a separate, deliberate decision.
+- **Keep cuts behaviour-neutral.** A cut removes only text whose removal changes
+  no behaviour; make a behaviour change as its own deliberate decision.
 
 ## Repo conventions
 
