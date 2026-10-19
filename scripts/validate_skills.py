@@ -147,7 +147,6 @@ def check_output_style_mirrors(root: Path) -> list[Failure]:
     return failures
 
 
-
 def check_skill(directory: Path, root: Path) -> Result:
     failures: list[Failure] = []
     skill_md = directory / "SKILL.md"
