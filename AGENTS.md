@@ -73,9 +73,25 @@ Derived from the skills already in this repo (`conductor`, `chinese-diction`,
   read the waiver as licence to skip the rule rather than as a different
   standard to meet.
 - **Write for an agent, not a human reader.** Skills are instructions a model
-  follows; keep them imperative, concrete, and self-contained. Do not run the
-  prose-editing skills (`chinese-diction`, `document-editor`) on SKILL.md files
-  — they explicitly exclude agent-instruction files.
+  follows; keep them imperative, concrete, and self-contained. Make them clear,
+  precise, concise and natural: give each sentence one reading, use standard
+  professional terms, not coined jargon, and write as a fluent technical writer
+  would. Do not run the prose-editing skills (`chinese-diction`,
+  `document-editor`) on SKILL.md files — they explicitly exclude
+  agent-instruction files.
+- **State each rule once.** Put each rule in one place, with its exceptions
+  inside it. A cross-reference names a section or bold label, never a position
+  such as "the last rule".
+- **Rewrite a rule when you change it**, so the result reads as if written that
+  way from the start. Do not append a clause, exception or sentence that
+  patches one case. Do not word a rule as a reply to an earlier version: no "no
+  longer", and no "even when" or "not X but Y" answering removed text.
+- **Examples only illustrate.** With every example deleted, the rule text alone
+  must still give the right result.
+- **Match each Self-check line to its rule exactly**, no stricter and no
+  looser.
+- **Cut only text whose removal changes no behaviour.** Change behaviour only
+  as a separate, deliberate decision.
 
 ## Repo conventions
 
