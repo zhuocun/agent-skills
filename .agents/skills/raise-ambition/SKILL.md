@@ -1,18 +1,17 @@
 ---
 name: raise-ambition
 description: >-
-  Rewrite a task brief before work starts so it aims higher. Use on your own initiative when a
-  task names its deliverable, such as a design, research or analysis, a business review, a
-  strategy or plan, writing, an operational process, or a personal project. A follow-up that
-  only clarifies a briefed request or asks to fix a review finding is a step inside it; any
-  other request is a new task, even if it continues earlier work or this skill was used before.
-  Also use when asked to raise the ambition or standard of a task, prompt or plan. Do not use,
-  unless the user asks, for a trivial or mechanical task, a fix whose cause is known, a task
-  whose method the user named, a task with a spec or acceptance criteria (a target figure,
-  required sections or a pass condition), a step inside a briefed request, or a question needing
-  only an answer. An audience or limits on scope, length, size, format, budget, time or tools
-  are not a method or acceptance criteria. It does not execute a task, review finished work, or
-  grade a plan.
+  Rewrite a task brief in any domain to aim higher before work starts. Use on your own initiative
+  when a task names its deliverable, such as a design, research or analysis, a business review, a
+  strategy or plan, writing, an operational process or a personal project. A follow-up that only
+  clarifies a briefed request or asks to fix review findings is a step inside it; any other
+  request is a new task, even if it continues earlier work or this skill ran before. Also use when
+  asked to raise the ambition or standard of a task, prompt or plan. Do not use, unless the user
+  asks, for a trivial or mechanical task, a fix whose cause is known, a task whose method the user
+  named, a task with a spec or acceptance criteria (a target figure, required sections or a pass
+  condition), a step inside a briefed request, or a question needing only an answer. An audience
+  or limits on scope, length, size, format, budget, time or tools are not a method or acceptance
+  criteria. It does not execute tasks, review finished work or grade plans.
 ---
 
 # Raise Ambition
