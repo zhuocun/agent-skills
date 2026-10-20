@@ -42,6 +42,7 @@ responsibilities, so an agent can load several for one task.
 | --- | --- |
 | `reorient` | After a context compaction, or when it is unclear what is finished, checks the summary against git, PRs, CI and the files, then resumes the task. |
 | `cursor-harness` | Operating manual for agents running inside Cursor: a task ledger, turn-start and turn-end routines, waiting on background jobs, subagent delegation and Cursor tool quirks. The agent adds newly confirmed facts to its `references/` files as it works; with a symlinked install, those edits land in your clone of this repo. |
+| `codex-harness` | Tracks concurrent tasks and long-running jobs for agents running inside Codex through interruptions and compaction: a durable task ledger, bounded monitoring, authorized delegation, result validation and turn handoffs. Not for a short synchronous request with no unfinished work or for agents outside Codex. |
 
 ## Layout
 
