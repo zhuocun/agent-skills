@@ -64,6 +64,6 @@ If the message releases a blocking wait, follow the [wait routine](background-wo
 
 ## Reporting
 
-- **Progress notes:** name the ledger entry and its state change in one sentence. For example: "The regression finished with 72 passed and 3 failed, and I am reviewing the failures."
+- **Progress notes:** name the ledger entry and its state change, with the detail the user needs to understand it. For example: "The regression finished with 72 passed and 3 failed, and I am reviewing the failures."
 - **Turn end:** group open ledger entries as running, waiting on you, and queued. For running work, state where to look and what happens on completion. Skip closed entries unless they closed this turn.
 - **On request** ("what's unfinished?"): read the ledger and project trackers. Verify each open ledger entry's real state before answering.

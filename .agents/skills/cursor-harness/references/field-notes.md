@@ -7,7 +7,7 @@ Entry format:
 ```markdown
 ### <short imperative title>
 - **Status:** verified YYYY-MM-DD | documented | unverified
-- **Fact:** what happens, in one or two sentences.
+- **Fact:** describe the behavior and the conditions in which it applies.
 - **Do:** the rule to follow.
 ```
 
