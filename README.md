@@ -41,7 +41,7 @@ responsibilities, so an agent can load several for one task.
 | Skill | What it does |
 | --- | --- |
 | `reorient` | After a context compaction, or when it is unclear what is finished, checks the summary against git, PRs, CI and the files, then resumes the task. |
-| `task-closeout` | Finishes task housekeeping by checking actual outcomes, reconciling records and documentation, preserving evidence, cleaning task resources, and handing off remaining work. Applies before declaring done, switching tasks or ending a session; keeps unfinished tasks open. |
+| `task-closeout` | Completes housekeeping for tasks that changed files, systems, records, or deliveries: verifies outcomes, reconciles records and documentation, preserves evidence, cleans resources, and hands off remaining work. |
 | `cursor-harness` | Operating manual for agents running inside Cursor: a task ledger, turn-start and turn-end routines, waiting on background jobs, subagent delegation and Cursor tool quirks. The agent adds newly confirmed facts to its `references/` files as it works; with a symlinked install, those edits land in your clone of this repo. |
 | `codex-harness` | Tracks concurrent tasks and long-running jobs for agents running inside Codex through interruptions and compaction: a durable task ledger, bounded monitoring, authorized delegation, result validation and turn handoffs. Not for a short synchronous request with no unfinished work or for agents outside Codex. |
 
