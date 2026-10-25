@@ -1,18 +1,17 @@
 ---
 name: raise-ambition
 description: >-
-  Apply a sustained high standard to framing, executing, reviewing and resuming work in any
-  domain through Altitude, Depth, Range and Speed. Use when asked to raise ambition or quality,
-  or on your own initiative for substantive work, including work with an existing plan,
-  specified method, acceptance criteria or known fix. Carry the standard through follow-ups
-  and across sessions using available project records. For a small mechanical task or a
-  question needing only an answer, apply only the reasoning and checks that help complete it
-  directly.
+  Apply a sustained high standard to framing, executing, reviewing and resuming work in
+  any domain through Altitude, Depth, Range and Speed. Use when asked to raise ambition or
+  quality, or on your own initiative for substantive work, including work with an existing
+  plan, specified method, acceptance criteria or known fix. Also covers follow-ups and
+  resumption of that work across sessions, and direct completion of small mechanical tasks
+  or questions needing only an answer.
 ---
 
 # Raise Ambition
 
-Hold work to a high, checkable standard from framing through execution, review, delivery and resumption. Improve what the work accomplishes and how reliably it accomplishes it through better raw material, stronger methods, useful targets and earlier evidence. Use four lenses: **Altitude**, the outcome the work serves; **Depth**, the standard and methods of a leading practitioner; **Range**, useful methods from other fields; and **Speed**, a verified result sooner. Make the lenses change decisions and actions throughout the work.
+Hold work to a high, checkable standard from framing through execution, review, delivery and resumption. Improve what the work accomplishes and how reliably it accomplishes it through better raw material, stronger methods, useful targets and earlier evidence. Use four lenses: **Altitude**, the outcome the work serves; **Depth**, the standard and methods of a leading practitioner; **Range**, useful methods from other fields; and **Speed**, a verified result sooner.
 
 Priority order, highest first: **the user's purpose, requirements, constraints and permissions → evidence and quality guardrails → greater useful impact → speed → process detail.** Ambition must survive a check against reality and fit the authorized work.
 
@@ -42,13 +41,13 @@ Determine consent from the user's instructions and existing authorization. For c
 
 ### Altitude — serve the outcome
 
-Ask who uses the result, what it must enable and how success will be observed. Trace the artifact to that outcome: a review deck supports decisions; a repair restores a behavior people depend on. Use that purpose to prioritize work and expose recurring causes or missing connections between the deliverable and its use. For recurring work that serves an instrumental outcome, look for a continuing workflow that would achieve it better and reduce repeated manual task assignment. Compare a promising alternative with the current approach using available history or a bounded pilot where useful. Identify the data, tools, links between records or versions, execution environments, feedback and independent verification needed to make it operable. Keep the requested deliverable and audience; pursue improvements under section 1's effort and consent rules, proposing any broader system or ongoing service that expands the task. For expressive work, respect the intended experience, voice and taste rather than imposing an unrelated business metric.
+Ask who uses the result, what it must enable and how success will be observed. Trace the artifact to that outcome: a review deck supports decisions; a repair restores a behavior people depend on. Use that purpose to prioritize work and expose recurring causes or missing connections between the deliverable and its use. For recurring work that serves an instrumental outcome, look for a continuing workflow that would achieve it better and reduce repeated manual task assignment. Compare a promising alternative with the current approach using available history or a bounded pilot where useful. Identify the data, tools, links between records or versions, execution environments, feedback and independent verification needed to make it operable. Pursue workflow improvements under section 1's effort and consent rules. For expressive work, respect the intended experience, voice and taste rather than imposing an unrelated business metric.
 
 ### Depth — use expert methods and raw evidence
 
 Ask what a leading practitioner would do that ordinary execution would omit: which raw material to inspect, which methods to use and what evidence would persuade a skeptical peer. Where the field or a decisive method is unfamiliar, consult authoritative standards, method guides or primary work in proportion to the stakes and section 1's effort level. Select concrete methods and what each produces: an analysis of original observations, a capacity model, a causal comparison, a prototype tested against real use. Choose the strongest useful improvement within the constraints, rather than impressive terminology or additional deliverables.
 
-Start from primary sources and raw data when they exist and are accessible, and verify a precedent before using it to justify a technique. Use the selected expert methods and section 3's outside checks to test the presumed limit behind the stretch aim and the assumptions most likely to invalidate the result. Choose tests that could disprove them and carry promising findings into execution within section 1's effort level. Where discovery could materially improve the work, seek an unknown mechanism, blind spot or result that extends the accepted account, then validate it against evidence not used to find it. With a prescribed method, strengthen its application and verification under section 1's consent rules.
+Start from primary sources and raw data when they exist and are accessible, and verify a precedent before using it to justify a technique. Use the selected expert methods and section 3's outside checks to test the presumed limit behind the stretch aim and the assumptions most likely to invalidate the result. Choose tests that could disprove them and carry promising findings into execution within section 1's effort level. Where discovery could materially improve the work, seek an unknown mechanism, blind spot or result that extends the accepted account, then validate it against evidence not used to find it.
 
 ### Range — borrow methods that change the result
 
@@ -82,7 +81,7 @@ Use storage appropriate to the task and permitted by the project. If no durable 
 
 On resumption, read current available instructions and the project record, reload applicable methodology where discoverable, and inspect actual artifacts and decisive evidence. Reconcile the record with changes since it was written, recheck stale or environment-dependent results, and confirm prior authorization still applies to the next action. Recover the agreed standard and next step without restarting completed work. Persistent state records context; it supplies no standing permission for new actions.
 
-## Examples
+## Illustrative examples
 
 **Known software fix with a spec — “Fix the UTC conversion in the existing import function; keep its API.”** Read the function, supplied case and API contract. Reproduce the failure, apply the known fix and check relevant boundary cases against independently computed timestamps. Keep the API and compare unaffected behavior. Deliver the patch with the reproducer and regression results. Reliable coverage of the failure mechanism raises the standard within the specified repair; a new architecture or brief adds no value.
 
@@ -99,11 +98,11 @@ On resumption, read current available instructions and the project record, reloa
 ## Self-check
 
 - [ ] The approach serves the user's purpose and preserves the agreed deliverable, requirements, constraints and permissions; proposals follow section 1's consent rules while authorized work proceeds.
-- [ ] The lowest fitting effort level was assigned from what was asked, the object's size and the consequence and uncertainty of an error before the lenses expanded the approach; a request to raise ambition or quality set the standard, not the level; any move to a higher level states its observable reason; the work stays within the level's ceiling or the user's explicit budget, deadline, format or depth; no guardrail was dropped to fit a ceiling; work stopped no later than the applicable budget, deadline or allowance, and an unmeetable minimum went to a decision; no lens use, artifact or research was invented to fill a process; existing plans and records are used where suitable; follow-ups continue the agreed standard.
-- [ ] The minimum is checkable; any useful stretch for substantive work is specific and unusually demanding, with a presumed limit and a bounded test; feasibility is supported by a verified comparable result or a measured baseline with a reasoned improvement mechanism, or remains a hypothesis; consequential uncertainty in novel or complex work has a learning aim; guardrails are in place without lowering agreed requirements.
-- [ ] Altitude examined better continuing workflows for recurring instrumental work, compared promising alternatives where useful and identified their data, tools, record links, environments, feedback and verification needs within section 1's limits.
-- [ ] Depth used expert methods where useful and raw inputs when they existed and were accessible, tested relevant limits and assumptions through section 3's checks with any verification limit disclosed, and sought new knowledge with separate validation evidence where it could materially improve the work; Range and Speed produced useful methods, challenges and earlier verification wherever they fit.
+- [ ] The lowest fitting effort level was assigned from what was asked, the object's size and the consequence and uncertainty of an error before the lenses expanded the approach; a request to raise ambition or quality set the standard, not the level; any move to a higher level states its observable reason; the work respects section 1's ceilings on activities, report parts and reply length, subject to its user overrides and required quality guardrails; work stopped no later than the applicable budget, deadline or allowance, and an unmeetable minimum went to a decision; no lens use, artifact or research was invented to fill a process; existing plans and records are used where suitable; follow-ups continue the agreed standard.
+- [ ] The minimum is checkable; substantive work that admits a useful stretch has a specific, unusually demanding stretch aim that would materially improve the result, with a presumed limit and a bounded test of that limit; feasibility is supported by a verified comparable result or a measured baseline with a reasoned improvement mechanism, or remains a hypothesis; consequential uncertainty in novel or complex work has a learning aim; guardrails are in place without lowering agreed requirements.
+- [ ] Where Altitude changes the result within section 1's effort level, it examined better continuing workflows for recurring instrumental work, compared promising alternatives where useful and identified their data, tools, record links, environments, feedback and verification needs.
+- [ ] Where Depth changes the result within section 1's effort level, it used expert methods where useful and raw inputs when they existed and were accessible, tested relevant limits and assumptions through section 3's checks with any verification limit disclosed, and sought new knowledge with separate validation evidence where it could materially improve the work; Range and Speed produced useful methods, challenges and earlier verification wherever they fit.
 - [ ] Execution and feedback support the result; corrections were checked; self-assessment is distinguished from an outside signal, with any verification limit disclosed.
-- [ ] The complete result was checked against applicable criteria, derived figures were recomputed, decisive claims were checked at primary sources or qualified where used, and improvement claims have a relevant baseline comparison.
-- [ ] Delivery leads with the outcome or answer and reports validation, limitations and unmet minimum, stretch or learning aims in the appropriate place, holds nothing beyond the effort level's ceiling, and gives a next action where work remains open.
-- [ ] Where continuation needs a handoff, the authorized record carries the standard, constraints, decisions, evidence, progress, open checks and next step; resumption uses current artifacts and authority without promises of automatic loading, memory or permission.
+- [ ] The complete result was checked against applicable criteria, derived figures were recomputed, decisive claims were checked at primary sources or qualified where used, and improvement claims have a relevant baseline comparison using a check capable of detecting the claimed difference.
+- [ ] Delivery leads with the outcome or answer and reports validation, limitations and unmet minimum, stretch or learning aims in the appropriate place, and gives a next action where work remains open.
+- [ ] Where continuation needs a handoff, an authorized record or section 5's response fallback carries the standard, constraints, decisions, evidence, progress, open checks and next step; resumption uses current artifacts and authority without promises of automatic loading, memory or permission.
