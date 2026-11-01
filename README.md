@@ -42,6 +42,7 @@ responsibilities, so an agent can load several for one task.
 
 | Skill | What it does |
 | --- | --- |
+| `agent-loop` | Runs a durable goal and work queue through repeated action, verification and recording, with bounded continuation across turns and event-driven resume. On Claude Code the turn-end hook ships inside the skill and background waiters resume the loop when external results arrive; other hosts run the loop within turns. Not for one-turn tasks, scheduled unattended runs or delegated workers that do not own the queue. |
 | `reorient` | After a context compaction, or when it is unclear what is finished, checks the summary against git, PRs, CI and the files, then resumes the task. |
 | `task-closeout` | Completes housekeeping for tasks that changed files, systems, records, or deliveries: verifies outcomes, reconciles records and documentation, preserves evidence, cleans resources, and hands off remaining work. |
 | `cursor-harness` | Operating manual for agents running inside Cursor: a task ledger, turn-start and turn-end routines, waiting on background jobs, subagent delegation and Cursor tool quirks. The agent adds newly confirmed facts to its `references/` files as it works; with a symlinked install, those edits land in your clone of this repo. |
