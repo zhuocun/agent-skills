@@ -23,9 +23,8 @@ responsibilities, so an agent can load several for one task.
 | Skill | What it does |
 | --- | --- |
 | `communicate` | Governs how the agent writes to the user: message shape, register, and what each claim must rest on. Applies to every message to the user; not for code, commit messages, documents, specs or product copy. Its body is mirrored as the `Baseline` output style in `.claude/output-styles/baseline.md`. |
-| `clean-document` | Drafts, edits and reviews documents across languages and genres, including documents produced within larger tasks, inline document artifacts and agent instructions. Uses five passes for reader purpose, structure, functional deletion and deduplication, expression, and verification while preserving meaning, voice, required formats and execution semantics. Review remains read-only; ordinary conversational replies and code implementation itself are outside its scope. |
 | `chinese-diction` | Writes natural Chinese in the target register (professional, casual or creative) at the level of word choice and phrasing. Applies to every chat reply in Chinese, and to any request to write, translate into or polish Chinese. Not for agent-instruction files such as SKILL.md or prompts. |
-| `document-editor` | Authors, edits and reviews formal documents (design docs, RFCs, plans, specs, research reports, guides, decision memos) at the document level without silently changing their meaning. Not for chat replies, routine status updates, sentence-level wording or translation polish, or agent-instruction files. |
+| `document-editor` | Creates, edits and reviews formal human-facing documents in any language, including short notices, formal wording and translation cleanup, inline documents and documents within larger tasks. Grounds claims, organizes for the reader, prunes by function and preserves meaning, contracts, records and useful repetition. Not for chat, casual or creative writing, routine status updates, prescribed mechanical work, code implementation or agent instructions. |
 | `skill-optimize` | Creates, reviews and optimizes agent skills for reliable routing and execution, with independent instructions, deliberate behavior changes and evidence-based effect claims. Not for ordinary prose editing, application code review or unrelated runtime configuration. |
 | `status-report` | Produces, edits or reviews a one-page project status report with fixed slots (Tasks, Changes since, Action required, Health, Unverified claims), explicit task hierarchy, outcome progress and execution evidence for a reader who was not watching the work. |
 
@@ -77,6 +76,15 @@ ln -s "$(pwd)/agent-skills/.agents/skills/frontend-cr" ~/.claude/skills/frontend
 Swap `~/.claude` for `~/.agents` in these commands if that is where your runtime loads skills.
 If a skill or folder with the same name already exists, move it aside before creating the symlink.
 A symlinked install picks up changes on the next `git pull`; when a skill is renamed, recreate any link made under its old name.
+
+`clean-document` has been retired. Its formal-document methods are part of `document-editor`;
+casual or creative writing and agent-instruction editing are outside that skill's scope.
+If you linked the entire skills directory, pulling this repository updates discovery automatically.
+If you installed individual links, inspect the old `clean-document` link and remove only that
+symlink, then link `.agents/skills/document-editor` using the individual-link pattern above.
+Keep an existing correct `document-editor` link; move aside conflicting local files or directories
+before linking. Update explicit skill references in your own configuration. The repository does
+not modify private installations.
 
 ## Changing a skill
 
