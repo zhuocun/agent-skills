@@ -5,10 +5,9 @@ description: >-
   plain-text state file, take the next ready item, act, check it against
   evidence, record the result, and continue without a new human message until
   the goal is complete, the budget is used up, a synchronous consent gate is
-  reached, or a blocker remains. On Claude Code the turn-end hook ships in the
-  skill and continues only the session that owns the queue; background waiters
-  resume the loop when a job, delegated agent or CI run finishes. On other
-  hosts the loop runs within turns. Use when the user asks to start, resume,
+  reached, or a blocker remains. Supports host-specific turn-end hooks on
+  Claude Code, Codex, Cursor, Antigravity and Devin, subject to host and mode
+  limits; other hosts run within turns. Use when the user asks to start, resume,
   run, inspect, pause or stop an agent loop, autonomous backlog run or work
   queue, or to keep working through tasks across turns, compaction or sessions
   without being prompted. Do not use for a task that finishes within one turn,
@@ -67,10 +66,10 @@ Follow these format rules exactly; the hook reads the header keys, the `## Queue
 
 One session owns the state file. Only the owner runs iterations and edits the file; the user may edit it at any time.
 
-- **Host:** on Claude Code the Stop hook comes with this skill: invoking the skill registers it for the rest of the session, with nothing to install. If the skill directory is somewhere other than the four paths in the hook command in this skill's frontmatter, edit the command's path list. Recognize the hook's messages by the prefix `[agent-loop]` and their `turn <t>/<budget>` count. On other hosts there is no turn-end hook yet: run as many iterations as you can within each turn; the user's next message resumes the loop.
-- **Owner ID:** when creating the state file, set `owner:` to this session's ID: `${CLAUDE_SESSION_ID}`. If that text appears unexpanded, take the ID from the environment variable `CLAUDE_CODE_SESSION_ID`. If no session ID exists, leave `owner:` empty; the loop then runs within turns only.
+- **Host:** on Claude Code, invoking this skill registers its frontmatter Stop hook for the rest of the session, with nothing to install. If the skill directory is somewhere other than the four paths in the hook command in this skill's frontmatter, edit the command's path list. On Codex, Cursor, Antigravity and Devin, register this hook once with `scripts/install_hook.py`: first obtain the user's consent to the host configuration change and ask which scope, user or project. That consent covers only this hook's registration, not installing anything else. Read [Host setup](references/hosts.md) for the command, activation, owner-ID route, continuation limits and completion-wake support for your host and mode. On other hosts, or without an active hook in the current mode, run within turns; the user's next message resumes the loop. Recognize hook messages by the prefix `[agent-loop]` and their `turn <t>/<budget>` count.
+- **Owner ID:** when creating the state file, set `owner:` to this session's exact ID: Claude Code: `${CLAUDE_SESSION_ID}` (if that text appears unexpanded, read the environment variable `CLAUDE_CODE_SESSION_ID`); Codex CLI: read `$CODEX_SESSION_ID` in a shell command; Cursor CLI UUID sessions: read `$CURSOR_CONVERSATION_ID` through Shell (for custom IDs or IDE sessions, use only a value confirmed equal to Stop's raw `conversation_id`); Antigravity CLI: read `$ANTIGRAVITY_CONVERSATION_ID` through the command runner (IDE route unverified); Devin: use the ID in the `[agent-loop]` context line added by the SessionStart hook. If no matching ID is available, leave `owner:` empty; the loop then runs within turns only.
 - **Another owner:** when `owner` names another session, only read the file. Take over only when the user explicitly asks; then write your own ID. A wake or notification never changes `owner`.
-- **Resume:** on resume or after compaction, reload this skill and the state file, check `stop` before acting, then continue. Resuming the same session keeps the same ID.
+- **Resume:** on resume or after compaction, reload this skill and the state file, check `stop` before acting, and apply **Owner ID** and **Another owner** to the current session.
 - **Workers:** give each dispatched worker (subagent or nested agent run) one item and a self-contained brief; workers report results to you and never edit the state file.
 - **One controller:** do not run a host's native goal or loop feature in the same session; it would continue the session independently of the queue.
 
@@ -97,10 +96,12 @@ A gate is an action outside the user's standing authorizations that needs the us
 
 When an item needs an external result, such as a background job, a delegated agent or a CI run:
 
-- **Waiter:** start a background command whose completion the host reports to this session (on Claude Code: Bash with `run_in_background`) and that blocks until the item's `check` succeeds, for example `until <check>; do sleep 30; done`. If the host limits a background command's run time, re-arm the waiter when it ends. Never start scheduled or periodic agent runs. When a delegated agent returns its result within the turn, no waiter is needed.
+- **Waiter:** Claude Code wakes on Bash `run_in_background` completion; Codex 0.167.0 ordinary background `unified_exec` does not wake; Cursor 2026.11.05 interactive CLI supports wake from host-managed background shells (unverified live); Antigravity CLI 1.3.3 supports wake per release notes (unverified live, including 1.5.2); Devin shell wake is unverified.
+
+  Use a supported wake route to start a host-managed background command that blocks until the item's `check` succeeds, for example `until <check>; do sleep 30; done`. Re-arm a time-limited waiter when it ends. Without a supported wake route, use a blocking host wait/result operation within the turn if available; otherwise leave the wait for the next user message or explicit resume. Never start scheduled or periodic agent runs. A delegated agent returning its result within the turn needs no waiter.
 - **Record:** mark the item `waiting` with a `wake:` and a `check:` that any later iteration can run to confirm the event without the waiter.
 - **Idle:** continue with other ready items. When no actionable `ready` or `doing` item remains and only `waiting` or `user` items remain, the loop is idle: keep `stop:` empty and end the turn. Do not poll.
-- **Wake:** on every wake, run the item's `check` first. When it fails (an early or stale wake), re-arm the waiter and continue. A duplicate wake changes nothing.
+- **Wake:** on every wake, run the item's `check` first. When it fails (an early or stale wake), handle the wait under **Waiter** and continue. A duplicate wake changes nothing.
 - **Session end:** a waiter lives only as long as this session's process. If the session ends, the user's next message or a resume reconciles the waiting items by their `check`.
 
 ## 6. Stop only for these reasons
@@ -127,9 +128,9 @@ Take the turn count from the latest hook message tagged `[agent-loop]` (`turn <t
 ## Self-check
 
 - **State file (pass 1):** Is `.agent-loop.md` at the workspace root, outside version control, in the required format with each header key once and every `done when` confirmable by any later iteration without session memory, with only open queue items, every closure since the last message a human wrote logged (older lines cut to at most 20) and the sidecar untouched?
-- **Ownership (pass 2):** Did you set `owner` to this session's ID, or leave it empty without one, read only another session's file unless the user asked you to take over, leave `owner` unchanged on wakes, reload the skill and file on resume, keep workers from editing the file and avoid a second continuation controller?
+- **Ownership (pass 2):** Did you follow **Host** for registration, consent, scope and activation, set `owner` from this host's inline **Owner ID** route or leave it empty only without a matching ID, read only another session's file unless the user asked you to take over, leave `owner` unchanged on wakes, reload the skill and file, check `stop` and apply **Owner ID** and **Another owner** on resume or after compaction, keep workers from editing the file and avoid a second continuation controller?
 - **Iteration (pass 3):** Did each iteration rebuild from the file, prefer `doing` work, respect `after:`, handle each picked item's gate before acting, respect independent worker scopes, validate checks you wrote or changed for the item as **Check** requires, apply **Shared cause** when the same failure appears in a second item, verify closure, resolve review findings and record only real progress, continuing within the turn until an allowed end?
 - **Gates (pass 4):** Did you queue only listed asynchronous kinds, consult available advice before queuing an unresolved design choice, stop at every other gate and open none without the user's answer?
-- **Events (pass 5):** Does each external wait have a running waiter where needed, a `wake:` and a `check:`, with every wake checked first, waiters re-armed after early wakes, no polling and idle recorded without a stop?
+- **Events (pass 5):** Does each external wait follow **Waiter**, have a `wake:` and an independently confirmable `check:`, continue other ready work, leave `stop:` empty when idle, avoid polling, check every wake first, handle early wakes under **Waiter** and duplicate wakes without a change, and reconcile waiting items by their checks after session end?
 - **Stop (pass 6):** Does each stop you set follow its stated condition, with the state recorded at a continuation cap, no pause set by you, and the user's pause preserved until the user resumes?
 - **Visibility (pass 7):** Does the final message begin with the status line, report idle explicitly and use the hook's count when available, followed by the required summary, counted from the last message a human wrote, when idle, stopped or on a last automatic turn?
