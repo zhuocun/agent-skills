@@ -96,13 +96,13 @@ A gate is an action outside the user's standing authorizations that needs the us
 
 When an item needs an external result, such as a background job, a delegated agent or a CI run:
 
-- **Waiter:** Claude Code wakes on Bash `run_in_background` completion; Codex 0.167.0 ordinary background `unified_exec` does not wake; Cursor 2026.11.05 interactive CLI supports wake from host-managed background shells (unverified live); Antigravity CLI 1.3.3 supports wake per release notes (unverified live, including 1.5.2); Devin shell wake is unverified.
+- **Waiter:** a supported wake route starts a new turn when a host-managed background command completes after the turn ended. The supported routes are Claude Code's Bash `run_in_background`, the Cursor 2026.11.05 interactive CLI's background Shell and Antigravity CLI 1.5.3 print mode's background `run_command`. Codex 0.167.0 and Devin 3000.12.17 have none: Codex background `unified_exec` completion does not wake the model, and Devin shell completion did not wake an idle session.
 
   Use a supported wake route to start a host-managed background command that blocks until the item's `check` succeeds, for example `until <check>; do sleep 30; done`. Re-arm a time-limited waiter when it ends. Without a supported wake route, use a blocking host wait/result operation within the turn if available; otherwise leave the wait for the next user message or explicit resume. Never start scheduled or periodic agent runs. A delegated agent returning its result within the turn needs no waiter.
 - **Record:** mark the item `waiting` with a `wake:` and a `check:` that any later iteration can run to confirm the event without the waiter.
 - **Idle:** continue with other ready items. When no actionable `ready` or `doing` item remains and only `waiting` or `user` items remain, the loop is idle: keep `stop:` empty and end the turn. Do not poll.
 - **Wake:** on every wake, run the item's `check` first. When it fails (an early or stale wake), handle the wait under **Waiter** and continue. A duplicate wake changes nothing.
-- **Session end:** a waiter lives only as long as this session's process. If the session ends, the user's next message or a resume reconciles the waiting items by their `check`.
+- **Session end:** a waiter lives at most as long as this session's process, and under `codex exec` only until the turn ends. If the session ends, the user's next message or a resume reconciles the waiting items by their `check`.
 
 ## 6. Stop only for these reasons
 

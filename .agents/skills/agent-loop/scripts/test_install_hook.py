@@ -25,6 +25,9 @@ CASES = [(host, scope) for host in HOSTS for scope in SCOPES]
 STRIP_ENV = ("CODEX_HOME", "CLAUDE_PROJECT_DIR", "CURSOR_PROJECT_DIR", "DEVIN_PROJECT_DIR",
              "CLAUDE_PLUGIN_ROOT", "CLAUDE_SKILL_DIR")
 OTHER = {"type": "command", "command": "echo other", "timeout": 5}
+WRITTEN = "Removed the agent-loop hook from %s and wrote the file.\n"
+DELETED = "Removed the agent-loop hook from %s and deleted the file, which held nothing else.\n"
+NOTHING = "No agent-loop hook for %s found in %s; nothing changed.\n"
 ACTIVATION = {
     "codex": "Approve the hook in Codex with /hooks (select it, press t); project hooks "
              "also need a trusted project.",
@@ -219,20 +222,73 @@ class UninstallTest(Base):
                 self.install(host, scope, "--uninstall")
                 self.assertEqual(json.loads(self.read(path)), shape(host, scope, [OTHER, foreign]))
 
-    def test_removes_groups_left_empty(self):
-        empty = {"codex": {"hooks": {}}, "cursor": {"version": 1, "hooks": {}},
-                 "antigravity": {}}
+    def test_install_then_uninstall_on_missing_file(self):
         for host, scope in CASES:
             with self.subTest(host=host, scope=scope):
                 path = self.path(host, scope)
                 self.install(host, scope)
                 proc = self.install(host, scope, "--uninstall")
-                self.assertEqual(proc.stdout, "Removed the agent-loop hook from %s\n" % path)
-                if host == "devin":
-                    expected = {"hooks": {}} if scope == "user" else {}
+                if host == "cursor":
+                    self.assertEqual(proc.stdout, WRITTEN % path)
+                    self.assertEqual(self.read(path), render({"version": 1}))
                 else:
-                    expected = empty[host]
-                self.assertEqual(json.loads(self.read(path)), expected)
+                    self.assertEqual(proc.stdout, DELETED % path)
+                    self.assertFalse(os.path.exists(path))
+
+    def test_restores_unrelated_keys_and_drops_created_containers(self):
+        unrelated = {"codex": {"model": "example"},
+                     "cursor": {"version": 1, "model": "example"},
+                     "antigravity": {"lint": {"PreToolUse": [OTHER]}}}
+        for host, scope in CASES:
+            with self.subTest(host=host, scope=scope):
+                if host == "devin":
+                    original = {"model": "example"} if scope == "user" else \
+                        {"PreToolUse": [{"matcher": "Bash", "hooks": [OTHER]}]}
+                else:
+                    original = unrelated[host]
+                path = self.path(host, scope)
+                self.write(path, render(original))
+                self.install(host, scope)
+                proc = self.install(host, scope, "--uninstall")
+                self.assertEqual(proc.stdout, WRITTEN % path)
+                self.assertEqual(self.read(path), render(original))
+
+    def test_keeps_existing_hooks_object_with_other_events(self):
+        for host, scope in CASES:
+            if host == "antigravity" or (host == "devin" and scope == "project"):
+                continue
+            with self.subTest(host=host, scope=scope):
+                handlers = [OTHER] if host == "cursor" else [{"matcher": "Bash", "hooks": [OTHER]}]
+                original = {"hooks": {"PreToolUse": handlers}}
+                if host == "cursor":
+                    original = {"version": 1, "hooks": {"preToolUse": handlers}}
+                path = self.path(host, scope)
+                self.write(path, render(original))
+                self.install(host, scope)
+                self.install(host, scope, "--uninstall")
+                self.assertEqual(self.read(path), render(original))
+
+    def test_cursor_version_keeps_file(self):
+        for version in (1, 2, "1", 1.0, True):
+            for scope in SCOPES:
+                with self.subTest(version=version, scope=scope):
+                    path = self.path("cursor", scope)
+                    self.write(path, render({"version": version}))
+                    self.install("cursor", scope)
+                    proc = self.install("cursor", scope, "--uninstall")
+                    self.assertEqual(proc.stdout, WRITTEN % path)
+                    self.assertEqual(self.read(path), render({"version": version}))
+
+    def test_no_match_reports_and_leaves_file_byte_identical(self):
+        for host, scope in CASES:
+            with self.subTest(host=host, scope=scope):
+                edited = dict(ours(host), command="python3 /x/loop_hook.py --host %s-edited" % host)
+                path = self.path(host, scope)
+                text = json.dumps(shape(host, scope, [OTHER, edited]))
+                self.write(path, text)
+                proc = self.install(host, scope, "--uninstall")
+                self.assertEqual(proc.stdout, NOTHING % (host, path))
+                self.assertEqual(self.read(path), text)
 
     def test_unrelated_file_left_byte_identical(self):
         for host, scope in CASES:
@@ -248,7 +304,8 @@ class UninstallTest(Base):
     def test_missing_file_is_not_created(self):
         for host, scope in CASES:
             with self.subTest(host=host, scope=scope):
-                self.install(host, scope, "--uninstall")
+                proc = self.install(host, scope, "--uninstall")
+                self.assertEqual(proc.stdout, NOTHING % (host, self.path(host, scope)))
                 self.assertFalse(os.path.exists(self.path(host, scope)))
 
 
@@ -320,8 +377,25 @@ class DryRunTest(Base):
         self.assertEqual(proc.stdout, "path: %s\n%s" % (
             path, render(shape("codex", "user", [ours("codex")]))))
         proc = self.install("codex", "user", "--dry-run", "--uninstall")
-        self.assertEqual(proc.stdout, "path: %s\n%s" % (path, render({"hooks": {}})))
+        self.assertEqual(proc.stdout, "path: %s\ndelete\n" % path)
         self.assertEqual(self.read(path), text)
+
+    def test_dry_run_uninstall_deletion_and_rewrite(self):
+        for host, scope in CASES:
+            with self.subTest(host=host, scope=scope):
+                path = self.path(host, scope)
+                self.install(host, scope)
+                text = self.read(path)
+                proc = self.install(host, scope, "--dry-run", "--uninstall")
+                result = render({"version": 1}) if host == "cursor" else "delete\n"
+                self.assertEqual(proc.stdout, "path: %s\n%s" % (path, result))
+                self.assertEqual(self.read(path), text)
+                kept = shape(host, scope, [OTHER, ours(host)])
+                self.write(path, json.dumps(kept))
+                proc = self.install(host, scope, "--dry-run", "--uninstall")
+                self.assertEqual(proc.stdout, "path: %s\n%s" % (
+                    path, render(shape(host, scope, [OTHER]))))
+                self.assertEqual(self.read(path), json.dumps(kept))
 
 
 class LocationTest(Base):

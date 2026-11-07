@@ -7,9 +7,11 @@ Usage: install_hook.py --host HOST --scope user|project [--workspace DIR]
 HOST is codex, cursor, antigravity or devin. The hook command is
 python3 <absolute path of the loop_hook.py beside this file> --host HOST.
 Install replaces this hook's existing entries in place and keeps every other
-key and entry; uninstall removes only this hook's entries. A file that is not
-a JSON object is refused and left untouched. Exit codes: 0 success, 1 refused
-file, 2 usage. Python 3.8 or later, standard library only.
+key and entry; uninstall removes only this hook's entries and the containers
+that removal leaves empty, and deletes a file that removal leaves an empty
+object. A file that is not a JSON object is refused and left untouched. Exit
+codes: 0 success, 1 refused file, 2 usage. Python 3.8 or later, standard
+library only.
 """
 import argparse
 import json
@@ -160,10 +162,13 @@ def edit_flat(events, event, host, entry):
 
 
 def edit_grouped(events, event, host, entry, matcher):
-    """Codex and Devin: an event holds matcher groups, each with a hooks list."""
+    """Codex and Devin: an event holds matcher groups, each with a hooks list.
+
+    Return whether a group held one of ours.
+    """
     groups = child(events, event, list, entry is not None)
     if groups is None:
-        return
+        return False
     kept, found = [], False
     for group in groups:
         if isinstance(group, dict) and isinstance(group.get("hooks"), list):
@@ -179,10 +184,14 @@ def edit_grouped(events, event, host, entry, matcher):
     groups[:] = kept
     if found and not groups:
         del events[event]
+    return found
 
 
 def edit_antigravity(data, host, entry):
-    """Named groups of event lists; a new entry goes into the agent-loop group."""
+    """Named groups of event lists; a new entry goes into the agent-loop group.
+
+    Return whether a group held one of ours.
+    """
     found = False
     for name in list(data):
         group = data[name]
@@ -196,27 +205,34 @@ def edit_antigravity(data, host, entry):
                 del data[name]
     if entry is not None and not found:
         edit_flat(child(data, GROUP_NAME, dict, True), "Stop", host, entry)
+    return found
 
 
 def edit(data, host, scope, entry):
-    """Apply the install (entry) or uninstall (entry None) to the loaded file."""
+    """Apply the install (entry) or uninstall (entry None) to the loaded file.
+
+    Return whether the file held one of our handlers.
+    """
     create = entry is not None
     if host == "antigravity":
-        edit_antigravity(data, host, entry)
-        return data
+        return edit_antigravity(data, host, entry)
     if host == "cursor" and create:
         data.setdefault("version", 1)
-    events = data if host == "devin" and scope == "project" else child(data, "hooks", dict, create)
+    nested = not (host == "devin" and scope == "project")
+    events = child(data, "hooks", dict, create) if nested else data
     if events is None:
-        return data
+        return False
     if host == "codex":
-        edit_grouped(events, "Stop", host, entry, False)
+        found = edit_grouped(events, "Stop", host, entry, False)
     elif host == "cursor":
-        edit_flat(events, "stop", host, entry)
+        found = edit_flat(events, "stop", host, entry)
     else:
+        found = False
         for event in ("Stop", "SessionStart"):
-            edit_grouped(events, event, host, entry, True)
-    return data
+            found = edit_grouped(events, event, host, entry, True) or found
+    if found and not create and nested and not events:
+        del data["hooks"]
+    return found
 
 
 def handler(host):
@@ -267,23 +283,30 @@ def run(options):
         data = load(path)
         before = render(data)
         entry = None if options.uninstall else handler(options.host)
-        content = render(edit(data, options.host, options.scope, entry))
+        found = edit(data, options.host, options.scope, entry)
+        content = render(data)
     except Refused as error:
         sys.stderr.write("Refused: %s; the file was left untouched.\n" % error)
         return 1
+    delete = options.uninstall and found and not data
     if options.dry_run:
-        sys.stdout.write("path: %s\n%s" % (path, content))
+        sys.stdout.write("path: %s\n%s" % (path, "delete\n" if delete else content))
         return 0
-    exists = os.path.exists(path)
-    if options.uninstall and not exists:
-        sys.stdout.write("No file at %s; nothing to remove.\n" % path)
-        return 0
-    if not exists or content != before:
-        write_atomic(path, content)
     if options.uninstall:
-        sys.stdout.write("Removed the agent-loop hook from %s\n" % path)
-    else:
-        sys.stdout.write("Wrote %s\n%s\n" % (path, ACTIVATION[options.host]))
+        if not found:
+            sys.stdout.write("No agent-loop hook for %s found in %s; nothing changed.\n"
+                             % (options.host, path))
+        elif delete:
+            os.unlink(path)
+            sys.stdout.write("Removed the agent-loop hook from %s and deleted the file, "
+                             "which held nothing else.\n" % path)
+        else:
+            write_atomic(path, content)
+            sys.stdout.write("Removed the agent-loop hook from %s and wrote the file.\n" % path)
+        return 0
+    if not os.path.exists(path) or content != before:
+        write_atomic(path, content)
+    sys.stdout.write("Wrote %s\n%s\n" % (path, ACTIVATION[options.host]))
     return 0
 
 
