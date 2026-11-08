@@ -18,9 +18,12 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import unquote
 
 try:
     import yaml
@@ -37,20 +40,40 @@ OUTPUT_STYLE_MIRRORS = (
 )
 REQUIRED_KEYS = ("name", "description")
 MAX_DESCRIPTION_LENGTH = 1024
+MAX_NAME_LENGTH = 64
+NAME_PATTERN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+MAX_COMPATIBILITY_LENGTH = 500
+MAX_SKILL_MD_LINES = 500
+REFERENCE_TOC_THRESHOLD = 100
 FENCE = "---"
+CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+INLINE_CODE = re.compile(r"(`+).+?\1")
+CODE_SPAN = re.compile(r"`(references/[^`\s]+)`")
+LINK_TARGET = re.compile(r"\]\(\s*<?([^)\s>]+)")
+URL_SCHEME = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
+LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s")
+HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 
 CHECKS = (
     ("skill-md-present", "every skill directory contains a SKILL.md"),
+    ("skill-md-lines", f"SKILL.md has at most {MAX_SKILL_MD_LINES} lines"),
     ("frontmatter-parses", "SKILL.md opens with a --- block that parses as a YAML mapping"),
     ("required-keys", "frontmatter has non-empty `name` and `description`"),
     ("description-length", f"frontmatter `description` is at most {MAX_DESCRIPTION_LENGTH} characters"),
+    ("description-angle-brackets", "frontmatter `description` contains no `<` or `>`"),
     ("name-matches-directory", "frontmatter `name` equals the skill's directory name"),
+    ("name-format", f"frontmatter `name` is 1-{MAX_NAME_LENGTH} lowercase ASCII letters, digits and single hyphens, not starting or ending with a hyphen"),
+    ("compatibility-length", f"frontmatter `compatibility`, if present, is 1-{MAX_COMPATIBILITY_LENGTH} characters"),
     ("h1-title", "the body opens with an `# ` H1 title"),
-    ("self-check-section", "the body has a `## Self-check` section"),
+    ("self-check-section", "the body's last `## ` heading outside fenced code is `## Self-check`"),
+    ("relative-links-resolve", "every relative Markdown link in a skill's .md files resolves to an existing file (anchors are not checked)"),
+    ("references-linked", "every file under a skill's references/ is linked, or named by its `references/` path in inline code, directly from its SKILL.md"),
+    ("reference-toc", f"a reference .md file over {REFERENCE_TOC_THRESHOLD} lines lists a link to each `## ` heading's anchor before its first `## ` heading"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
     ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
 )
 REPO_CHECKS = {"claude-skills-symlink", "output-style-mirror"}
+FILE_CHECKS = {"relative-links-resolve", "references-linked", "reference-toc"}
 
 
 @dataclass(frozen=True)
@@ -72,7 +95,7 @@ Result = tuple[list[Failure], list[Skipped]]
 
 def skip_rest(after: str, where: str, reason: str) -> list[Skipped]:
     """Checks that cannot be evaluated once an earlier check failed for this file."""
-    names = [name for name, _ in CHECKS if name not in REPO_CHECKS]
+    names = [name for name, _ in CHECKS if name not in REPO_CHECKS | FILE_CHECKS]
     return [Skipped(name, where, reason) for name in names[names.index(after) + 1 :]]
 
 
@@ -85,6 +108,102 @@ def split_frontmatter(text: str) -> tuple[str, list[str]]:
         if lines[index].rstrip() == FENCE:
             return "\n".join(lines[1:index]), lines[index + 1 :]
     raise ValueError("frontmatter opened with `---` but is never closed by a second `---`")
+
+
+def outside_code_fences(lines: list[str]) -> Iterator[str]:
+    """Yield the lines that are not inside a fenced code block (``` or ~~~)."""
+    fence: str | None = None
+    for line in lines:
+        match = CODE_FENCE.match(line)
+        if fence is None:
+            if match:
+                fence = match.group(1)
+            else:
+                yield line
+        elif match and match.group(1)[0] == fence[0] and len(match.group(1)) >= len(fence) and not line.strip()[len(match.group(1)):].strip():
+            fence = None
+
+
+def link_targets(lines: list[str]) -> list[str]:
+    """Return the targets of inline Markdown links outside fenced code and inline code spans."""
+    text = "\n".join(INLINE_CODE.sub("", line) for line in outside_code_fences(lines))
+    return LINK_TARGET.findall(text)
+
+
+def local_path(target: str) -> str | None:
+    """Return the path part of a relative link target, or None for anchors, URLs and absolute paths."""
+    if target.startswith(("#", "/")) or URL_SCHEME.match(target):
+        return None
+    path = unquote(target.split("#", 1)[0].split("?", 1)[0])
+    return path or None
+
+
+def heading_anchor(text: str) -> str:
+    """The anchor GitHub generates for a heading: lowercase, punctuation removed, spaces as hyphens."""
+    return re.sub(r"[^\w\- ]", "", text.strip().lower()).replace(" ", "-")
+
+
+def h2_anchors(lines: list[str]) -> list[tuple[str, str]]:
+    """Return (heading text, anchor) for each `## ` heading, with GitHub's -1, -2 suffixes for repeats."""
+    seen: dict[str, int] = {}
+    anchors: list[tuple[str, str]] = []
+    for line in outside_code_fences(lines):
+        match = HEADING.match(line)
+        if not match:
+            continue
+        base = heading_anchor(match.group(2))
+        count = seen.get(base, 0)
+        seen[base] = count + 1
+        if len(match.group(1)) == 2:
+            anchors.append((match.group(2), f"{base}-{count}" if count else base))
+    return anchors
+
+
+def check_skill_files(directory: Path, root: Path) -> Result:
+    """Checks on the links and reference files of one skill directory."""
+    failures: list[Failure] = []
+    skipped: list[Skipped] = []
+    skill_md = directory / "SKILL.md"
+
+    for path in sorted(directory.rglob("*.md")):
+        lines = path.read_text(encoding="utf-8").split("\n")
+        for target in link_targets(lines):
+            local = local_path(target)
+            if local is not None and not (path.parent / local).exists():
+                failures.append(Failure("relative-links-resolve", str(path.relative_to(root)), f"link `{target}` points at `{local}`, which does not exist relative to this file; fix the path or create the file"))
+
+    references = sorted(p for p in (directory / "references").rglob("*") if p.is_file()) if (directory / "references").is_dir() else []
+    if not skill_md.is_file():
+        skipped.append(Skipped("references-linked", str(directory.relative_to(root)), "no SKILL.md to link from"))
+    elif references:
+        skill_lines = skill_md.read_text(encoding="utf-8").split("\n")
+        named = [local_path(target) for target in link_targets(skill_lines)]
+        named += [code for line in outside_code_fences(skill_lines) for code in CODE_SPAN.findall(line)]
+        linked = {(skill_md.parent / local).resolve() for local in named if local}
+        for reference in references:
+            if reference.resolve() not in linked:
+                failures.append(Failure("references-linked", str(reference.relative_to(root)), f"is not linked from `{skill_md.relative_to(root)}`; link it, or name its `references/` path in inline code, directly in SKILL.md and say when to read it"))
+
+    for reference in references:
+        if reference.suffix != ".md":
+            continue
+        lines = reference.read_text(encoding="utf-8").splitlines()
+        if len(lines) <= REFERENCE_TOC_THRESHOLD:
+            continue
+        headings = h2_anchors(lines)
+        first = next((i for i, line in enumerate(lines) if line.startswith("## ")), len(lines))
+        listed = {
+            target[1:]
+            for line in lines[:first]
+            if LIST_ITEM.match(line)
+            for target in LINK_TARGET.findall(line)
+            if target.startswith("#")
+        }
+        missing = [f"`{text}` (#{anchor})" for text, anchor in headings if anchor not in listed]
+        if missing:
+            failures.append(Failure("reference-toc", str(reference.relative_to(root)), f"has {len(lines)} lines but its table of contents before the first `## ` heading does not link {', '.join(missing)}; add a list item linking each `## ` heading's anchor"))
+
+    return failures, skipped
 
 
 def check_symlink(root: Path) -> list[Failure]:
@@ -162,10 +281,13 @@ def check_skill(directory: Path, root: Path) -> Result:
         )
 
     text = skill_md.read_text(encoding="utf-8")
+    line_count = len(text.splitlines())
+    if line_count > MAX_SKILL_MD_LINES:
+        failures.append(Failure("skill-md-lines", str(rel), f"has {line_count} lines; the limit is {MAX_SKILL_MD_LINES}. Move material needed only in some cases into references/ files linked from SKILL.md"))
 
     def unparsable(detail: str) -> Result:
         return (
-            [Failure("frontmatter-parses", str(rel), detail)],
+            failures + [Failure("frontmatter-parses", str(rel), detail)],
             skip_rest("frontmatter-parses", str(rel), "frontmatter could not be parsed"),
         )
 
@@ -201,15 +323,30 @@ def check_skill(directory: Path, root: Path) -> Result:
     if isinstance(description, str) and description.strip():
         if len(description) > MAX_DESCRIPTION_LENGTH:
             failures.append(Failure("description-length", str(rel), f"skill `{directory.name}` has a {len(description)}-character description; the limit is {MAX_DESCRIPTION_LENGTH}"))
+        brackets = sorted({char for char in description if char in "<>"})
+        if brackets:
+            failures.append(Failure("description-angle-brackets", str(rel), f"description contains {' and '.join(f'`{char}`' for char in brackets)}; some hosts display them as HTML entities, so reword without angle brackets"))
     else:
-        skipped.append(Skipped("description-length", str(rel), "`description` is missing or not a usable string"))
+        for check in ("description-length", "description-angle-brackets"):
+            skipped.append(Skipped(check, str(rel), "`description` is missing or not a usable string"))
 
     name = data.get("name")
     if isinstance(name, str) and name.strip():
         if name.strip() != directory.name:
             failures.append(Failure("name-matches-directory", str(rel), f"frontmatter name is `{name.strip()}` but the directory is `{directory.name}`; they must match"))
+        if len(name) > MAX_NAME_LENGTH or not NAME_PATTERN.fullmatch(name):
+            failures.append(Failure("name-format", str(rel), f"frontmatter name `{name}` must be 1-{MAX_NAME_LENGTH} lowercase ASCII letters, digits and single hyphens, not starting or ending with a hyphen"))
     else:
-        skipped.append(Skipped("name-matches-directory", str(rel), "`name` is missing or not a usable string"))
+        for check in ("name-matches-directory", "name-format"):
+            skipped.append(Skipped(check, str(rel), "`name` is missing or not a usable string"))
+
+    if "compatibility" in data:
+        compatibility = data["compatibility"]
+        if not isinstance(compatibility, str):
+            kind = "empty" if compatibility is None else f"a {type(compatibility).__name__}"
+            failures.append(Failure("compatibility-length", str(rel), f"frontmatter `compatibility` must be a string of 1-{MAX_COMPATIBILITY_LENGTH} characters, but is {kind}"))
+        elif not 1 <= len(compatibility) <= MAX_COMPATIBILITY_LENGTH:
+            failures.append(Failure("compatibility-length", str(rel), f"frontmatter `compatibility` has {len(compatibility)} characters; it must have 1-{MAX_COMPATIBILITY_LENGTH}"))
 
     first = next((line for line in body if line.strip()), None)
     if first is None:
@@ -217,8 +354,11 @@ def check_skill(directory: Path, root: Path) -> Result:
     elif not first.startswith("# "):
         failures.append(Failure("h1-title", str(rel), f"body must open with an `# ` H1 title, but the first line is `{first.strip()[:60]}`"))
 
-    if not any(line.strip() == "## Self-check" for line in body):
+    h2_headings = [line.strip() for line in outside_code_fences(body) if line.startswith("## ")]
+    if "## Self-check" not in h2_headings:
         failures.append(Failure("self-check-section", str(rel), "body has no `## Self-check` section; every skill carries one the agent runs before declaring done"))
+    elif h2_headings[-1] != "## Self-check":
+        failures.append(Failure("self-check-section", str(rel), f"`## Self-check` must be the last `## ` heading, but `{h2_headings[-1][:60]}` follows it; move it to the end"))
 
     return failures, skipped
 
@@ -242,9 +382,10 @@ def main() -> int:
     failures: list[Failure] = check_symlink(root) + check_output_style_mirrors(root)
     skips: list[Skipped] = []
     for directory in directories:
-        directory_failures, directory_skips = check_skill(directory, root)
-        failures.extend(directory_failures)
-        skips.extend(directory_skips)
+        for check in (check_skill, check_skill_files):
+            directory_failures, directory_skips = check(directory, root)
+            failures.extend(directory_failures)
+            skips.extend(directory_skips)
 
     print(f"validate_skills: {len(directories)} skill(s) under {SKILLS_DIR}\n")
 

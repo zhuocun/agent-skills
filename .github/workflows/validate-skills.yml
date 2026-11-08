@@ -27,3 +27,14 @@ jobs:
 
       - name: Validate skill files
         run: python3 scripts/validate_skills.py
+
+      - name: Test bundled skill scripts
+        run: |
+          set -euo pipefail
+          for dir in .agents/skills/*/scripts; do
+            if compgen -G "$dir/test_*.py" > /dev/null; then
+              echo "::group::$dir"
+              (cd "$dir" && python3 -m unittest discover -v)
+              echo "::endgroup::"
+            fi
+          done
