@@ -1,6 +1,6 @@
 # Operations and Evolution
 
-Passes 7 and 8 of the procedure in SKILL.md, which holds the F-rules. Deliverable slots 6 and 7, which 8.2 and 8.4 cite, are in [reporting-and-proof.md](reporting-and-proof.md#deliverable-slots).
+Passes 7 and 8 of the procedure in SKILL.md, which holds the fidelity rules (F1-F12). Deliverable slots 6 and 7, which 8.2 and 8.4 cite, are in [reporting-and-proof.md](reporting-and-proof.md#deliverable-slots).
 
 ## Pass 7: Test Reachable Operational Failure Modes
 

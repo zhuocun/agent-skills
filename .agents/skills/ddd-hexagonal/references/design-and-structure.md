@@ -1,11 +1,12 @@
 # Design and Structure
 
-The standard vocabulary, Pass 1, Passes 2 and 3, and clauses 9.1 and 9.2 of the procedure in SKILL.md, which holds the F-rules, Hold The Default Standard, and the Standing Rules. The Standing Rules complete the pass conditions of 1.1, 1.2, 1.4, 1.5, and 1.6. Pass 6, which 3.6 cites, is in [state-and-concurrency.md](state-and-concurrency.md).
+The standard vocabulary, Pass 1, Passes 2 and 3, and clauses 9.1 and 9.2 of the procedure in SKILL.md, which holds the fidelity rules (F1-F12), Hold The Default Standard, and the Standing Rules. The Standing Rules complete the pass conditions of 1.1, 1.2, 1.4, 1.5, and 1.6. Pass 6, which 3.6 cites, is in [state-and-concurrency.md](state-and-concurrency.md).
+
 ## Standard Vocabulary
 
 Use the standard vocabulary:
 
-- **Strategic design.** A *bounded context* is the boundary within which one *ubiquitous language* and one model hold. A *context map* names each relationship between contexts (for example customer-supplier, conformist, shared kernel, open host service with a published language, anti-corruption layer). An *anti-corruption layer* translates a foreign model so it never enters the local one. A *subdomain* is a part of the business problem, classified as *core* (differentiating), *supporting*, or *generic*; concentrate modeling depth on the core subdomain, and for a generic subdomain prefer conforming to or adopting an existing solution when no local invariant requires a model.
+- **Strategic design.** A *bounded context* is the boundary within which one *ubiquitous language* and one model hold. A *context map* names each relationship between contexts (for example customer-supplier, conformist, shared kernel, open host service with a published language, anti-corruption layer). An *anti-corruption layer* translates a foreign model so it never enters the local one. A *subdomain* is a part of the business problem, classified as a *core subdomain* (differentiating), a *supporting subdomain*, or a *generic subdomain*; concentrate modeling depth on core subdomains, and for a generic subdomain prefer conforming to or adopting an existing solution when no local invariant requires a model.
 - **Tactical design.** An *aggregate* is a consistency boundary changed only through its *root*. An *entity* has identity and lifecycle; a *value object* is immutable, compared by value, and self-validating. A *domain service* holds pure domain logic that belongs to no single aggregate. A *domain event* records, in the ubiquitous language and past tense, a fact others react to. A *repository* is the outbound port through which an aggregate is loaded and saved whole.
 - **Hexagonal roles.** An *application service* realizes *use cases*. An *inbound (driving) port* is a use-case contract the application exposes; an *outbound (driven) port* is a capability contract the core declares and consumes. An *adapter* translates between a port and a technology: driving adapters call inbound ports, driven adapters implement outbound ports. The *composition root* constructs dependencies and selects concrete implementations across architectural boundaries; domain types and adapter-local collaborators remain with their owners.
 
@@ -27,7 +28,7 @@ Use the standard vocabulary:
   Pass condition: Each unresolved choice states its options and blocked decision.
 
 - **1.6 Bound exceptions and transitions.** Record approval grounds, precise location and conditions, existing protection, and review or expiry trigger.
-  Pass condition: Describe a transition's deviation and its convergence direction.
+  Pass condition: Describe a transition's deviation and convergence direction instead of claiming full compliance.
 
 ## Pass 2: Choose The Faithful, Justified Design
 

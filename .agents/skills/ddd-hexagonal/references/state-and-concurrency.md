@@ -1,6 +1,6 @@
 # State and Concurrency
 
-Passes 4, 5, and 6 of the procedure in SKILL.md, which holds the F-rules they cite.
+Passes 4, 5, and 6 of the procedure in SKILL.md, which holds the fidelity rules (F1-F12) they cite.
 
 ## Pass 4: Make Facts And Representations Honest
 
