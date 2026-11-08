@@ -29,7 +29,7 @@ Before dispatching anything, define the to-dos and a high-standard definition of
 
 Maximize useful progress by removing repetition that adds no evidence, while preserving reliability, acceptance requirements and each role's own judgment. In the existing DoD or checklist, plan verification by acceptance claim and risk: identify the evidence needed, its execution owner, required independence and invalidation conditions. Assign one primary executor per check and additional independent execution where required by risk, the user or the project. Keep this proportionate: small work can use one line with an evidence link; reuse tool records instead of creating parallel reports. Reuse verified setup and source inspection when still applicable.
 
-Before reusing raw evidence for any claim, and again after a compaction before the next reuse, read [`references/review-and-evidence.md`](references/review-and-evidence.md) in full and apply its **Evidence reuse** checks.
+Before the first reuse of raw evidence in a session, and again after a compaction before the next reuse, read [`references/review-and-evidence.md`](references/review-and-evidence.md) in full and apply its **Evidence reuse** checks.
 
 Use focused checks for fast feedback during edits, then complete the planned acceptance checks. Execute further checks to cover new or uncovered claims and risks, fulfill required independence, or resolve invalidated, uncertain, incomplete or conflicting evidence. Invalidate only evidence affected by a change; expand verification conservatively when the impact is unknown. Investigate failures and conflicting results rather than hiding them behind a later pass. Account for the final integrated candidate, including interactions between changes, and honor every explicit user or project gate. Each role audits the applicable raw evidence and performs its assigned or missing checks; changing roles alone does not require repeating valid work.
 
@@ -68,7 +68,7 @@ Inspect the dispatch schema and set every exposed parameter on every subagent ca
 
 After each worker returns, dispatch its output to a fresh reviewer subagent before integrating. Reviewers run in parallel across multiple worker outputs.
 
-Before dispatching the first reviewer or verifier in a session, and again after a compaction before the next one, read `references/review-and-evidence.md` in full: it defines a verifier and fixes the reviewer's input, its output, and how it grounds its verdict.
+Before dispatching the first reviewer or verifier in a session, and again after a compaction before the next one, read `references/review-and-evidence.md` in full: it defines a verifier and the reviewer's input, output and grounding.
 
 **Skip the reviewer hop only when** the output is a pure fact lookup or a mechanical summary and you verify it at the source in seconds; route anything else through the reviewer.
 
@@ -113,14 +113,14 @@ Before writing the final summary, and again after a compaction before writing it
 
 ## Self-check
 
-Before declaring a conductor task done, read in full every reference file a line below names that this task used, then confirm:
+Before declaring a conductor task done, read in full every reference file this checklist names that this task used, then confirm:
 
 - [ ] Skill precedence honored — while this skill was active, its rules took priority over conflicting rules in other skills; higher-priority system and developer instructions and explicit user overrides were honored, and other skills' nonconflicting rules were applied (see **Role**).
 - [ ] Delegation honored — every non-trivial workstream went to a subagent; nothing was pulled local except genuinely tiny steps, work tightly coupled to the next local action, the immediate blocking step, the orchestrator's own final gate, and work pulled local after two failed reviews or an integration redo (see **Reviewer** and **Orchestrator final gate**).
 - [ ] Concurrency maximized — independent strands ran in parallel, not serialized.
 - [ ] Every dispatch, advisors included, met each item of the **Dispatch check** in `references/dispatch.md`.
 - [ ] Every decision that needed the user's consent went straight to the user; every other hard decision went to an advisor wherever one could run, and each consultation met the **Advisor check** in `references/advisor.md`.
-- [ ] Every brief met each obligation of **In every brief**: ownership of quality, verification at the source, and self-review against the brief's scope and constraints before declaring done, added to the reviewer hop; the applicable verification plan and evidence references; a worker's success criteria traced to the DoD items it serves; the leaf restriction; and correctness and reliability wording, with any security check stated as the defect it prevents.
+- [ ] Every brief met each obligation of **In every brief**: ownership of quality, verification at the source, and self-review against the brief's scope and constraints before declaring done, added to the reviewer hop; the applicable verification plan and evidence references; a worker's success criteria traced to the DoD items it serves; the leaf restriction unless the brief lifts it; and correctness and reliability wording, with any security check stated as the defect it prevents.
 - [ ] Every worker artifact, except a pure fact lookup or a mechanical summary you verified at the source in seconds, got an independent reviewer's verdict before integration, and was integrated only on a `pass` you accepted or a `revise`/`redo` you rejected.
 - [ ] No subtask was reviewed again after its second failed review: it was pulled local or escalated to the user.
 - [ ] Verification followed the claim and risk plan in the DoD or checklist — evidence reuse passed the **Evidence reuse** checks in `references/review-and-evidence.md`, required independent execution ran, and further checks addressed iteration, coverage, invalidation or unresolved results (see **Verification**).
