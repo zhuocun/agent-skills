@@ -57,7 +57,7 @@ Poll only when your next step depends on that job or it needs close monitoring, 
 - `AwaitShell` polls one job by id per call. `pattern` blocks until an RE2 regex matches the output body. It never matches the header or footer. A call blocks for at most 119 minutes.
 - Without `shell_id`, `AwaitShell` is a plain sleep. Use it for agent-side sleeps instead of a shell `sleep` call.
 - If you observe a job's end yourself, for example after killing it, call `AwaitShell` once to consume the stale notification.
-- Size each wait well under or well over the model's prompt-cache lifetime; a wait just past it pays for a cache miss without the saving of a long wait. For a 5-minute lifetime, Anthropic's default, or an unknown one, use slices of 60–270 seconds or 1200 seconds and longer.
+- Size each wait well under or well over the model's prompt-cache lifetime; a wait just past it pays for a cache miss without the saving of a long wait. For an unknown lifetime or a 5-minute one (Anthropic's default), use slices of 60–270 seconds or 1200 seconds and longer.
 - Never poll a job the tool result says the user backgrounded manually.
 
 ## tmux run plus waiter (verified 2026-10-12)

@@ -41,13 +41,13 @@ Choose a vehicle with [background work](references/background-work.md#choosing-t
 
 ### 5. Wait efficiently
 
-An idle agent wakes only on a user message or on an event Cursor delivers as a new turn, such as a safety timer prompt, a subscription event or a background Task subagent's result. Do not rely on a background shell job or waiter that finishes after your turn ends to start a turn. A user message cuts a **blocking wait**, an `AwaitShell` call on a job, short. So, while any run is going:
+An idle agent wakes only on a user message or on an event Cursor delivers as a new turn, such as a safety timer prompt, a subscription event or a background Task subagent's result. Do not rely on a background shell job or waiter that finishes after your turn ends to start a turn. A **blocking wait** is an `AwaitShell` call on a job; a user message cuts it short. So, while any run is going:
 
-- Do independent ledger work first. When none remains, block with `AwaitShell`: on the waiter when one detached run is going; on an **any-end waiter**, one background shell job that exits as soon as any watched end marker appears, when two or more are going; or on a job by id when only background shell jobs are running. Collect other background shell jobs and Task subagent results at the next inventory.
+- Do independent ledger work first. When none remains, block with `AwaitShell`: on the waiter when one detached run is going; on an any-end waiter when two or more are going; or on a job by id when only background shell jobs are running. An **any-end waiter** is one background shell job that exits as soon as any watched end marker appears. Collect other background shell jobs and Task subagent results at the next inventory.
 - Where a timer tool exists, keep a **safety timer** subscribed: a timer subscription whose prompt says "run the inventory from the ledger", one-shot at a known end time or recurring when the end is uncertain. Its prompts can arrive late and batched, so treat each batch as one inventory request.
 - After an interruption, handle the message and run the inventory. Then start a fresh waiter over the remaining runs and block again in the same turn, unless the user asked you to stop working, or a safety timer covers the remaining runs and they will take much longer than its interval; in those cases end the turn and leave the runs going.
 
-Scripts and settings: [tmux run plus waiter](references/background-work.md#tmux-run-plus-waiter-verified-2026-10-12), [any-end waiter](references/background-work.md#any-end-waiter), [safety timers](references/background-work.md#safety-timers); evidence: [wait routine](references/background-work.md#wait-routine).
+Scripts and settings: [tmux run plus waiter](references/background-work.md#tmux-run-plus-waiter-verified-2026-10-12), [any-end waiter](references/background-work.md#any-end-waiter), [safety timers](references/background-work.md#safety-timers); evidence and the Cloud Agent queue check: [wait routine](references/background-work.md#wait-routine).
 
 ### 6. Turn end: leave nothing unwatched
 
