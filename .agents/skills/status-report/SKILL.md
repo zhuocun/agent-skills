@@ -12,7 +12,7 @@ Priority order, highest first: **grounded evidence → complete picture → legi
 
 Nothing here depends on a particular version-control host, CI vendor, issue tracker, command line, or renderer. Evidence is named by kind — a commit id, a change-request number, a run id, a session id, a file path, a document anchor, a filing section, a scoring sheet — never by tool. Look for the thing; choose your own way to reach it.
 
-This skill fixes the report's slots and their order, the Tasks table's fields and status values, and the markers and fixed phrases it defines; where it sets no wording, other guidance on writing governs the wording. An explicit instruction from the user, or a template the user supplies or the destination documents, replaces the parts of this form it conflicts with; every claim still carries a reference or is marked unverified.
+This skill fixes the report's slots and their order, the Tasks table's fields and status values, the markers and fixed phrases it defines, and its voice and length rules; where it sets no wording, other guidance on writing governs the wording. An explicit instruction from the user, or a template the user supplies or the destination documents, replaces the parts of this form it conflicts with; every claim still carries a reference or is marked unverified.
 
 ## Form
 
@@ -40,9 +40,9 @@ Read each file in full when its condition holds, before applying its rules, and 
 
 - `references/report-detail.md`: before collecting sources for a current report, and before building, editing or reviewing the Tasks table or Health.
 - `references/prior-report.md`: when a prior report exists, before marking movement in the table or writing `Changes since`.
-- `references/overflow.md`: when the Tasks table would exceed 10 tasks or 20 table rows, or more than five items qualify for `Action required`.
+- `references/overflow.md`: when the Tasks table would exceed 10 tasks or 20 table rows or has a rolled or folded row, or more than five items qualify for `Action required`.
 - `references/blocking-chains.md`: when a `Blocked` subtask's Dependency names another subtask as its blocker.
-- `references/illustrations.md`: before adding any illustration other than the Blocked line.
+- `references/illustrations.md`: when a report has or adds any illustration other than the Blocked line.
 
 ## Passes
 
@@ -68,7 +68,7 @@ Retain these fields: Task, Subtask, Status, Progress, Executor, Dependency, Evid
 - **Dependency** distinguishes `None` (checked, no dependency), `After <Task> / <Subtask>` (a known routine predecessor for a `Not started` stage), `Blocked by <blocker>` (for `Blocked`), and `Unknown (unverified)` (not established).
 - **Paused needs an ask.** Every `Paused` subtask has a matching `Action required` item, a **Decision** to assign an executor or confirm the pause; where no owner is known, the ask is "who owns this?".
 - **Evidence** is never blank. Cite an openable source that supports the particular status, count, identity or dependency claimed; qualify unsupported fields `(unverified)` and give their confirming source in `Unverified claims`. Use `unverified — see Unverified claims` when no supporting source is available.
-- **Order deterministically**, so two people sort the same data identically: tasks by attention order `Blocked, Unknown, In progress, Not started, Done, Dropped`, then alphabetically on task name; subtasks under their task in known execution order — for example `Development` before `Review` before `Release`. Ordering alone asserts no dependency.
+- **Order deterministically**: tasks by attention order `Blocked, Unknown, In progress, Not started, Done, Dropped`, then alphabetically on task name; subtasks under their task in known execution order — for example `Development` before `Review` before `Release`. Ordering alone asserts no dependency.
 - **Cap at 10 tasks and 20 table rows.** Never drop a task to fit. Over either cap, roll and fold rows as `references/overflow.md` directs.
 
 ### 3. Count progress — the denominator rule
@@ -92,7 +92,7 @@ A carried item marks its age: `(open since <anchor>)`. Order by cost of inaction
 
 ### 6. Write `Health` — product first, pipeline second
 
-Gates can all pass while users are failing, so lead with `Product:` — what users are experiencing right now: normal, degraded (say how), down, or not yet released. Then the gates line `Checks` · `Tests` · `Coverage` · `Released`, as **Gates** in `references/report-detail.md` gives. **Any field measured against something other than the header's revision carries its as-of date** — a nine-month-old green result read as current is the failure this prevents. If none of these surfaces exist, print `No build, test, or release surface exists for this project.` and list what stands in for it. Every surface named in the header appears in Health, or the report says why it does not.
+Gates can all pass while users are failing, so lead with `Product:` — what users are experiencing right now: normal, degraded (say how), down, or not yet released. Then the gates line `Checks` · `Tests` · `Coverage` · `Released`, as **Gates** in `references/report-detail.md` gives. **Any field measured against something other than the header's revision carries its as-of date**. If none of these surfaces exist, print `No build, test, or release surface exists for this project.` and list what stands in for it. Every surface named in the header appears in Health, or the report says why it does not.
 
 ### 7. Write `Unverified claims` — and mark them inline too
 
@@ -100,7 +100,7 @@ Mark each unsupported claim `(unverified)` where it appears and give its confirm
 
 ### 8. Write the header and the verdict last
 
-Header: `# <Project> — <YYYY-MM-DD HH:MM and zone> @ <revision or version; one per surface if there is more than one>`. The time and zone are always required: execution state changes within the hour, and every `Running` claim is read against them. **The anchor is the revision the Tasks table was read at, not the date the report was written.**
+Header: `# <Project> — <YYYY-MM-DD HH:MM and zone> @ <revision or version; one per surface if there is more than one>`. The time and zone are always required, because every `Running` claim is read against them. **The anchor is the revision the Tasks table was read at, not the date the report was written.**
 
 Verdict: two to three sentences — where the project stands, its direction since the last anchor, and the one item whose resolution most changes the picture. It is not a summary of every slot, and it introduces no new claim; it may restate only claims grounded elsewhere in the report. The only exceptions are naming the `Action required` items left out on overflow and stating that the task cap was exceeded.
 
@@ -114,15 +114,15 @@ Keep illustrations mechanically derivable from the Tasks table and useful at the
 
 ## Self-check
 
-- [ ] **Form:** seven slots in fixed order; every `##` heading printed: `None.` if empty; `Not checked.` if unexamined, or if wholly unreachable with one `Unverified claims` line; if partly reached, what was reached, each unfilled field `(unverified)` with its own `Unverified claims` line; one report language, identifiers intact, abbreviation meanings from sources; `—`, `None` and `Unknown (unverified)` distinct; at most about 50 lines; the Markdown, voice and naming that **Form** sets.
+- [ ] **Form:** unless **Scope and form** applies, seven slots in fixed order; every `##` heading printed: `None.` if empty; `Not checked.` if unexamined, or if wholly unreachable with one `Unverified claims` line; if partly reached, what was reached, each unfilled field `(unverified)` with its own `Unverified claims` line; one report language, identifiers intact, abbreviation meanings from sources; `—`, `None` and `Unknown (unverified)` distinct; at most about 50 lines; every other `## Form` rule.
 - [ ] **Header and verdict:** the header carries the revision the Tasks table was read at (one per surface if several), the date, and the time with its zone; the verdict names the one pivotal item, adds no claim beyond the two pass 8 exceptions, and says so if an `Unverified claims` item would overturn it.
 - [ ] **Tasks table:** the pass 2 fields, levels, terminal rows, derived statuses, order and caps, rolled and folded as `references/overflow.md` directs; never a task dropped.
-- [ ] **Status and Executor:** each value follows pass 2 and **Status** and **Executor** in `references/report-detail.md`; every verified `Running` subtask has an identified actual executor and task-linked, as-of evidence.
+- [ ] **Status and Executor:** each value follows pass 2 and **Status** and **Executor** in `references/report-detail.md`.
 - [ ] **Dependency:** checked `None`, routine `After`, named `Blocked by` and `Unknown (unverified)` are distinct; task rows use `—`; sequencing is not inferred.
 - [ ] **Progress:** each count follows pass 3 and **Progress** in `references/report-detail.md`.
-- [ ] **Evidence:** never blank; each locator opens to a specific place that supports the claims beside it; every unsupported field is marked in place and has an `Unverified claims` entry naming what would confirm it.
+- [ ] **Evidence:** never blank; each locator or linked source note opens to a specific place that supports the claims beside it; a `Not started` `—` hides no other claim; every unsupported field is marked in place and has an `Unverified claims` entry naming what would confirm it.
 - [ ] **Illustrations:** the Blocked line is present and qualifies unverified relations or unknown dependencies; the table is not sectioned into status groups; every other illustration is one `references/illustrations.md` licenses.
 - [ ] **Asks:** every `Paused` subtask, and every `Blocked` subtask without a subtask blocker, has its pass 5 item; a subtask blocker's chain is handled as `references/blocking-chains.md` directs; asks follow the pass 5 format, age marker, order and cap.
 - [ ] **Prior report:** a first report has the `first report` heading and no delta markers; otherwise `Changes since` and the delta markers follow passes 3–4.
 - [ ] **Health:** leads with the product; every measurement not taken against the header's revision carries its as-of date.
-- [ ] **Scope and form:** a review or edit stayed within the requested scope, and a supplied-text review preserved reported facts and its anchor without claiming a current-state audit; an explicit user instruction, or a template the user supplies or the destination documents, replaced only the parts of this form it conflicts with.
+- [ ] **Scope and form:** a review or edit stayed within the requested scope, and a supplied-text review preserved reported facts and its anchor without claiming a current-state audit; an explicit user instruction, or a template the user supplies or the destination documents, replaced only the parts of this form it conflicts with, and every claim still carries a reference or is marked unverified.

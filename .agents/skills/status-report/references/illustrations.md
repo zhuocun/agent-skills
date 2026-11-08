@@ -1,6 +1,6 @@
 # Illustrations
 
-Apply this file before adding any illustration other than the Blocked line. Omit an optional illustration that merely duplicates an easy scan or makes the report harder to read.
+Apply this file when a report has or adds any illustration other than the Blocked line. Omit an optional illustration that merely duplicates an easy scan or makes the report harder to read.
 
 ## Licensed illustrations
 

@@ -1,6 +1,6 @@
 # Overflow
 
-Apply this file when the Tasks table would exceed 10 tasks or 20 table rows, or when more than five items qualify for `Action required`.
+Apply this file when the Tasks table would exceed 10 tasks or 20 table rows or has a rolled or folded row, or when more than five items qualify for `Action required`.
 
 ## Tasks table cap
 
