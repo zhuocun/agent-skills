@@ -1,7 +1,7 @@
 ---
 name: cursor-harness
 description: >-
-  Run concurrent work as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker): track every task, subagent and long-running job to completion through follow-up messages and context compaction. Use when the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or restoring open tasks and runs from the ledger after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks. Do not use for a single short request that finishes inside one turn with no background work, or inside agents that do not run in Cursor.
+  When you are running as an agent inside Cursor (IDE agent, Cloud Agent, or self-hosted worker), track every task, subagent and long-running job to completion through follow-up messages and context compaction. Use when the work involves more than one task at a time, delegating to Task-tool subagents or external CLIs, background shells, tmux sessions, deployments or test runs longer than a few minutes, follow-up messages that arrive mid-work, or restoring open tasks and runs from the ledger after a context compaction. Covers the task ledger, turn-start and turn-end routines, background-job waiting, subagent delegation, and Cursor tool quirks. Do not use for a single short request that finishes inside one turn with no background work, or when you are not running inside Cursor, including when Cursor is only the subject of the request, such as a brief, prompt or plan for a Cursor agent to run later.
 ---
 
 # Cursor Harness
