@@ -94,8 +94,13 @@ This repo is the canonical source; make skill changes here. Before pushing, run:
 python3 scripts/validate_skills.py
 ```
 
-It checks that every skill directory has a `SKILL.md` whose frontmatter parses as YAML with a
-non-empty `name` (matching the directory) and `description`, that the body opens with a `# `
-title and has a `## Self-check` section, that `.claude/skills` links to `.agents/skills`, and that
-`baseline.md` matches `communicate`. It needs PyYAML (`pip install pyyaml`). Authoring
-conventions are in `AGENTS.md`.
+It checks that every skill directory has a `SKILL.md` of at most 500 lines whose frontmatter
+parses as YAML with a non-empty `name` (matching the directory; lowercase ASCII letters, digits
+and single hyphens) and `description` (at most 1024 characters, no `<` or `>`), and any
+`compatibility` value of 1–500 characters; that the body opens with a `# ` title and its last
+`## ` section is `## Self-check`; that relative links resolve, every `references/` file is
+pointed to from `SKILL.md` and reference files over 100 lines have a table of contents; that
+`.claude/skills` links to `.agents/skills`; and that `baseline.md` matches `communicate`. It
+needs PyYAML (`pip install pyyaml`). CI also runs the tests bundled with each skill's scripts:
+run `python3 -m unittest discover` in each `.agents/skills/<name>/scripts/` directory that has
+`test_*.py` files. Authoring conventions are in `AGENTS.md`.

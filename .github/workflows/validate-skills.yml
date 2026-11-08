@@ -22,8 +22,24 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Test bundled skill scripts
+        run: |
+          set -euo pipefail
+          for dir in .agents/skills/*/scripts; do
+            if compgen -G "$dir/test_*.py" > /dev/null; then
+              echo "::group::$dir"
+              (cd "$dir" && python3 -m unittest discover -v 2>&1) | tee "$RUNNER_TEMP/unittest.log"
+              echo "::endgroup::"
+              if ! grep -Eq '^Ran [1-9][0-9]* tests?' "$RUNNER_TEMP/unittest.log"; then
+                echo "::error::$dir has test_*.py files but ran no tests"
+                exit 1
+              fi
+            fi
+          done
+
       - name: Install PyYAML
         run: pip install --disable-pip-version-check pyyaml
 
       - name: Validate skill files
         run: python3 scripts/validate_skills.py
+
