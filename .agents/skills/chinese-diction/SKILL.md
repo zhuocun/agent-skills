@@ -8,7 +8,7 @@ description: >-
 
 A **methodology, not a lookup table:** judge *any* phrasing by these principles. It works at the level of **diction, phrasing, and register** — word choice and sentence texture, not document structure or section order — in whatever register the text is meant for. Once active, it governs every later piece of Chinese prose you write, translate, or polish for a human reader, your own chat replies to the user included, across every later task in the session, including after a compaction or a resume, until the user explicitly turns it off; it never applies to agent-instruction files.
 
-Priority order, highest first: **fidelity, preserved meaning, Chinese sentence structure, register fit, wording.** Fidelity outranks every wording rule: where a token is both a literal identifier and an English word with a settled Chinese form, it stays verbatim. Preserved meaning: polishing or translating keeps every claim the source makes, its advantages, tradeoffs and limitations included, at the source's strength, and invents none. Where two wording rules disagree, the one that restores information to the reader outranks the one that removes a word: expand the clipped form (**完整词形**) before trimming the figure (**修辞与措辞分量**), and keep concreteness that adds precision (**语域**) over plainness applied by habit.
+Priority order, highest first: **fidelity, preserved meaning, Chinese sentence structure, register fit, wording.** Fidelity outranks every wording rule: where a token is both a literal identifier and an English word with a settled Chinese form, it stays verbatim. Preserved meaning: polishing or translating keeps every claim the source makes, its advantages, tradeoffs and limitations included, and invents none; it weakens a claim only where **确定性与义务** finds its force unwarranted, never a stated limitation. Where two wording rules disagree, the one that restores information to the reader outranks the one that removes a word: expand the clipped form (**完整词形**) before trimming the figure (**修辞与措辞分量**), and keep concreteness that adds precision (**语域**) over plainness applied by habit.
 
 It does not decide what a text says, its overall length, its structure or its format; where another instruction fixes those, follow it and apply this skill inside it. On word choice, phrasing, sentence construction, punctuation and register, the user's explicit instruction or standing preference and a style guide or glossary the destination sets take precedence over this skill except on **Fidelity — protected spans**; a general writing rule not written for Chinese does not.
 
@@ -25,7 +25,7 @@ Read each file in full when its condition first holds, before applying its rules
 
 ## The core instinct
 
-Write to these principles from the first draft. First settle five variables — from the user's message when writing, from the whole text and the user's message when polishing; where nothing in front of you decides a setting, use its bracketed default, and ask the user only where a setting changes the wording and that default would not fit the text. When polishing, read the whole text before changing a word, then revise against the **用词** and **句式** sections without over-correcting (**语域**).
+Write to these principles from the first draft. First settle five variables — from the user's message when writing, from the whole text and the user's message when polishing or translating; where nothing in front of you decides a setting, use its bracketed default, and ask the user only where a setting changes the wording and that default would not fit the text. When polishing, read the whole text before changing a word, then revise against the **用词** and **句式** sections without over-correcting (**语域**).
 
 - **Register** — professional / casual / creative. [professional]
 - **Medium and genre** — what the text is (chat message, notice, article, UI string, slide, email, contract, spoken script) and what it is for (inform, instruct, oblige, warn, persuade). [running prose, to inform]
@@ -56,7 +56,7 @@ Reject shorthand that merely hides necessary information. If a phrase leaves the
 Apply three tests:
 
 - **Reference:** Can the target reader identify exactly what the term denotes? Name the mechanism, not the mood.
-- **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`); refer to members by name instead. Never let one name denote two different concepts, and never rotate names for one concept: pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references, never swapping synonyms for literary variety.
+- **Stability:** Does the term mean the same thing everywhere? Beware count-based shorthand (`三类异常`、`第四轴`); refer to members by name instead. Never let one name denote two different concepts, and never rotate names for one concept: pick one Chinese name for a recurring concept and reuse it across headings, tables, and cross-references.
 - **Compression:** Does it shorten already-defined repetition rather than conceal unstated information? A productive suffix (`面`/`态`/`位`/`键`) makes coining feel free, but each coinage still owes a definition. To spot a coinage, replace the term with a plain description of what it denotes: if the text loses no information, the term was a coinage; name the thing plainly instead.
 
 If any test fails, restore whatever concrete actor or object, condition, action, or result the target reader needs to understand the claim. Restore it only from the source text, its stated context, or facts the user supplied. Where none of these supplies it, keep the general wording and flag the gap to the user. Never supply an actor, condition, mechanism, or result the source does not state.
@@ -75,7 +75,7 @@ Cut vividness, drama and violent wording used only for force or flavor, and word
 
 Judge drift against the register, medium and relationship settled up front. There are **two opposite failures**, and over-correcting one produces the other; for a professional target, aim for the steady middle.
 
-For a professional target, cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing (a vivid "一分钟看懂" beats a flat "高效"), and never reach for bookish filler (`悉数`/`须臾`/`业已`). When the target is casual, natural speech rhythm and interjections are correct, not defects — the failure there is stiffness leaking in (`进行沟通` where `聊一聊` belongs). When the target is creative, hold the piece's own voice steady. Whatever the target, *unintended* drift between registers within one text is the failure. Quoted speech, a marked aside, and a deliberate collision in creative prose each hold a register of their own on purpose — set them off as quotation or aside, and keep the surrounding text steady. **完整词形** measures against the target register, never against a shorter one.
+For a professional target, cut narrative openers, casual pronoun + 得, telegraphic fragments, over-strong adverbs (`根本`/`全靠`), dramatic time-moments (`那一刻`/`落下`) — **but** keep concrete, earned phrasing, and never reach for bookish filler (`悉数`/`须臾`/`业已`). When the target is casual, natural speech rhythm and interjections are correct, not defects — the failure there is stiffness leaking in (`进行沟通` where `聊一聊` belongs). When the target is creative, hold the piece's own voice steady. Whatever the target, *unintended* drift between registers within one text is the failure. Quoted speech, a marked aside, and a deliberate collision in creative prose each hold a register of their own on purpose — set them off as quotation or aside, and keep the surrounding text steady. **完整词形** measures against the target register, never against a shorter one.
 
 - **Casual target:** ✗ 关于周末聚餐一事，请各位于明日前予以回复 → ✓ 咱们周末聚餐，大家明天之前回复一下哈
 - **Quoted speech:** ✓ 他把报告推了回来，说：“这些数据我不认可。”之后我们重做了口径 · **marked aside:** ✓ 本季度营收同比增长 12%（说实话，这个数比我们预想的好），主要来自新客户 · **deliberate collision in requested creative writing:** ✓ 那年夏天，我和窗外的蝉达成了“战略合作”：它负责叫，我负责睡不着
@@ -107,27 +107,27 @@ Trimming a word or phrase below its natural Chinese form to save characters read
 
 ### 中文修饰与连接 — Chinese sentence structure
 
-Chinese must carry Chinese sentence structure, not transliterated English structure. Tells: coordinate pre-modifiers run together without `、`, a pre-modifier stacking three or more of actor, place, time and manner around its verb, `被…所…`, connector pile-ups (`由于…因此…并且`), nominalized verbs (`进行…的处理`), parallelism forced for symmetry, subject drift mid-sentence.
+Chinese must carry Chinese sentence structure, not transliterated English structure. Tells: coordinate pre-modifiers run together without `、`, a packed pre-modifier, one stacking three or more of actor, place, time and manner around its verb, `被…所…`, connector pile-ups (`由于…因此…并且`), nominalized verbs (`进行…的处理`), parallelism forced for symmetry, subject drift mid-sentence.
 
-The tell is not how many pre-modifiers a noun carries — a chain of compact coordinate modifiers is native Chinese. Separate run-together coordinates with `、` and tighten each to a bare predicate, or unstack a packed modifier into a main clause. One or two adjuncts inside a modifier are fine.
+The tell is not how many pre-modifiers a noun carries — a chain of compact coordinate modifiers is native Chinese. Separate run-together coordinates with `、` and tighten each to a bare predicate, or unstack a packed pre-modifier into a main clause. One or two adjuncts inside a modifier are fine.
 
 - ✗ 一个在类型层无法产出非法结果的受约束的接口 → ✓ 一个受约束的、在类型层无法产出非法结果的接口
 
 ### 对比、拆句与衔接 — sentence-craft moves
 
-- **`不是 A，而是 B` can be natural.** Keep it when A/B are comparable and the contrast is the point. Rewrite to `是 B，而非 A` only when it improves flow and does not invert emphasis; **front clause B**. ✓ 是取代表单，而非用 AI 优化表单
+- **`不是 A，而是 B` can be natural.** Keep it when A/B are comparable and the contrast is the point. Rewrite to `是 B，而非 A` only when it improves flow and does not invert emphasis; **front clause B**.
 - **Split overloaded sentences.** One that bundles definition + justification + instruction reads as three; give each its own sentence — unless the genre binds them, as a contract clause does, where a condition and its consequence belong in one sentence. ✓ 甲方应于收到发票之日起三十日内付款；逾期的，按未付金额每日万分之五计付违约金
-- **Weld related clauses with native paired connectives.** When two clauses are one causal or contrastive thought the reader would otherwise parse as separate facts, join them with `之所以…是因为…` / `与其…不如…`. One native connective binds; a pile-up of Western connectors (**中文修饰与连接**) is translationese. ✗ 精度有限。上下文不足 → ✓ 之所以精度有限，是因为上下文不足
+- **Weld related clauses with native paired connectives.** When two clauses are one causal or contrastive thought the reader would otherwise parse as separate facts, join them with `之所以…是因为…` / `与其…不如…`.
 
 ## Self-check
 
 - [ ] Each reference file whose condition held was read in full before its rules were applied, and again after any compaction, and its own checks pass.
-- [ ] **Fidelity — protected spans** are byte-for-byte unchanged, through any 简繁 conversion; punctuation, quotation marks, spacing and term spelling follow **The core instinct**; locale and script match what was settled.
-- [ ] **Preserved meaning:** in polishing or translating, every claim of the source, its advantages, tradeoffs and limitations included, survives at the source's strength; none was invented.
+- [ ] **Fidelity — protected spans** are byte-for-byte unchanged, through any 简繁 conversion; punctuation, quotation marks, spacing and term spelling follow **The core instinct**.
+- [ ] **Preserved meaning:** in polishing or translating, every claim of the source, its advantages, tradeoffs and limitations included, survives, weakened only where **确定性与义务** finds its force unwarranted and never a stated limitation; none was invented.
 - [ ] **具体、稳定的词汇:** every nonstandard term, coinages included, passes the three tests, or was restored only from the source, its stated context or the user's facts, or was kept and flagged to the user.
-- [ ] **修辞与措辞分量:** no metaphor, simile or personification in communication with the user; nothing used only for force or flavor; connotations fit.
+- [ ] **修辞与措辞分量:** no metaphor, simile or personification in communication with the user; verbatim source quotations keep their wording, and names, identifiers and established terms their referents and domain meanings; nothing used only for force or flavor; connotations fit.
 - [ ] **语域:** register, medium and relationship match what was settled and hold steady outside set-off quotation, asides and deliberate creative collisions.
 - [ ] **确定性与义务:** no unwarranted absolute, and obligation genres keep `应` / `不得` / `严禁`; strong claims bounded; at most one softener on any part; politeness upward or to a client not counted as hedging.
 - [ ] **完整词形:** no clipped words in running prose.
-- [ ] **中文修饰与连接** and **对比、拆句与衔接:** no tell from either rule remains; contrast keeps its emphasis; a contract clause keeps each condition in one sentence with its consequence.
+- [ ] **中文修饰与连接:** no tell remains. **对比、拆句与衔接:** contrast keeps its emphasis; a sentence bundling definition, justification and instruction is split unless its genre binds them, as a contract clause binds a condition to its consequence; one-thought clauses take a native paired connective.
 - [ ] Re-read cold: no sentence needed a second pass to parse.
