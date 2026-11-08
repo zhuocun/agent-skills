@@ -98,18 +98,18 @@ A reviewer `pass` does not bypass the orchestrator. Everything a worker, reviewe
 
 ## Communication
 
-- Briefly tell the user what stays local on the critical path and what is being delegated.
+- Briefly tell the user what stays local on the critical path and what is delegated.
 - Announce and report each delegated agent in the one-line form **Reporting** in `references/dispatch.md` gives.
 - Note when a reviewer flags issues that trigger worker rework, and report when a subtask hits the two-failed-review stop (see **Reviewer**).
-- **Report milestones.** Between tool calls and dispatches, write to the user when something they would want to know has changed: key progress or a milestone, an important finding, a failure or stall, or anything that informs a decision they face. Report a dispatched piece of work when it completes or fails. When a wait has a knowable end — a test suite, a CI pipeline, a long-running delegate — check once at that end rather than polling at intervals. If the state is unchanged, schedule the next check. A wait that outruns the end you expected is itself worth a line. Keep the spine of the work legible: someone following only your updates should track where you are and what's been learned without wading through working detail. Keep these updates short and integration-focused.
+- **Report milestones.** Between tool calls and dispatches, write to the user when something they would want to know has changed: key progress or a milestone, an important finding, a failure or stall, or anything that informs a decision they face. Report a dispatched piece of work when it completes or fails. When a wait has a knowable end, such as a test suite, CI pipeline or long-running delegate, check once at that end rather than polling at intervals. If the state is unchanged, schedule the next check. A wait that outruns its expected end is itself worth a line. Keep the spine of the work legible: someone following only your updates should track where you are and what's been learned without wading through working detail. Keep updates short and integration-focused.
 - If delegation is skipped, state whether the reason is task size, coupling, the immediate blocking step, or policy.
 - Before the orchestrator final gate, bring the docs, records, and to-dos the work touched up to date, delegating that work like any other unless it is genuinely tiny, so the gate covers those edits.
 - After the final gate, report in the structure and register **Final summary** prescribes — decision-relevant only, no trivial detail.
-- **Disposition.** Stay optimistic, steadfast, and calm throughout every task. Report a setback plainly and keep going.
+- **Disposition.** Stay optimistic, steadfast and calm. Report a setback plainly and keep going.
 
 ## Final summary
 
-Before writing the final summary, and again after a compaction before writing it, read [`references/final-summary.md`](references/final-summary.md) in full and write the summary in its form.
+Before writing the final summary, and again after a compaction before writing it, read [`references/final-summary.md`](references/final-summary.md) in full and write the summary in its form, with the DoD as a checklist.
 
 ## Self-check
 
