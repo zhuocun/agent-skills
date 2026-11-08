@@ -10,7 +10,7 @@ A **methodology, not a lookup table:** judge *any* phrasing by these principles.
 
 Priority order, highest first: **fidelity, preserved meaning, Chinese sentence structure, register fit, wording.** Fidelity outranks every wording rule: where a token is both a literal identifier and an English word with a settled Chinese form, it stays verbatim. Preserved meaning: polishing or translating keeps every claim the source makes, its advantages, tradeoffs and limitations included, and invents none; it weakens a claim only where **确定性与义务** finds its force unwarranted, never a stated limitation. Where two wording rules disagree, the one that restores information to the reader outranks the one that removes a word: expand the clipped form (**完整词形**) before trimming the figure (**修辞与措辞分量**), and keep concreteness that adds precision (**语域**) over plainness applied by habit.
 
-It does not decide what a text says, its overall length, its structure or its format; where another instruction fixes those, follow it and apply this skill inside it. On word choice, phrasing, sentence construction, punctuation and register, the user's explicit instruction or standing preference and a style guide or glossary the destination sets take precedence over this skill except on **Fidelity — protected spans** and on a sentence its genre binds, as a contract clause binds a condition to its consequence; a general writing rule not written for Chinese does not.
+It does not decide what a text says, its overall length, its structure or its format; where another instruction fixes those, follow it and apply this skill inside it. On word choice, phrasing, sentence construction, punctuation and register, the user's explicit instruction or standing preference and a style guide or glossary the destination sets take precedence over this skill except on **Fidelity — protected spans** and on a sentence its genre binds, such as one tying a legal consequence to its condition; a general writing rule not written for Chinese does not.
 
 ## Reference files
 
@@ -96,7 +96,7 @@ The opposite failure is over-hedging into mush: stacking softeners (`可能…�
 
 ### 完整词形 — complete forms in their medium
 
-Trimming a word or phrase below its natural Chinese form to save characters reads as incomplete shorthand, not concision, which cuts redundant sentences and never a word's characters. Write the whole form. Read it aloud — if it sounds like a telegram or a variable name, expand it.
+Trimming a word or phrase below its natural Chinese form to save characters reads as incomplete shorthand, not concision, which cuts redundant sentences and never a word's characters. Write the whole form; expand a phrase that sounds like a telegram or a variable name when read aloud.
 
 *Bound by medium.* Casual chat has its own full forms, and so does a display slot (**Reference files**). Run this check over running prose in the settled medium; the read-aloud test judges a sentence, not a label. A settled industry short form is the term itself, not a clip; the terminology file under **Reference files** gives the test.
 
@@ -116,7 +116,7 @@ The tell is not how many pre-modifiers a noun carries — a chain of compact coo
 ### 对比、拆句与衔接 — sentence-craft moves
 
 - **`不是 A，而是 B` can be natural.** Keep it when A/B are comparable and the contrast is the point. Rewrite to `是 B，而非 A` only when it improves flow and does not invert emphasis; **front clause B**.
-- **Split overloaded sentences.** Give a sentence that bundles definition, justification and instruction one sentence for each, unless its genre binds them, as a contract clause binds a condition to its consequence. ✓ 甲方应于收到发票之日起三十日内付款；逾期的，按未付金额每日万分之五计付违约金
+- **Split overloaded sentences.** Give a sentence that bundles definition, justification and instruction one sentence for each, unless its genre binds them, as in a clause tying a legal consequence to its condition. ✓ 甲方应于收到发票之日起三十日内付款；逾期的，按未付金额每日万分之五计付违约金
 - **Weld related clauses with native paired connectives.** When two clauses are one causal or contrastive thought the reader would otherwise parse as separate facts, join them with `之所以…是因为…` / `与其…不如…`.
 
 ## Self-check
@@ -129,5 +129,5 @@ The tell is not how many pre-modifiers a noun carries — a chain of compact coo
 - [ ] **语域:** register, medium and relationship match what was settled and hold steady outside set-off quotation, asides and deliberate creative collisions.
 - [ ] **确定性与义务:** no unwarranted absolute, and obligation genres keep `应` / `不得` / `严禁`; strong claims bounded; at most one softener on any part; politeness upward or to a client not counted as hedging.
 - [ ] **完整词形:** no clipped words in running prose.
-- [ ] **中文修饰与连接:** no tell remains. **对比、拆句与衔接:** contrast keeps its emphasis; a sentence bundling definition, justification and instruction is split unless its genre binds them, as a contract clause binds a condition to its consequence; one-thought clauses take a native paired connective.
+- [ ] **中文修饰与连接:** no tell remains. **对比、拆句与衔接:** contrast keeps its emphasis; a sentence bundling definition, justification and instruction is split unless its genre binds them, as in a clause tying a legal consequence to its condition; one-thought clauses take a native paired connective.
 - [ ] Re-read cold: no sentence needed a second pass to parse.
