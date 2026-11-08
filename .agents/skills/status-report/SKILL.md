@@ -6,13 +6,13 @@ description: >-
 
 # Project Status Report
 
-Write a one-page document — or edit or review one against every rule here — that answers, in order: where does the project stand, what changed since last time, and what action is required of someone. The reader is a capable peer with one screen of attention who was not watching the work, so state is the product — not a diary, changelog, plan, retrospective, or metrics dashboard. Every claim either carries a reference the reader can open or is marked unverified in place. The report names the revision and the time it was read at, which change only when its sources are re-read, so the next report can diff from it.
+Write a one-page document — or edit or review one against every rule here — that answers, in order: where does the project stand, what changed since last time, and what action is required of someone. The reader is a capable peer with one screen of attention who was not watching the work, so state is the product — not a diary, changelog, plan, retrospective, or metrics dashboard. Every claim either carries a reference the reader can open or is marked unverified in place. The report names the revision and time its sources were read at, so the next report can diff from it.
 
 Priority order, highest first: **grounded evidence → complete picture → legible progress → the reader's next action → concision → fixed form.** When two rules collide, the higher one wins; concision never buys itself a dropped task or an unreferenced claim.
 
-Nothing here depends on a particular version-control host, CI vendor, issue tracker, command line, or renderer. Evidence is named by kind — a commit id, a change-request number, a run id, a session id, a file path, a document anchor, a filing section, a scoring sheet — never by tool. Look for the thing; choose your own way to reach it.
+Name evidence by kind — a commit id, a change-request number, a run id, a session id, a file path, a document anchor, a filing section, a scoring sheet — never by the tool that holds it.
 
-This skill fixes the report's slots and their order, the Tasks table's fields and status values, the markers and fixed phrases it defines, and its voice and length rules; where it sets no wording, other guidance on writing governs the wording. An explicit instruction from the user, or a template the user supplies or the destination documents, replaces the parts of this form it conflicts with; every claim still carries a reference or is marked unverified.
+This skill fixes the report's slots and their order, the Tasks table's fields and status values, the markers and fixed phrases it defines, and its voice and length rules, over any other guidance on the shape, length or layout of replies, such as another loaded instruction or a standing preference; where it sets no wording, that guidance governs the wording. Only an explicit instruction from the user about this report, or a template the user supplies or the destination documents, replaces the parts of this form it conflicts with; every claim still carries a reference or is marked unverified.
 
 ## Form
 
@@ -28,7 +28,7 @@ Slots print in this order:
 ## Unverified claims
 ```
 
-A section with nothing to report prints `None.` A section not examined this cycle prints `Not checked.` A section whose sources were all unreachable prints `Not checked.` and gets one `Unverified claims` line naming what would confirm it. A section whose sources were partly reached prints what was reached, marks each field it could not fill `(unverified)`, and gives each such field an `Unverified claims` line. Never omit a heading: an absent heading and an unexamined project read identically. Length budget is at most about 50 lines, a ceiling rather than a target. Count every physical line — headings, blanks, table rows, fenced blocks.
+A section with nothing to report prints `None.` A section not examined this cycle prints `Not checked.` A section whose sources were all unreachable prints `Not checked.` and gets one `Unverified claims` line naming what would confirm it. A section whose sources were partly reached prints what was reached, marks each field it could not fill `(unverified)`, and gives each such field an `Unverified claims` line. Never omit a heading. Length budget is at most about 50 lines, a ceiling rather than a target. Count every physical line, blanks included.
 
 Use one report language for headings, column labels, status labels and prose; the English labels here specify meanings and may be translated consistently. Preserve source identifiers and proper names. Explain an unfamiliar abbreviation only when its meaning is known from the sources. Reserve `—` for a structurally inapplicable field; write `None` for a checked absence and `Unknown (unverified)` for missing information.
 
@@ -73,7 +73,7 @@ Retain these fields: Task, Subtask, Status, Progress, Executor, Dependency, Evid
 
 ### 3. Count progress — the denominator rule
 
-Progress counts completed deliverables or satisfied criteria, with their stage explicit — drafted, reviewed, delivered or exposed are different outcomes. **The denominator must be an enumerable set that exists today and could be listed on request**, such as a task's subtasks or success criteria. Without a fixed set, write the numerator and its unit alone — `4 states researched, total set not fixed`. Lines written, diff size, elapsed time and live-process counts describe activity; they do not establish how much of the intended outcome is complete. If only activity is known, write `Outcome progress unverified` and keep useful activity detail in an evidence note. Do not infer zero completed outcomes from missing evidence.
+Progress counts completed deliverables or satisfied criteria, with their stage explicit — drafted, reviewed, delivered or exposed are different outcomes. **The denominator must be an enumerable set that exists today and could be listed on request**, such as a task's subtasks or success criteria. Without a fixed set, write the numerator and its unit alone — `4 states researched, total set not fixed`. Lines written, diff size, elapsed time and live-process counts describe activity; they do not establish how much of the intended outcome is complete. If only activity is known, write `Outcome progress unverified` and keep useful activity detail in an evidence note. Progress is never a bare percentage; a reported share such as "80% done" with no countable set is activity, quoted unverified in the evidence note. Do not infer zero completed outcomes from missing evidence.
 
 - Write each Progress cell as **Progress** in `references/report-detail.md` defines; a task row reads `<done subtasks>/<total subtasks> subtasks done` or `—`.
 - When a prior report exists, mark movement only on changed rows, folded into existing cells, with the `(was <status>)`, `(new)`, `(+n)`, `(unchanged)` and `(rebaselined from <old count>)` markers of **Delta markers** in `references/prior-report.md`. A first report carries no delta markers.
@@ -100,16 +100,16 @@ Mark each unsupported claim `(unverified)` where it appears and give its confirm
 
 ### 8. Write the header and the verdict last
 
-Header: `# <Project> — <YYYY-MM-DD HH:MM and zone> @ <revision or version; one per surface if there is more than one>`. The time and zone are always required, because every `Running` claim is read against them. **The anchor is the revision the Tasks table was read at, not the date the report was written.**
+Header: `# <Project> — <YYYY-MM-DD HH:MM and zone> @ <revision or version; one per surface if there is more than one>`. The time and zone are always required. **The anchor is the revision the Tasks table was read at, not the date the report was written.**
 
 Verdict: two to three sentences — where the project stands, its direction since the last anchor, and the one item whose resolution most changes the picture. It is not a summary of every slot, and it introduces no new claim; it may restate only claims grounded elsewhere in the report. The only exceptions are naming the `Action required` items left out on overflow and stating that the task cap was exceeded.
 
 ### 9. Draw the Blocked line; add other illustrations only where licensed
 
-Keep illustrations mechanically derivable from the Tasks table and useful at the destination's width. The Blocked line exposes dependencies across rows and is the only mandatory illustration. Delta markers follow pass 3; add no other illustration — a status-count line, a dependency graph, a progress bar, a milestone track or any other rendering — unless `references/illustrations.md` licenses it.
+Keep illustrations mechanically derivable from the Tasks table and useful at the destination's width. The Blocked line exposes dependencies across rows and is the only mandatory illustration. Add no other illustration — a status-count line, dependency graph, progress bar, milestone track or other rendering — unless `references/illustrations.md` licenses it. A progress bar, even a requested one, has one cell per unit of a denominator of at most 12.
 
 - **Mandatory, above the table:** `Blocked: <Task> / <Subtask> is blocked by <blocker>.` — one sentence per `Blocked` subtask, or the relations in one sentence separated by semicolons, using its Dependency blocker. Subtasks sharing one blocker may share a sentence: `Blocked: A / X and B / Y are blocked by C / Z.` Carry any unverified qualifier with the relation. With no `Blocked` subtask, write `Nothing blocked.` only when dependency information is confirmed; otherwise write `No confirmed blockers; dependencies unverified.` Do not frame it as release gating unless the report declares a release target.
-- **Do not section the Tasks table into status groups:** task-and-subtask nesting is not a section; the order in pass 2 governs, and grouping by status restates the Status column.
+- **Do not section the Tasks table into status groups:** task-and-subtask nesting is not a section; the order in pass 2 governs.
 - **No illustration may be the sole carrier of the answer to "what is blocked and by what."** Deleting every illustration must still leave the reader knowing what is blocked and by what.
 
 ## Self-check
@@ -121,8 +121,8 @@ Keep illustrations mechanically derivable from the Tasks table and useful at the
 - [ ] **Dependency:** checked `None`, routine `After`, named `Blocked by` and `Unknown (unverified)` are distinct; task rows use `—`; sequencing is not inferred.
 - [ ] **Progress:** each count follows pass 3 and **Progress** in `references/report-detail.md`.
 - [ ] **Evidence:** never blank; each locator or linked source note opens to a specific place that supports the claims beside it; a `Not started` `—` hides no other claim; every unsupported field is marked in place and has an `Unverified claims` entry naming what would confirm it.
-- [ ] **Illustrations:** the Blocked line is present and qualifies unverified relations or unknown dependencies; the table is not sectioned into status groups; every other illustration is one `references/illustrations.md` licenses.
+- [ ] **Illustrations:** the Blocked line is present and qualifies unverified relations or unknown dependencies; the table is not sectioned into status groups; each progress bar follows pass 9; every other illustration is one `references/illustrations.md` licenses.
 - [ ] **Asks:** every `Paused` subtask, and every `Blocked` subtask without a subtask blocker, has its pass 5 item; a subtask blocker's chain is handled as `references/blocking-chains.md` directs; asks follow the pass 5 format, age marker, order and cap.
 - [ ] **Prior report:** a first report has the `first report` heading and no delta markers; otherwise `Changes since` and the delta markers follow passes 3–4.
 - [ ] **Health:** leads with the product; every measurement not taken against the header's revision carries its as-of date.
-- [ ] **Scope and form:** a review or edit stayed within the requested scope, and a supplied-text review preserved reported facts and its anchor without claiming a current-state audit; an explicit user instruction, or a template the user supplies or the destination documents, replaced only the parts of this form it conflicts with, and every claim still carries a reference or is marked unverified.
+- [ ] **Scope and form:** a review or edit stayed within the requested scope, and a supplied-text review preserved reported facts and its anchor without claiming a current-state audit; an explicit user instruction about this report, or a template the user supplies or the destination documents, replaced only the parts of this form it conflicts with, and every claim still carries a reference or is marked unverified.

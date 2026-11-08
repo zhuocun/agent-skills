@@ -35,7 +35,7 @@ A task row points at the tracking source for its full scope, with closure eviden
 - A task row writes `<done subtasks>/<total subtasks> subtasks done`; its set is the tracked subtasks, including any folded from view. `Dropped` subtasks count in neither number. A task with zero or one counted subtask writes `—`. This measures closure count, not effort, time remaining or an overall completion percentage; do not compare unlike units or weight them equally by implication.
 - A subtask row counts its own real units. A `Not started` subtask writes `—`; there are no units yet to count.
 - Never write a denominator of one (`0/1`, `1/1`): it adds nothing the Status has not said, while reading as a measured ratio.
-- Never a bare percentage. This governs Progress; Health's coverage field is a percentage by definition.
+- Health's coverage field is a percentage by definition; pass 3's percentage rule governs Progress only.
 - Two axes on one subtask — built and exposed — are written as both, separated by a semicolon.
 
 ## Gates
