@@ -40,12 +40,16 @@ Derived from the skills already in this repo (`conductor`, `chinese-diction`,
 audits apply:
 
 - **One directory per skill**, and the directory name must equal the skill's
-  `name` frontmatter field. Give the skill a short name that says what it does.
-  The directory holds a `SKILL.md`, plus optional `references/` and `agents/`
-  subdirectories when a skill needs them.
+  `name` frontmatter field: 1–64 lowercase ASCII letters, digits and single
+  hyphens, not starting or ending with a hyphen. Give the skill a short name
+  that says what it does. The directory holds a `SKILL.md`, plus optional
+  `references/`, `scripts/`, `assets/` and `agents/` subdirectories when a skill
+  needs them.
 - **YAML frontmatter** with two required keys, `name` and `description`; other
   keys are allowed. The description states only what the skill does and when to
-  use it, in at most 1024 characters, and includes the triggers, keywords and
+  use it, in at most 1024 characters. It opens with the key use case and its
+  trigger words, because a host may shorten or drop descriptions when many
+  skills are installed, and it includes the other triggers, keywords and
   exclusions that route requests, with a "Use when…" clause and, where the skill
   is easily over-applied, a "Do not use for…" clause (see `frontend-cr`,
   `document-editor`, `chinese-diction`). Operating rules, output form and
@@ -60,6 +64,24 @@ audits apply:
   evidence → … → fixed form"), the substance as numbered passes or failure modes
   (`frontend-cr`'s review passes, `chinese-diction`'s seven failure modes), and
   a terminal `## Self-check` the agent runs before declaring done.
+- **Fit the body to the context budget.** Keep `SKILL.md` at most 500 lines.
+  Aim for a body under about 5,000 tokens in a new skill and in any skill whose
+  body an edit already restructures. Move material the agent needs only in some
+  cases into `references/` files linked directly from `SKILL.md`, and say at
+  each link when to read the file. Put the rules that must hold for the whole
+  task directly after the role statement and priority order, worded as standing
+  rules rather than one-time steps, because a host may re-attach only the start
+  of a long skill after compaction.
+- **Link every reference file directly from `SKILL.md`**, not only from another
+  reference file, and start a reference file longer than 100 lines with a table
+  of contents.
+- **Make bundled scripts run unattended.** A script in `scripts/` states its
+  interpreter and dependencies and takes input from arguments, environment
+  variables, files or stdin, never from an interactive prompt. On failure it
+  reports in the form its caller reads: when an agent runs it, a message that
+  says what went wrong, what was expected and what to try; when a host runs it
+  under a fixed protocol, the output that protocol defines. Ship tests with the
+  script.
 - **In `chinese-diction`, every register- or genre-conditional exception ships
   with a ✓ example** in the register or genre it excuses. A case named only in
   a waiver is not covered by the skill, it is merely exempted, and a model will
@@ -76,8 +98,9 @@ audits apply:
   only text the executing agent uses, including the reasons that help it apply a
   rule. It holds no maintainer notes, provenance or attribution, and it states a
   source's ideas as the skill's own rules. Make skills clear, precise, concise
-  and natural: give each sentence one reading, and use standard professional
-  terms rather than coined jargon. Do not run the prose-editing skills
+  and natural: give each sentence one reading, use one term for each concept
+  throughout the skill, and prefer standard professional terms to coined jargon.
+  Do not run the prose-editing skills
   (`chinese-diction`, `document-editor`) on SKILL.md files — they explicitly
   exclude agent-instruction files.
 - **Keep tool and product facts correct as products change.** Choose a model,
@@ -103,10 +126,13 @@ audits apply:
 - **Keep cuts behaviour-neutral.** A cut removes only text whose removal changes
   no behaviour; make a behaviour change as its own deliberate decision.
 - **Claim a routing or behaviour improvement only from a behaviour test.** The
-  test runs the new and the previous version on cases the editor has not seen:
-  requests routed from descriptions alone, or scenarios given to fresh readers
-  who see only the skill. A result equal to the previous version's shows only
-  that those cases did not regress.
+  test runs the new and the previous version, each in a fresh context, on cases
+  the editor has not seen: requests routed from descriptions alone, including
+  near-miss requests that must not route to the skill, or scenarios given to
+  fresh readers who see only the skill. Run each case more than once, on each
+  model the skill is expected to run with, because results vary between runs and
+  models. A result equal to the previous version's shows only that those cases
+  did not regress.
 
 ## Repo conventions
 
@@ -134,14 +160,23 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 - **Never bypass hooks.** Don't use `--no-verify` / `--no-gpg-sign`, especially on workflow-file changes. If a commit-msg or pre-commit hook fails, fix the cause and make a new commit — don't amend past it.
 
 > CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`),
-> which runs `python3 scripts/validate_skills.py` on every pull request and on every push to
-> `main`. A push to a branch with no pull request open is not validated. It enforces the
-> authoring conventions above mechanically: every skill directory has a `SKILL.md`, the
-> frontmatter parses as a YAML mapping, `name` and `description` are present and non-empty,
-> `description` is at most 1024 characters (the Agent Skills specification's cap), `name`
-> equals the directory name, the body opens with an `# ` H1, the body carries a
-> `## Self-check` section, and `.claude/skills` still resolves to `.agents/skills`.
-> Frontmatter keys beyond those two are allowed. It also runs `output-style-mirror`: below
-> the frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
+> which runs on every pull request and on every push to `main`. A push to a branch with no
+> pull request open is not validated. The workflow runs `python3 scripts/validate_skills.py`,
+> then `python3 -m unittest discover` in each `.agents/skills/*/scripts/` directory that
+> holds `test_*.py` files, with the standard library only. The validator enforces only these
+> checks mechanically; review and behaviour tests cover the rest: every skill directory has a
+> `SKILL.md` of at most 500 lines; the frontmatter parses as a YAML mapping; `name` and
+> `description` are present, non-empty strings; `description` is at most 1024 characters (the
+> Agent Skills specification's cap) and contains no `<` or `>`; `name` equals the directory
+> name and is 1–64 lowercase ASCII letters, digits and single hyphens, not starting or ending
+> with a hyphen; `compatibility`, if present, is 1–500 characters; the body opens with an `# `
+> H1; the body's last `## ` heading outside fenced code is `## Self-check`; every relative
+> Markdown link in a skill's `.md` files resolves to an existing file (`#` anchors are not
+> checked); every file under a skill's `references/` is linked, or named by its
+> `references/` path in inline code, from its `SKILL.md`; every reference `.md` file longer
+> than 100 lines has, before its first `## ` heading, a list linking to the anchor of each of
+> its `## ` headings; and `.claude/skills` still resolves to `.agents/skills`. Frontmatter
+> keys beyond those listed are allowed. It also runs `output-style-mirror`: below the
+> frontmatter, the H1 and the one blank line after it, `.claude/output-styles/baseline.md`
 > must equal `communicate/SKILL.md` line for line, trailing blank lines included. Run the
-> same command locally before pushing.
+> same commands locally before pushing.
