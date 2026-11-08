@@ -49,7 +49,9 @@ FENCE = "---"
 CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 INLINE_CODE = re.compile(r"(`+).+?\1")
 CODE_SPAN = re.compile(r"`(references/[^`\s]+)`")
-LINK_TARGET = re.compile(r"\]\(\s*<?([^)\s>]+)")
+LINK_TARGET = re.compile(r"\]\(\s*(?:<([^>\n]*)>|([^)\s]+))")
+LINK_DEFINITION = re.compile(r"^ {0,3}\[[^\]]+\]:\s*(?:<([^>\n]*)>|(\S+))", re.MULTILINE)
+INLINE_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
 URL_SCHEME = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
 LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s")
 HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
@@ -66,9 +68,9 @@ CHECKS = (
     ("compatibility-length", f"frontmatter `compatibility`, if present, is 1-{MAX_COMPATIBILITY_LENGTH} characters"),
     ("h1-title", "the body opens with an `# ` H1 title"),
     ("self-check-section", "the body's last `## ` heading outside fenced code is `## Self-check`"),
-    ("relative-links-resolve", "every relative Markdown link in a skill's .md files resolves to an existing file (anchors are not checked)"),
+    ("relative-links-resolve", "every relative Markdown link, inline or reference-style, in a skill's .md files resolves to an existing file (anchors are not checked)"),
     ("references-linked", "every file under a skill's references/ is linked, or named by its `references/` path in inline code, directly from its SKILL.md"),
-    ("reference-toc", f"a reference .md file over {REFERENCE_TOC_THRESHOLD} lines lists a link to each `## ` heading's anchor before its first `## ` heading"),
+    ("reference-toc", f"a reference .md file over {REFERENCE_TOC_THRESHOLD} lines lists a link to each `## ` heading's anchor before its first `## ` heading outside fenced code"),
     ("claude-skills-symlink", ".claude/skills is a symlink resolving to .agents/skills"),
     ("output-style-mirror", "each mirrored output style's body, below its frontmatter and H1, equals its skill's"),
 )
@@ -124,10 +126,16 @@ def outside_code_fences(lines: list[str]) -> Iterator[str]:
             fence = None
 
 
+def inline_link_targets(text: str) -> list[str]:
+    """Return the targets of inline Markdown links in text, including `<...>` targets with spaces."""
+    return [angled or bare for angled, bare in LINK_TARGET.findall(text)]
+
+
 def link_targets(lines: list[str]) -> list[str]:
-    """Return the targets of inline Markdown links outside fenced code and inline code spans."""
+    """Return inline and reference-style link targets outside fenced code and inline code spans."""
     text = "\n".join(INLINE_CODE.sub("", line) for line in outside_code_fences(lines))
-    return LINK_TARGET.findall(text)
+    definitions = [angled or bare for angled, bare in LINK_DEFINITION.findall(text)]
+    return inline_link_targets(text) + definitions
 
 
 def local_path(target: str) -> str | None:
@@ -140,6 +148,7 @@ def local_path(target: str) -> str | None:
 
 def heading_anchor(text: str) -> str:
     """The anchor GitHub generates for a heading: lowercase, punctuation removed, spaces as hyphens."""
+    text = INLINE_LINK.sub(r"\1", text)
     return re.sub(r"[^\w\- ]", "", text.strip().lower()).replace(" ", "-")
 
 
@@ -191,12 +200,16 @@ def check_skill_files(directory: Path, root: Path) -> Result:
         if len(lines) <= REFERENCE_TOC_THRESHOLD:
             continue
         headings = h2_anchors(lines)
-        first = next((i for i, line in enumerate(lines) if line.startswith("## ")), len(lines))
+        preamble: list[str] = []
+        for line in outside_code_fences(lines):
+            if line.startswith("## "):
+                break
+            preamble.append(line)
         listed = {
             target[1:]
-            for line in lines[:first]
+            for line in preamble
             if LIST_ITEM.match(line)
-            for target in LINK_TARGET.findall(line)
+            for target in inline_link_targets(line)
             if target.startswith("#")
         }
         missing = [f"`{text}` (#{anchor})" for text, anchor in headings if anchor not in listed]
