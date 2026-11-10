@@ -12,9 +12,9 @@ Apply this reference when you compare a revised skill with its previous version 
 
 ## Readers
 
-- Give each routing evaluator a fresh context, the requests, and the descriptions of the version under test and of the other skills installed beside it. Give each execution reader a fresh context, one version of the skill and the case materials. Do not tell a reader which version it has or that a comparison exists.
-- Assign versions to readers in a recorded order that balances the versions across cases.
-- Collect the reader's final answer and every file it produced.
+- Give each routing evaluator a fresh context, the requests, and the descriptions of the version under test and of the other skills installed beside it. Give each execution reader a fresh context, one version of the skill and the case materials. Do not tell an evaluator or reader which version it has or that a comparison exists.
+- Assign versions to evaluators and readers in a recorded order that balances the versions across cases.
+- Collect each evaluator's routing choice, and each reader's final answer and every file it produced.
 
 ## Judges
 
