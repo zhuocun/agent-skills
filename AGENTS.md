@@ -69,15 +69,20 @@ audits apply:
   as numbered passes or failure modes (`frontend-cr`'s review passes,
   `chinese-diction`'s seven failure modes), and a terminal `## Self-check` the
   agent runs before declaring done.
-- **Fit the body to the context budget.** Keep `SKILL.md` at most 500 lines.
-  Aim for a body under about 5,000 tokens in a new skill and in any skill whose
-  body an edit already restructures. Move material the agent needs only in some
-  cases into `references/` files.
+- **Fit the body to the context budget.** Keep `SKILL.md` at most 500 lines
+  and its body under 5,000 tokens, because a host may re-attach only the first
+  5,000 tokens of a skill after compaction, and a longer body then loses its
+  end, including the Self-check. Move material the agent needs only in some
+  cases into `references/` files. Keep in `SKILL.md` every output form the
+  agent must produce, the precedence of that form over other loaded
+  instructions and standing preferences, and every limit that holds even
+  against a user request, because an agent may not open a reference file.
 - **Point to every reference file directly from `SKILL.md`**, by a relative
   link or by its `references/` path in inline code, not only from another
-  reference file, and say there when to read the file. Make every relative link
-  in a skill's files resolve to an existing file. Start a reference file longer
-  than 100 lines with a table of contents: a list, before its first `## `
+  reference file. Word each pointer as a standing rule that says when to read
+  the file in full and to read it again after a compaction. Make every relative
+  link in a skill's files resolve to an existing file. Start a reference file
+  longer than 100 lines with a table of contents: a list, before its first `## `
   heading, that links to the anchor of each of its `## ` headings.
 - **Make bundled scripts run unattended.** A script in `scripts/` states its
   interpreter and dependencies and takes input from arguments, environment
@@ -135,7 +140,8 @@ audits apply:
   fresh readers who see only the skill. Run each case more than once, on each
   model the skill is expected to run with, because results vary between runs and
   models. A result equal to the previous version's shows only that those cases
-  did not regress.
+  did not regress. Build and run the test as `skill-optimize`'s
+  `references/behavior-testing.md` directs.
 
 ## Repo conventions
 
