@@ -18,6 +18,7 @@ Apply this reference when you compare a revised skill with its previous version 
 
 ## Judges
 
+- Score each routing choice by comparing it with its expected outcome; routing choices need no judge.
 - Give each judge the rubric and every file the reader received and produced. Withhold the version of each answer, and keep the mapping from answers to versions where the judges cannot read it.
 - Require each verdict to quote, word for word, the answer or material it rests on. Check every quote against its source. Discard a verdict whose quotes do not occur in the source or that scores material its judge did not read. Disclose, without discarding the verdict, a defect in a judge's record that changes no evidence the verdict rests on, such as a misspelled file name in a read log.
 - A judge that scores several answers in one context can compare them, which correlates its scores. Give each judge one answer when the run budget allows; otherwise disclose the correlation.
