@@ -191,7 +191,7 @@ def check_skill_files(directory: Path, root: Path) -> Result:
         linked = {(skill_md.parent / local).resolve() for local in named if local}
         for reference in references:
             if reference.resolve() not in linked:
-                failures.append(Failure("references-linked", str(reference.relative_to(root)), f"is not linked from `{skill_md.relative_to(root)}`; link it, or name its `references/` path in inline code, directly in SKILL.md and say when to read it"))
+                failures.append(Failure("references-linked", str(reference.relative_to(root)), f"is not linked from `{skill_md.relative_to(root)}`; link it, or name its `references/` path in inline code, directly in SKILL.md and say when to read it in full and to read it again after a compaction"))
 
     for reference in references:
         if reference.suffix != ".md":

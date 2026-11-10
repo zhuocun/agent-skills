@@ -74,7 +74,7 @@ audits apply:
   5,000 tokens of a skill after compaction, and a longer body then loses its
   end, including the Self-check. Move material the agent needs only in some
   cases into `references/` files. Keep in `SKILL.md` every output form the
-  agent must produce, the precedence of that form over other loaded
+  agent must produce, any precedence each form takes over other loaded
   instructions and standing preferences, and every limit that holds even
   against a user request, because an agent may not open a reference file.
 - **Point to every reference file directly from `SKILL.md`**, by a relative

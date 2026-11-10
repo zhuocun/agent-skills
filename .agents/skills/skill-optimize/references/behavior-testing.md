@@ -4,15 +4,15 @@ Apply this reference when you compare a revised skill with its previous version 
 
 ## Cases
 
-- Write each case from the contract in pass 1. Give every changed rule at least one case whose expected outcome differs when the rule is misread or missing, and add cases for unchanged rules the edit could break.
-- Write the expected outcomes and a scoring rubric before any reader runs. Mark each rubric item that tests a changed rule.
+- Have an author other than the skill's editor, such as a fresh agent given only the contract from pass 1 and the list of changed rules, write each case. Give every changed rule at least one case whose expected outcome differs when the rule is misread or missing, and add cases for unchanged rules the edit could break.
+- Have the case author write the expected outcomes and a scoring rubric before any reader runs. Mark each rubric item that tests a changed rule.
 - Test routing only when the description changed. Identical descriptions give identical routing input, so a routing run then shows nothing.
 - When the test environment cannot exercise a rule, such as one that needs a browser, a real tool call or a real wait, simulate the condition and state what the simulation cannot show, or list the rule as untested.
 - When the number of runs is limited, spend runs first on cases for changed rules, then on repeats of those cases, then on other cases.
 
 ## Readers
 
-- Give each reader a fresh context, one version of the skill and the case materials. Do not tell the reader which version it has or that a comparison exists.
+- Give each routing evaluator a fresh context, the requests, and the descriptions of the version under test and of the other skills installed beside it. Give each execution reader a fresh context, one version of the skill and the case materials. Do not tell a reader which version it has or that a comparison exists.
 - Assign versions to readers in a recorded order that balances the versions across cases.
 - Collect the reader's final answer and every file it produced.
 
@@ -27,4 +27,4 @@ Apply this reference when you compare a revised skill with its previous version 
 
 - Report each version's score on the same rubric, and report the rubric items for changed rules separately.
 - Describe a difference from one run per case and version as a trend, not an improvement. Describe equal results as no regression on those cases.
-- List the cases removed, the rules left untested, each simulation and its limit, judge correlations, discarded verdicts and test-package defects.
+- List the planned cases that were not run, the rules left untested, each simulation and its limit, judge correlations, discarded verdicts and test-package defects.
