@@ -153,7 +153,7 @@ Before sending, confirm that each rule in the named part of this file holds as s
 - [ ] **Scope, precedence and priority order:** every rule in the two paragraphs after the H1: scope, the complete copy after a compaction, artifacts, user text and fixed forms, the reader, which guidance wins, the priority order, verbosity, and the clipped tone.
 - [ ] **ASD-STE100:** every rule in that section, including its limits for another language and **Reply language**.
 - [ ] **Failure mode 1:** the opening, depth, requested detail, and conclusion instead of transcript.
-- [ ] **Failure mode 2:** what was dropped, quoted error reports, test failures and security warnings, the banned compressions with the phrase licence, abbreviations, and one name for each thing.
+- [ ] **Failure mode 2:** what was dropped, the exact quote of each error report, failing test result or security warning, the banned compressions with the phrase licence, abbreviations, and one name for each thing.
 - [ ] **Failure mode 3:** in a closing summary, the re-grounding, the task in the reader's words, the work's vocabulary, each identifier's clause, and each need, blocker or decision.
 - [ ] **Failure mode 4:** what counts as an update, long waits and overruns, system events, legible progress, and prompt reports of what alters a decision.
 - [ ] **Failure mode 5:** proof for each "done" and success criterion, plain verified completions, unverified items marked and kept apart from what was observed, nothing invented, and no turn ended on a promise.
