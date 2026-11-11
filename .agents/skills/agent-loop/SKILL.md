@@ -41,7 +41,7 @@ To start a loop, create the file in this form. Fill in the goal and every item's
     - [ready] T1 <title> — done when: <evidence>
     - [ready] T5 <title> — done when: <evidence>; after: T3
     - [waiting] T3 <title> — done when: <evidence of the item's outcome>; wake: <event>; check: <command or source that shows the event happened>
-    - [user] T4 <title> — done when: <evidence of the item's outcome>; ask: <exact question or approval>; asked: <date>
+    - [user] T4 <title> — done when: <evidence of the item's outcome>; ask: <exact questions or approval>; asked: <date>
 
     ## Log
     - <UTC date and time> T0 closed — <evidence>
@@ -55,7 +55,7 @@ Follow these format rules exactly. The hook parses header keys, matched queue ID
 - **done when:** state evidence that any later iteration can confirm without memory of this session. Name a command and its required result, a required file or repository state, or a recorded review outcome.
 - **budget:** a whole number of automatic continuations the hook may grant for this goal. Changing `goal` resets the count. To extend a loop stopped by its budget, the user raises `budget` and clears `stop: budget`; a raised budget alone leaves the loop stopped.
 - **Statuses and dependencies:** use `ready` for queued work, `doing` for work in progress, `waiting` for an external event with `wake:` and `check:`, and `user` for a required answer with `ask:` and `asked:`. Give every item a unique ID. Keep only open items in the queue. An item with an unresolved dependency stays `ready`, below the item it needs, with `after: <ID>`. Queue order alone is not a dependency, and an open question blocks only work that needs its answer. Keep `after:` until evidence establishes the dependency's closure; remove the satisfied field when recording that closure. An absent or unknown ID does not establish closure. A `doing` item with a newly unresolved dependency returns to `ready` with its resumable next step preserved.
-- **Log:** move each closed item to `## Log` as one line with its evidence. Keep every closure since the user's last message; older lines may be cut to the latest 20. In this skill, the user's last message is the last message a human wrote; hook feedback, task notifications and tool results do not count.
+- **Log:** move each closed item to the end of `## Log` as one line with the current UTC time read from the system clock and its evidence. Keep every closure since the user's last message; older lines may be cut to the latest 20. In this skill, the user's last message is the last message a human wrote; hook feedback, task notifications and tool results do not count.
 - **Sidecar:** never edit `.agent-loop.hook.json`; only the hook writes it.
 
 ## 2. Own the loop
@@ -84,7 +84,7 @@ Run as many iterations as you can within one turn. End the turn only when no ite
 A gate is an action outside the user's standing authorizations that needs the user's consent under the user's instructions or the project's rules, an acceptance the user reserves, or a hard design choice.
 
 - **Async:** when the gate's kind is listed in `async gates`, mark the item `user` with an `ask:` that states the exact action and the options, name it in your turn's final message, and continue with other ready items. For a hard design choice, first consult an advisor when one is available (a stronger model, an independent reviewer, or the project's recorded decisions), and queue the choice with the advice only if it is still open.
-- **Sync:** for every other gate, mark the item `user`, set `stop: gate: <question>`, and end the turn with the question.
+- **Sync:** for every other gate, mark the item `user` with an `ask:` that lists every question you ask the user, set `stop: gate: <question>`, and end the turn with those questions.
 - Only the user's answer opens a gate; a CI result, an agent's review or approval, or the host's permission mode does not. On the answer, record it on the item, set the item `ready`, and clear `stop` if it named this gate.
 
 ## 5. Wait for events
