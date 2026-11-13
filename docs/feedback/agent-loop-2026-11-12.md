@@ -2,7 +2,9 @@
 
 Status: open. Source: one Claude Code session that owned an agent loop for about a day
 while it also ran the `conductor` skill (orchestrator, workers, reviewers, background
-waiters). The proposed changes below are suggestions from that one session; none was tested.
+waiters). The suggestions below were untested at the time of that report. The original
+session trace was not available for the 2026-11-13 review; its incidents remain reported
+history, distinct from the baseline source and script checks described below.
 
 ## What happened
 
@@ -13,16 +15,26 @@ waiters). The proposed changes below are suggestions from that one session; none
   decision. It recorded all of this in a separate scratch checklist that the orchestration
   kept, and none of it in the state file.
 - The queue held one item with status `done`, and it still listed a closed item as open.
-- The hook's companion file `.agent-loop.hook.json` recorded `turns: 4` for the whole
-  session. Background agents and their completion notices resumed the session, so turns
-  rarely ended with ready work, and the turn-end hook rarely ran.
+- The hook's companion file `.agent-loop.hook.json` reportedly recorded `turns: 4`.
+  The session attributed this to background completions resuming work and few turns
+  ending with ready work. That value cannot establish how often the hook ran: `turns`
+  counts continuation grants for the current goal, with early returns that do not
+  increment it and a reset when the goal changes.
 - After a context compaction the session continued from the summary. The summary carried
   an old status line with `turn 42/50`. The session then wrote `turn 43/50` to
   `turn 50/50` in eight status lines. No hook message supplied those counts.
 - The repair took one step: each item had a `done when` criterion and each waiting item
   had a `check`, so the queue was rebuilt from evidence.
 
-## Defects in the skill that these events show
+## Session interpretations and suggestions
+
+These suggestions record the original report, including alternatives not adopted.
+Baseline review at `4c1acb13807f248d76bb8675600fae40de84ce64` found existing rules for
+reload, one scheduling record, evidence-based closure and hook-sourced counts. The
+accepted wording clarifications put reconciliation before scheduling and reporting,
+use the state file as the running checklist, and specify count provenance; they do
+not establish a behavioral fix. Timer, sidecar-count and parser-diagnostic suggestions
+remain future options outside that change.
 
 1. **No rule binds the status line to the state file after a compaction.** The skill says
    to read the skill and the state file on resume or after compaction. It does not forbid
@@ -60,19 +72,29 @@ waiters). The proposed changes below are suggestions from that one session; none
      wake, and the first action on a wake is the rebuild step, which includes recording
      the result in the state file.
 
-5. **The parser accepts a status outside the four allowed values.** The skill states that
-   parser acceptance is not validation, and the agent did not check the file.
-   - Suggested change: the hook reports any queue line whose status is not `ready`,
-     `doing`, `waiting` or `user`, and any queue line it could not match.
+5. **Matched invalid statuses are rejected; unmatched queue text can be ignored.** The
+   original report alleged acceptance of `done`. The baseline's
+   [parser](../../.agents/skills/agent-loop/scripts/loop_hook.py) rejects a matched row
+   such as `- [done] T9 ...`; its main handler catches the error and emits the host's
+   no-continuation output. Text that does not match a queue row, such as `- [done]`
+   without an ID, is ignored. Baseline script checks confirmed both behaviors; neither
+   establishes the original row's exact form. Parser acceptance still does not validate
+   the complete file, which the owner must check.
+   - Possible future change: report invalid matched statuses and unmatched queue text
+     while preserving the host protocol and existing continuation guards.
 
 ## What worked
 
 - The `done when` and `check` fields made the rebuild from evidence fast and mechanical.
-- The ownership line and the sidecar gave an exact answer to "did the hook run, and how
-  often".
+- The ownership line identified the reported owner. The sidecar counted continuation
+  grants for its current goal, not total hook invocations or confirmed executed turns.
 
 ## Not verified
 
+- The original long-session incidents, including the six-hour state gap and hook
+  invocation frequency, without the original trace.
+- Whether the wording clarifications improve behavior in long sessions or after real
+  compaction; source and script checks do not demonstrate that effect.
 - Whether the hook can read the session's activity time on every supported host.
 - Whether a staleness warning at turn end reaches the agent early enough in a session
   that seldom ends turns with ready work.
