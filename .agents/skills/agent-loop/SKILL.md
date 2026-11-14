@@ -20,9 +20,9 @@ Drive a goal to completion without waiting for human messages: repeatedly rebuil
 
 Priority: the user's consent rules and standing authorizations → truthful state backed by evidence → finishing the current item → visible progress → throughput.
 
-Apply this skill only to a queue you own under pass 2. On start, on resume (continuing the loop in a new session, or after a pause or stop), after compaction, or when this text is incomplete, read this skill through **Self-check**, then establish ownership, check **stop**, keep pass 4's gates and complete **Rebuild** before any queued action or loop status report; if ownership or these instructions cannot be recovered, only inspect evidence.
+**Start.** Apply this skill only to a queue you own under pass 2. On start, on resume (continuing the loop in a new session, or after a pause or stop), after compaction, or when this text is incomplete, read this skill through **Self-check**, then establish ownership, check **stop**, keep pass 4's gates and complete **Rebuild** before any queued action or loop status report; if ownership or these instructions cannot be recovered, only inspect evidence.
 
-Read [Scale](references/scale.md) in full before the first iteration in which the state file exceeds 100 lines, `parallel` exceeds 1 or a worker is to do an item, and again after each compaction while any of these holds.
+Read [Scale](references/scale.md) in full before the first iteration in which the state file exceeds 100 lines, `parallel` exceeds 1 or a worker does or is to do an item, and again after each compaction while any of these holds.
 
 ## 1. Keep one state file
 
@@ -77,7 +77,7 @@ Run as many iterations as you can in one turn, ending it only when no item is ac
 3. **Check.** Show that a check you write or change rejects work missing the criterion and accepts work meeting it, with a new test failing on the pre-change state or a disposable copy, never by reverting finished work; record both results in the closure evidence. Close an item only on evidence that meets its `done when`: passing tests, a green gate, or a review without open findings by a reviewer other than the item's author (a fresh context counts). Fix every finding of a review round before the next; after three rounds without convergence, treat the dispute as a hard design choice under pass 4.
 4. **Attempts.** When a check rejects an attempt or its result cannot be integrated, raise the item's `tries:`, which review rounds do not change; at 3, mark the item `user` with an `ask:` naming the failure and what would unblock it, and continue with other items.
 5. **Shared cause.** When a second item shows the same failure, look for a shared cause, such as a template or script, before the next affected item; fix it within the authorized scope, recheck the items it already affected, and record the fix in the state file. This never authorizes editing the user's rules or this skill. Keep unrelated failures separate.
-6. **Record.** Pass every result, wake and answer through **Check**, then save real changes to statuses, fields, evidence and **Log** before further scheduling or status reports. Never edit the file only to satisfy the hook's no-progress check.
+6. **Record.** Pass every result, wake and answer through **Check**, then save real changes to statuses, fields, evidence and **Log** before further scheduling or status reports. Never edit the file only to satisfy the hook.
 
 ## 4. Handle gates
 
@@ -116,11 +116,11 @@ Put this status line in each turn's final message, first unless an applicable in
     Loop · now: <ID title, idle or stop reason> · <n> ready · <n> waiting · <n> need you · turn <t>/<budget>
 
 - **Count:** copy `turn <t>/<budget>` unchanged only from the latest actual `[agent-loop]` hook message for this loop in the current context, which a summary or an earlier status line is not, and otherwise omit it; never increment or extrapolate it.
-- **Report:** when the loop goes idle or stops, or the hook announces a last automatic turn, follow the status line with the items closed since the user's last message and their evidence (past ten: their count, first and last IDs, and the state file's path), each open `ask:`, each waiting item and its wake, and the next item. The user's last message is the last one a human wrote, not hook feedback, a task notification or a tool result.
+- **Report:** when the loop goes idle or stops, or the hook announces a last automatic turn, follow the status line with the items closed since the user's last message and their evidence (when more than ten, instead their count, first and last IDs, and the state file's path), each open `ask:`, each waiting item and its wake, and the next item. The user's last message is the last one a human wrote, not hook feedback, a task notification or a tool result.
 
 ## Self-check
 
-- **Start:** read this skill and completed **Rebuild** before acting?
+- **Start:** every step of **Start** done before acting?
 - **Scale:** when due, read it in full and followed it?
 - **Pass 1:** file meets every rule of pass 1?
 - **Pass 2:** **Host**, **Owner ID** and **One controller** followed?

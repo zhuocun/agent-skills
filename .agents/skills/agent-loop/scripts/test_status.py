@@ -469,3 +469,32 @@ class NumberAndIdFormTest(StatusBase):
                               env=hook_tests.clean_env(), timeout=20)
         self.assertEqual(proc.returncode, 2, proc.stderr)
         self.assertNotIn(b"Traceback", proc.stderr)
+
+
+class OpenWaveHookTest(StatusBase):
+    HELD = ("- [waiting] W%d Work — done when: tests pass; writes: w%d/*; "
+            "wake: worker w%d; check: test -f out/w%d")
+
+    def held(self, *numbers):
+        return [self.HELD % (n, n, n, n) for n in numbers]
+
+    def running(self):
+        return hook_tests.event(self.root, background_tasks=[{"id": "w"}])
+
+    def test_full_wave_gives_no_turn_for_ready_items(self):
+        self.write(self.held(1, 2) + [ready("T7", "; writes: t7/*"), ready("T8")],
+                   extra="parallel: 2\n")
+        self.assert_stop(self.hook(self.running()))
+
+    def test_free_slot_gives_a_turn_for_a_wave_item_only(self):
+        self.write(self.held(1) + [ready("T8"), ready("T7", "; writes: t7/*")],
+                   extra="parallel: 2\n")
+        self.assert_block(self.hook(self.running()), "1 actionable", "(now T7)")
+
+    def test_overlapping_ready_item_is_not_actionable_while_a_worker_holds_its_scope(self):
+        self.write(self.held(1) + [ready("T7", "; writes: w1/a.py")], extra="parallel: 3\n")
+        self.assert_stop(self.hook(self.running()))
+
+    def test_sequential_file_keeps_ready_items_actionable_beside_a_wait(self):
+        self.write(self.held(1) + [ready("T8")])
+        self.assert_block(self.hook(self.running()), "1 actionable", "(now T8)")

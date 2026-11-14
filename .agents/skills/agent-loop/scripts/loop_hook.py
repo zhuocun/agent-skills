@@ -421,7 +421,7 @@ def parse_state(text):
     fatal = [entry["reason"] for entry in state["problems"] if entry["fatal"]]
     if fatal:
         raise ValueError(fatal[0])
-    header = dict(state["header"], budget=state["budget"])
+    header = dict(state["header"], budget=state["budget"], parallel=state["parallel"])
     return header, state["items"], state["log_lines"]
 
 
@@ -514,6 +514,11 @@ def decide(event, state_arg, host="claude"):
         item for item in items
         if item["status"] in OPEN_WORK and not item["blocked"]
     ]
+    if header["parallel"] > 1 and any(
+            item["status"] == "waiting" and item["writes"] is not None for item in items):
+        open_wave = wave({"items": items, "parallel": header["parallel"]})[0]
+        actionable = [item for item in actionable
+                      if item["status"] == "doing" or item["id"] in open_wave]
     waiting = sum(1 for item in items if item["status"] == "waiting")
     user = sum(1 for item in items if item["status"] == "user")
     side = load_sidecar(sidecar_path, True) if tracks_pending else None

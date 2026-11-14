@@ -48,12 +48,12 @@ A worker is an agent you dispatch to do one item.
   files: <changed paths, comma-separated, or none>
   ```
 
-  Treat `done` as a claim to confirm under **Check**. Handle `failed:` under **Attempts**, and `blocked:` as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
-- **Held items:** an item a worker holds is `doing` with `next: worker <name>`, and **Pick** skips it. Before ending a turn while a worker holds an item, set it `waiting` with `wake: worker <name>` and a `check:` that finds the result block at the end of its detail file. When the result arrives, the worker no longer holds the item: replace that `next:` and integrate the result under Integration, never redoing the item.
+  Route a result by its `result:` line. `done` is a claim: integrate it under Integration. `failed:` returns the item to `ready` with `tries:` raised under **Attempts**. `blocked:` marks the item `user`, as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
+- **Held items:** an item a worker holds is `doing` with `next: worker <name>`, and **Pick** skips it. Before ending a turn while a worker holds an item, set it `waiting` with `wake: worker <name>` and a `check:` that finds the result block at the end of its detail file. When the result arrives, the worker no longer holds the item: remove that `next:` and handle the result under **Result**, never redoing the item.
 
 ## Waves
 
-A wave is a set of items in progress at the same time. Work sequentially unless all four hold:
+A wave is the set of items that workers hold at the same time. Work sequentially unless all four hold:
 
 - `parallel: <N>` in the header is above 1. Absent, it is 1. Set it above 1 only when the user asked for or allowed parallel work; otherwise leave it absent.
 - Each worker in the wave that changes files gets its own isolated copy of the repository.
@@ -64,13 +64,13 @@ A wave is a set of items in progress at the same time. Work sequentially unless 
 
 - Write the narrowest scope that covers the item, such as `java/billing/invoice/**` rather than `java/**`. A scope that starts with a wildcard overlaps every other scope.
 - Change a file that many items touch, such as a shared build file, in an item of its own with no `writes:`, so that it runs only between waves.
-- While wave items are open, take only items that `wave:` lists, whether you do one yourself or dispatch it.
+- While a worker holds an item, start only items that `wave:` lists. When it lists none, wait for a held item's result with a blocking call, or end the turn where the host offers none; the hook grants no automatic turn for other `ready` items while a `waiting` item with `writes:` leaves no place for them in the wave.
 
 ## Integration
 
-- **One at a time:** take the wave's results one by one. For each, check that every changed file, by the `files:` line and by the change itself, lies inside the item's `writes:`; bring the change into the shared working state; confirm the item under **Check**; and close it under **Log**.
+- **One at a time:** take the wave's results one by one. For each, check that every changed file, by the `files:` line and by the change itself, lies inside the item's `writes:`, when it has one; bring the change into the shared working state; confirm the item under **Check**; and close it under **Log**.
 - **Rejects:** a result that conflicts with integrated work or changes a file outside its `writes:` returns its item to `ready` with `tries:` raised under **Attempts**. Keep its detail file and name it in the next attempt's brief.
-- **Regression check:** after the wave's last result, run one check over the integrated state, such as the project's full build and test suite, and record its result in the evidence of the wave's last closure. If it fails, add an item that names the failure and the closed IDs at the top of the Queue, and start no further wave until the check passes.
+- **Regression check:** each time the last result of a wave is handled, so that no worker holds an item, run one check over the integrated state, such as the project's full build and test suite, before starting another item, and append its result to the evidence of the wave's last closure line. If it fails, add an item that names the failure and the closed IDs at the top of the Queue, and start no further wave until the check passes.
 
 ## Growing queue
 
