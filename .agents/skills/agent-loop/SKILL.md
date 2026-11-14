@@ -22,7 +22,7 @@ Priority: the user's consent rules and standing authorizations → truthful stat
 
 **Start.** Apply this skill only to a queue you own under pass 2. On start, on resume (continuing the loop in a new session, or after a pause or stop), after compaction, or when this text is incomplete, read this skill through **Self-check**, then establish ownership, check **stop**, keep pass 4's gates and complete **Rebuild** before any queued action or loop status report; if ownership or these instructions cannot be recovered, only inspect evidence.
 
-Read [Scale](references/scale.md) in full before the first iteration in which the state file exceeds 100 lines, `parallel` exceeds 1 or a worker does or is to do an item, and again after each compaction while any of these holds.
+Read [Scale](references/scale.md) in full before the first iteration in which the state file exceeds 100 lines, the user allows parallel work or a worker does or is to do an item, and again after each compaction while any of these holds.
 
 ## 1. Keep one state file
 
@@ -52,7 +52,7 @@ A malformed header or item line can silently end the hook's automatic continuati
 
 - **Header:** one line per key, each once, above `## Queue`.
 - **stop:** empty while the loop runs or idles, else a pass 6 reason or a user pause. On an explicit user instruction to pause or stop the loop, record `paused: <the instruction>` and take no queued action until the user explicitly resumes; then clear only that pause and reconcile. Keep a pause the user wrote, and never invent one; ending one turn after an item is not a pause.
-- **async gates:** the gate kinds the user lets wait in the queue.
+- **async gates:** only the gate kinds the user said may wait in the queue.
 - **done when:** evidence a later iteration can confirm without memory of this session; the goal and each item have one.
 - **budget:** the automatic continuations the hook may grant for this goal; changing `goal` resets the count. A loop stopped by its budget resumes only when the user both raises `budget` and clears `stop: budget`.
 - **Items:** the queue holds only open items, with the statuses shown and the fields this skill names. IDs are unique across Queue and Log and never reused; redo closed work as a new item that names the old ID.
@@ -75,8 +75,8 @@ Run as many iterations as you can in one turn, ending it only when no item is ac
 1. **Rebuild.** Trust the file over your memory. Read it whole and check it against pass 1 on start, on resume, after compaction and to repair it; on other iterations, read it whole while it has at most 100 lines, and otherwise as Scale directs. Reconcile it with evidence at the authoritative sources: close finished items and record user answers on `user` items.
 2. **Pick.** Take the first unblocked `doing` item, else the first unblocked `ready` one, and mark it `doing`. Work on one item at a time unless the wave rules in Scale allow more. Handle a needed gate under pass 4 before acting.
 3. **Check.** Show that a check you write or change rejects work missing the criterion and accepts work meeting it, with a new test failing on the pre-change state or a disposable copy, never by reverting finished work; record both results in the closure evidence. Close an item only on evidence that meets its `done when`: passing tests, a green gate, or a review without open findings by a reviewer other than the item's author (a fresh context counts). Fix every finding of a review round before the next; after three rounds without convergence, treat the dispute as a hard design choice under pass 4.
-4. **Attempts.** When a check rejects an attempt or its result cannot be integrated, raise the item's `tries:`, which review rounds do not change; at 3, mark the item `user` with an `ask:` naming the failure and what would unblock it, and continue with other items.
-5. **Shared cause.** When a second item shows the same failure, look for a shared cause, such as a template or script, before the next affected item; fix it within the authorized scope, recheck the items it already affected, and record the fix in the state file. This never authorizes editing the user's rules or this skill. Keep unrelated failures separate.
+4. **Attempts.** Count in `tries:`, before the next run, every run of an item's action that fails its check or cannot be integrated, whoever runs it; review rounds do not count. At 3, mark the item `user` with an `ask:` naming the failure and what would unblock it, leave `stop:` unchanged and continue with other items.
+5. **Shared cause.** When a second item shows the same failure, look for a shared cause before the next affected item; fix it within the authorized scope, recheck the items it already affected, and record the fix in the state file. This never authorizes editing the user's rules or this skill. Keep unrelated failures separate.
 6. **Record.** Pass every result, wake and answer through **Check**, then save real changes to statuses, fields, evidence and **Log** before further scheduling or status reports. Never edit the file only to satisfy the hook.
 
 ## 4. Handle gates
@@ -89,7 +89,7 @@ A gate is an action outside the user's standing authorizations that needs their 
 
 ## 5. Wait for events
 
-When an item needs an external result, such as a job, a worker or a CI run:
+When an item needs an external result:
 
 - **Waiter:** use a completion route that Host setup supports for this session, host and mode, within its scope and lifetime and with any blocking collection it requires; without one, wait within the turn by a blocking call, or else record that collection needs the next user message or an explicit resume. Record the waiter's lifetime and collection route; where a host stops background commands after a fixed time, collect or re-arm before that limit, within the user's authorization.
 - **Scheduling boundary:** never create cron jobs or scheduled or periodic agent runs to execute the queue. A separately authorized completion notification may prompt reconciliation but grants no further authority.
