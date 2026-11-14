@@ -101,9 +101,9 @@ class ReportTest(StatusBase):
         self.assertIn("1 ready, 3 ready but blocked", out)
         self.assertEqual(self.section(out, "next:"),
                          ["next:", "  " + ready("T1", "; after: T0")])
-        self.assertIn("line 12: T3 after: GHOST is neither an open item nor closed in Log",
+        self.assertIn("line 12: T3 after: GHOST: neither an open item nor closed in Log",
                       out)
-        self.assertNotIn("after: T1 is neither", out)
+        self.assertNotIn("after: T1:", out)
 
     def test_blocked_doing_item_names_its_blockers(self):
         self.write(["- [doing] T1 Fix — done when: green; after: T2, GHOST", ready("T2")])
@@ -134,6 +134,87 @@ class ReportTest(StatusBase):
                 self.assertEqual((code, out), (2, ""))
                 self.assertTrue(err.startswith("loop_hook.py status: "), err)
                 self.assertIn("Expected", err)
+
+
+class RevisionTest(StatusBase):
+    def test_every_after_field_counts(self):
+        user = "- [user] T1 U — done when: x; ask: q?"
+        for item in (ready("T2", "; after: T0; after: T1"),
+                     ready("T2", "; after: ; next: go after: T1")):
+            with self.subTest(item=item):
+                self.write([user, item], log=closure("T0"))
+                out = self.report()
+                self.assertIn("next: none", out)
+                self.assertIn("0 ready, 1 ready but blocked", out)
+
+    def test_evidence_naming_a_closure_closes_nothing(self):
+        self.write([ready("T1"), ready("T2", "; after: T1")],
+                   log="- 2026-11-01T10:00Z T9 reopened — the T1 closed earlier was wrong\n"
+                       "- 2026-11-01T10:05Z T0 closed — PR closed after merge\n")
+        out = self.report()
+        self.assertNotIn("open in Queue and closed in Log", out)
+        self.assertIn("1 closed", out)
+
+    def test_long_log_token_stays_fast(self):
+        self.write([ready("T1")], log="- " + "x" * 40000 + "\n")
+        proc = subprocess.run([sys.executable, hook_tests.HOOK, "status"],
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              encoding="utf-8", env=hook_tests.clean_env(), cwd=self.root,
+                              timeout=3)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+
+    def test_huge_numbers_are_values_not_crashes(self):
+        huge = "9" * 5000
+        text = HEADER.format(extra="parallel: %s\n" % huge, items=ready("T1", "; tries: " + huge),
+                             log="")
+        self.write_state(text=text.replace("budget: 50", "budget: " + huge))
+        out = self.report("--limit", huge)
+        self.assertIn("T1 has tries: 1000000000", out)
+        self.assertIn("wave: none", out)
+
+    def test_tries_that_is_not_a_whole_number_counts_as_zero(self):
+        self.write([ready("T1", "; tries: many"), ready("T2", "; tries: 3.5")])
+        self.assertIn("problems: none", self.report())
+
+    def test_unwritable_stdout_exits_2_without_traceback(self):
+        self.write([ready("T1")])
+        read_end, write_end = os.pipe()
+        os.close(read_end)
+        targets = [write_end]
+        if os.path.exists("/dev/full"):
+            targets.append(os.open("/dev/full", os.O_WRONLY))
+        for target in targets:
+            with self.subTest(target=target):
+                proc = subprocess.run([sys.executable, hook_tests.HOOK, "status"],
+                                      stdout=target, stderr=subprocess.PIPE,
+                                      encoding="utf-8", env=hook_tests.clean_env(),
+                                      cwd=self.root, timeout=20)
+                os.close(target)
+                self.assertEqual(proc.returncode, 2, proc.stderr)
+                self.assertNotIn("Traceback", proc.stderr)
+                self.assertIn("cannot write the report", proc.stderr)
+
+    def test_limit_caps_cycle_members_and_blockers(self):
+        self.write([ready("T1", "; after: T3"), ready("T2", "; after: T1"),
+                    ready("T3", "; after: T2"),
+                    "- [doing] T4 D — done when: x; after: T1, T2, G1, G2"])
+        out = self.report("--limit", "1")
+        self.assertIn("dependency cycle among T1, +2 more", out)
+        self.assertIn("(blocked: T1 open, +3 more)", out)
+
+    def test_unknown_ids_are_one_problem_per_item(self):
+        self.write([ready("T1"), ready("T2", "; after: T1 — needs api")])
+        problems = self.section(self.report(), "problems:")
+        self.assertEqual(len(problems), 2, problems)
+        self.assertIn("T2 after: —, needs, api: neither", problems[1])
+
+    def test_crlf_line_endings(self):
+        text = HEADER.format(extra="", items=ready("T1", "; after: T0"), log=closure("T0"))
+        with open(self.state, "w", encoding="utf-8", newline="") as handle:
+            handle.write(text.replace("\n", "\r\n"))
+        out = self.report()
+        self.assertIn("counts: 0 doing, 1 ready, 0 ready but blocked", out)
+        self.assertIn("problems: none", out)
 
 
 class NoFileTest(StatusBase):

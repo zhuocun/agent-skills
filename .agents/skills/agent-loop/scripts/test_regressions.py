@@ -55,6 +55,11 @@ class DependencyTest(hook_tests.Base):
                                   "1 actionable")
                 with open(self.state, encoding="utf-8") as handle:
                     self.assertEqual(handle.read(), before)
+                reconciled = before.replace("; after: T0", "")
+                self.write_state(text=reconciled)
+                self.assert_block(self.hook(hook_tests.event(self.root)), "now T1")
+                with open(self.state, encoding="utf-8") as handle:
+                    self.assertEqual(handle.read(), reconciled)
 
     def test_blocked_doing_does_not_preempt_dependency_free_ready(self):
         self.write_state(items=hook_tests.DOING + "; after: NEVER\n"

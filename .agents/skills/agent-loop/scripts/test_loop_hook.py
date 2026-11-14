@@ -5,6 +5,7 @@ Each case runs the hook as a subprocess against a temporary workspace. Run from
 the skill directory (python3 scripts/test_loop_hook.py) or from anywhere else;
 the hook and SKILL.md are located relative to this file.
 """
+import hashlib
 import json
 import os
 import re
@@ -60,6 +61,11 @@ def event(root, session=OWNER, continued=False, **extra):
           "background_tasks": [], "session_crons": []}
     ev.update(extra)
     return ev
+
+
+def digest_key(items, log_lines):
+    """The no-progress key the hook stores for these [id, status] pairs and Log count."""
+    return hashlib.sha256(json.dumps([items, log_lines]).encode("utf-8")).hexdigest()
 
 
 def clean_env(**extra):
@@ -233,6 +239,7 @@ class DependencyRuleTest(Base):
                     self.assert_stop(out)
 
     def test_open_dependency_blocks_even_with_closure_line(self):
+        """Guard: behaviour kept from the earlier script."""
         self.write_state(items="\n".join([USER.replace("T4", "T0"),
                                           "- [ready] T1 Deploy — done when: live; after: T0"]))
         self.closed("T0")
@@ -247,6 +254,7 @@ class DependencyRuleTest(Base):
         self.assert_block(self.hook(event(self.root)), "1 actionable", "(now T3)")
 
     def test_cycle_blocks_its_items(self):
+        """Guard: behaviour kept from the earlier script."""
         items = "\n".join(["- [ready] T1 A — done when: x; after: T2",
                            "- [doing] T2 B — done when: x; after: T1"])
         self.write_state(items=items)
@@ -259,12 +267,71 @@ class DependencyRuleTest(Base):
         self.assert_block(self.hook(event(self.root)), "2 actionable", "(now T1)")
 
     def test_worker_held_waiting_item_with_running_task_gives_no_turn(self):
+        """Guard: behaviour kept from the earlier script."""
         worker = ("- [waiting] T3 Port module — done when: tests pass; wake: worker w1; "
                   "check: test -f out/T3.md")
         self.write_state(items=worker)
         self.assert_stop(self.hook(event(self.root, background_tasks=[{"id": "w1"}])))
         self.assertFalse(os.path.exists(self.sidecar))
         self.assert_block(self.hook(event(self.root)), "1 waiting item(s) but no background")
+
+    def test_every_after_field_counts(self):
+        for item in ("- [ready] T2 X — done when: y; after: T0; after: T1",
+                     "- [ready] T2 X — done when: y; after: ; next: go after: T1"):
+            with self.subTest(item=item):
+                self.write_state(items="\n".join([USER.replace("T4", "T1"), item]))
+                self.closed("T0")
+                self.assert_stop(self.hook(event(self.root)))
+
+    def test_closure_id_comes_before_the_evidence(self):
+        self.write_state(items="- [ready] T1 Deploy — done when: live; after: T5")
+        with open(self.state, "a", encoding="utf-8") as handle:
+            handle.write("- 2026-11-01T10:00Z T9 reopened — the T5 closed earlier was wrong\n")
+        self.assert_stop(self.hook(event(self.root)))
+        self.write_state(items="- [ready] T1 Deploy — done when: live; after: T0")
+        with open(self.state, "a", encoding="utf-8") as handle:
+            handle.write("- 2026-11-01T10:00Z T0 closed — PR closed after merge\n"
+                         "- 2026-11-01T10:05Z T8 closed\n")
+        self.assert_block(self.hook(event(self.root)), "1 actionable", "(now T1)")
+
+    def test_long_log_token_stays_fast(self):
+        self.write_state()
+        with open(self.state, "a", encoding="utf-8") as handle:
+            handle.write("- " + "x" * 40000 + "\n")
+        proc = subprocess.run([sys.executable, HOOK], input=json.dumps(event(self.root)),
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              universal_newlines=True, env=clean_env(), cwd=self.elsewhere,
+                              timeout=3)
+        self.assert_block(self.check_output(proc), "turn 1/50")
+
+    def test_huge_numbers_do_not_fail(self):
+        huge = "9" * 5000
+        self.write_state(items=READY + "; tries: " + huge)
+        self.assert_block(self.hook(event(self.root)), "1 actionable")
+        self.write_state(budget=huge)
+        self.assert_block(self.hook(event(self.root)), "turn 1/")
+
+    def test_notes_sections_are_ignored(self):
+        notes = ("\n## Notes\n- [ready] T8 Not an item — done when: x\n"
+                 "- 2026-11-01T10:00Z T0 closed — not a closure\n")
+        text = STATE.format(goal=GOAL, owner=OWNER, stop="", budget=50,
+                            items="- [ready] T1 A — done when: x; after: T0")
+        for placed in (text.replace("\n## Log", notes + "\n## Log"), text + notes):
+            with self.subTest(placed=placed[-60:]):
+                self.write_state(text=placed)
+                self.assert_stop(self.hook(event(self.root)))
+                self.write_state(text=placed.replace("; after: T0", ""))
+                self.assert_block(self.hook(event(self.root)), "1 actionable", "(now T1)")
+                self.assertEqual(self.sidecar_data()["key"], digest_key([["T1", "ready"]], 0))
+
+    def test_crlf_line_endings(self):
+        text = STATE.format(goal=GOAL, owner=OWNER, stop="", budget=50,
+                            items="- [ready] T1 A — done when: x; after: T0")
+        text += "- 2026-11-01T10:00Z T0 closed — tests pass\n"
+        with open(self.state, "w", encoding="utf-8", newline="") as handle:
+            handle.write(text.replace("\n", "\r\n"))
+        self.assert_block(self.hook(event(self.root)), "1 actionable", "(now T1)")
+        self.assertEqual(self.sidecar_data()["key"], digest_key([["T1", "ready"]], 1))
 
     def test_bad_parallel_fails_closed(self):
         for value in ("0", "two", "-1", "1.5"):

@@ -46,10 +46,12 @@ STATUSES = ("ready", "doing", "waiting", "user")
 OPEN_WORK = ("doing", "ready")
 ITEM = re.compile(r"^[-*]\s+\[([^\]]*)\]\s+(\S+)(.*)$")
 LOG_LINE = re.compile(r"^[-*]\s+\S")
-CLOSURE = re.compile(r"(\S+)\s+closed\b")
+CLOSURE = re.compile(r"(?<!\S)(\S+)\s+closed\b")
+EVIDENCE_DASH = " — "
 FIELD_NAMES = ("after", "writes", "tries", "wake", "check", "ask")
 FIELDS = {name: re.compile(r"(?:^|[\s;])%s:\s*([^;]*)" % name) for name in FIELD_NAMES}
 WHOLE = re.compile(r"^\d+$")
+WHOLE_CAP = 10 ** 9
 GLOB_START = re.compile(r"[*?\[]")
 USAGE = "loop_hook.py status [--state PATH] [--limit K]"
 
@@ -186,21 +188,31 @@ def problem(state, line, reason, fix, fatal=False):
 
 
 def field(rest, name):
-    """The text of an item's `name:` field, or None when the item has none."""
+    """The text of an item's first `name:` field, or None when the item has none."""
     match = FIELDS[name].search(rest)
     return match.group(1).strip() if match else None
 
 
-def id_list(value):
-    """IDs separated by commas or whitespace; [] for an absent field."""
-    return [part for part in re.split(r"[\s,]+", value or "") if part]
+def fields(rest, name):
+    """The texts of every `name:` field of an item, in order."""
+    return [value.strip() for value in FIELDS[name].findall(rest)]
 
 
-def scope_list(value):
-    """Path or glob scopes separated by commas; None for an absent field."""
-    if value is None:
+def whole(text):
+    """A whole number from its digits, capped so huge values never fail to convert."""
+    return int(text) if len(text) <= 9 else WHOLE_CAP
+
+
+def id_list(values):
+    """IDs separated by commas or whitespace across every after: field."""
+    return [part for value in values for part in re.split(r"[\s,]+", value) if part]
+
+
+def scope_list(values):
+    """Path or glob scopes separated by commas across every writes: field; None when absent."""
+    if not values:
         return None
-    return [part.strip() for part in value.split(",") if part.strip()]
+    return [part.strip() for value in values for part in value.split(",") if part.strip()]
 
 
 def parse_item(state, number, line, match):
@@ -211,8 +223,8 @@ def parse_item(state, number, line, match):
                 "use one of ready, doing, waiting, user", fatal=True)
     tries = field(rest, "tries")
     item = {"id": match.group(2), "status": status, "line": number, "text": line,
-            "after": id_list(field(rest, "after")), "writes": scope_list(field(rest, "writes")),
-            "tries": int(tries) if tries is not None and WHOLE.match(tries) else 0}
+            "after": id_list(fields(rest, "after")), "writes": scope_list(fields(rest, "writes")),
+            "tries": whole(tries) if tries is not None and WHOLE.match(tries) else 0}
     for name in ("wake", "check", "ask"):
         item[name] = field(rest, name) is not None
     state["items"].append(item)
@@ -233,11 +245,15 @@ def parse_header(state, number, line):
 
 
 def parse_log(state, line):
-    """Count one Log entry and record the ID its closure line names."""
+    """Count one Log entry and record the ID its closure line names.
+
+    Only the text before the first dash that opens the evidence can name the
+    closed ID, so evidence that mentions another closure names nothing.
+    """
     if not LOG_LINE.match(line):
         return
     state["log_lines"] += 1
-    match = CLOSURE.search(line)
+    match = CLOSURE.search(line.split(EVIDENCE_DASH, 1)[0])
     if match:
         state["closed"].add(match.group(1))
         state["closures"] += 1
@@ -248,18 +264,21 @@ def whole_header(state, key, default, minimum):
     value = state["header"].get(key)
     if value is None:
         return default
-    if WHOLE.match(value) and int(value) >= minimum:
-        return int(value)
+    if WHOLE.match(value) and whole(value) >= minimum:
+        return whole(value)
     problem(state, state["header_lines"][key], "bad %s `%s`" % (key, value),
             "set `%s:` to a whole number of at least %d or remove it" % (key, minimum),
             fatal=True)
     return None
 
 
-def read_state(text):
-    """Tolerant parse: header, items, closed IDs, log count and the problems found."""
+def read_state(text, limit=DEFAULT_LIMIT):
+    """Tolerant parse: header, items, closed IDs, log count and the problems found.
+
+    limit caps the IDs listed inside one problem.
+    """
     state = {"header": {}, "header_lines": {}, "items": [], "closed": set(), "log_lines": 0,
-             "closures": 0, "problems": []}
+             "closures": 0, "problems": [], "limit": limit}
     section, has_queue = None, False
     for number, raw in enumerate(text.splitlines(), 1):
         line = raw.strip()
@@ -306,10 +325,11 @@ def check_dependencies(state):
         item["unknown"] = [dep for dep in item["after"]
                            if dep not in open_ids and dep not in state["closed"]]
         item["blocked"] = bool(item["unmet"] or item["unknown"])
-        for dep in item["unknown"]:
+        if item["unknown"]:
             problem(state, item["line"],
-                    "%s after: %s is neither an open item nor closed in Log" % (item["id"], dep),
-                    "correct the ID, add the missing item, or record its closure in Log")
+                    "%s after: %s: neither an open item nor closed in Log"
+                    % (item["id"], capped(item["unknown"], state["limit"])),
+                    "correct the IDs, add the missing items, or record their closures in Log")
 
 
 def check_items(state):
@@ -345,7 +365,7 @@ def check_cycles(state):
         if len(component) > 1 or component[0] in graph[component[0]]:
             members = sorted(component, key=lambda ident: lines[ident])
             problem(state, lines[members[0]],
-                    "dependency cycle among %s" % capped(members, DEFAULT_LIMIT),
+                    "dependency cycle among %s" % capped(members, state["limit"]),
                     "remove one after: field in the cycle or split the work")
 
 
@@ -615,10 +635,10 @@ def status_args(argv):
             raise StatusError("%s needs a value. Expected: %s." % (arg, USAGE))
         options[arg] = value
     limit = options.get("--limit", str(DEFAULT_LIMIT))
-    if not WHOLE.match(limit) or int(limit) < 1:
+    if not WHOLE.match(limit) or whole(limit) < 1:
         raise StatusError("bad --limit `%s`. Expected a whole number of at least 1. "
                           "Try --limit %d." % (limit, DEFAULT_LIMIT))
-    return options.get("--state"), int(limit)
+    return options.get("--state"), whole(limit)
 
 
 def status_path(state_arg):
@@ -680,13 +700,13 @@ def wave(state):
     return taken, max(slots, 0)
 
 
-def describe(item):
+def describe(item, limit):
     """An item's full line, with the reason when a dependency blocks it."""
     reasons = ["%s open" % dep for dep in item["unmet"]]
     reasons += ["%s unknown" % dep for dep in item["unknown"]]
     if not reasons:
         return item["text"]
-    return "%s  (blocked: %s)" % (item["text"], capped(reasons, DEFAULT_LIMIT))
+    return "%s  (blocked: %s)" % (item["text"], capped(reasons, limit))
 
 
 def listing(title, values, limit):
@@ -711,17 +731,19 @@ def header_lines(path, state):
     return lines
 
 
+def matching(state, status, blocked=None):
+    """The items with a status, optionally only the blocked or only the unblocked ones."""
+    return [item for item in state["items"] if item["status"] == status
+            and (blocked is None or item["blocked"] == blocked)]
+
+
 def count_line(state):
     """Section 2: counts by status, with ready split by its dependencies."""
-    items = state["items"]
-
-    def count(status, blocked=None):
-        return sum(1 for item in items if item["status"] == status
-                   and (blocked is None or item["blocked"] == blocked))
-
+    counts = [len(matching(state, "doing")), len(matching(state, "ready", False)),
+              len(matching(state, "ready", True)), len(matching(state, "waiting")),
+              len(matching(state, "user")), state["closures"]]
     return ("counts: %d doing, %d ready, %d ready but blocked, %d waiting, %d need you, "
-            "%d closed" % (count("doing"), count("ready", False), count("ready", True),
-                           count("waiting"), count("user"), state["closures"]))
+            "%d closed" % tuple(counts))
 
 
 def problem_lines(state, limit):
@@ -734,12 +756,10 @@ def problem_lines(state, limit):
 
 def status_report(path, text, limit):
     """The plain-text status of one state file; its size does not grow with the queue."""
-    state = read_state(text)
-    items = state["items"]
+    state = read_state(text, limit)
 
     def lines_of(status, blocked=None):
-        return [describe(item) for item in items if item["status"] == status
-                and (blocked is None or item["blocked"] == blocked)]
+        return [describe(item, limit) for item in matching(state, status, blocked)]
 
     lines = header_lines(path, state) + [count_line(state)]
     lines += listing("doing:", lines_of("doing"), limit)
@@ -763,14 +783,29 @@ def status_main(argv):
     except StatusError as error:
         sys.stderr.write("loop_hook.py status: %s\n" % error)
         return 2
-    data = report.encode("utf-8")
-    if hasattr(sys.stdout, "buffer"):
-        sys.stdout.flush()
-        sys.stdout.buffer.write(data)
+    try:
+        sys.stdout.buffer.write(report.encode("utf-8"))
         sys.stdout.buffer.flush()
-    else:
-        sys.stdout.write(report)
+    except OSError as error:
+        silence_stdout()
+        try:
+            sys.stderr.write("loop_hook.py status: cannot write the report (%s). Expected a "
+                             "writable standard output. Try running it without a closed "
+                             "pipe or a full disk.\n" % error)
+        except OSError:
+            pass
+        return 2
     return 0
+
+
+def silence_stdout():
+    """Point standard output at the null device so the exit flush cannot fail again."""
+    try:
+        null = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(null, sys.stdout.fileno())
+        os.close(null)
+    except (OSError, ValueError):
+        pass
 
 
 def main():
