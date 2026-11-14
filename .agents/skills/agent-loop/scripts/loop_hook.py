@@ -47,7 +47,7 @@ OPEN_WORK = ("doing", "ready")
 ITEM = re.compile(r"^[-*]\s+\[([^\]]*)\]\s+(\S+)(.*)$")
 LOG_LINE = re.compile(r"^[-*]\s+\S")
 CLOSURE = re.compile(r"(?<!\S)(\S+)\s+closed\b")
-EVIDENCE_DASH = " — "
+EVIDENCE_DASH = re.compile(r"\s[—–-]\s")
 FIELD_NAMES = ("after", "writes", "tries", "wake", "check", "ask")
 FIELDS = {name: re.compile(r"(?:^|[\s;])%s:\s*([^;]*)" % name) for name in FIELD_NAMES}
 WHOLE = re.compile(r"^\d+$")
@@ -200,7 +200,8 @@ def fields(rest, name):
 
 def whole(text):
     """A whole number from its digits, capped so huge values never fail to convert."""
-    return int(text) if len(text) <= 9 else WHOLE_CAP
+    digits = text.lstrip("0") or "0"
+    return int(digits) if len(digits) <= 9 else WHOLE_CAP
 
 
 def id_list(values):
@@ -253,7 +254,7 @@ def parse_log(state, line):
     if not LOG_LINE.match(line):
         return
     state["log_lines"] += 1
-    match = CLOSURE.search(line.split(EVIDENCE_DASH, 1)[0])
+    match = CLOSURE.search(EVIDENCE_DASH.split(line.lstrip()[1:], 1)[0])
     if match:
         state["closed"].add(match.group(1))
         state["closures"] += 1
@@ -565,12 +566,13 @@ def decide(event, state_arg, host="claude"):
     else:
         message = (
             "%s Loop active in %s: turn %d/%d, %d actionable, %d waiting, %d need "
-            "the user. Run the next iteration: re-read the file, reconcile it with "
+            "the user. Run the next iteration: read the state, reconcile it with "
             "evidence, take the next actionable item (now %s), handle its gate "
             "first if it needs one, act, verify against its done criterion, update "
             "the file, then continue, fix or stop. Include the loop facts in your "
-            "final message under pass 7's applicable form rule. Run python3 \"%s\" "
-            "status --state \"%s\" to list the next items and any problems."
+            "final message under pass 7's applicable form rule. For a state file too "
+            "long to read whole, python3 \"%s\" status --state \"%s\" lists the "
+            "next items and any problems."
             % (TAG, path, turn, budget, len(actionable), waiting, user, pick["id"],
                os.path.abspath(__file__), path)
         )
@@ -784,9 +786,9 @@ def status_main(argv):
         sys.stderr.write("loop_hook.py status: %s\n" % error)
         return 2
     try:
-        sys.stdout.buffer.write(report.encode("utf-8"))
+        sys.stdout.buffer.write(report.encode("utf-8", "surrogateescape"))
         sys.stdout.buffer.flush()
-    except OSError as error:
+    except (OSError, AttributeError, ValueError) as error:
         silence_stdout()
         try:
             sys.stderr.write("loop_hook.py status: cannot write the report (%s). Expected a "
@@ -804,7 +806,7 @@ def silence_stdout():
         null = os.open(os.devnull, os.O_WRONLY)
         os.dup2(null, sys.stdout.fileno())
         os.close(null)
-    except (OSError, ValueError):
+    except (OSError, ValueError, AttributeError):
         pass
 
 

@@ -410,3 +410,62 @@ class WaveTest(StatusBase):
 if __name__ == "__main__":
     import unittest
     unittest.main()
+
+
+class NumberAndIdFormTest(StatusBase):
+    def test_zero_padded_numbers_keep_their_value(self):
+        self.write([ready("T1", "; tries: 0000000002; writes: a/*"),
+                    ready("T2", "; writes: b/*"), ready("T3", "; writes: c/*")],
+                   extra="parallel: 0000000002\n")
+        out = self.report()
+        self.assertIn("wave: T1, T2 (2 free slots)", out)
+        self.assertIn("problems: none", out)
+        self.assertIn("+2 more", "\n".join(self.section(self.report("--limit", "00000000001"),
+                                                        "next:")))
+
+    def test_zero_parallel_written_with_many_zeros_is_a_problem(self):
+        self.write([ready("T1")], extra="parallel: 0000000000\n")
+        self.assertIn("parallel", "\n".join(self.section(self.report(), "problems:")))
+
+    def test_dotted_ids_in_dependencies_closures_and_wave(self):
+        self.write([ready("T4.2", "; after: T4.1; writes: a/*"),
+                    ready("T4.2.1", "; after: T4.2, T4.1; writes: b/*"),
+                    ready("T4.3", "; after: T4.1; writes: c/*")],
+                   extra="parallel: 3\n", log=closure("T4.1"))
+        out = self.report()
+        self.assertIn("wave: T4.2, T4.3", out)
+        self.assertIn("problems: none", out)
+
+    def test_note_before_a_hyphen_names_no_closure(self):
+        self.write([ready("T2", "; after: T1")],
+                   log="- 2026-11-01 note - T1 closed by mistake\n")
+        out = self.report()
+        self.assertIn("0 closed", out)
+        self.assertIn("T1", "\n".join(self.section(out, "problems:")))
+
+    def test_closure_line_with_hyphen_dash_still_counts(self):
+        self.write([ready("T2", "; after: T1")], log="- 2026-11-01 10:00 T1 closed - tests pass\n")
+        self.assertIn("1 closed", self.report())
+
+    def test_path_that_is_not_utf8_prints_without_a_traceback(self):
+        if os.name != "posix":
+            self.skipTest("needs a byte-named directory")
+        odd = os.fsdecode(os.path.join(os.fsencode(self.root), b"bad\xff"))
+        os.mkdir(odd)
+        self.write([ready("T1")])
+        os.replace(os.path.join(self.root, ".agent-loop.md"), os.path.join(odd, ".agent-loop.md"))
+        proc = subprocess.run([sys.executable, hook_tests.HOOK, "status"], cwd=odd,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              env=hook_tests.clean_env(), timeout=20)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertNotIn(b"Traceback", proc.stderr)
+
+    def test_closed_standard_output_exits_2_without_a_traceback(self):
+        if os.name != "posix":
+            self.skipTest("needs a shell that can close a descriptor")
+        self.write([ready("T1")])
+        proc = subprocess.run('"%s" "%s" status >&-' % (sys.executable, hook_tests.HOOK),
+                              shell=True, cwd=self.root, stderr=subprocess.PIPE,
+                              env=hook_tests.clean_env(), timeout=20)
+        self.assertEqual(proc.returncode, 2, proc.stderr)
+        self.assertNotIn(b"Traceback", proc.stderr)

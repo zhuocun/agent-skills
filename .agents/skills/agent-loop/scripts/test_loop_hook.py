@@ -39,13 +39,13 @@ budget: {budget}
 ## Log
 """
 INSTRUCTION = (
-    " Run the next iteration: re-read the file, reconcile it with evidence, take "
+    " Run the next iteration: read the state, reconcile it with evidence, take "
     "the next actionable item (now T1), handle its gate first if it needs one, act, "
     "verify against its done criterion, update the file, then continue, fix or "
     "stop. Include the loop facts in your final message under pass 7's applicable form rule."
 )
-STATUS_HINT = (' Run python3 "%s" status --state "%%s" to list the next items and any '
-               'problems.' % HOOK)
+STATUS_HINT = (' For a state file too long to read whole, python3 "%s" status --state "%%s" '
+               'lists the next items and any problems.' % HOOK)
 NO_PROGRESS = "The hook's no-progress key did not change during the last automatic turn"
 LAST_TURN = "This is the last automatic turn the budget allows"
 HOOK_ENV_KEYS = ("CLAUDE_PLUGIN_ROOT", "CLAUDE_PROJECT_DIR", "CLAUDE_SKILL_DIR")
@@ -429,6 +429,11 @@ class GuardTest(Base):
             with self.subTest(budget=budget):
                 self.write_state(budget=budget)
                 self.assert_stop(self.hook(event(self.root)))
+
+    def test_zero_padded_budget_keeps_its_value(self):
+        self.write_state(budget="0000000001")
+        self.assert_block(self.hook(event(self.root)), "turn 1/1,")
+        self.assert_stop(self.hook(event(self.root, continued=True)))
 
     def test_budget_absent_defaults_to_50(self):
         text = STATE.format(goal=GOAL, owner=OWNER, stop="", budget=50, items=READY)

@@ -16,7 +16,7 @@ These rules hold, beside every rule in `SKILL.md`, while the state file exceeds 
 python3 "$SKILL_DIR/scripts/loop_hook.py" status [--state PATH] [--limit K]
 ```
 
-`SKILL_DIR` is this skill's directory. Without `--state`, the command looks for `.agent-loop.md` from the current directory upward to the repository top, so run it inside the workspace or pass the path. It never writes a file. Exit code 0 means it read the file, with any problems listed in its output; exit code 2 means it found no state file or could not read it, and its message on stderr says what to try.
+`SKILL_DIR` is this skill's directory. Without `--state`, the command looks for `.agent-loop.md` from the current directory upward to the repository top, so run it inside the workspace or pass the path. It never writes a file, and it prints an empty header value as `(none)`. Exit code 0 means it read the file, with any problems listed in its output; exit code 2 means a bad argument, no state file found, or a file it could not read, and its message on stderr says what to try.
 
 Its output has a fixed size whatever the queue length. `K`, 5 by default, caps every list, and a capped list ends with `+N more`. The sections, in order:
 
@@ -29,6 +29,7 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 7. `problems:` each problem with its line number, reason and fix, or `none`.
 
 - **Use:** on each iteration that does not read the whole file, run the command in place of that read. Take the first unblocked item in `doing:`, else the first in `next:`, as **Pick** directs. Where the script cannot run, read the whole file instead.
+- **Waiting:** `waiting:` shows at most K items; when **Wake** calls for every waiting item's check, raise `--limit` above the waiting count or read the whole file.
 - **Problems:** when `problems:` is not `none`, read the whole file, repair each listed problem from evidence, and run the command again before picking. Several of these problems end the hook's automatic continuation without a message.
 - **Edits:** change the file one line at a time, finding each line by its ID. Never rewrite the file from the command's output, which shows only part of it.
 
@@ -36,9 +37,9 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 
 A worker is an agent you dispatch to do one item.
 
-- **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, the absolute path for its detail file, and the result form below. A worker never edits the state file.
-- **Copy:** give a worker that changes files an isolated copy of the repository when the host offers one, made from the current integrated state, so that it holds the closed work its item depends on.
-- **Result:** the worker writes its full account (commands, output, reasoning, failures) to its detail file, for example `.agent-loop.d/<ID>.md` at the workspace root, which the `/.agent-loop.*` exclude line already keeps out of version control, and returns only:
+- **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, the absolute path for its detail file, and the form under **Result**. A worker never edits the state file.
+- **Copy:** make a file-changing worker's isolated copy of the repository from the current integrated state, so that it holds the closed work its item depends on.
+- **Result:** the worker writes its full account (commands, output, reasoning, failures) to its detail file, for example `.agent-loop.d/<ID>.md` at the workspace root, which the `/.agent-loop.*` exclude line already keeps out of version control, ends that file with the result block, and returns only that block:
 
   ```
   item: <ID>
@@ -47,28 +48,29 @@ A worker is an agent you dispatch to do one item.
   files: <changed paths, comma-separated, or none>
   ```
 
-  Treat `done` as a claim to confirm under **Check**. Open the detail file only when the result or your check needs it.
-- **Held items:** an item is `doing` while its worker holds it. When the turn ends before the worker returns, set the item `waiting` with `wake: worker <name>` and a `check:` that shows the worker's result exists, such as a test that its detail file is present.
+  Treat `done` as a claim to confirm under **Check**. Handle `failed:` under **Attempts**, and `blocked:` as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
+- **Held items:** an item a worker holds is `doing` with `next: worker <name>`, and **Pick** skips it. Before ending a turn while a worker holds an item, set it `waiting` with `wake: worker <name>` and a `check:` that finds the result block at the end of its detail file. When the result arrives, the worker no longer holds the item: replace that `next:` and integrate the result under Integration, never redoing the item.
 
 ## Waves
 
-A wave is a set of items in progress at the same time. Work sequentially unless all three hold:
+A wave is a set of items in progress at the same time. Work sequentially unless all four hold:
 
-- `parallel: <N>` in the header is above 1. Absent, it is 1. Keep a value the user set.
+- `parallel: <N>` in the header is above 1. Absent, it is 1. Set it above 1 only when the user asked for or allowed parallel work; otherwise leave it absent.
+- Each worker in the wave that changes files gets its own isolated copy of the repository.
 - The items are listed in the command's `wave:` output now.
 - **Pilot:** one to three items of the same kind have already closed one after another. Items are of one kind when the same steps, brief and check apply to each, such as moving one module each to a new package. Close a second or third pilot item when the one before it needed a change to its brief, check or scope, and record what the pilot taught in `## Notes`.
 
 `writes: <path or glob>, <path or glob>` on an item lists every file it may change. `wave:` fills the free slots, which are `parallel` minus the open `doing` and `waiting` items that have `writes:`. It walks the unblocked `ready` items in queue order and takes an item only when its scopes overlap no scope of an item already taken or of an open `doing` or `waiting` item. An item without `writes:` never joins a wave. Two scopes overlap when the part of one before its first `*`, `?` or `[` is a prefix of that part of the other. So:
 
 - Write the narrowest scope that covers the item, such as `java/billing/invoice/**` rather than `java/**`. A scope that starts with a wildcard overlaps every other scope.
-- Change a file that many items touch, such as a shared build file, in an item of its own that runs alone.
+- Change a file that many items touch, such as a shared build file, in an item of its own with no `writes:`, so that it runs only between waves.
 - While wave items are open, take only items that `wave:` lists, whether you do one yourself or dispatch it.
 
 ## Integration
 
 - **One at a time:** take the wave's results one by one. For each, check that every changed file, by the `files:` line and by the change itself, lies inside the item's `writes:`; bring the change into the shared working state; confirm the item under **Check**; and close it under **Log**.
 - **Rejects:** a result that conflicts with integrated work or changes a file outside its `writes:` returns its item to `ready` with `tries:` raised under **Attempts**. Keep its detail file and name it in the next attempt's brief.
-- **Regression check:** after the wave's last result, run one check over the integrated state, such as the project's full build and test suite, and record its result in the evidence of the wave's last closure. Start no further wave until it passes; to fix a regression in closed work, add an item that names the failure and the closed IDs.
+- **Regression check:** after the wave's last result, run one check over the integrated state, such as the project's full build and test suite, and record its result in the evidence of the wave's last closure. If it fails, add an item that names the failure and the closed IDs at the top of the Queue, and start no further wave until the check passes.
 
 ## Growing queue
 
