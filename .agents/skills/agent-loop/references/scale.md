@@ -24,7 +24,7 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 2. `counts:` doing, ready with dependencies met, ready but blocked, waiting, need you, closed;
 3. `doing:` the full lines of `doing` items;
 4. `next:` the first K unblocked `ready` items, in queue order;
-5. `wave:` only when `parallel` exceeds 1, the IDs that may run together now;
+5. `wave:` only when `parallel` exceeds 1, the IDs whose `writes:` scopes fit the free slots without overlapping, as **Waves** defines;
 6. `waiting:` and `need you:` the full lines of `waiting` and `user` items;
 7. `problems:` each problem with its line number, reason and fix, or `none`.
 
@@ -38,7 +38,7 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 A worker is an agent you dispatch to do one item. Do an item yourself or dispatch a worker as its work, the overhead and the resources the user has authorized warrant.
 
 - **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, this attempt's detail path, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
-- **Copy:** workers share the working state when their scopes are disjoint and their commands do not disturb each other's, as builds that write one output directory do. Otherwise give each worker its own isolated copy of the repository that holds the integrated state, uncommitted work included.
+- **Copy:** workers share the working state only when you are sure that their writes are disjoint and their commands do not disturb each other's, as two builds into one output directory or two servers on one port do. `wave:` compares scope text only, so it misses two paths that reach one file through `..` or a link. When you are not sure, give each worker its own isolated copy of the repository that holds the integrated state, uncommitted work included, with every path it writes inside that copy, or run the items one at a time.
 - **Result:** give each attempt a fresh detail path, for example `.agent-loop.d/<ID>-<attempt>.md` at the root of the worker's working copy, which the `/.agent-loop.*` exclude line already keeps out of version control. The worker writes its commands, output, evidence and failures there, ends that file with the result block, and returns only that block:
 
   ```
@@ -70,7 +70,7 @@ A wave is the set of items held at the same time. Work sequentially unless all t
 
 - **One at a time:** take the wave's results one by one, a worker's from its result block and a command's from its recorded output and exit status. For each, check that every changed file, by the `files:` line and by the change itself, lies inside the item's `writes:`, when it has one; bring a change made in an isolated copy into the shared working state; confirm the item under **Check**; and close it under **Log**.
 - **Rejects:** a result that conflicts with integrated work or changes a file outside its `writes:` returns its item to `ready` with `tries:` raised under **Attempts**, and its changes leave the shared working state. Keep its detail file and name it in the next attempt's brief.
-- **Regression check:** each time the last result of a wave is handled, so that no item is held, run one check over the integrated state, such as the project's full build and test suite, before starting another item, and append its result to the evidence of the wave's last closure line. If it fails, add an item that names the failure and the closed IDs at the top of the Queue, and start no further wave until the check passes.
+- **Regression check:** each time the last result of a wave is handled, so that no item is held, run one check over the integrated state, such as the project's full build and test suite, before starting another item, and record its result as a Log line of its own, such as `- <UTC date and time> regression check passed — <evidence>`, also when every result failed. If it fails, add an item that names the failure and the closed IDs at the top of the Queue, run repair items one at a time, and start no further wave until the check passes. After an interruption, rerun the check before the next wave unless a Log line shows that it ran on the current integrated state.
 
 ## Growing queue
 

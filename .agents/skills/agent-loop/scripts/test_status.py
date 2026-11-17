@@ -463,6 +463,13 @@ class NumberAndIdFormTest(StatusBase):
         self.assertIn("0 closed", out)
         self.assertIn("problems: none", out)
 
+    def test_regression_check_log_line_closes_nothing(self):
+        self.write([ready("T2", "; after: T1")], log=closure("T1") +
+                   "- 2026-11-01T10:05Z regression check failed — T1 closed, suite red\n")
+        out = self.report()
+        self.assertIn("1 closed", out)
+        self.assertIn("problems: none", out)
+
     def test_path_that_is_not_utf8_prints_without_a_traceback(self):
         if os.name != "posix":
             self.skipTest("needs a byte-named directory")
