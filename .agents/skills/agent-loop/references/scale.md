@@ -39,7 +39,7 @@ A worker is an agent you dispatch to do one item. Do an item yourself or dispatc
 
 - **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, this attempt's detail path, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
 - **Copy:** when a worker gets its own copy of the repository under **Isolation** in Waves, the copy holds the integrated state, uncommitted work included, and every path the worker writes.
-- **Result:** give each attempt a fresh detail path, for example `.agent-loop.d/<ID>-<attempt>.md` at the root of the worker's working copy, which the `/.agent-loop.*` exclude line already keeps out of version control. The worker writes its commands, output, evidence and failures there, ends that file with the result block, and returns only that block:
+- **Result:** the worker writes its commands, output, evidence and failures to this attempt's detail file, for example `.agent-loop.d/<ID>-<attempt>.md` at the root of its working copy, which the `/.agent-loop.*` exclude line already keeps out of version control, ends that file with the result block, and returns only that block:
 
   ```
   item: <ID>
@@ -48,8 +48,8 @@ A worker is an agent you dispatch to do one item. Do an item yourself or dispatc
   files: <changed paths, comma-separated, or none>
   ```
 
-  Accept a result only when its `item:` and `evidence:` match the item's current `check:`; a result at an earlier attempt's path is evidence for reconciliation only. Route a result by its `result:` line. `done` is a claim: integrate it under Integration. `failed:` returns the item to `ready` with `tries:` raised under **Attempts**. `blocked:` marks the item `user`, as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
-- **Held items:** an item is held while a worker, or a command you started that is still running, does it. Before dispatch, record in `check:` where its result will appear: the result block at the end of this attempt's detail file, or the file that receives a command's exit status. Record `next: held by <worker or command>`, and add the host's handle, such as a task or process ID, once known. A held item is `doing`, and **Pick** skips it. Before ending a turn while an item is held, set it `waiting` with `wake: <worker or command>`, keeping its `check:`. When the result arrives, the item is no longer held: remove that `next:` and handle the result under **Result** or Integration, never redoing the item.
+  Route a result by its `result:` line. `done` is a claim: integrate it under Integration. `failed:` returns the item to `ready` with `tries:` raised under **Attempts**. `blocked:` marks the item `user`, as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
+- **Held items:** an item is held while a worker, or a command you started that is still running, does it. Give each attempt its own result entry, a worker's detail file or a command's output and exit-status files, and record it in `check:` before the attempt starts; when the authorized write scope allows no new path, first confirm that the earlier execution ended and handle its result, or else wait or ask. Accept a result only from the current entry, after checking the state of its execution; a result at an earlier entry is evidence for reconciliation only. Record `next: held by <worker or command>`, and add the host's handle, such as a task or process ID, once known. A held item is `doing`, and **Pick** skips it. Before ending a turn while an item is held, set it `waiting` with `wake: <worker or command>`, keeping its `check:`. When the result arrives, the item is no longer held: remove that `next:` and handle the result under **Result** or Integration, never redoing the item.
 
 ## Waves
 
@@ -64,7 +64,6 @@ A wave is the set of items held at the same time, by workers or by commands you 
 
 - Write the narrowest scope that covers the item, such as `java/billing/invoice/**` rather than `java/**`. A scope that starts with a wildcard overlaps every other scope.
 - Change a file that many items touch, such as a shared build file, in an item of its own with no `writes:`, so that it runs only between waves.
-- Run concurrent commands so that each writes its output and exit status to a file of its own.
 - While an item is held, start only items that `wave:` lists. When it lists none, wait for a held item's result with a blocking call, or end the turn where the host offers none; the hook grants no automatic turn for other `ready` items while a `waiting` item with `writes:` leaves no place for them in the wave.
 
 ## Integration
