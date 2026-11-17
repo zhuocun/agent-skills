@@ -451,6 +451,18 @@ class NumberAndIdFormTest(StatusBase):
         self.write([ready("T3")], log=closure("T1") + closure("T1") + closure("T2"))
         self.assertIn("2 closed", self.report())
 
+    def test_cancellation_log_line_closes_nothing(self):
+        cancelled = "- 2026-11-01T10:00Z T1 cancelled — the user dropped the export\n"
+        self.write([ready("T2", "; after: T1")], log=cancelled)
+        out = self.report()
+        self.assertIn("0 closed", out)
+        self.assertIn("T2 after: T1: neither an open item nor closed in Log", out)
+        self.write(["- [user] T2 Work — done when: tests pass; ask: T1 was cancelled; "
+                    "what replaces it?"], log=cancelled)
+        out = self.report()
+        self.assertIn("0 closed", out)
+        self.assertIn("problems: none", out)
+
     def test_path_that_is_not_utf8_prints_without_a_traceback(self):
         if os.name != "posix":
             self.skipTest("needs a byte-named directory")
