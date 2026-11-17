@@ -705,7 +705,8 @@ def header_lines(path, state):
     """Section 1: the path and the header values the loop runs on."""
     header = state["header"]
     lines = ["state: %s" % path]
-    for key in ("goal", "owner", "stop"):
+    keys = ("goal", "owner", "stop") + (("async gates",) if "async gates" in header else ())
+    for key in keys:
         lines.append("%s: %s" % (key, header.get(key) or "(none)"))
     for key, default in (("budget", DEFAULT_BUDGET), ("parallel", DEFAULT_PARALLEL)):
         value = header.get(key)

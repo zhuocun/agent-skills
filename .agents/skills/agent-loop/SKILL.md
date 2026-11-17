@@ -82,8 +82,8 @@ Run as many iterations as you can in one turn, ending it only when no item is ac
 
 A gate is an action outside the user's standing authorizations that needs their consent under their instructions or the project's rules, an acceptance the user reserves, or a design choice that would change the outcome the user authorized. Make every other technical choice yourself, consulting an available advisor, such as a stronger model, where that helps.
 
-- **Async:** when a gate blocks only its item and the user has not asked you to wait at it, mark the item `user` with an `ask:` that states the exact action and the options, name it in the turn's final message, and continue with other authorized items.
-- **Sync:** when a gate blocks the goal, or the user asked you to wait at it, mark the item `user` with an `ask:` that lists every question you ask the user at this gate, set `stop: gate: <question>`, and end the turn with those questions.
+- **Async:** when a gate blocks only its item and **Sync** does not apply, mark the item `user` with an `ask:` that states the exact action and the options, name it in the turn's final message, and continue with other authorized items.
+- **Sync:** when a gate blocks the goal, the user asked you to wait at it, or the state file has an `async gates:` line, which lists the gate kinds the user let wait in the queue, that does not list its kind, mark the item `user` with an `ask:` that lists every question you ask the user at this gate, set `stop: gate: <question>`, and end the turn with those questions.
 - **Answer:** only the user's answer opens a gate. Record it on the item, set the item `ready`, and clear `stop` if it named this gate.
 
 ## 5. Wait for events

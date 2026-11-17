@@ -74,16 +74,28 @@ class ReportTest(StatusBase):
                    log=closure("T0"))
         out = self.report()
         lines = out.splitlines()
-        self.assertEqual(lines[:7], [
+        self.assertEqual(lines[:8], [
             "state: %s" % self.state,
             "goal: Ship the export feature — done when: CI is green",
-            "owner: sess-owner", "stop: (none)",
+            "owner: sess-owner", "stop: (none)", "async gates: design choice",
             "budget: 50", "parallel: 1 (default)",
             "counts: 1 doing, 1 ready, 0 ready but blocked, 1 waiting, 1 need you, 1 closed"])
-        titles = [line.split(":")[0] for line in lines[7:] if not line.startswith("  ")]
+        titles = [line.split(":")[0] for line in lines[8:] if not line.startswith("  ")]
         self.assertEqual(titles, ["doing", "next", "waiting", "need you", "problems"])
         self.assertEqual(lines[-1], "problems: none")
         self.assertNotIn("wave:", out)
+
+    def test_async_gates_line_shown_only_when_present(self):
+        text = HEADER.format(extra="", items=ready("T1"), log="")
+        for line, shown in (("async gates: design choice\n", "async gates: design choice"),
+                            ("async gates:\n", "async gates: (none)"), ("", None)):
+            with self.subTest(line=line):
+                self.write_state(text=text.replace("async gates: design choice\n", line))
+                header = self.report().splitlines()[:7]
+                if shown:
+                    self.assertEqual(header[4], shown)
+                else:
+                    self.assertFalse(any(row.startswith("async gates") for row in header))
 
     def test_found_by_walking_up_and_by_flag(self):
         self.write([ready("T1")])

@@ -20,7 +20,7 @@ python3 "$SKILL_DIR/scripts/loop_hook.py" status [--state PATH] [--limit K]
 
 Its output has a fixed size whatever the queue length. `K`, 5 by default, caps every list, and a capped list ends with `+N more`. The sections, in order:
 
-1. the path, then `goal`, `owner`, `stop`, `budget` and `parallel`;
+1. the path, then `goal`, `owner`, `stop`, `async gates` when the file has it, `budget` and `parallel`;
 2. `counts:` doing, ready with dependencies met, ready but blocked, waiting, need you, closed;
 3. `doing:` the full lines of `doing` items;
 4. `next:` the first K unblocked `ready` items, in queue order;
