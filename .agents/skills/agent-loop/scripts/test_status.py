@@ -447,6 +447,10 @@ class NumberAndIdFormTest(StatusBase):
         self.write([ready("T2", "; after: T1")], log="- 2026-11-01 10:00 T1 closed - tests pass\n")
         self.assertIn("1 closed", self.report())
 
+    def test_closed_count_is_the_number_of_closed_ids(self):
+        self.write([ready("T3")], log=closure("T1") + closure("T1") + closure("T2"))
+        self.assertIn("2 closed", self.report())
+
     def test_path_that_is_not_utf8_prints_without_a_traceback(self):
         if os.name != "posix":
             self.skipTest("needs a byte-named directory")

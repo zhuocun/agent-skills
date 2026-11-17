@@ -77,7 +77,7 @@ Run as many iterations as you can in one turn, ending it only when no item is ac
 3. **Check.** Show that a check you write or change rejects work missing the criterion and accepts work meeting it, with a new test failing on the pre-change state or a disposable copy, never by reverting finished work; record both results in the closure evidence. Close an item only on evidence that meets its `done when`: passing tests, a green gate, or a review without open findings by a reviewer other than the item's author (a fresh context counts). Fix every finding of a review round before the next; after three rounds without convergence, treat the dispute as a hard design choice under pass 4.
 4. **Attempts.** Count in `tries:`, before the next run, every run of an item's action that fails its check or cannot be integrated, whoever runs it; review rounds do not count. At 3, mark the item `user` with an `ask:` naming the failure and what would unblock it, leave `stop:` unchanged and continue with other items.
 5. **Shared cause.** When a second item shows the same failure, look for a shared cause before the next affected item; fix it within the authorized scope, recheck the items it already affected, and record the fix in the state file. This never authorizes editing the user's rules or this skill. Keep unrelated failures separate.
-6. **Record.** Pass every result, wake and answer through **Check**, then save real changes to statuses, fields, evidence and **Log** before further scheduling or status reports. Never edit the file only to satisfy the hook.
+6. **Record.** Pass every result, wake and answer through **Check**, then save real changes to statuses, fields, evidence and **Log** before further scheduling or status reports.
 
 ## 4. Handle gates
 
