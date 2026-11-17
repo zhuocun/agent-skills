@@ -96,6 +96,17 @@ audits apply:
   a waiver is not covered by the skill, it is merely exempted, and a model will
   read the waiver as licence to skip the rule rather than as a different
   standard to meet.
+- **In `agent-loop`, keep the design minimal, with no over-engineering or
+  over-design, and maximize capability within its scope:** long-running
+  execution, scheduling and concurrency of the items in a queue the agent owns.
+  For each change, name the capability it gains, the existing or foreseeable
+  cases it serves, and its cost in rules, fields, statuses, files and code
+  paths. Prefer removing, reusing or generalizing existing parts when that
+  provides the required capability; otherwise justify the simplest addition
+  that does. Compare the designs that provide the required capability and
+  reliability, whether as a rule the agent follows or as script code, and
+  choose the least complex, judged by those costs and the maintenance each
+  design adds.
 - **Make each skill stand alone and compose.** A skill works with no other skill
   loaded and does not conflict with skills loaded beside it. It does not name
   another skill, use terms only that skill defines, depend on its outputs or add
