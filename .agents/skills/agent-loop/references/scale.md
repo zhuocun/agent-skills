@@ -1,6 +1,6 @@
 # Scale
 
-These rules hold, beside every rule in `SKILL.md`, while the state file exceeds 100 lines, the user allows parallel work, or a worker does or is to do an item.
+These rules hold, beside every rule in `SKILL.md`, while the state file exceeds 100 lines, `parallel` is above 1, or a worker does or is to do an item.
 
 - [Status command](#status-command)
 - [Workers](#workers)
@@ -20,7 +20,7 @@ python3 "$SKILL_DIR/scripts/loop_hook.py" status [--state PATH] [--limit K]
 
 Its output has a fixed size whatever the queue length. `K`, 5 by default, caps every list, and a capped list ends with `+N more`. The sections, in order:
 
-1. the path, then `goal`, `owner`, `stop`, `async gates`, `budget` and `parallel`;
+1. the path, then `goal`, `owner`, `stop`, `budget` and `parallel`;
 2. `counts:` doing, ready with dependencies met, ready but blocked, waiting, need you, closed;
 3. `doing:` the full lines of `doing` items;
 4. `next:` the first K unblocked `ready` items, in queue order;
@@ -35,7 +35,7 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 
 ## Workers
 
-A worker is an agent you dispatch to do one item. Dispatch one only for an item that needs judgment; do an item whose whole work is one non-interactive command by running that command yourself.
+A worker is an agent you dispatch to do one item. Do an item yourself or dispatch a worker as its work, the overhead and the resources the user has authorized warrant.
 
 - **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, this attempt's detail path, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
 - **Copy:** workers share the working state when their scopes are disjoint and their commands do not disturb each other's, as builds that write one output directory do. Otherwise give each worker its own isolated copy of the repository that holds the integrated state, uncommitted work included.
@@ -55,15 +55,15 @@ A worker is an agent you dispatch to do one item. Dispatch one only for an item 
 
 A wave is the set of items held at the same time. Work sequentially unless all three hold:
 
-- `parallel: <N>` in the header is above 1. Absent, it is 1. Set it above 1 only when the user asked for or allowed parallel work; otherwise leave it absent.
+- `parallel: <N>` in the header is above 1. Absent, it is 1. Choose N yourself within the cost and access the user has already authorized and the capacity of the host and machine; keep it at 1 when the user asked for serial work, and ask first when more items at once would need new cost or access.
 - The items are listed in the command's `wave:` output now.
-- **Pilot:** one to three items of the same kind have already closed one after another. Items are of one kind when the same steps, brief and check apply to each, such as moving one module each to a new package. Close a second or third pilot item when the one before it needed a change to its brief, check or scope, and record what the pilot taught in `## Notes`.
+- **Pilot:** you are sure that the brief, check and scope work for these items. When you are not, first close one item of that kind alone, and record what it taught in `## Notes`. Items are of one kind when the same steps, brief and check apply to each, such as moving one module each to a new package.
 
 `writes: <path or glob>, <path or glob>` on an item lists every file it may change. `wave:` fills the free slots, which are `parallel` minus the open `doing` and `waiting` items that have `writes:`. It walks the unblocked `ready` items in queue order and takes an item only when its scopes overlap no scope of an item already taken or of an open `doing` or `waiting` item. An item without `writes:` never joins a wave. Two scopes overlap when the part of one before its first `*`, `?` or `[` is a prefix of that part of the other. So:
 
 - Write the narrowest scope that covers the item, such as `java/billing/invoice/**` rather than `java/**`. A scope that starts with a wildcard overlaps every other scope.
 - Change a file that many items touch, such as a shared build file, in an item of its own with no `writes:`, so that it runs only between waves.
-- Run a wave's one-command items yourself as concurrent commands in one shell call, each writing its output and exit status to a file of its own, and dispatch workers for the others.
+- Run concurrent commands so that each writes its output and exit status to a file of its own.
 - While an item is held, start only items that `wave:` lists. When it lists none, wait for a held item's result with a blocking call, or end the turn where the host offers none; the hook grants no automatic turn for other `ready` items while a `waiting` item with `writes:` leaves no place for them in the wave.
 
 ## Integration
