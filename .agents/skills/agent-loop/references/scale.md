@@ -31,15 +31,15 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 - **Use:** on each iteration that does not read the whole file, run the command in place of that read. Take the first unblocked item in `doing:`, else the first in `next:`, as **Pick** directs. Where the script cannot run, read the whole file instead.
 - **Waiting:** `waiting:` shows at most K items; when **Wake** calls for every waiting item's check, raise `--limit` above the waiting count or read the whole file.
 - **Problems:** when `problems:` is not `none`, read the whole file, repair each listed problem from evidence, and run the command again before picking. Several of these problems end the hook's automatic continuation without a message.
-- **Edits:** change the file one line at a time, finding each line by its ID. Never rewrite the file from the command's output, which shows only part of it.
+- **Edits:** build each snapshot under **Record** from the whole file, never from the command's output, which shows only part of it.
 
 ## Workers
 
 A worker is an agent you dispatch to do one item. Dispatch one only for an item that needs judgment; do an item whose whole work is one non-interactive command by running that command yourself.
 
-- **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, the path for its detail file, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
+- **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, this attempt's detail path, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
 - **Copy:** workers share the working state when their scopes are disjoint and their commands do not disturb each other's, as builds that write one output directory do. Otherwise give each worker its own isolated copy of the repository that holds the integrated state, uncommitted work included.
-- **Result:** the worker writes its full account (commands, output, reasoning, failures) to its detail file, for example `.agent-loop.d/<ID>.md` at the root of its working copy, which the `/.agent-loop.*` exclude line already keeps out of version control, ends that file with the result block, and returns only that block:
+- **Result:** give each attempt a fresh detail path, for example `.agent-loop.d/<ID>-<attempt>.md` at the root of the worker's working copy, which the `/.agent-loop.*` exclude line already keeps out of version control. The worker writes its commands, output, evidence and failures there, ends that file with the result block, and returns only that block:
 
   ```
   item: <ID>
@@ -48,8 +48,8 @@ A worker is an agent you dispatch to do one item. Dispatch one only for an item 
   files: <changed paths, comma-separated, or none>
   ```
 
-  Route a result by its `result:` line. `done` is a claim: integrate it under Integration. `failed:` returns the item to `ready` with `tries:` raised under **Attempts**. `blocked:` marks the item `user`, as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
-- **Held items:** an item is held while a worker, or a command you started that is still running, does it. A held item is `doing` with `next: held by <worker or command>`, and **Pick** skips it. Before ending a turn while an item is held, set it `waiting` with `wake: <worker or command>` and a `check:` that finds its result: the result block at the end of a worker's detail file, or a command's recorded exit status. When the result arrives, the item is no longer held: remove that `next:` and handle the result under **Result** or Integration, never redoing the item.
+  Accept a result only when its `item:` and `evidence:` match the item's current `check:`; a result at an earlier attempt's path is evidence for reconciliation only. Route a result by its `result:` line. `done` is a claim: integrate it under Integration. `failed:` returns the item to `ready` with `tries:` raised under **Attempts**. `blocked:` marks the item `user`, as a gate under pass 4 or under **Unresolvable blocker**. Open the detail file only when the result or your check needs it.
+- **Held items:** an item is held while a worker, or a command you started that is still running, does it. Before dispatch, record in `check:` where its result will appear: the result block at the end of this attempt's detail file, or the file that receives a command's exit status. Record `next: held by <worker or command>`, and add the host's handle, such as a task or process ID, once known. A held item is `doing`, and **Pick** skips it. Before ending a turn while an item is held, set it `waiting` with `wake: <worker or command>`, keeping its `check:`. When the result arrives, the item is no longer held: remove that `next:` and handle the result under **Result** or Integration, never redoing the item.
 
 ## Waves
 
