@@ -38,7 +38,7 @@ Its output has a fixed size whatever the queue length. `K`, 5 by default, caps e
 A worker is an agent you dispatch to do one item. Do an item yourself or dispatch a worker as its work, the overhead and the resources the user has authorized warrant.
 
 - **Brief:** give each worker one item and a self-contained brief: the item's line with its `done when` and `writes:`, the check to run, the whole `## Notes` section, this attempt's detail path, and the form under **Result**. A worker makes one attempt and reports a failure instead of retrying. A worker never edits the state file.
-- **Copy:** workers share the working state only when you are sure that their writes are disjoint and their commands do not disturb each other's, as two builds into one output directory or two servers on one port do. `wave:` compares scope text only, so it misses two paths that reach one file through `..` or a link. When you are not sure, give each worker its own isolated copy of the repository that holds the integrated state, uncommitted work included, with every path it writes inside that copy, or run the items one at a time.
+- **Copy:** when a worker gets its own copy of the repository under **Isolation** in Waves, the copy holds the integrated state, uncommitted work included, and every path the worker writes.
 - **Result:** give each attempt a fresh detail path, for example `.agent-loop.d/<ID>-<attempt>.md` at the root of the worker's working copy, which the `/.agent-loop.*` exclude line already keeps out of version control. The worker writes its commands, output, evidence and failures there, ends that file with the result block, and returns only that block:
 
   ```
@@ -53,11 +53,12 @@ A worker is an agent you dispatch to do one item. Do an item yourself or dispatc
 
 ## Waves
 
-A wave is the set of items held at the same time. Work sequentially unless all three hold:
+A wave is the set of items held at the same time, by workers or by commands you start. Work sequentially unless all four hold:
 
 - `parallel: <N>` in the header is above 1. Absent, it is 1. Choose N yourself within the cost and access the user has already authorized and the capacity of the host and machine; keep it at 1 when the user asked for serial work, and ask first when more items at once would need new cost or access.
 - The items are listed in the command's `wave:` output now.
 - **Pilot:** you are sure that the brief, check and scope work for these items. When you are not, first close one item of that kind alone, and record what it taught in `## Notes`. Items are of one kind when the same steps, brief and check apply to each, such as moving one module each to a new package.
+- **Isolation:** you know that the items do not interfere: their write targets, including paths that reach one file through `..` or a link, which `wave:` does not compare, and the resources they use, such as an output directory, a port or an external service, do not overlap. When you do not know, isolate what they actually share, such as with a repository copy per item or a port per process, or run them one at a time.
 
 `writes: <path or glob>, <path or glob>` on an item lists every file it may change. `wave:` fills the free slots, which are `parallel` minus the open `doing` and `waiting` items that have `writes:`. It walks the unblocked `ready` items in queue order and takes an item only when its scopes overlap no scope of an item already taken or of an open `doing` or `waiting` item. An item without `writes:` never joins a wave. Two scopes overlap when the part of one before its first `*`, `?` or `[` is a prefix of that part of the other. So:
 
