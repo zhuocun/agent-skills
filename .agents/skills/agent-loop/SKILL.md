@@ -50,7 +50,7 @@ To start a loop, create the file in this form, with items in priority order and 
 A malformed header or item line can silently end the hook's automatic continuation or hide an item from it.
 
 - **Header:** one line per key, each once, above `## Queue`.
-- **stop:** empty while the loop runs or idles, else a pass 6 reason or a user pause. On an explicit user instruction to pause or stop the loop, record `paused: <the instruction>` and take no queued action until the user explicitly resumes; then clear only that pause and reconcile. Keep a pause the user wrote.
+- **stop:** empty while the loop runs or idles, else a pass 6 reason or a user pause. On an explicit user instruction to pause or stop the loop, record `paused: <the instruction>` and take no queued action until the user explicitly resumes; then clear only that pause and reconcile. Keep a pause the user wrote. A turn that another hook's feedback or a separately authorized completion notification continues or starts may prompt **Rebuild**; by itself it clears no `stop:` value and grants no authority for queued work.
 - **done when:** evidence a later iteration can confirm without memory of this session; the goal and each item have one.
 - **budget:** the automatic continuations the hook may grant for this goal; changing `goal` resets the count. A loop stopped by its budget resumes only when the user both raises `budget` and clears `stop: budget`.
 - **Items:** the queue holds only open items, with the statuses shown and the fields this skill names. IDs are unique across Queue and Log and never reused; redo closed work as a new item that names the old ID.
@@ -91,7 +91,7 @@ A gate is an action outside the user's standing authorizations that needs their 
 When an item needs an external result:
 
 - **Waiter:** use a completion route that Host setup supports for this session, host and mode, within its scope and lifetime and with any blocking collection it requires; without one, wait within the turn by a blocking call, or else record that collection needs the next user message or an explicit resume. Record the waiter's lifetime and collection route; where a host stops background commands after a fixed time, collect or re-arm before that limit, within the user's authorization.
-- **Scheduling boundary:** never create cron jobs or scheduled or periodic agent runs to execute the queue. A separately authorized completion notification may prompt reconciliation but grants no further authority.
+- **Scheduling boundary:** never create cron jobs or scheduled or periodic agent runs to execute the queue.
 - **Record:** mark the item `waiting` with a `wake:` and a `check:` that any later iteration can run to confirm the event without the waiter, and keep its `done when`.
 - **Wake:** run a waiting item's `check` only on its wake, on resume or interruption, and when no item is ready; once its event has happened, set the item `doing` and continue from that result without redoing it, and on a failed check handle the wait under **Waiter** and continue other work. A duplicate wake changes nothing.
 - **Idle:** when only waiting, user or blocked items remain, keep `stop:` empty unless a stop condition applies, and record and disclose any wait that no waiter covers. Run no model polling loop; a blocking command that checks for its event is not one.
@@ -119,5 +119,5 @@ Give the loop facts in each turn's final message: the current item, or idle or t
 
 - **Start:** every step of **Start** done before acting, and Scale read in full and followed when due?
 - **State:** the file meets pass 1, and every change was saved under **Record** before further scheduling or reports?
-- **Turns:** each turn followed passes 2 to 5 and ended only as pass 3 allows, with `stop:` set only under pass 6 or **stop**?
+- **Turns:** each turn followed passes 2 to 5 and ended only as pass 3 allows, with `stop:` set only under pass 6 or **stop**, and neither cleared nor queued work authorized by another hook's feedback or a completion notification alone?
 - **Report:** each final message carries pass 7's loop facts, meeting **Count** and **Report**?
