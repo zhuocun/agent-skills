@@ -22,7 +22,7 @@ responsibilities, so an agent can load several for one task.
 
 | Skill | What it does |
 | --- | --- |
-| `communicate` | Governs how the agent writes to the user: message shape, register, and what each claim must rest on. Applies to every message to the user; not for code, commit messages, documents, specs or product copy. Its body is mirrored as the `Baseline` output style in `.claude/output-styles/baseline.md`. |
+| `communicate` | Governs how the agent writes to the user: message shape, register, and what each claim must rest on. Applies to every message to the user; not for code, commit messages, documents, specs or product copy. `scripts/sync_output_styles.py` compiles it, with its reference file, into the `Baseline` output style in `.claude/output-styles/baseline.md`. |
 | `chinese-diction` | Writes natural Chinese in the target register (professional, casual or creative) at the level of word choice and phrasing. Applies to every chat reply in Chinese, and to any request to write, translate into or polish Chinese. Not for agent-instruction files such as SKILL.md or prompts. |
 | `document-editor` | Creates, edits and reviews formal human-facing documents in any language, including short notices, formal wording and translation cleanup, inline documents and documents within larger tasks. Grounds claims, organizes for the reader, prunes by function and preserves meaning, contracts, records and useful repetition. Not for chat, casual or creative writing, routine status updates, prescribed mechanical work, code implementation or agent instructions. |
 | `skill-optimize` | Creates, reviews and optimizes agent skills for reliable routing and execution, with independent instructions, deliberate behavior changes and evidence-based effect claims. Not for ordinary prose editing, application code review or unrelated runtime configuration. |
@@ -53,7 +53,8 @@ responsibilities, so an agent can load several for one task.
 ```
 .agents/skills/<name>/          canonical skill: SKILL.md, plus references/ when the skill needs them
 .claude/skills                  symlink -> .agents/skills, so Claude Code finds the skills in this repo
-.claude/output-styles/          Baseline output style, mirroring communicate
+.claude/output-styles/          Baseline output style, compiled from communicate
+scripts/sync_output_styles.py   compiles baseline.md from communicate and its reference file
 scripts/validate_skills.py      checks every skill; CI runs it on each pull request
 docs/                           research notes behind the skills; agents do not load them
 ```
@@ -89,19 +90,32 @@ not modify private installations.
 
 ## Changing a skill
 
-This repo is the canonical source; make skill changes here. Before pushing, run:
+This repo is the canonical source; make skill changes here. After editing `communicate`,
+regenerate the output style; before pushing, run the validator:
 
 ```bash
+python3 scripts/sync_output_styles.py
 python3 scripts/validate_skills.py
 ```
 
-It checks that every skill directory has a `SKILL.md` of at most 500 lines whose frontmatter
-parses as YAML with a non-empty `name` (matching the directory; lowercase ASCII letters, digits
-and single hyphens) and `description` (at most 1024 characters, no `<` or `>`), and any
-`compatibility` value of 1–500 characters; that the body opens with a `# ` title and its last
-`## ` section is `## Self-check`; that relative links resolve, every `references/` file is
-pointed to from `SKILL.md` and reference files over 100 lines have a table of contents; that
-`.claude/skills` links to `.agents/skills`; and that `baseline.md` matches `communicate`. It
-needs PyYAML (`pip install pyyaml`). CI also runs the tests bundled with each skill's scripts:
-run `python3 -m unittest discover` in each `.agents/skills/<name>/scripts/` directory that has
-`test_*.py` files. Authoring conventions are in `AGENTS.md`.
+The validator checks that every skill directory has a `SKILL.md` of at most 500 lines whose
+frontmatter parses as YAML with a non-empty `name` (matching the directory; lowercase ASCII
+letters, digits and single hyphens) and `description` (at most 1024 characters, no `<` or
+`>`), and any `compatibility` value of 1–500 characters; that the body opens with a `# ` title
+and its last `## ` section is `## Self-check`; that relative links resolve, every
+`references/` file is pointed to from `SKILL.md` and reference files over 100 lines have a
+table of contents; that `.claude/skills` links to `.agents/skills`; and that the
+`output-style-mirror` check passes (`baseline.md` has valid frontmatter matching any
+configured `outputStyle`, a matching H1, a body equal to the body
+`scripts/sync_output_styles.py` compiles from `communicate`, no relative Markdown links
+outside code fences and inline code spans, and no `references/` paths or `SKILL.md`
+mentions outside code fences, and `communicate/SKILL.md`'s reload sentinel matches its
+final `## Self-check` item — see `AGENTS.md` for the full contract). The validator needs
+PyYAML (`pip install pyyaml`).
+
+CI runs the skill script tests (`python3 -m unittest discover` in each
+`.agents/skills/<name>/scripts/` directory that has `test_*.py` files) and the repo's own
+script tests (`python3 -m unittest discover -s scripts -p "test_*.py"`) with the standard
+library only, then installs PyYAML, runs the repo's script tests again, and runs the
+validator. Each test run fails CI if it discovers zero tests. Run the same commands locally
+before pushing. Authoring conventions are in `AGENTS.md`.

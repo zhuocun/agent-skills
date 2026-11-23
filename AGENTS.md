@@ -19,15 +19,26 @@ The `agent` and `pulse` repos hold copies under their own `.agents/skills/`,
 not symlinks. A merge here reaches them only when someone copies it over. Until then, their
 weekly `skills-drift` check fails for each skill they hold that the merge changed.
 
-`.claude/output-styles/baseline.md` mirrors `communicate`'s body under its own
-frontmatter and H1, and `.claude/settings.json` makes it the active output style
-(`Baseline`). Edit both files together; the validator fails when the bodies
-differ.
+`.claude/output-styles/baseline.md` is the `Baseline` output style, which
+`.claude/settings.json` makes active. Its body is compiled, not hand-edited:
+`python3 scripts/sync_output_styles.py` builds it deterministically from
+`.agents/skills/communicate/SKILL.md` and
+`.agents/skills/communicate/references/asd-ste100.md`. The compiler keeps
+`baseline.md`'s own frontmatter and `# Baseline` H1, strips the skill-only
+`Reload after truncation` rule and its Self-check mention, and inlines
+`references/asd-ste100.md`'s rules and its check, so Claude Code gets one
+self-contained file with no relative `references/` links. After editing
+`communicate`, run the script and commit the `communicate` changes and
+`baseline.md` together. `--check` reports drift without writing and exits
+non-zero when it finds drift, and the validator fails when `baseline.md`'s body
+differs from the compiled body.
 
-Each `agent` and `pulse` copy also carries `.claude/output-styles/baseline.md`;
-when syncing, make its body equal `communicate`'s body as `output-style-mirror`
-compares them (below the frontmatter, the H1 and one blank line, trailing blank
-lines included), since `skills-drift` does not check it.
+When syncing the `agent` or `pulse` copy, copy the whole
+`.agents/skills/communicate/` directory into that checkout. Then copy
+`.claude/output-styles/baseline.md`, or run
+`python3 scripts/sync_output_styles.py --root <checkout>` from this repo, and
+confirm the result with `--check`, since `skills-drift` does not check
+`baseline.md`.
 
 | Surface | Source | Consumed by |
 | --- | --- | --- |
@@ -181,10 +192,12 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 
 > CI for this repo is the `validate-skills` workflow (`.github/workflows/validate-skills.yml`),
 > which runs on every pull request and on every push to `main`. A push to a branch with no
-> pull request open is not validated. The workflow first runs `python3 -m unittest discover`,
-> with the standard library only, in each `.agents/skills/*/scripts/` directory that holds
-> `test_*.py` files, and fails if a directory runs no tests. It then installs PyYAML and runs
-> `python3 scripts/validate_skills.py`. The validator enforces only these checks
+> pull request open is not validated. With the standard library only, the workflow first runs
+> `python3 -m unittest discover` in each `.agents/skills/*/scripts/` directory that holds
+> `test_*.py` files, then `python3 -m unittest discover -s scripts -p "test_*.py"` for the
+> repo's own scripts. It then installs PyYAML, runs the repo's script tests again with PyYAML
+> available, and runs `python3 scripts/validate_skills.py`. Each test run fails the workflow
+> if it runs no tests. The validator enforces only these checks
 > mechanically; review and behaviour tests cover the rest: every skill directory has a
 > `SKILL.md` of at most 500 lines; the frontmatter parses as a YAML mapping; `name` and
 > `description` are present, non-empty strings; `description` is at most 1024 characters (the
@@ -197,7 +210,18 @@ The same review-and-merge flow applies across the `agent`, `pulse`, and `agent-s
 > named by its `references/` path in inline code, from its `SKILL.md`; every reference `.md`
 > file longer than 100 lines has, before its first `## ` heading outside fenced code, a list
 > linking to the anchor of each of its `## ` headings; `.claude/skills` still resolves to
-> `.agents/skills`; and the `output-style-mirror` check holds: below the frontmatter, the H1
-> and the one blank line after it, `.claude/output-styles/baseline.md` must equal
-> `communicate/SKILL.md` line for line, trailing blank lines included. Frontmatter keys
-> beyond those listed are allowed. Run the same commands locally before pushing.
+> `.agents/skills`; and the `output-style-mirror` check holds. That check requires the
+> following. If `.claude/settings.json` exists, it parses as a JSON object, and if it sets
+> `outputStyle`, the value is a non-empty string with no surrounding whitespace. Both
+> `communicate/` source files exist as valid UTF-8 with the anchors
+> `scripts/sync_output_styles.py` requires to compile the mirrored body. The YAML
+> frontmatter of `.claude/output-styles/baseline.md` is a mapping with a non-empty `name`
+> that has no surrounding whitespace and equals that `outputStyle` when one is set, a
+> non-empty `description`, and `keep-coding-instructions` set to boolean `true`. The file's
+> body opens with a matching `# <name>` H1, and below that H1 (skipping one blank line if
+> present) equals the compiled body. Outside fenced code, its frontmatter and body contain
+> no `references/` path and no `SKILL.md` mention, and, outside inline code spans as well,
+> no relative Markdown link. The one bold label that `communicate/SKILL.md`'s **Reload
+> after truncation** rule names equals the bold label of that file's final `## Self-check`
+> item. Frontmatter keys beyond those listed are allowed. Run the same commands locally
+> before pushing.

@@ -37,8 +37,26 @@ jobs:
             fi
           done
 
+      - name: Test repository scripts (stdlib-only)
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s scripts -p "test_*.py" -v 2>&1 | tee "$RUNNER_TEMP/scripts-unittest-stdlib.log"
+          if ! grep -Eq '^Ran [1-9][0-9]* tests?' "$RUNNER_TEMP/scripts-unittest-stdlib.log"; then
+            echo "::error::scripts has test_*.py files but ran no tests"
+            exit 1
+          fi
+
       - name: Install PyYAML
         run: pip install --disable-pip-version-check pyyaml
+
+      - name: Test repository scripts (with PyYAML)
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s scripts -p "test_*.py" -v 2>&1 | tee "$RUNNER_TEMP/scripts-unittest-pyyaml.log"
+          if ! grep -Eq '^Ran [1-9][0-9]* tests?' "$RUNNER_TEMP/scripts-unittest-pyyaml.log"; then
+            echo "::error::scripts has test_*.py files but ran no tests"
+            exit 1
+          fi
 
       - name: Validate skill files
         run: python3 scripts/validate_skills.py
