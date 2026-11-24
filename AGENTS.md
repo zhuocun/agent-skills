@@ -91,7 +91,11 @@ audits apply:
 - **Point to every reference file directly from `SKILL.md`**, by a relative
   link or by its `references/` path in inline code, not only from another
   reference file. Word each pointer as a standing rule that says when to read
-  the file in full and to read it again after a compaction. Make every relative
+  the file in full and to read it again after a compaction. List reference files
+  that share a read rule in one `## ` section of their own, not inside a step or
+  pass, because an agent can skip a list nested among a step's rules. State each
+  file's condition as a fact the agent can observe in the task or as an event in
+  the work, and name beside it the rules the file holds. Make every relative
   link in a skill's files resolve to an existing file. Start a reference file
   longer than 100 lines with a table of contents: a list, before its first `## `
   heading, that links to the anchor of each of its `## ` headings.
