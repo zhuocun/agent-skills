@@ -29,7 +29,7 @@ Before dispatching anything, define the to-dos and a high-standard definition of
 
 Maximize useful progress by removing repetition that adds no evidence, while preserving reliability, acceptance requirements and each role's own judgment. In the existing DoD or checklist, plan verification by acceptance claim and risk: identify the evidence needed, its execution owner, required independence and invalidation conditions. Assign one primary executor per check and additional independent execution where required by risk, the user or the project. Keep this proportionate: small work can use one line with an evidence link; reuse tool records instead of creating parallel reports. Reuse verified setup and source inspection when still applicable.
 
-Before the first reuse of raw evidence in a session, and again after a compaction before the next reuse, read [`references/review-and-evidence.md`](references/review-and-evidence.md) in full and apply its **Evidence reuse** checks.
+Apply the **Evidence reuse** checks in `references/review-and-evidence.md` to each reuse of raw evidence.
 
 Use focused checks for fast feedback during edits, then complete the planned acceptance checks. Execute further checks to cover new or uncovered claims and risks, fulfill required independence, or resolve invalidated, uncertain, incomplete or conflicting evidence. Invalidate only evidence affected by a change; expand verification conservatively when the impact is unknown. Investigate failures and conflicting results rather than hiding them behind a later pass. Account for the final integrated candidate, including interactions between changes, and honor every explicit user or project gate. Each role audits the applicable raw evidence and performs its assigned or missing checks; changing roles alone does not require repeating valid work.
 
@@ -40,6 +40,16 @@ Ground your own judgment; do not inherit it. Read the source of truth continuous
 **In every brief.** Write the standard you hold yourself to into every delegate's brief — worker, reviewer, verifier, advisor: it owns the quality of its own result rather than treating the next gate as the thing that catches its mistakes; it verifies decisive claims at the source rather than reasoning from what the brief handed it; and it re-reads its own output against the brief's scope and constraints before declaring done, a self-review that adds to the independent reviewer hop and never replaces it (see **Reviewer**). Carry forward the applicable verification plan and evidence references (see **Verification**). Also state the success criteria a worker's result must meet, traced to the DoD items it serves, and that the delegate is a leaf: it must not invoke any skill that delegates work to subagents, or spawn subagents or workflows, unless the brief says so. Word every brief in correctness and reliability terms — the rule, the input, the expected result — rather than attack or exploit terms, stating any security check the task needs as the defect it prevents, since some providers stop a run whose brief reads as security testing.
 
 **After a compaction.** The moment you are working from a summary rather than the thread you actually ran, treat that summary as a lossy pointer, not as knowledge — the detail you were judging against is gone. Before you dispatch or accept anything else, rebuild the picture from ground truth: re-read the DoD and the running checklist, check the current repo, branch and already-integrated artifacts, and recover the applicable raw evidence and primary sources. Establish their identity and validity under **Verification** before deciding which checks need to run. Then resume the next open to-do without waiting for the user to confirm: the DoD you fixed before dispatch, plus the items the user approved since, is the instruction to keep going.
+
+## Reference files
+
+Read each file in full at each time its bullet states, before applying its rules.
+
+- [`references/dispatch.md`](references/dispatch.md) (each dispatch's source, route, workspace, model, effort and speed request, and the slots of the role line): before the first dispatch in a session and again after a compaction before the next dispatch.
+- [`references/cli-dispatch.md`](references/cli-dispatch.md) (guards for every CLI dispatch): before the first CLI dispatch in a session and again after a compaction before the next one.
+- [`references/review-and-evidence.md`](references/review-and-evidence.md) (the **Evidence reuse** checks, the definition of a verifier, and the reviewer's input, output and grounding): before the first reuse of raw evidence in a session and again after a compaction before the next reuse; and before dispatching the first reviewer or verifier in a session and again after a compaction before the next one.
+- [`references/advisor.md`](references/advisor.md) (each advisor's model, input, output and rounds): before consulting an advisor, and again after a compaction before the next consultation.
+- [`references/final-summary.md`](references/final-summary.md) (the form of the final summary): before writing the final summary, and again after a compaction before writing it.
 
 ## When to delegate
 
@@ -58,7 +68,7 @@ Prefer one subagent per distinct subtask. Run independent work in parallel rathe
 
 ## Model selection
 
-Read [`references/dispatch.md`](references/dispatch.md) in full before the first dispatch in a session and again after a compaction before the next dispatch: it decides each dispatch's source, route, workspace, model, effort and speed request. Read [`references/cli-dispatch.md`](references/cli-dispatch.md) in full before the first CLI dispatch in a session and again after a compaction before the next one, and apply its guards to every CLI dispatch.
+`references/dispatch.md` decides each dispatch's source, route, workspace, model, effort and speed request. Apply the guards in `references/cli-dispatch.md` to every CLI dispatch.
 
 Inspect the dispatch schema and set every exposed parameter on every subagent call, using the source's exact advertised effort token (lowercase `xhigh` on Codex). Never accept the platform default: it can route to a forbidden tier, silently downgrade reasoning, or mirror the orchestrator's own config. An explicit instruction from the user, or from any source whose instructions outrank this skill, overrides any rule in this section or in `references/dispatch.md`.
 
@@ -82,7 +92,7 @@ A rule on length, detail or internal names does not remove a role line these eve
 
 After each worker returns, dispatch its output to fresh reviewer subagents before integrating: one reviewer, or the pair that **Task types** in `references/dispatch.md` requires, whose verdicts combine as rule 8 of **Task types** directs. Reviewers run in parallel across multiple worker outputs.
 
-Before dispatching the first reviewer or verifier in a session, and again after a compaction before the next one, read `references/review-and-evidence.md` in full: it defines a verifier and the reviewer's input, output and grounding.
+`references/review-and-evidence.md` defines a verifier and the reviewer's input, output and grounding.
 
 **Skip the reviewer hop only when** the output is a pure fact lookup or a mechanical summary and you verify it at the source in seconds; route anything else through the reviewer.
 
@@ -98,7 +108,7 @@ A failed review is a `revise` or `redo` you accept (see **Orchestrator final gat
 
 Consult an advisor on every hard decision: one that is consequential to the DoD or costly to reverse and that you are still unsure about after grounding it in the sources, such as choosing between two designs that both passed review, reconciling conflicting review findings, pulling work local or escalating after the two-failed-review stop, or accepting a known risk at the final gate. When unsure whether a decision is hard, consult; a trivial or already confident choice needs none. A decision that needs the user's consent goes straight to the user instead. An advisor informs your decision and never replaces a worker, reviewer or verifier: a task whose deliverable is itself a recommendation goes to a worker on its row.
 
-Before consulting an advisor, and again after a compaction before the next consultation, read [`references/advisor.md`](references/advisor.md) in full: it sets each advisor's model, input, output and rounds.
+`references/advisor.md` sets each advisor's model, input, output and rounds.
 
 ## Orchestrator final gate
 
@@ -122,7 +132,7 @@ A reviewer `pass` does not bypass the orchestrator. Everything a worker, reviewe
 
 ## Final summary
 
-Before writing the final summary, and again after a compaction before writing it, read [`references/final-summary.md`](references/final-summary.md) in full and write the summary in its form, with the DoD as a checklist.
+Write the final summary in the form `references/final-summary.md` gives, with the DoD as a checklist.
 
 ## Self-check
 
