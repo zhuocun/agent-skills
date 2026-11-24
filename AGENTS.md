@@ -51,7 +51,7 @@ in a session, load `skill-optimize` by reading
 `.agents/skills/skill-optimize/SKILL.md` in full, however small the change.**
 Read its reference files as its `## Reference files` section directs. After
 each compaction, read that `SKILL.md` in full again before you resume the
-work. `skill-optimize` holds the procedure and the complete rules for
+work. `skill-optimize` holds the procedure and the detailed rules for
 reference files and behaviour tests; the conventions below are the standard a
 change is checked against, not a replacement for the skill.
 
@@ -107,10 +107,11 @@ audits apply:
   of their own, not inside a step or pass, because an agent can skip a list
   nested among a step's rules; a step or pass may name a file where it applies
   the file's rules. `skill-optimize`'s `references/reference-files.md` holds the
-  complete rules for reference files. Make every relative link in a skill's
-  files resolve to an existing file. Start a reference file longer than 100
-  lines with a table of contents: a list, before its first `## ` heading, that
-  links to the anchor of each of its `## ` headings.
+  detailed rules for pointer placement, read conditions and body summaries. Make
+  every relative link in a skill's files resolve to an existing file. Start a
+  reference file longer than 100 lines with a table of contents: a list, before
+  its first `## ` heading, that links to the anchor of each of its `## `
+  headings.
 - **Make bundled scripts run unattended.** A script in `scripts/` states its
   interpreter and dependencies and takes input from arguments, environment
   variables, files or stdin, never from an interactive prompt. On failure it
