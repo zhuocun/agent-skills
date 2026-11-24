@@ -46,6 +46,15 @@ confirm the result with `--check`, since `skills-drift` does not check
 
 ## Skill authoring conventions
 
+**Before you create, edit or review any file under `.agents/skills/`, load the
+`skill-optimize` skill and read `.agents/skills/skill-optimize/SKILL.md` in
+full, then each of its reference files whose condition holds.** Do this in
+every session, also when the change is small and when this file is already in
+context, and again after a compaction. `skill-optimize` holds the procedure
+and the complete rules, including the rules for reference files and for
+behaviour tests; the conventions below are the standard a change is checked
+against, not a replacement for the skill.
+
 Derived from the skills already in this repo (`conductor`, `chinese-diction`,
 `frontend-cr`, `document-editor`, `status-report`), from the Agent Skills
 specification and vendor skill-authoring guidance, and from the standard their
@@ -96,11 +105,12 @@ audits apply:
   or table gives the conditions of several files under one read rule, put that
   rule and the list or table together in a `## ` section of their own, not
   inside a step or pass, because an agent can skip a list nested among a step's
-  rules; a step or pass may name a file where it applies the file's rules. Make
-  every relative link in a skill's files resolve to an existing file. Start a
-  reference file longer than 100 lines with a table of contents: a list, before
-  its first `## ` heading, that links to the anchor of each of its `## `
-  headings.
+  rules; a step or pass may name a file where it applies the file's rules.
+  `skill-optimize`'s `references/reference-files.md` holds the complete rules
+  for reference files. Make every relative link in a skill's files resolve to an
+  existing file. Start a reference file longer than 100 lines with a table of
+  contents: a list, before its first `## ` heading, that links to the anchor of
+  each of its `## ` headings.
 - **Make bundled scripts run unattended.** A script in `scripts/` states its
   interpreter and dependencies and takes input from arguments, environment
   variables, files or stdin, never from an interactive prompt. On failure it
