@@ -195,7 +195,7 @@ Decide the type first. Decision records, knowledge and pitfalls, work state, the
 Apply **Limits on checks**.
 
 1. **Reference integrity.** Each normative reference the change touches resolves from the applicable branch. Where host adapters or controlled copies exist, check their targets and recorded source revisions.
-2. **Current indexes.** In each index the change affects, no expired, superseded or archived content is listed as current, and each superseded entry links its successor. Skip the part for which no current index or supersession record exists.
+2. **Current indexes.** In each index the change affects, no expired, superseded, archived or deleted content is listed as current, each listed entry resolves, and each superseded entry links its successor. Skip the part for which no current index or supersession record exists.
 3. **Cold-start discovery sample.** Run it when the structure, condition or target of the entry file or a route changes, or when the trigger of a key skill's description changes. For other changes, you may omit it. Take a few representative tasks from the affected common hosts, with at least one that must hit and one that must not, and name no document or skill in the task text. In a fresh session with no personal memory, check that the hit case reads and obeys the required guidance before acting, and that the miss case does not misread or misapply the guidance under test.
 
 ## Self-check
