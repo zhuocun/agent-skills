@@ -46,6 +46,15 @@ confirm the result with `--check`, since `skills-drift` does not check
 
 ## Skill authoring conventions
 
+**Before your first creation, edit or review of a file under `.agents/skills/`
+in a session, load `skill-optimize` by reading
+`.agents/skills/skill-optimize/SKILL.md` in full, however small the change.**
+Read its reference files as its `## Reference files` section directs. After
+each compaction, read that `SKILL.md` in full again before you resume the
+work. `skill-optimize` holds the procedure and the detailed rules for
+reference files and behaviour tests; the conventions below are the standard a
+change is checked against, not a replacement for the skill.
+
 Derived from the skills already in this repo (`conductor`, `chinese-diction`,
 `frontend-cr`, `document-editor`, `status-report`), from the Agent Skills
 specification and vendor skill-authoring guidance, and from the standard their
@@ -88,13 +97,21 @@ audits apply:
   agent must produce, any precedence each form takes over other loaded
   instructions and standing preferences, and every limit that holds even
   against a user request, because an agent may not open a reference file.
-- **Point to every reference file directly from `SKILL.md`**, by a relative
-  link or by its `references/` path in inline code, not only from another
-  reference file. Word each pointer as a standing rule that says when to read
-  the file in full and to read it again after a compaction. Make every relative
-  link in a skill's files resolve to an existing file. Start a reference file
-  longer than 100 lines with a table of contents: a list, before its first `## `
-  heading, that links to the anchor of each of its `## ` headings.
+- **Point to every reference file directly from `SKILL.md`**, by a relative link
+  or by its `references/` path in inline code, not only from another reference
+  file. Word each pointer as a standing rule that says when to read the file in
+  full, or the sections it names, and to read it again after a compaction. State
+  each read condition as a fact the agent can observe in the task or as an event
+  in the work. When a list or table gives the conditions of several files under
+  one read rule, put that rule and the list or table together in a `## ` section
+  of their own, not inside a step or pass, because an agent can skip a list
+  nested among a step's rules; a step or pass may name a file where it applies
+  the file's rules. `skill-optimize`'s `references/reference-files.md` holds the
+  detailed rules for pointer placement, read conditions and body summaries. Make
+  every relative link in a skill's files resolve to an existing file. Start a
+  reference file longer than 100 lines with a table of contents: a list, before
+  its first `## ` heading, that links to the anchor of each of its `## `
+  headings.
 - **Make bundled scripts run unattended.** A script in `scripts/` states its
   interpreter and dependencies and takes input from arguments, environment
   variables, files or stdin, never from an interactive prompt. On failure it
