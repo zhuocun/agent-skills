@@ -56,6 +56,8 @@ Split the guidance into units that work on their own, clauses or sections, and g
 6. **Principles and methodology:** principles that guide trade-offs between constraints and explain how to judge a case no rule covers. Constraints checkable item by item take step 7.
 7. **Rulebook:** conditions engineering work must meet, with a cross-project general text as canonical source. **Project register:** an adoption, tightening, project-only constraint or registered approved exemption.
 8. **Runbook:** reusable steps that perform one operation under fixed preconditions. Classify optional diagnostic and workaround experience as **knowledge and pitfalls**.
+9. **Work state:** the goal, status, to-dos, open questions and handoff notes of a task still in progress.
+10. **Knowledge and pitfalls:** a verified project finding, with its conditions of application, that the code and history do not show.
 
 A file name, loading method, length or location never changes a unit's type. Use the following 11 types and their omission conditions:
 
