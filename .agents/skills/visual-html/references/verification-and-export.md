@@ -44,6 +44,7 @@ npx playwright install chromium
 | breakpoint-*width* | each breakpoint width × 800, 1104 with the starting-point values | wide in each figure with that breakpoint |
 | breakpoint-*width*-below | one pixel less than each breakpoint width × 800 | narrow in each figure with that breakpoint |
 | tablet | 768 × 1024 | narrow in each figure whose breakpoint is above 768 |
+| above-phone | 391 × 844 | narrow in each figure whose breakpoint is above 391 |
 | phone | 390 × 844 | narrow in each figure whose breakpoint is above 390 |
 | small-phone | 360 × 800 | narrow in every two-layout figure |
 
@@ -316,6 +317,7 @@ const VIEWPORTS = [
     { name: `breakpoint-${w}-below`, width: w - 1, height: 800 },
   ]),
   { name: "tablet", width: 768, height: 1024 },
+  { name: "above-phone", width: SINGLE_NARROW_MAX + 1, height: 844 },
   { name: "phone", width: 390, height: 844 },
   { name: "small-phone", width: 360, height: 800 },
 ];
@@ -448,12 +450,14 @@ input. It classifies SVG layouts as
   does not check that the text is one lead sentence.
 - The checker applies the SVG font floors to every CSS rule that sets a font
   size on SVG text, inside any media query. It accepts a rule below a layout's
-  floor only when the rule sits outside any `@layer` block, whose cascade
-  layer the checker does not model, and every element of that layout that the
-  rule matches also gets a size at or above the floor from a rule that wins
-  the cascade over it by importance, specificity and order, and that sits
-  outside any at-rule and any `<style media>` element and uses no state
-  pseudo-class such as `:hover`. Scope a narrow-only size to the narrow SVG,
+  floor only when all of these hold: the rule sits outside any `@layer`
+  block, whose cascade layer the checker does not model; the rule's selector
+  uses no state pseudo-class such as `:hover`; no font size in the page's CSS
+  uses `var()`, whose value the checker does not resolve; and every element
+  of that layout that the rule matches also gets a size at or above the floor
+  from a rule that wins the cascade over it by importance, specificity and
+  order. The winning rule sits outside any at-rule, any `<style media>`
+  element and any `<noscript>` element, and uses no state pseudo-class. Scope a narrow-only size to the narrow SVG,
   as in `svg.narrow text`, or meet that condition.
 - Pass `--forbid` for each placeholder string, such as `TODO` or `lorem`, and
   for each retired or internal name the page must not show.

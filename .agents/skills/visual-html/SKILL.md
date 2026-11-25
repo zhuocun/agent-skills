@@ -205,8 +205,8 @@ again after a compaction:
 
 ## 4. Verify rendered geometry, visuals and structure
 
-1. Render the page at the desktop (1440 wide), tablet (768 wide), phone (390 wide) and small
-   phone (360 wide) viewports and on both sides of each breakpoint the page uses.
+1. Render the page at the desktop (1440 wide), tablet (768 wide), above-phone (391 wide), phone (390
+   wide) and small phone (360 wide) viewports and on both sides of each breakpoint the page uses.
 2. At each viewport, run the DOM checks: no horizontal page overflow, only the expected layout
    visible in each two-layout figure, rendered SVG text at or above its floor and, apart from
    display text, below the lead sentence of its section, one rendered size for each kind of text

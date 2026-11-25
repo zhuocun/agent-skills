@@ -781,6 +781,13 @@ figure svg { display: block; width: 100%; height: auto; }
             low.replace("12.5px", "12.5px !important") + '\nfigure[data-breakpoint="736"] svg.wide text { font-size: 14px; }',
             # A state-dependent override does not hold at rest.
             f'{low}\nfigure[data-breakpoint="736"] svg.wide text:hover {{ font-size: 14px; }}',
+            # A <noscript> stylesheet applies only with scripting disabled.
+            f'{low}</style><noscript><style>figure[data-breakpoint="736"] svg.wide text {{ font-size: 14px; }}</style></noscript><style>',
+            # The low rule's own match set depends on interaction state.
+            'figure[data-breakpoint="736"] svg text:not(.x:hover) { font-size: 12.5px; }\n'
+            'figure[data-breakpoint="736"] svg.wide text:not(.x:hover) { font-size: 14px; }',
+            # A var() font size after the literal override cannot be resolved.
+            f'{low}\nfigure[data-breakpoint="736"] svg.wide text {{ font-size: 14px; font-size: var(--s); }}',
             # The override is below the wide floor.
             f'{low}\nfigure[data-breakpoint="736"] svg.wide text {{ font-size: 13px; }}',
         ):

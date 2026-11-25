@@ -1504,6 +1504,8 @@ class VisualHTMLAnalyzer(HTMLParser):
         self._in_style = False
         self._in_script = False
         self._template_depth = 0
+        self._noscript_depth = 0
+        self._unresolved_font_size = False
 
         self._figure_counter = 0
         self._figure_stack: list[int] = []
@@ -1849,7 +1851,12 @@ class VisualHTMLAnalyzer(HTMLParser):
         if tag == "style":
             self._in_style = True
             media = (attr_map.get("media") or "").strip().lower()
-            self._style_blocks.append((line, [], media not in ("", "all")))
+            # A <noscript> stylesheet applies only with scripting disabled.
+            self._style_blocks.append(
+                (line, [], media not in ("", "all") or self._noscript_depth > 0)
+            )
+        elif tag == "noscript":
+            self._noscript_depth += 1
         elif tag == "script" and self._svg_depth == 0:
             self._in_script = True
         elif tag == "template":
@@ -1896,6 +1903,8 @@ class VisualHTMLAnalyzer(HTMLParser):
             self._in_script = False
         elif tag == "template" and self._template_depth > 0:
             self._template_depth -= 1
+        elif tag == "noscript" and self._noscript_depth > 0:
+            self._noscript_depth -= 1
 
         if tag == "svg" and self._svg_depth > 0:
             self._svg_depth -= 1
@@ -2149,7 +2158,7 @@ class VisualHTMLAnalyzer(HTMLParser):
                 floor = floors[kind]
                 if size_px + 1e-9 >= floor:
                     continue
-                if parsed is not None and not layered and self._font_size_overridden(
+                if parsed is not None and not layered and not self._unresolved_font_size and self._font_size_overridden(
                     parsed, decl.important, order, kind, floor, font_decls, svg_text_nodes
                 ):
                     continue
@@ -2192,7 +2201,10 @@ class VisualHTMLAnalyzer(HTMLParser):
     ) -> bool:
         """True when every node of this layout that the rule sets also gets a font size at or
         above the floor from an unconditional rule that wins the cascade over it. The caller
-        never asks this for a declaration inside @layer, whose cascade layer this does not model."""
+        never asks this for a declaration inside @layer, whose cascade layer this does not model,
+        or when a font size uses var(), whose value this does not resolve."""
+        if not _state_independent(parsed):
+            return False  # the rule's own match set changes with interaction state
         is_narrow = kind == "narrow_svg"
         nodes = [
             node
@@ -2328,6 +2340,8 @@ class VisualHTMLAnalyzer(HTMLParser):
                     continue
                 size_px = extract_font_size_px(decl.name, decl.value, allow_unitless=False)
                 if size_px is None:
+                    if "var(" in decl.value.lower():
+                        self._unresolved_font_size = True
                     continue
                 for sel in rule.selectors:
                     font_decls.append(
