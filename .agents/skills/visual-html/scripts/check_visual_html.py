@@ -2203,14 +2203,9 @@ class VisualHTMLAnalyzer(HTMLParser):
         above the floor from an unconditional rule that wins the cascade over it. The caller
         never asks this for a declaration inside @layer, whose cascade layer this does not model,
         or when a font size uses var(), whose value this does not resolve."""
-        # selector_matches treats an unevaluated pseudo-class as satisfied, which widens the
-        # match set everywhere except inside :not(), where it would hide nodes the rule sets.
-        if any(
-            not _state_independent(ps)
-            for comp in parsed.compounds
-            for group in comp.not_groups
-            for ps in group
-        ):
+        # The checker models neither the match set nor the specificity of a pseudo-class that
+        # selector_matches does not evaluate, so a rule that uses one is never cleared.
+        if not _state_independent(parsed):
             return False
         is_narrow = kind == "narrow_svg"
         nodes = [

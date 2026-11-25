@@ -452,12 +452,12 @@ input. It classifies SVG layouts as
   size on SVG text, inside any media query. It accepts a rule below a layout's
   floor only when all of these hold: the rule sits outside any `@layer`
   block, whose cascade layer the checker does not model; the rule's selector
-  has no pseudo-class inside `:not()` other than `:root` and `:first-child`; no font size in the page's CSS
+  uses no pseudo-class other than `:root` and `:first-child`; no font size in the page's CSS
   uses `var()`, whose value the checker does not resolve; and every element
   of that layout that the rule matches also gets a size at or above the floor
   from a rule that wins the cascade over it by importance, specificity and
   order. The winning rule sits outside any at-rule, any `<style media>`
-  element and any `<noscript>` element, and uses no state pseudo-class. Scope a narrow-only size to the narrow SVG,
+  element and any `<noscript>` element, and meets the same pseudo-class limit. Scope a narrow-only size to the narrow SVG,
   as in `svg.narrow text`, or meet that condition.
 - Pass `--forbid` for each placeholder string, such as `TODO` or `lorem`, and
   for each retired or internal name the page must not show.

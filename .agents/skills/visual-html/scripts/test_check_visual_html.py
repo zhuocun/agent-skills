@@ -766,7 +766,6 @@ figure svg { display: block; width: 100%; height: auto; }
             f"{low}\n{win}",
             f"@media screen and (width < 736px) {{ {low} }}\n{win}",
             f"{win}\n{low.replace('svg text', 'svg text:where(.x, text)')}",
-            f"{low.replace('svg text', 'svg text:last-child')}\n{win}",
         ):
             with self.subTest(css=css):
                 self.assertEqual(checker.check_html(self._breakpoint_figure_page(css)), [])
@@ -787,6 +786,11 @@ figure svg { display: block; width: 100%; height: auto; }
             # The low rule's own match set depends on interaction state.
             'figure[data-breakpoint="736"] svg text:not(.x:hover) { font-size: 12.5px; }\n'
             'figure[data-breakpoint="736"] svg.wide text:not(.x:hover) { font-size: 14px; }',
+            # The checker does not evaluate :last-child, so the low rule is not cleared.
+            f"{low.replace('svg text', 'svg text:last-child')}\n"
+            'figure[data-breakpoint="736"] svg.wide text { font-size: 14px; }',
+            'figure[data-breakpoint="736"] svg text:where(:not(:last-child)) { font-size: 12.5px; }\n'
+            'figure[data-breakpoint="736"] svg.wide text { font-size: 14px; }',
             # A var() font size after the literal override cannot be resolved.
             f'{low}\nfigure[data-breakpoint="736"] svg.wide text {{ font-size: 14px; font-size: var(--s); }}',
             # The override is below the wide floor.
