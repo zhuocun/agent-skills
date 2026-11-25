@@ -766,6 +766,7 @@ figure svg { display: block; width: 100%; height: auto; }
             f"{low}\n{win}",
             f"@media screen and (width < 736px) {{ {low} }}\n{win}",
             f"{win}\n{low.replace('svg text', 'svg text:where(.x, text)')}",
+            f"{low.replace('svg text', 'svg text:last-child')}\n{win}",
         ):
             with self.subTest(css=css):
                 self.assertEqual(checker.check_html(self._breakpoint_figure_page(css)), [])

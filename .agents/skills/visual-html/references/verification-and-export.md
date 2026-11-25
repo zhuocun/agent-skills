@@ -452,7 +452,7 @@ input. It classifies SVG layouts as
   size on SVG text, inside any media query. It accepts a rule below a layout's
   floor only when all of these hold: the rule sits outside any `@layer`
   block, whose cascade layer the checker does not model; the rule's selector
-  uses no state pseudo-class such as `:hover`; no font size in the page's CSS
+  has no pseudo-class inside `:not()` other than `:root` and `:first-child`; no font size in the page's CSS
   uses `var()`, whose value the checker does not resolve; and every element
   of that layout that the rule matches also gets a size at or above the floor
   from a rule that wins the cascade over it by importance, specificity and
