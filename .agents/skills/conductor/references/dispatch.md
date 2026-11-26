@@ -25,7 +25,7 @@ Each delegated role runs the family and effort level of its row, neither lower n
 
 | Task type | First choice | Second choice | Third choice | Includes |
 |---|---|---|---|---|
-| Coding | Gemini `high` | Claude `high` | GPT `xhigh` | code of any size except new-UI frontend code: backend code; frontend code with no new UI, such as business logic, state management, API clients, data-fetching hooks, validation, routing, build and lint configuration, tests and non-visual bug fixes; CI, infrastructure and other repository config; comments and docstrings in source; a script delivered to the repo (rules 1 and 5) |
+| Coding | Gemini `high` | Claude `high` | GPT `xhigh` | code of any size that rule 1 assigns to no other row: backend code; frontend code with no new UI, such as business logic, state management, API clients, data-fetching hooks, validation, routing, build and lint configuration, tests and non-visual bug fixes; CI, infrastructure and other repository config; comments and docstrings in source; a script delivered to the repo (rules 1 and 5) |
 | Coding documentation | Claude `high` | Gemini `high` | GPT `xhigh` | authoring or revising coding-related specifications, implementation plans, proposals and briefs, and developer-facing technical documentation (such as setup, API usage, testing and maintenance guides) (rule 1); and the reviews, verifications and audits that rule 4 assigns to this row (rules 4 and 8) |
 | Review | GPT `xhigh` | Gemini `high` | Claude `high` | reviewers, verifiers, and reviews or audits of existing work, security review included, and the correctness dimension of a two-dimension review (rules 3 and 4) |
 | Backend architecture design | Gemini `high` | Claude `high` | GPT `xhigh` | server-side and full-stack system design: service boundaries, data models and schemas, API contracts, storage and integration choices, and the review, verification or audit of that work (rules 4, 6 and 8) |
@@ -38,7 +38,7 @@ Each delegated role runs the family and effort level of its row, neither lower n
 
 1. Classify each delegated role by the substance of its deliverable, independent of its recipient, filename, tools or intermediate steps.
    - **New-UI frontend code** is frontend implementation meant to ship, in a product or a shared UI package, that involves new UI: a new page, view, dialog, panel, component or layout, a visual redesign, a new visible section or control, or a new chart or other visualization component. It is Visual design, together with the logic, state, store, API client and wiring changes that the new UI requires.
-   - Every other code deliverable is Coding (apart from findings-only scripts in Research), including a fix that follows the worker's own investigation and a copy, attribute or typo fix on existing UI.
+   - Every code deliverable that this rule assigns to no other row is Coding, including a fix that follows the worker's own investigation and a copy, attribute or typo fix on existing UI.
    - A standalone visualization made to present information (such as a diagram, chart, HTML page or slide deck, including one embedded in a document) is Visual design, its markup included, and so is a design prototype not meant to ship; neither is new-UI frontend code. A script or chart made only to get findings is Research.
    - Authoring or revising prose that specifies or records code implementation or serves as developer-facing technical documentation is Coding documentation. Embedded code samples follow the prose's row.
    - Architecture and design decisions use their own rows, regardless of document title or format. A standalone client-only architecture decision is Other complex work.
@@ -56,9 +56,9 @@ Each delegated role runs the family and effort level of its row, neither lower n
 
    - **Dimension scope.** These rules apply to the work **Two-dimension review** lists.
      - Unless an explicit applicable instruction narrows the gate, the required review of a worker's two-dimension deliverable is two independent reviewers on the same artifact, one per dimension; a one-dimension reviewer or verifier never satisfies this gate without such an instruction, and when such an instruction narrows it, a fresh reviewer still runs on the remaining dimension's row.
-     - A separately scoped reviewer, verifier, review or audit of one dimension, such as a verifier of a document's factual, technical or code claims, runs only on that dimension's row.
-     - Any other review, verification or audit of two-dimension work that names both dimensions or names neither runs as the same pair, regardless of whether the work is existing or a current worker's output.
-     - Run each pair as **Fallbacks** runs a two-family pair, and combine its verdicts under rule 8.
+     - A separately scoped reviewer, verifier, review or audit whose requested checks all fall within one dimension, such as a verifier of a document's factual, technical or code claims, runs only on that dimension's row. The requested checks decide this, whether or not the request names the dimension.
+     - Any other review, verification or audit of two-dimension work, whose requested checks span both dimensions or leave the scope open, runs as the same pair, regardless of whether the work is existing or a current worker's output.
+     - A pair is always two reviewers. Select each reviewer's family as **Fallbacks** selects for a single-family row, on that dimension's row; both may land on the same family. Run the two concurrently, or one after the other when a concurrency limit allows only one, and combine their verdicts under rule 8.
 5. Split a subtask that spans rows by deliverable.
    - A design runs on the row rule 1 gives it. Its implementation then runs against the accepted design, on the row rule 1 gives that code.
    - Split off from new-UI frontend code only independently deliverable work, such as backend code or separate non-UI engineering work, and route it by its own deliverable.
@@ -68,7 +68,7 @@ Each delegated role runs the family and effort level of its row, neither lower n
 8. When two reviewers judge one artifact, one per dimension (rule 4) or one per family on Backend architecture design (rule 6), wait for both verdicts and reconcile each (see **Orchestrator final gate** in `SKILL.md`) before acting on either.
    - The pair passes only when each verdict is a `pass` you accept or a `revise`/`redo` you reject.
    - For a review, verification or audit of existing work with no worker to send back, return the combined verdict and both reviewers' issues.
-   - Otherwise, an accepted `revise` or `redo` from either reviewer makes the pair one failed review. If it is the subtask's second failed review, apply the two-failed-review stop before any further dispatch. If not, handle the strongest accepted verdict, `redo` over `revise`, once as **Reviewer** in `SKILL.md` directs, passing both reviewers' issues verbatim.
+   - Otherwise, an accepted `revise` or `redo` from either reviewer makes the pair one failed review. If it is the subtask's second failed review, apply the two-failed-review stop to that subtask (see **Reviewer** in `SKILL.md`). If not, handle the strongest accepted verdict, `redo` over `revise`, once as **Reviewer** in `SKILL.md` directs, passing both reviewers' issues verbatim.
 
 ## Tiers and model IDs
 
